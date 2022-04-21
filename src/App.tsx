@@ -1,11 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import AppBar from "components/AppBar";
+import HomePage from "pages/HomePage";
+import TestPage from "./pages/testPage";
 
 const App: React.FC = () => {
   return (
-    <div>
-      <Link to="/test">Test Page</Link>
-    </div>
+    <>
+      <AppBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/test" element={<TestPage />} />
+      </Routes>
+    </>
   );
 };
 

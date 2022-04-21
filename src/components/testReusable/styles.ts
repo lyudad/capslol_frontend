@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "constants/index";
 
 export const Wrapper = styled.div`
   width: 480px;
@@ -12,5 +13,5 @@ export const Wrapper = styled.div`
 
 export const Title = styled.h1`
   text-align: center;
-  color: #c3ab25;
+  color: ${colors.testReusableColor};
 `;
