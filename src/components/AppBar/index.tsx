@@ -9,6 +9,9 @@ const AppBar: React.FC = () => {
         <NavLink to="/" className="navLink">
           HOME
         </NavLink>
+        <NavLink to="/profile" className="navLink">
+          PROFILE
+        </NavLink>
         <NavLink to="/test" className="navLink">
           TEST
         </NavLink>
