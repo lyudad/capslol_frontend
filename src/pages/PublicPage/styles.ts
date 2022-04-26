@@ -1,15 +1,15 @@
 import styled from "styled-components";
-import { colors } from "constants/index";
 
 export const ProfileContainer = styled.section`
   display: flex;
   margin-right: auto;
   margin-left: auto;
   margin-top: 12px;
-  max-width: 1200px;
-  height: 800px;
+  max-width: 800px;
+  height: 100vh;
   padding: 0px 12px;
   border: solid;
+  position: relative;
 `;
 
 export const TitleContainer = styled.div`
@@ -23,4 +23,10 @@ export const Title = styled.h1`
 
 export const Description = styled.p`
   text-align: center;
+`;
+export const Avatar = styled.div`
+  display: block;
+  position: absolute;
+  right: 0;
+  border: solid 1px tomato;
 `;
