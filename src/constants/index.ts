@@ -9,4 +9,6 @@ interface Fonts {
 export const colors: Colors = {
   testPageColor: "#202020",
   testReusableColor: "#c3ab25",
+  titleOfSectionsProfile: "#8d8d8d",
+  lightBlue: "#8194e1",
 };

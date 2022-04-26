@@ -1,32 +1,37 @@
 import styled from "styled-components";
+import { colors } from "constants/index";
 
 export const ProfileContainer = styled.section`
-  display: flex;
   margin-right: auto;
   margin-left: auto;
   margin-top: 12px;
   max-width: 800px;
-  height: 100vh;
   padding: 0px 12px;
-  border: solid;
+  padding-bottom: 12px;
+  border: solid 1px;
+  border-radius: 15px;
   position: relative;
 `;
 
-export const TitleContainer = styled.div`
-  min-width: 340px;
-`;
-
 export const Title = styled.h1`
-  text-align: center;
-  margin-bottom: 0;
+  margin-top: 8px;
+  margin-left: 15px;
+`;
+export const Sections = styled.h2`
+  margin-top: 8px;
+  margin-left: 25px;
 `;
 
 export const Description = styled.p`
-  text-align: center;
+  font-size: 19px;
+  margin-top: 15px;
+  margin-left: 35px;
+  color: ${colors.titleOfSectionsProfile};
 `;
 export const Avatar = styled.div`
   display: block;
   position: absolute;
+  top: 0;
   right: 0;
-  border: solid 1px tomato;
+  margin: 5px;
 `;
