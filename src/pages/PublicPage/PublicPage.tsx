@@ -80,7 +80,7 @@ const PublicPage: React.FC = () => {
         <Sections>
           {t("PublicProfile.skills")}:{" "}
           <Description>
-            <span>(tag type [ ])</span>
+            <span>{t("PublicProfile.tag_type")}</span>
           </Description>
         </Sections>
         <Sections>
@@ -94,7 +94,7 @@ const PublicPage: React.FC = () => {
         <Sections>
           {t("PublicProfile.add_information")}:{" "}
           <Description>
-            <span>(Text type)</span>
+            <span>{t("PublicProfile.text_type")}</span>
           </Description>
         </Sections>
         <ButtonSet type="default">{t("PublicProfile.settings")}</ButtonSet>

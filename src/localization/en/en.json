@@ -41,7 +41,10 @@
             "company_name": "Name of company",
             "skills": "Skills",
             "languages": "Languages",
-            "add_information": "Other additional information"
+            "add_information": "Other additional information",
+            "text_type": "(Text type)",
+            "tag_type": "(tag type [ ])"
+
         }
 }
   
