@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import {
   StyledForm,
   FormInput,
@@ -13,6 +14,7 @@ import {
 import { Error, Star, StyledSpace, Title, TypographyTitle } from "./style";
 
 const ResetPassword: React.FC = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
@@ -30,10 +32,10 @@ const ResetPassword: React.FC = () => {
 
   const onFinish = (): void => {
     if (password === confirmPassword) {
+      setError(false);
       onReset();
       enterLoading();
       navigate("/");
-      setError(false);
     } else {
       setError(true);
     }
@@ -41,7 +43,7 @@ const ResetPassword: React.FC = () => {
 
   return (
     <Wrapper>
-      <TypographyTitle level={3}>Reset Password</TypographyTitle>
+      <TypographyTitle level={3}>{t("pwEn:ResetPage.title")}</TypographyTitle>
       <StyledForm
         name="normal_login"
         className="form"
@@ -53,10 +55,10 @@ const ResetPassword: React.FC = () => {
           <div>
             <div className="titles">
               <Star>*</Star>
-              <Title>Password:</Title>
+              <Title>{t("pwEn:ResetPage.passwordTitle.item")}</Title>
             </div>
             <FormInput.Password
-              placeholder="Your password"
+              placeholder={t("pwEn:ResetPage.passwordTitle.placeholder")}
               minLength={8}
               maxLength={16}
               value={password}
@@ -67,10 +69,10 @@ const ResetPassword: React.FC = () => {
           <div>
             <div className="titles">
               <Star>*</Star>
-              <Title>Confirm Password:</Title>
+              <Title>{t("pwEn:ResetPage.conPasswordTitle.item")}</Title>
             </div>
             <FormInput.Password
-              placeholder="Confirm your password"
+              placeholder={t("pwEn:ResetPage.conPasswordTitle.placeholder")}
               value={confirmPassword}
               minLength={8}
               maxLength={20}
@@ -81,7 +83,11 @@ const ResetPassword: React.FC = () => {
             />
           </div>
 
-          {error ? <Error>Passwords do not match, please try again</Error> : ""}
+          {error ? (
+            <Error>{t("pwEn:ResetPage.conPasswordTitle.error")}</Error>
+          ) : (
+            ""
+          )}
         </StyledSpace>
 
         <FormButton>
@@ -91,12 +97,12 @@ const ResetPassword: React.FC = () => {
             className="login-form-button"
             loading={loading}
           >
-            Submit
+            {t("pwEn:ResetPage.btnText")}
           </PwrButton>
         </FormButton>
         <FormLink>
           <NavLink to="/" className="form_link">
-            Back to Login?
+            {t("pwEn:ResetPage.linkText")}
           </NavLink>
         </FormLink>
       </StyledForm>

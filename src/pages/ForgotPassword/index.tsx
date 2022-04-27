@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { MailOutlined } from "@ant-design/icons";
+import { useTranslation } from 'react-i18next';
 import {
   FormButton,
   FormInput,
@@ -15,6 +16,7 @@ import { TypographyTitle } from "pages/ResetPassword/style";
 import { IFormValue } from "./interfaces";
 
 const ForgotPassword: React.FC = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <Wrapper>
-      <TypographyTitle level={3}>Forgot Password</TypographyTitle>
+      <TypographyTitle level={3}>{t('pwEn:ForgotPage.title')}</TypographyTitle>
       <StyledForm
         name="normal_login"
         className="form"
@@ -45,11 +47,11 @@ const ForgotPassword: React.FC = () => {
       >
         <FormItem
           name="email"
-          label="Email"
+          label={t('pwEn:ForgotPage.email.item')}
           rules={[
             {
               required: true,
-              message: "Please input your Email!",
+              message: `${t('pwEn:ForgotPage.email.error')}`,
               type: "email",
             },
           ]}
@@ -67,12 +69,12 @@ const ForgotPassword: React.FC = () => {
             className="login-form-button"
             loading={loading}
           >
-            Submit
+            {t('pwEn:ForgotPage.btnText')}
           </PwrButton>
         </FormButton>
         <FormLink>
           <NavLink to="/" className="form_link">
-            Back to Login?
+            {t('pwEn:ForgotPage.linkText')}
           </NavLink>
         </FormLink>
       </StyledForm>
