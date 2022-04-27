@@ -12,17 +12,17 @@ const NotFoundEmail: React.FC = () => {
     <Wrapper>
       {isHasPassword ? (
         <div>
-          <Title>{t("pwEn:VerifyEmail.fineTitle")}</Title>
+          <Title>{t("VerifyEmail.fineTitle")}</Title>
           <FormLink>
-            <NavLink to="/">{t("pwEn:VerifyEmail.linkToLogin")}</NavLink>
+            <NavLink to="/">{t("VerifyEmail.linkToLogin")}</NavLink>
           </FormLink>
         </div>
       ) : (
         <div>
-          <Title>{t("pwEn:VerifyEmail.poorTitle")}</Title>
+          <Title>{t("VerifyEmail.poorTitle")}</Title>
           <FormLink>
             <NavLink to="/forgotten_password">
-              {t("pwEn:VerifyEmail.linkToPasswordPage")}
+              {t("VerifyEmail.linkToPasswordPage")}
             </NavLink>
           </FormLink>
         </div>

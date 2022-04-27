@@ -43,7 +43,7 @@ const ResetPassword: React.FC = () => {
 
   return (
     <Wrapper>
-      <TypographyTitle level={3}>{t("pwEn:ResetPage.title")}</TypographyTitle>
+      <TypographyTitle level={3}>{t("ResetPage.title")}</TypographyTitle>
       <StyledForm
         name="normal_login"
         className="form"
@@ -55,10 +55,10 @@ const ResetPassword: React.FC = () => {
           <div>
             <div className="titles">
               <Star>*</Star>
-              <Title>{t("pwEn:ResetPage.passwordTitle.item")}</Title>
+              <Title>{t("ResetPage.passwordTitle.item")}</Title>
             </div>
             <FormInput.Password
-              placeholder={t("pwEn:ResetPage.passwordTitle.placeholder")}
+              placeholder={t("ResetPage.passwordTitle.placeholder")}
               minLength={8}
               maxLength={16}
               value={password}
@@ -69,10 +69,10 @@ const ResetPassword: React.FC = () => {
           <div>
             <div className="titles">
               <Star>*</Star>
-              <Title>{t("pwEn:ResetPage.conPasswordTitle.item")}</Title>
+              <Title>{t("ResetPage.conPasswordTitle.item")}</Title>
             </div>
             <FormInput.Password
-              placeholder={t("pwEn:ResetPage.conPasswordTitle.placeholder")}
+              placeholder={t("ResetPage.conPasswordTitle.placeholder")}
               value={confirmPassword}
               minLength={8}
               maxLength={20}
@@ -83,11 +83,7 @@ const ResetPassword: React.FC = () => {
             />
           </div>
 
-          {error ? (
-            <Error>{t("pwEn:ResetPage.conPasswordTitle.error")}</Error>
-          ) : (
-            ""
-          )}
+          {error ? <Error>{t("ResetPage.conPasswordTitle.error")}</Error> : ""}
         </StyledSpace>
 
         <FormButton>
@@ -97,12 +93,12 @@ const ResetPassword: React.FC = () => {
             className="login-form-button"
             loading={loading}
           >
-            {t("pwEn:ResetPage.btnText")}
+            {t("ResetPage.btnText")}
           </PwrButton>
         </FormButton>
         <FormLink>
           <NavLink to="/" className="form_link">
-            {t("pwEn:ResetPage.linkText")}
+            {t("ResetPage.linkText")}
           </NavLink>
         </FormLink>
       </StyledForm>

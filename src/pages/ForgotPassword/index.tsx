@@ -37,7 +37,7 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <Wrapper>
-      <TypographyTitle level={3}>{t('pwEn:ForgotPage.title')}</TypographyTitle>
+      <TypographyTitle level={3}>{t('ForgotPage.title')}</TypographyTitle>
       <StyledForm
         name="normal_login"
         className="form"
@@ -47,11 +47,11 @@ const ForgotPassword: React.FC = () => {
       >
         <FormItem
           name="email"
-          label={t('pwEn:ForgotPage.email.item')}
+          label={t('ForgotPage.email.item')}
           rules={[
             {
               required: true,
-              message: `${t('pwEn:ForgotPage.email.error')}`,
+              message: `${t('ForgotPage.email.error')}`,
               type: "email",
             },
           ]}
@@ -69,12 +69,12 @@ const ForgotPassword: React.FC = () => {
             className="login-form-button"
             loading={loading}
           >
-            {t('pwEn:ForgotPage.btnText')}
+            {t('ForgotPage.btnText')}
           </PwrButton>
         </FormButton>
         <FormLink>
           <NavLink to="/" className="form_link">
-            {t('pwEn:ForgotPage.linkText')}
+            {t('ForgotPage.linkText')}
           </NavLink>
         </FormLink>
       </StyledForm>

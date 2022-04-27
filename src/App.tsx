@@ -7,7 +7,6 @@ import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
 import VerifyEmail from "pages/ForgotPassword/components/VerifyEmail";
-import "./i18/config";
 
 const App: React.FC = () => {
   return (

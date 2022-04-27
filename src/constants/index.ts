@@ -9,13 +9,6 @@ interface Fonts {
 export const colors: Colors = {
   testPageColor: "#202020",
   testReusableColor: "#c3ab25",
-<<<<<<< HEAD
-  bgBlack: "rgba(0, 0, 0, 0.8)",
-  textWhite: "#fff",
-  textGreen: "#4caf50",
-  textWhiteGrey: "#d9d9d9",
-  textWhiteRed: "#ff4d4f",
-=======
   titleOfSectionsProfile: "#8d8d8d",
   lightBlue: "#8194e1",
   brandColor: "#4caf50",
@@ -27,6 +20,11 @@ export const colors: Colors = {
   navColor: "#fff",
   black: "#000",
   signUpFormColor: "#fff",
+  bgBlack: "rgba(0, 0, 0, 0.8)",
+  textWhite: "#fff",
+  textGreen: "#4caf50",
+  textWhiteGrey: "#d9d9d9",
+  textWhiteRed: "#ff4d4f",
 };
 
 export const fonts: Fonts = {
@@ -38,5 +36,4 @@ export const fonts: Fonts = {
   titlesOfProfile: "16px",
   logoFontWeight: "400",
   signUpButtonsFontWeight: "500",
->>>>>>> develop
 };
