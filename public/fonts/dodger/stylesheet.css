@@ -1,0 +1,10 @@
+@font-face {
+	font-family: 'Dodger';
+	src: url('dodger.eot'); /* IE 9 Compatibility Mode */
+	src: local('dodger'), local('dodger'),
+	src: url('dodger.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('dodger.woff2') format('woff2'), /* Super Modern Browsers */
+		url('dodger.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('dodger.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('dodger.svg#dodger') format('svg'); /* Chrome < 4, Legacy iOS */
+}
