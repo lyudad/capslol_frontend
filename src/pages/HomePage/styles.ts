@@ -2,17 +2,14 @@ import styled from "styled-components";
 import { colors } from "constants/index";
 export const HomeContainer = styled.section`
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 0px 12px;
-`;
-
-export const TitleContainer = styled.div`
-  min-width: 340px;
-`;
-
-export const HomeTitle = styled.h1`
-  text-align: center;
-  margin-bottom: 0;
+  height: 100vh;
+  background-color: ${colors.homeBgr};
+  background-image: url(./images/bg-image.png);
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 export const Slogan = styled.p`
