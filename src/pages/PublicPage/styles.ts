@@ -30,7 +30,7 @@ export const Title = styled.h1`
   margin-left: 15px;
   color: ${colors.navColor};
 `;
-export const Sections = styled.h2`
+export const Sections = styled.h3`
   margin-top: 8px;
   margin-left: 25px;
   color: ${colors.navColor};

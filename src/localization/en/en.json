@@ -35,7 +35,16 @@
             "period": "Period of Time",
             "category": "Category",
             "development": "Development",
-            "settings": "Settings"
+            "settings": "Settings",
+            "position": "Position",
+            "experience": "Experience",
+            "company_name": "Name of company",
+            "skills": "Skills",
+            "languages": "Languages",
+            "add_information": "Other additional information",
+            "text_type": "(Text type)",
+            "tag_type": "(tag type [ ])"
+
         }
 }
   

@@ -28,7 +28,7 @@ export const fonts: Fonts = {
   primeLogoFontSize: "20px",
   logoLineHeight: "1.1",
   navFontSize: "14px",
-  titlesOfProfile: "16px",
+  titlesOfProfile: "14px",
   logoFontWeight: "400",
   signUpButtonsFontWeight: "500",
 };
