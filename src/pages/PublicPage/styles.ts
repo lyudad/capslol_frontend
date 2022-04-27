@@ -25,6 +25,7 @@ export const ProfileContainer = styled.section`
 `;
 
 export const Title = styled.h1`
+  font-size: x-large;
   margin-top: 8px;
   margin-left: 15px;
   color: ${colors.navColor};
@@ -36,7 +37,7 @@ export const Sections = styled.h2`
 `;
 
 export const Description = styled.p`
-  font-size: 19px;
+  font-size: ${fonts.titlesOfProfile};
   margin-top: 15px;
   margin-left: 35px;
   color: ${colors.titleOfSectionsProfile};
@@ -47,4 +48,23 @@ export const Avatar = styled.div`
   top: 0;
   right: 0;
   margin: 5px;
+`;
+export const ButtonSet = styled(Button)`
+  display: flex;
+  margin-left: auto;
+  background: none;
+  border: 1px solid white;
+  color: #fff;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  :hover {
+    background: ${colors.black};
+    border: 1px solid #4caf50;
+    color: ${colors.brandColor};
+  }
+  :focus {
+    background: ${colors.brandColor};
+    border: 1px solid ${colors.brandColor};
+    color: ${colors.black};
+  }
 `;

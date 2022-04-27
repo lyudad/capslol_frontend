@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   Description,
   ProfileContainer,
@@ -5,6 +6,7 @@ import {
   Title,
   Sections,
   Page,
+  ButtonSet,
 } from "./styles";
 import { Button } from "antd";
 import "antd/dist/antd.min.css";
@@ -12,66 +14,50 @@ import avatar from "./avatar.png";
 import { colors } from "constants/index";
 
 const PublicPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <Page>
       <ProfileContainer>
-        <Title>
-          <h1>User Name</h1>
-        </Title>
+        <Title>{t("PublicProfile.user_name")}</Title>
         <Avatar>
           <img src={avatar} alt="" width={140} />
         </Avatar>
         <Sections>
           <Description>
-            <p>
-              Hour rate: <span style={{ color: colors.lightBlue }}>--</span>$
-            </p>
+            {t("PublicProfile.hour_rate")}{" "}
+            <span style={{ color: colors.brandColor }}>--</span>$
           </Description>
         </Sections>
         <Sections>
           <Description>
-            <p>
-              The available amount of hours:{" "}
-              <span style={{ color: colors.lightBlue }}>--</span>h
-            </p>
+            {t("PublicProfile.amount_hours")}{" "}
+            <span style={{ color: colors.brandColor }}>--</span>h
           </Description>
         </Sections>
         <br />
         <Sections>
-          <h3>
-            Education:
-            <Description>
-              <p>Name of courses, university: --</p>
-            </Description>
-            <Description>
-              <p>Specialization: --</p>
-            </Description>
-            <Description>
-              <p>Period of Time: --</p>
-            </Description>
-          </h3>
+          {t("PublicProfile.education")}
+          <Description>
+            {t("PublicProfile.name_of_courses")}{" "}
+            <span style={{ color: colors.brandColor }}>--</span>
+          </Description>
+          <Description>
+            {t("PublicProfile.specialization")}:{" "}
+            <span style={{ color: colors.brandColor }}>--</span>
+          </Description>
+          <Description>
+            {t("PublicProfile.period")}:{" "}
+            <span style={{ color: colors.brandColor }}>--</span>
+          </Description>
         </Sections>
         <Sections>
-          <h3>
-            Category:
-            <Description>
-              <p>Development [Js, Java, Python]:</p>
-            </Description>
-          </h3>
+          {t("PublicProfile.category")}:
+          <Description>
+            {t("PublicProfile.development")} [Js, Java, Python]
+          </Description>
         </Sections>
-        <Button
-          type="default"
-          style={{
-            position: "absolute",
-            bottom: 20,
-            right: 35,
-            background: "#4caf50",
-            border: "none",
-            color: "#fff",
-          }}
-        >
-          Settings
-        </Button>
+        <ButtonSet type="default">{t("PublicProfile.settings")}</ButtonSet>
       </ProfileContainer>
     </Page>
   );
