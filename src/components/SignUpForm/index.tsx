@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Form, Input } from 'antd';
-import {FormValues} from './props';
+import { FormValues } from './props';
+import { useTranslation } from "react-i18next";
 import {
   Wrapper,
   DontAccount,
@@ -13,6 +14,7 @@ import {
 } from './styles';
 
 const SignUpForm: React.FC = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -54,7 +56,7 @@ const SignUpForm: React.FC = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="Email"
+            label={t("SignUpForm.email")}
             name="email"
             rules={[
               {
@@ -66,13 +68,13 @@ const SignUpForm: React.FC = () => {
           >
             <Input
               name="email"
-              placeholder="input your email"
+              placeholder={t("SignUpForm.inputEmail")}
               onChange={onChange}
             />
           </Form.Item>
           <Form.Item
 
-            label="Password"
+            label={t("SignUpForm.password")}
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
@@ -80,7 +82,7 @@ const SignUpForm: React.FC = () => {
               name="password"
               minLength={8}
               maxLength={20}
-              placeholder="input your password"
+              placeholder={t("SignUpForm.inputPassword")}
               autoComplete=""
               onChange={onChange}
             />
@@ -88,7 +90,7 @@ const SignUpForm: React.FC = () => {
 
           <ForgotPass>
             <StyledNavLink to="/test">
-              Forgot your password?
+              {t("SignUpForm.forgotPassword")}
             </StyledNavLink>
           </ForgotPass>
           <Form.Item>
@@ -97,18 +99,18 @@ const SignUpForm: React.FC = () => {
               htmlType="submit"
               disabled={memoDisabled}
             >
-              Sign in
+              {t("SignUpForm.signIn")}
             </ButtonSignIn>
           </Form.Item>
         </StyledForm>
         <DontAccount>
-          Don't have an account yet?
+          {t("SignUpForm.dontHaveAccount")}
           <StyledNavLink to="/test" className="styled">
-              Register now
+              {t("SignUpForm.registerNow")}
             </StyledNavLink>
         </DontAccount>
         <WithGoogle>
-          <p>Sign in with</p>
+          <p>{t("SignUpForm.signInWith")}</p>
           <GoogleLink href="https:/................./auth/google">
             Google
           </GoogleLink>
@@ -119,85 +121,3 @@ const SignUpForm: React.FC = () => {
 };
 
 export default SignUpForm;
-
-// import { Form, Input, Button, Checkbox } from "antd";
-
-// const SignUpForm: React.FC = () => {
-//   const onFinish = (values: string) => {
-//     console.log("Success:", values);
-//   };
-
-//   const onFinishFailed = (errorInfo: string) => {
-//     console.log("Failed:", errorInfo);
-//   };
-
-//   return (
-//     <Form
-//       name="basic"
-//       labelCol={{
-//         span: 8,
-//       }}
-//       wrapperCol={{
-//         span: 16,
-//       }}
-//       initialValues={{
-//         remember: true,
-//       }}
-//       onFinish={onFinish}
-//       onFinishFailed={onFinishFailed}
-//       autoComplete="off"
-//     >
-//       <Form.Item
-//         label="Email"
-//         name="email"
-//         rules={[
-//           {
-//             required: true,
-//             message: "Please input your username!",
-//           },
-//         ]}
-//       >
-//         <Input />
-//       </Form.Item>
-
-//       <Form.Item
-//         label="Password"
-//         name="password"
-//         rules={[
-//           {
-//             required: true,
-//             message: "Please input your password!",
-//           },
-//         ]}
-//       >
-//         <Input.Password />
-//       </Form.Item>
-
-//       <Form.Item
-//         name="remember"
-//         valuePropName="checked"
-//         wrapperCol={{
-//           offset: 8,
-//           span: 16,
-//         }}
-//       >
-//         <Checkbox>Remember me</Checkbox>
-//       </Form.Item>
-
-//       <Form.Item
-//         wrapperCol={{
-//           offset: 8,
-//           span: 16,
-//         }}
-//       >
-//         <Button type="primary" htmlType="submit">
-//           Submit
-//         </Button>
-//       </Form.Item>
-//     </Form>
-//   );
-// };
-
-// export default SignUpForm;
-
-// const { createRoot } = ReactDOM;
