@@ -1,0 +1,41 @@
+{
+    "AppBar": {
+        "get": "Get",
+        "job": "JOB!",
+        "home": "HOME",
+        "test": "TEST"
+    },
+
+    "SignUpForm": {
+        "email": "Email",
+        "inputEmail": "input your email",
+        "password": "Password",
+        "forgotPassword": "Forgot your password?",
+        "inputPassword": "input your password",
+        "signIn": "Sign in",
+        "dontHaveAccount": "Don't have an account yet?",
+        "registerNow": "Register now",
+        "signInWith": "Sign in with"
+    },
+
+    "TestReusable": {
+        "wonderfulWorld": "What A Wonderful World"
+    },
+
+    "TestPage": {
+            "testPage": "Test Page"
+        },
+    "PublicProfile": {
+            "user_name": "User Name",
+            "hour_rate": "Hour rate",
+            "amount_hours": "The available amount of hours:",
+            "education": "Education:",
+            "name_of_courses": "Name of courses",
+            "specialization": "Specialization",
+            "period": "Period of Time",
+            "category": "Category",
+            "development": "Development",
+            "settings": "Settings"
+        }
+}
+  
