@@ -16,8 +16,8 @@ export const Wrapper = styled.div`
   color: ${colors.signUpFormColor};
 `;
 export const StyledForm = styled(Form)`
-.ant-form-item {
-  display: flex;
+  .ant-form-item {
+    display: flex;
     flex-direction: column;
     align-items: start;
     .ant-form-item-required {
@@ -29,8 +29,8 @@ export const StyledForm = styled(Form)`
     .ant-input-password {
       width: 300px;
     }
-    
-    `;
+  }
+`;
 
 export const ButtonSignIn = styled(Button)`
   width: 300px;
