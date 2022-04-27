@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { Button, Form, Input } from "antd";
+import { colors } from "constants/index";
+
+const { textWhiteGrey, textWhite, textGreen, bgBlack } = colors;
 
 export const Wrapper = styled.div`
   display: flex;
@@ -11,16 +14,16 @@ export const Wrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid #d9d9d9;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #d9d9d9;
+  border: 1px solid ${textWhiteGrey};
+  background-color: ${bgBlack};
+  color: ${textWhiteGrey};
   border: 1px solid transparent;
   border-radius: 4px;
 `;
 
 export const StyledForm = styled(Form)`
   .ant-form-item-required {
-    color: #fff;
+    color: ${textWhite};
     font-size: 16px;
     margin-bottom: 10px;
   }
@@ -42,21 +45,21 @@ export const FormButton = styled(Form.Item)`
 
 export const PwrButton = styled(Button)`
   font-weight: 500;
-  background: #4caf50;
-  color: #fff;
+  background: ${textGreen};
+  color: ${textWhite};
   width: 100%;
-  border: 1px solid #4caf50;
+  border: 1px solid ${textGreen};
   transition: all 0.4s linear;
   text-transform: uppercase;
   &:hover {
-    border: 1px solid #fff;
-    background: #fff;
-    color: #4caf50;
+    border: 1px solid ${textWhite};
+    background: ${textWhite};
+    color: ${textGreen};
   }
   :active {
-    color: #fff;
-    border: 1px solid #fff;
-    background: #4caf50;
+    color: ${textWhite};
+    border: 1px solid ${textWhite};
+    background: ${textGreen};
   }
 `;
 
@@ -68,14 +71,14 @@ export const FormLink = styled.div`
 
     &:hover {
       text-decoration: underline;
-      color: #4caf50;
+      color: ${textGreen};
     }
   }
 `;
 
 export const Title = styled.h3`
   text-align: center;
-  color: #fff;
+  color: ${textWhite};
   font-size: 22px;
   word-break: break-all;
 `;
