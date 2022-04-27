@@ -5,7 +5,6 @@ import {
   Title,
   Sections,
   Page,
-  ButtomSet,
 } from "./styles";
 import { Button } from "antd";
 import "antd/dist/antd.min.css";
@@ -60,9 +59,19 @@ const PublicPage: React.FC = () => {
             </Description>
           </h3>
         </Sections>
-        <ButtomSet>
-          <Button type="default">Settings</Button>
-        </ButtomSet>
+        <Button
+          type="default"
+          style={{
+            position: "absolute",
+            bottom: 20,
+            right: 35,
+            background: "#4caf50",
+            border: "none",
+            color: "#fff",
+          }}
+        >
+          Settings
+        </Button>
       </ProfileContainer>
     </Page>
   );

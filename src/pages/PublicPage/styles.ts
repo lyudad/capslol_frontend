@@ -48,12 +48,3 @@ export const Avatar = styled.div`
   right: 0;
   margin: 5px;
 `;
-export const ButtomSet = styled.button`
-  position: "absolute";
-  bottom: 20;
-  right: 35;
-  width: 300px;
-  padding: 4px;
-  border: none;
-  /* font-weight: ${fonts.signUpButtonsFontWeight}; */
-`;
