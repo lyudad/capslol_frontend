@@ -24,6 +24,18 @@
 
     "TestPage": {
             "testPage": "Test Page"
+        },
+    "PublicProfile": {
+            "user_name": "User Name",
+            "hour_rate": "Hour rate",
+            "amount_hours": "The available amount of hours:",
+            "education": "Education:",
+            "name_of_courses": "Name of courses",
+            "specialization": "Specialization",
+            "period": "Period of Time",
+            "category": "Category",
+            "development": "Development",
+            "settings": "Settings"
         }
 }
   

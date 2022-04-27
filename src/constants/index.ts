@@ -9,6 +9,8 @@ interface Fonts {
 export const colors: Colors = {
   testPageColor: "#202020",
   testReusableColor: "#c3ab25",
+  titleOfSectionsProfile: "#8d8d8d",
+  lightBlue: "#8194e1",
   brandColor: "#4caf50",
   appBarBrd: "rgba(76, 175, 80, 0.3)",
   appBarBgr: "rgba(0, 0, 0, 0.8)",
@@ -16,6 +18,7 @@ export const colors: Colors = {
   signUpFormBrd: "#d9d9d9",
   homeBgr: "#010101",
   navColor: "#fff",
+  black: "#000",
   signUpFormColor: "#fff",
 };
 
@@ -25,6 +28,7 @@ export const fonts: Fonts = {
   primeLogoFontSize: "20px",
   logoLineHeight: "1.1",
   navFontSize: "14px",
+  titlesOfProfile: "16px",
   logoFontWeight: "400",
   signUpButtonsFontWeight: "500",
 };
