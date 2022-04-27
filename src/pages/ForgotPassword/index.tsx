@@ -12,6 +12,7 @@ import {
   Wrapper,
 } from "./styles";
 import { TypographyTitle } from "pages/ResetPassword/style";
+import { IFormValue } from "./interfaces";
 
 const ForgotPassword: React.FC = () => {
   const [form] = Form.useForm();
@@ -26,7 +27,7 @@ const ForgotPassword: React.FC = () => {
     setLoading(true);
   };
 
-  const onFinish = (values: { email: string } | any): void => {
+  const onFinish = (values: IFormValue): void => {
     onReset();
     enterLoading();
     navigate("/verify_email");
@@ -40,7 +41,7 @@ const ForgotPassword: React.FC = () => {
         className="form"
         form={form}
         initialValues={{ remember: true }}
-        onFinish={onFinish}
+        onFinish={(values) => onFinish(values as IFormValue)}
       >
         <FormItem
           name="email"

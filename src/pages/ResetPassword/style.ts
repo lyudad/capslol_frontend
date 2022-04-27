@@ -2,7 +2,7 @@ import { Space, Typography } from "antd";
 import styled from "styled-components";
 import { colors } from "constants/index";
 
-const { textWhite, textWhiteRed } = colors;
+const { textWhite, textWhiteRed, textGreen } = colors;
 
 export const StyledSpace = styled(Space)`
   display: block;
@@ -39,4 +39,10 @@ export const Star = styled.span`
   color: ${textWhiteRed};
   font-size: 14px;
   line-height: 1;
+`;
+
+export const Error = styled.div`
+  color: ${textWhiteRed};
+  position: absolute;
+  bottom: 120px;
 `;

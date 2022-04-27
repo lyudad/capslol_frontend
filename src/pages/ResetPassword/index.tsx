@@ -10,13 +10,14 @@ import {
   FormLink,
   Wrapper,
 } from "pages/ForgotPassword/styles";
-import { Star, StyledSpace, Title, TypographyTitle } from "./style";
+import { Error, Star, StyledSpace, Title, TypographyTitle } from "./style";
 
 const ResetPassword: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const onReset = (): void => {
@@ -32,6 +33,9 @@ const ResetPassword: React.FC = () => {
       onReset();
       enterLoading();
       navigate("/");
+      setError(false);
+    } else {
+      setError(true);
     }
   };
 
@@ -76,6 +80,8 @@ const ResetPassword: React.FC = () => {
               }
             />
           </div>
+
+          {error ? <Error>Passwords do not match, please try again</Error> : ""}
         </StyledSpace>
 
         <FormButton>
