@@ -18,4 +18,5 @@ export interface TypeUserState {
   auth: Auth | null;
   isLoading: boolean;
   error: string | null;
+  isHasPassword: boolean | null;
 }

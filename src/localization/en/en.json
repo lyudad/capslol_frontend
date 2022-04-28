@@ -1,0 +1,71 @@
+{
+    "AppBar": {
+        "get": "Get",
+        "job": "JOB!",
+        "home": "HOME",
+        "test": "TEST"
+    },
+
+    "SignUpForm": {
+        "email": "Email",
+        "inputEmail": "input your email",
+        "password": "Password",
+        "forgotPassword": "Forgot your password?",
+        "inputPassword": "input your password",
+        "signIn": "Sign in",
+        "dontHaveAccount": "Don't have an account yet?",
+        "registerNow": "Register now",
+        "signInWith": "Sign in with"
+    },
+
+    "TestReusable": {
+        "wonderfulWorld": "What A Wonderful World"
+    },
+
+    "TestPage": {
+            "testPage": "Test Page"
+        },
+    "PublicProfile": {
+            "user_name": "User Name",
+            "hour_rate": "Hour rate",
+            "amount_hours": "The available amount of hours:",
+            "education": "Education:",
+            "name_of_courses": "Name of courses",
+            "specialization": "Specialization",
+            "period": "Period of Time",
+            "category": "Category",
+            "development": "Development",
+            "settings": "Settings"
+        },
+    
+    "ForgotPage": {
+        "title": "Forgot Password",
+        "email": {
+            "item": "Email",
+            "error": "Please input your Email!"
+        },
+        "btnText": "Submit",
+        "linkText": "Back to Login?"
+    },
+    "ResetPage": {
+        "title": "Reset Password",
+        "passwordTitle": {
+             "item": "Password:",
+             "placeholder": "Your password"
+            },
+        "conPasswordTitle": {
+             "item": "Confirm Password:",
+             "placeholder": "Confirm your password"
+            },
+            "error": "Passwords do not match, please try again",
+            "btnText": "Submit",
+            "linkText": "Back to Login?"
+    },
+    "VerifyEmail": {
+        "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
+        "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
+        "linkToLogin": "Login?",
+        "linkToPasswordPage": "Forgot Password?"
+    }
+}
+  
