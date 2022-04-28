@@ -86,9 +86,7 @@ const PublicPage: React.FC = () => {
         <Sections>
           {t("PublicProfile.languages")}:{" "}
           <Description>
-            <span>
-              Languages (Text type), level [Beginner, Intermediate, Advanced]
-            </span>
+            <span>level [Beginner, Intermediate, Advanced]</span>
           </Description>
         </Sections>
         <Sections>
