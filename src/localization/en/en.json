@@ -42,7 +42,7 @@
         "title": "Forgot Password",
         "email": {
             "item": "Email",
-            "error": "Please input your Email!"
+            "error": "Please input your Email!!"
         },
         "btnText": "Submit",
         "linkText": "Back to Login?"
