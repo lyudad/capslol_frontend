@@ -35,7 +35,6 @@ const PublicPage: React.FC = () => {
             <span style={{ color: colors.brandColor }}>--</span>h
           </Description>
         </Sections>
-        <br />
         <Sections>
           {t("PublicProfile.education")}
           <Description>
@@ -55,6 +54,45 @@ const PublicPage: React.FC = () => {
           {t("PublicProfile.category")}:
           <Description>
             {t("PublicProfile.development")} [Js, Java, Python]
+          </Description>
+        </Sections>
+        <Sections>
+          {t("PublicProfile.position")}:{" "}
+          <Description>
+            <span>Text type</span>
+          </Description>
+        </Sections>
+        <Sections>
+          {t("PublicProfile.experience")}
+          <Description>
+            {t("PublicProfile.company_name")}{" "}
+            <span style={{ color: colors.brandColor }}>--</span>
+          </Description>
+          <Description>
+            {t("PublicProfile.position")}:{" "}
+            <span style={{ color: colors.brandColor }}>--</span>
+          </Description>
+          <Description>
+            {t("PublicProfile.period")}:{" "}
+            <span style={{ color: colors.brandColor }}>--</span>
+          </Description>
+        </Sections>
+        <Sections>
+          {t("PublicProfile.skills")}:{" "}
+          <Description>
+            <span>{t("PublicProfile.tag_type")}</span>
+          </Description>
+        </Sections>
+        <Sections>
+          {t("PublicProfile.languages")}:{" "}
+          <Description>
+            <span>level [Beginner, Intermediate, Advanced]</span>
+          </Description>
+        </Sections>
+        <Sections>
+          {t("PublicProfile.add_information")}:{" "}
+          <Description>
+            <span>{t("PublicProfile.text_type")}</span>
           </Description>
         </Sections>
         <ButtonSet type="default">{t("PublicProfile.settings")}</ButtonSet>
