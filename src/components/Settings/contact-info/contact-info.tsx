@@ -4,10 +4,7 @@ import {
   StyledInput,
   StyledLabel,
   ChangePassword,
-  PasswordContainer,
   SubmitButton,
-  CancelButton,
-  ChangeButtons,
 } from "./contact-info.styles";
 
 const ContactInfo: React.FC = () => {
@@ -25,7 +22,7 @@ const ContactInfo: React.FC = () => {
     e.preventDefault();
 
     console.log(password, reEnter);
-  }
+  };
 
   return (
     <InfoContainer isChange={isPassword}>
@@ -42,49 +39,58 @@ const ContactInfo: React.FC = () => {
         </div>
         <div className="inputs">
           <StyledLabel>Last name:</StyledLabel>
-          <StyledInput type="text" id="lname" name="lname" value="Shailoobekov" readOnly/>
+          <StyledInput
+            type="text"
+            id="lname"
+            name="lname"
+            value="Shailoobekov"
+            readOnly
+          />
         </div>
         <div className="inputs">
           <StyledLabel>Email:</StyledLabel>
-          <StyledInput type="text" id="email" name="email" value="askhat.shailoobekov@gmail.com" readOnly/>
-        </div>
-        <div className="inputs">
-          <StyledLabel>Phone:</StyledLabel>
-          <StyledInput type="text" id="phone" name="phone" />
+          <StyledInput
+            type="text"
+            id="email"
+            name="email"
+            value="askhat.shailoobekov@gmail.com"
+            readOnly
+          />
         </div>
         <div className="pass-inputs">
           <div className="inputs">
-            {/* <StyledLabel>New password:</StyledLabel> */}
             <StyledInput
               type="password"
               placeholder="New password*"
               id="password"
               name="password"
-              onChange={(e) => {setPassword(e.target.value)}}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
           </div>
           <div className="inputs">
-            {/* <StyledLabel>Re-enter password:</StyledLabel> */}
             <StyledInput
               type="password"
               placeholder="Re-enter password*"
               id="re-enter"
               name="re-enter"
-              onChange={(e) => {setReEnter(e.target.value)}}
+              onChange={(e) => {
+                setReEnter(e.target.value);
+              }}
             />
           </div>
         </div>
-        <ChangeButtons>
-          <div>
-            <ChangePassword onClick={passwordClick} isChange={isPassword}>
-              Change password
-            </ChangePassword>
-          </div>
-          <div>
-            <CancelButton onClick={passwordClick} isChange={isPassword}>Cancel</CancelButton>
-          </div>
-        </ChangeButtons>
-        <SubmitButton isChange={isPassword} onClick={handleClick}>Save changes</SubmitButton>
+
+        <div className="change-password">
+          <ChangePassword onClick={passwordClick} isChange={isPassword}>
+            {isPassword ? "Cancel" : "ChangePassword"}
+          </ChangePassword>
+        </div>
+
+        <SubmitButton isChange={isPassword} onClick={handleClick}>
+          Save changes
+        </SubmitButton>
       </form>
     </InfoContainer>
   );
