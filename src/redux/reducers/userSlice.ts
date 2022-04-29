@@ -7,7 +7,6 @@ const initialState: TypeUserState = {
   auth: null,
   isLoading: false,
   error: null,
-  isHasPassword: false,
 };
 
 export const userSlice = createSlice({

@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { HomeContainer } from "./styles";
-import SignUpForm from "components/SignUpForm";
+import { HomeContainer, HomeTitle, TitleContainer, Slogan } from "./styles";
 
 const HomePage: React.FC = () => {
-  const [isSignIn, setIsSignIn] = useState(false);
-  return <HomeContainer>{!isSignIn && <SignUpForm />}</HomeContainer>;
+  return (
+    <HomeContainer>
+      <TitleContainer>
+        <HomeTitle>THE BEST WAY TO FIND YOUR JOB!</HomeTitle>
+        <Slogan>ТУТ МОЖЕТ БЫТЬ СЛОГАН</Slogan>
+      </TitleContainer>
+    </HomeContainer>
+  );
 };
 
 export default HomePage;
