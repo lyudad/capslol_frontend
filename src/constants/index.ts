@@ -20,6 +20,11 @@ export const colors: Colors = {
   navColor: "#fff",
   black: "#000",
   signUpFormColor: "#fff",
+  bgBlack: "rgba(0, 0, 0, 0.8)",
+  textWhite: "#fff",
+  textGreen: "#4caf50",
+  textWhiteGrey: "#d9d9d9",
+  textWhiteRed: "#ff4d4f",
 };
 
 export const fonts: Fonts = {

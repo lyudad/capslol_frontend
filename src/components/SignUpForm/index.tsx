@@ -89,7 +89,7 @@ const SignUpForm: React.FC = () => {
           </Form.Item>
 
           <ForgotPass>
-            <StyledNavLink to="/test">
+            <StyledNavLink to="/forgotten_password">
               {t("SignUpForm.forgotPassword")}
             </StyledNavLink>
           </ForgotPass>
