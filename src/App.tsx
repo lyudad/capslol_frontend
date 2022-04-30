@@ -1,20 +1,19 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AppBar from "components/AppBar";
-import HomePage from "pages/HomePage";
 import PublicPage from "pages/PublicPage/PublicPage";
-import TestPage from "./pages/testPage";
+import AuthForm from "components/AuthForm";
+import SignUpForm from "components/SignUpForm";
+import MainLayout from "components/MainLayout";
 
 const App: React.FC = () => {
   return (
-    <>
-      <AppBar />
+    <MainLayout>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<SignUpForm />} />
         <Route path="/profile" element={<PublicPage />} />
-        <Route path="/test" element={<TestPage />} />
+        <Route path="/auth" element={<AuthForm />} />
       </Routes>
-    </>
+    </MainLayout>
   );
 };
 

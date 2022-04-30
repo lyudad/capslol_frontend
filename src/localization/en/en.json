@@ -5,7 +5,6 @@
         "home": "HOME",
         "test": "TEST"
     },
-
     "SignUpForm": {
         "email": "Email",
         "inputEmail": "input your email",
@@ -17,34 +16,46 @@
         "registerNow": "Register now",
         "signInWith": "Sign in with"
     },
-
+    "AuthForm": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "inputEmail": "input your email",
+        "password": "Password",
+        "forgotPassword": "Forgot your password?",
+        "inputPassword": "input your password",
+        "signIn": "Sign in",
+        "signUp": "Sign Up",
+        "dontHaveAccount": "Don't have an account yet?",
+        "haveAccount": "You already have an account?",
+        "registerNow": "Register now",
+        "login": "Login",
+        "signInWith": "Sign in with"
+    },
     "TestReusable": {
         "wonderfulWorld": "What A Wonderful World"
     },
-
     "TestPage": {
-            "testPage": "Test Page"
-        },
+        "testPage": "Test Page"
+    },
     "PublicProfile": {
-            "user_name": "User Name",
-            "hour_rate": "Hour rate",
-            "amount_hours": "The available amount of hours:",
-            "education": "Education:",
-            "name_of_courses": "Name of courses",
-            "specialization": "Specialization",
-            "period": "Period of Time",
-            "category": "Category",
-            "development": "Development",
-            "settings": "Settings",
-            "position": "Position",
-            "experience": "Experience",
-            "company_name": "Name of company",
-            "skills": "Skills",
-            "languages": "English",
-            "add_information": "Other additional information",
-            "text_type": "(Text type)",
-            "tag_type": "(tag type [ ])"
-
-        }
+        "user_name": "User Name",
+        "hour_rate": "Hour rate",
+        "amount_hours": "The available amount of hours:",
+        "education": "Education:",
+        "name_of_courses": "Name of courses",
+        "specialization": "Specialization",
+        "period": "Period of Time",
+        "category": "Category",
+        "development": "Development",
+        "settings": "Settings",
+        "position": "Position",
+        "experience": "Experience",
+        "company_name": "Name of company",
+        "skills": "Skills",
+        "languages": "English",
+        "add_information": "Other additional information",
+        "text_type": "(Text type)",
+        "tag_type": "(tag type [ ])"
+    }
 }
-  

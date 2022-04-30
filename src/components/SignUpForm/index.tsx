@@ -105,7 +105,7 @@ const SignUpForm: React.FC = () => {
         </StyledForm>
         <DontAccount>
           {t("SignUpForm.dontHaveAccount")}
-          <StyledNavLink to="/test" className="styled">
+          <StyledNavLink to="/sign-in" className="styled">
               {t("SignUpForm.registerNow")}
             </StyledNavLink>
         </DontAccount>

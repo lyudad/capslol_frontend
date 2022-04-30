@@ -8,7 +8,6 @@ import {
   Page,
   ButtonSet,
 } from "./styles";
-import { Button } from "antd";
 import "antd/dist/antd.min.css";
 import avatar from "./avatar.png";
 import { colors } from "constants/index";
