@@ -1,16 +1,16 @@
-import { useAppSelector } from "hooks/redux";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FormLink, Title, Wrapper } from "../styles";
+import { useAppSelector } from "hooks/redux";
 
 const NotFoundEmail: React.FC = () => {
-  const { isHasPassword } = useAppSelector((s) => s);
   const { t } = useTranslation();
+  const { isHasEmail } = useAppSelector((s) => s.password);
 
   return (
     <Wrapper>
-      {isHasPassword ? (
+      {!!isHasEmail ? (
         <div>
           <Title>{t("VerifyEmail.fineTitle")}</Title>
           <FormLink>

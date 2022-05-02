@@ -18,5 +18,9 @@ export interface TypeUserState {
   auth: Auth | null;
   isLoading: boolean;
   error: string | null;
-  isHasPassword: boolean | null;
+}
+
+export interface IPassword {
+  isHasEmail: string | boolean;
+  isRightPassword: boolean | string;
 }

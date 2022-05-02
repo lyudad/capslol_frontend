@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { MailOutlined } from "@ant-design/icons";
@@ -14,12 +14,19 @@ import {
 } from "./styles";
 import { TypographyTitle } from "pages/ResetPassword/style";
 import { IFormValue } from "./interfaces";
+import { useAppDispatch } from "hooks/redux";
+import axios from "axios";
+import { confirmEmail } from "redux/reducers/passwordSlice";
+import { colors } from "constants/index";
+
 
 const ForgotPassword: React.FC = () => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+
 
   const onReset = (): void => {
     form.resetFields();
@@ -29,15 +36,22 @@ const ForgotPassword: React.FC = () => {
     setLoading(true);
   };
 
-  const onFinish = (values: IFormValue): void => {
+  const onFinish = async (values: IFormValue): Promise<void> => {
+    enterLoading();     
+    try {
+      const {data} = await axios.post('http://localhost:3000/password/forgotPassword', values)
+      dispatch(confirmEmail(data))
+      navigate("/verify_email");
+    } catch (e) {
+      dispatch(confirmEmail(''))
+      navigate("/verify_email");
+    }
     onReset();
-    enterLoading();
-    navigate("/verify_email");
   };
 
   return (
     <Wrapper>
-      <TypographyTitle level={3}>{t('ForgotPage.title')}</TypographyTitle>
+      <TypographyTitle color={colors.textWhite} level={3}>{t('ForgotPage.title')}</TypographyTitle>
       <StyledForm
         name="normal_login"
         className="form"

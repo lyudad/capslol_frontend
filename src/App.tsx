@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/verify_email" element={<VerifyEmail />} />
-        <Route path="/reset_password/:id" element={<ResetPassword />} />
+        <Route path="/reset_password/*" element={<ResetPassword />} />
       </Routes>
     </>
   );
