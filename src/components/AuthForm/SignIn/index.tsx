@@ -1,13 +1,6 @@
 import { Col, Input, Row } from "antd";
-import {
-  StyledButton,
-  StyledForm,
-  StyledNavLink,
-  StyledParagraph,
-} from "components/UI";
+import { StyledForm, StyledNavLink, StyledParagraph } from "components/UI";
 import * as React from "react";
-import { Link } from "react-router-dom";
-import SocialAuth from "../SocialAuth";
 
 interface ISignProps {
   translator: (message: string) => string;

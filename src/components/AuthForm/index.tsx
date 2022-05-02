@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Col, Row } from "antd";
 import AuthMessage from "./AuthMessage";
-import SocialAuth from "./SocialAuth";
+import AuthGoogle from "./AuthGoogle";
 import SubmitButton from "./SubmitButton";
 import SignIn from "components/AuthForm/SignIn";
 import SignUp from "components/AuthForm/SignUp";
@@ -65,23 +64,19 @@ const AuthForm: React.FC<IAuthFormProps> = () => {
             rightText="AuthForm.login"
           />
         )}
-        <Row>
-          <Col>
             {hasLogin ? (
-              <SocialAuth
+              <AuthGoogle
                 text="Sign  in use Google"
                 href="/google"
                 translator={translator}
               />
             ) : (
-              <SocialAuth
+              <AuthGoogle
                 text="Sign  up use Google"
                 href="/google"
                 translator={translator}
               />
             )}
-          </Col>
-        </Row>
       </StyledForm>
     </Wrapper>
   );

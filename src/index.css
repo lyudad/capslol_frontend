@@ -32,3 +32,21 @@ img {
 a {
     text-decoration: none;
   }
+
+
+/* these styles uses in  AuthGoogle Component */
+.google-auth {
+  display: flex !important;
+  justify-content: center;
+  width: 100%;
+  background-color: transparent !important;
+  border: 1px solid white !important;
+}
+
+.google-auth span {
+  flex-grow: 1;
+  display: block;
+  max-width: 100%;
+}
+
+/* end AuthGoogle Component */

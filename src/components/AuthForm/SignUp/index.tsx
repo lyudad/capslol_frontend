@@ -1,8 +1,6 @@
-import { Col, Input, Row } from "antd";
-import { StyledButton, StyledForm, StyledParagraph } from "components/UI";
+import { Input } from "antd";
+import { StyledForm } from "components/UI";
 import * as React from "react";
-import { Link } from "react-router-dom";
-import SocialAuth from "../SocialAuth";
 
 interface ISignUpProps {
   translator: (message: string) => string;
