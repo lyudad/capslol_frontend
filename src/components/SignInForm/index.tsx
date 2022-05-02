@@ -12,13 +12,18 @@ import {
   ButtonSignIn,
   StyledNavLink
 } from './styles';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { userSlice } from 'redux/reducers/userSlice';
 
-const SignUpForm: React.FC = () => {
+const SignInForm: React.FC = () => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const memoDisabled = useMemo<boolean>(() => !email || !password, [email, password]);
+
+  const { addEmail } = userSlice.actions;
+  const dispatch = useAppDispatch();
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.currentTarget;
@@ -38,8 +43,18 @@ const SignUpForm: React.FC = () => {
     form.resetFields();
   };
 
+  const myEmail = useAppSelector(state => state.user.email);
+  const myState = useAppSelector(state => state);
+  console.log('myState: ', myState);
+  console.log('email: ', myEmail);
+
+  // console.log(dispatch);
+
   const onFinish = (values: FormValues) => {
     console.log('Success:', values);
+    dispatch(addEmail(values.email));
+    // console.log('myState: ', myState);
+    // dispatch({user: 'qwertyui@poiuy.com'});
     onReset();
     setEmail('');
     setPassword('');
@@ -56,7 +71,7 @@ const SignUpForm: React.FC = () => {
           autoComplete="off"
         >
           <Form.Item
-            label={t("SignUpForm.email")}
+            label={t("SignInForm.email")}
             name="email"
             rules={[
               {
@@ -68,13 +83,13 @@ const SignUpForm: React.FC = () => {
           >
             <Input
               name="email"
-              placeholder={t("SignUpForm.inputEmail")}
+              placeholder={t("SignInForm.inputEmail")}
               onChange={onChange}
             />
           </Form.Item>
           <Form.Item
 
-            label={t("SignUpForm.password")}
+            label={t("SignInForm.password")}
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
@@ -82,7 +97,7 @@ const SignUpForm: React.FC = () => {
               name="password"
               minLength={8}
               maxLength={20}
-              placeholder={t("SignUpForm.inputPassword")}
+              placeholder={t("SignInForm.inputPassword")}
               autoComplete=""
               onChange={onChange}
             />
@@ -90,7 +105,7 @@ const SignUpForm: React.FC = () => {
 
           <ForgotPass>
             <StyledNavLink to="/forgotten_password">
-              {t("SignUpForm.forgotPassword")}
+              {t("SignInForm.forgotPassword")}
             </StyledNavLink>
           </ForgotPass>
           <Form.Item>
@@ -99,18 +114,18 @@ const SignUpForm: React.FC = () => {
               htmlType="submit"
               disabled={memoDisabled}
             >
-              {t("SignUpForm.signIn")}
+              {t("SignInForm.signIn")}
             </ButtonSignIn>
           </Form.Item>
         </StyledForm>
         <DontAccount>
-          {t("SignUpForm.dontHaveAccount")}
+          {t("SignInForm.dontHaveAccount")}
           <StyledNavLink to="/test" className="styled">
-              {t("SignUpForm.registerNow")}
+              {t("SignInForm.registerNow")}
             </StyledNavLink>
         </DontAccount>
         <WithGoogle>
-          <p>{t("SignUpForm.signInWith")}</p>
+          <p>{t("SignInForm.signInWith")}</p>
           <GoogleLink href="https:/................./auth/google">
             Google
           </GoogleLink>
@@ -120,4 +135,4 @@ const SignUpForm: React.FC = () => {
   );
 };
 
-export default SignUpForm;
+export default SignInForm;

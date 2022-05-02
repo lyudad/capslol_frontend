@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { HomeContainer } from "./styles";
-import SignUpForm from "components/SignUpForm";
+import SignUpForm from "components/SignInForm";
 
 const HomePage: React.FC = () => {
   const [isSignIn, setIsSignIn] = useState(false);

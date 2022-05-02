@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { FormLink, Title, Wrapper } from "../styles";
 
 const NotFoundEmail: React.FC = () => {
-  const { isHasPassword } = useAppSelector((s) => s);
+  const { isHasPassword } = useAppSelector((s) => s.userReducer);
   const { t } = useTranslation();
 
   return (

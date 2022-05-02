@@ -1,8 +1,12 @@
-export interface User {
+export interface IUser {
   id: number;
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  phoneNumber: string;
+  password: string;
+  createdAt?: Date;
 }
 
 export type Token = string;
@@ -12,9 +16,10 @@ export interface Auth {
   refreshToken: string;
 }
 
-export interface TypeUserState {
+export interface IUserState {
   isLoggedIn: boolean;
-  user: User | null;
+  users?: [];
+  user: IUser | null;
   auth: Auth | null;
   isLoading: boolean;
   error: string | null;

@@ -6,7 +6,7 @@
         "test": "TEST"
     },
 
-    "SignUpForm": {
+    "SignInForm": {
         "email": "Email",
         "inputEmail": "input your email",
         "password": "Password",
