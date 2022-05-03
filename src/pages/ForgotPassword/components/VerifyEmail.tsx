@@ -1,34 +1,26 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FormLink, Title, Wrapper } from "../styles";
-import { useAppSelector } from "hooks/redux";
-import { useConfirmEmailMutation } from "redux/services/passwordApi";
+import { FormLink, Section, Title, Wrapper } from "../styles";
+import { IProps } from "./props";
 
-const NotFoundEmail: React.FC = () => {
+const NotFoundEmail: React.FC<IProps> = ({ data, isError }) => {
   const { t } = useTranslation();
-  const [_, { data }] = useConfirmEmailMutation();
 
   return (
-    <Wrapper>
-      {data ? (
-        <div>
-          <Title>{t("VerifyEmail.fineTitle")}</Title>
-          <FormLink>
-            <NavLink to="/">{t("VerifyEmail.linkToLogin")}</NavLink>
-          </FormLink>
-        </div>
-      ) : (
-        <div>
-          <Title>{t("VerifyEmail.poorTitle")}</Title>
-          <FormLink>
-            <NavLink to="/forgotten_password">
-              {t("VerifyEmail.linkToPasswordPage")}
-            </NavLink>
-          </FormLink>
-        </div>
-      )}
-    </Wrapper>
+    <Section>
+      <Wrapper>
+        {data && (
+          <>
+            <Title>{t("VerifyEmail.fineTitle")}</Title>
+            <FormLink>
+              <NavLink to="/">{t("VerifyEmail.linkToLogin")}</NavLink>
+            </FormLink>
+          </>
+        )}
+        {isError && <Title>{t("VerifyEmail.poorTitle")}</Title>}
+      </Wrapper>
+    </Section>
   );
 };
 

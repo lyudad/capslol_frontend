@@ -53,3 +53,8 @@ export const Error = styled.div`
 export const FormPassword = styled(Input.Password)`
   width: 300px;
 `;
+
+export const WindowTitle = styled(Typography.Title)`
+  margin: 0 auto 1.5em;
+  color: ${textWhite} !important;
+`;

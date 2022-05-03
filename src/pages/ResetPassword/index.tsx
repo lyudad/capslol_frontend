@@ -15,11 +15,12 @@ import {
   FormPassword,
   StyledSpace,
   TypographyTitle,
+  WindowTitle
 } from "./style";
 import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
-import { useResetPasswordMutation } from "redux/services/passwordApi";
-import ModalWindow from "common/ModalWindow";
+import { useResetPasswordMutation } from "redux/services/passwordApi/passwordApi";
+import ModalWindow from "common/ModalWindow/ModalWindow";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -68,60 +69,60 @@ const ResetPassword: React.FC = () => {
 
   return (
     <>
-    <Wrapper>
-      <TypographyTitle color={colors.textWhite} level={3}>{t("ResetPage.title")}</TypographyTitle>
-      <StyledForm
-        name="normal_login"
-        className="form"
-        form={form}
-        initialValues={{ remember: true }}
-        onFinish={values => onFinish(values as IPassword)}
-      >
+      <Wrapper>
+        <TypographyTitle color={colors.textWhite} level={3}>{t("ResetPage.title")}</TypographyTitle>
+        <StyledForm
+          name="normal_login"
+          className="form"
+          form={form}
+          initialValues={{ remember: true }}
+          onFinish={values => onFinish(values as IPassword)}
+        >
        
-       <StyledSpace>
-       <FormItem
-          label={t("ResetPage.passwordTitle.item")}
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: `${t("ResetPage.passwordTitle.error")}`,
-              validator: (_, value) => {
-                if (
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value)
-                ) {
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(
-                    `${t("ResetPage.passwordTitle.error")}`
-                  );
-                }
+        <StyledSpace>
+          <FormItem
+            label={t("ResetPage.passwordTitle.item")}
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: `${t("ResetPage.passwordTitle.error")}`,
+                validator: (_, value) => {
+                  if (
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value)
+                  ) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(
+                      `${t("ResetPage.passwordTitle.error")}`
+                    );
+                  }
+                },
               },
-            },
-          ]}
-        >
-          <FormPassword
-            placeholder={t("ResetPage.passwordTitle.placeholder")}
-          />
-        </FormItem>
+            ]}
+          >
+            <FormPassword
+              placeholder={t("ResetPage.passwordTitle.placeholder")}
+            />
+          </FormItem>
 
-        <FormItem
-          label={t("ResetPage.conPasswordTitle.item")}
-          name="confirmPassword"
-          rules={[
-            {
-              required: true,
-              message: `${t("ResetPage.conPasswordTitle.error")}`,
-            },
-          ]}
-        >
-          <FormPassword
-            placeholder={t("ResetPage.conPasswordTitle.placeholder")}
-          />
-        </FormItem>
+          <FormItem
+            label={t("ResetPage.conPasswordTitle.item")}
+            name="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: `${t("ResetPage.conPasswordTitle.error")}`,
+              },
+            ]}
+          >
+            <FormPassword
+              placeholder={t("ResetPage.conPasswordTitle.placeholder")}
+            />
+            </FormItem>
 
           {error ? <Error>{t("ResetPage.error")}</Error> : ''}
-       </StyledSpace>
+        </StyledSpace>
 
         <FormButton>
           <PwrButton
@@ -133,18 +134,20 @@ const ResetPassword: React.FC = () => {
             {t("ResetPage.btnText")}
           </PwrButton>
         </FormButton>
+
         <FormLink>
           <NavLink to="/" className="form_link">
             {t("ResetPage.linkText")}
           </NavLink>
         </FormLink>
       </StyledForm>
-    </Wrapper>
-    <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
+      </Wrapper>
+      
+      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
         <>
           { 
             data ? 
-            <TypographyTitle color={colors.bgBlack} level={3}>{t("ResetPage.loginText")}</TypographyTitle> 
+            <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle> 
             : dataError
           }
         
@@ -152,8 +155,8 @@ const ResetPassword: React.FC = () => {
             {t("ResetPage.linkText")}
           </NavLink>
         </>
-    </ModalWindow>
-  </>
+      </ModalWindow>
+    </>
   );
 };
 

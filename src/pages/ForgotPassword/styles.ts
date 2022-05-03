@@ -2,7 +2,16 @@ import styled from "styled-components";
 import { Button, Form, Input } from "antd";
 import { colors } from "constants/index";
 
-const { textWhiteGrey, textWhite, textGreen, bgBlack } = colors;
+const { textWhiteGrey, textWhite, textGreen, bgBlack, homeBgr } = colors;
+
+export const Section = styled.section`
+  padding: 1px 12px;
+  height: 100vh;
+  background-color: ${homeBgr};
+  background-image: url(./images/bg-image.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
 
 export const Wrapper = styled.div`
   display: flex;
