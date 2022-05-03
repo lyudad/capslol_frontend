@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { MailOutlined } from "@ant-design/icons";
@@ -14,10 +14,8 @@ import {
 } from "./styles";
 import { TypographyTitle } from "pages/ResetPassword/style";
 import { IFormValue } from "./interfaces";
-import { useAppDispatch } from "hooks/redux";
-import axios from "axios";
-import { confirmEmail } from "redux/reducers/passwordSlice";
 import { colors } from "constants/index";
+import { useConfirmEmailMutation } from "redux/services/passwordApi";
 
 
 const ForgotPassword: React.FC = () => {
@@ -25,7 +23,7 @@ const ForgotPassword: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
+  const [confirmEmail] = useConfirmEmailMutation()
 
 
   const onReset = (): void => {
@@ -39,11 +37,9 @@ const ForgotPassword: React.FC = () => {
   const onFinish = async (values: IFormValue): Promise<void> => {
     enterLoading();     
     try {
-      const {data} = await axios.post('http://localhost:3000/password/forgotPassword', values)
-      dispatch(confirmEmail(data))
+      await confirmEmail(values)
       navigate("/verify_email");
     } catch (e) {
-      dispatch(confirmEmail(''))
       navigate("/verify_email");
     }
     onReset();

@@ -2,7 +2,7 @@ import { Input, Space, Typography } from "antd";
 import styled from "styled-components";
 import { colors } from "constants/index";
 
-const { textWhite, textWhiteRed, textGreen, bgBlack } = colors;
+const { textWhite, textWhiteRed } = colors;
 export interface Props {
   color: string;
 }
@@ -52,20 +52,4 @@ export const Error = styled.div`
 
 export const FormPassword = styled(Input.Password)`
   width: 300px;
-`;
-
-export const Button = styled.button`
-  border: none;
-  color: ${bgBlack};
-  border: none;
-  color: black;
-  background: none;
-  font-size: 20px;
-  margin-bottom: 4px;
-  margin-right: auto;
-  cursor: pointer;
-  transition: all 0.4s linear;
-  &:hover {
-    color: ${textGreen};
-  }
 `;

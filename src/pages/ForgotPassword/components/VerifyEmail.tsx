@@ -3,14 +3,15 @@ import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FormLink, Title, Wrapper } from "../styles";
 import { useAppSelector } from "hooks/redux";
+import { useConfirmEmailMutation } from "redux/services/passwordApi";
 
 const NotFoundEmail: React.FC = () => {
   const { t } = useTranslation();
-  const { isHasEmail } = useAppSelector((s) => s.password);
+  const [_, { data }] = useConfirmEmailMutation();
 
   return (
     <Wrapper>
-      {!!isHasEmail ? (
+      {data ? (
         <div>
           <Title>{t("VerifyEmail.fineTitle")}</Title>
           <FormLink>

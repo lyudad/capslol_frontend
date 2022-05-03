@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { Form } from "antd";
-import Modal from 'react-modal';
 import { useTranslation } from "react-i18next";
 import {
   StyledForm,
@@ -12,17 +11,15 @@ import {
   FormItem,
 } from "pages/ForgotPassword/styles";
 import {
-  Button,
   Error,
   FormPassword,
   StyledSpace,
   TypographyTitle,
 } from "./style";
-import { useAppDispatch } from "hooks/redux";
-import axios from "axios";
-import { resetPassword } from "redux/reducers/passwordSlice";
 import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
+import { useResetPasswordMutation } from "redux/services/passwordApi";
+import ModalWindow from "common/ModalWindow";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -30,9 +27,9 @@ const ResetPassword: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const [resetPassword, {data, error: dataError}] = useResetPasswordMutation()
 
   const onReset = (): void => {
     form.resetFields();
@@ -45,16 +42,13 @@ const ResetPassword: React.FC = () => {
   const onFinish = async (values: IPassword): Promise<void> => {
     enterLoading();
     if (values.password === values.confirmPassword) {
-      const { data } = await axios.patch(
-        "http://localhost:3000/password/changePassword",
-        {
-          user: {
-            id: params.get("token"),
-            password: values.confirmPassword,
-          },
+      const value = {
+        user: {
+          id: params.get("token"),
+          password: values.confirmPassword,
         }
-      );
-      dispatch(resetPassword(data));
+      };
+      await resetPassword(value)
       setError(false);
       onReset();
       openModal()
@@ -146,31 +140,21 @@ const ResetPassword: React.FC = () => {
         </FormLink>
       </StyledForm>
     </Wrapper>
-    <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <Button onClick={closeModal}>x</Button>
-        <TypographyTitle color={colors.bgBlack} level={3}>{t("ResetPage.loginText")}</TypographyTitle>
-        <NavLink to="/" className="form_link">
+    <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
+        <>
+          { 
+            data ? 
+            <TypographyTitle color={colors.bgBlack} level={3}>{t("ResetPage.loginText")}</TypographyTitle> 
+            : dataError
+          }
+        
+          <NavLink to="/" className="form_link">
             {t("ResetPage.linkText")}
           </NavLink>
-      </Modal>
+        </>
+    </ModalWindow>
   </>
   );
 };
 
 export default ResetPassword;
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
