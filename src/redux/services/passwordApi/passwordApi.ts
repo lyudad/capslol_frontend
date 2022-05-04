@@ -2,9 +2,9 @@
 import { Email, Password } from "redux/models/passwordModels/password.model";
 
 export const passwordApi = createApi({
-  reducerPath: "passwordApi",
+  reducerPath: process.env.REACT_APP_PASSWORD_API,
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000",
+    baseUrl: process.env.REACT_APP_BE_URL,
   }),
   endpoints: (build) => ({
     confirmEmail: build.mutation<Email, Email>({

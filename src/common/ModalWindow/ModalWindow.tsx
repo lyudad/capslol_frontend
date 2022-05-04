@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import Modal from "react-modal";
 import { Button, Parent } from "./style";
-import { IProps } from "./types";
+import { ICustomStyles, IProps } from "./types";
 import { colors } from "constants/index";
 
 const ModalWindow: React.FC<IProps> = ({
@@ -9,7 +9,7 @@ const ModalWindow: React.FC<IProps> = ({
   modalIsOpen,
   closeModal,
 }) => {
-  const customStyles: any = {
+  const customStyles: ICustomStyles = {
     overlay: {
       position: "fixed",
       top: 0,

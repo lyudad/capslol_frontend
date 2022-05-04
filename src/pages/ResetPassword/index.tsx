@@ -32,6 +32,8 @@ const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const [resetPassword, {data, error: dataError}] = useResetPasswordMutation()
 
+  const validatePassword: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+
   const onReset = (): void => {
     form.resetFields();
   };
@@ -88,9 +90,7 @@ const ResetPassword: React.FC = () => {
                 required: true,
                 message: `${t("ResetPage.passwordTitle.error")}`,
                 validator: (_, value) => {
-                  if (
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value)
-                  ) {
+                  if (validatePassword.test(value)) {
                     return Promise.resolve();
                   } else {
                     return Promise.reject(

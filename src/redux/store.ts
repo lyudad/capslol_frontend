@@ -26,7 +26,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST"],
       },
-    }).concat(passwordApi.middleware),
+    }),
   devTools: process.env.NODE_ENV !== "production",
 });
 
