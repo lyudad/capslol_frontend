@@ -26,7 +26,6 @@ export const Wrapper = styled.div`
   border: 1px solid ${textWhiteGrey};
   background-color: ${bgBlack};
   color: ${textWhiteGrey};
-  border: 1px solid transparent;
   border-radius: 4px;
 `;
 

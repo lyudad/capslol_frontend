@@ -15,7 +15,8 @@ import {
   FormPassword,
   StyledSpace,
   TypographyTitle,
-  WindowTitle
+  WindowTitle,
+  Section,
 } from "./style";
 import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
@@ -70,7 +71,7 @@ const ResetPassword: React.FC = () => {
   }
 
   return (
-    <>
+    <Section>
       <Wrapper>
         <TypographyTitle color={colors.textWhite} level={3}>{t("ResetPage.title")}</TypographyTitle>
         <StyledForm
@@ -85,19 +86,11 @@ const ResetPassword: React.FC = () => {
           <FormItem
             label={t("ResetPage.passwordTitle.item")}
             name="password"
+            hasFeedback
             rules={[
               {
                 required: true,
                 message: `${t("ResetPage.passwordTitle.error")}`,
-                validator: (_, value) => {
-                  if (validatePassword.test(value)) {
-                    return Promise.resolve();
-                  } else {
-                    return Promise.reject(
-                      `${t("ResetPage.passwordTitle.error")}`
-                    );
-                  }
-                },
               },
             ]}
           >
@@ -109,10 +102,21 @@ const ResetPassword: React.FC = () => {
           <FormItem
             label={t("ResetPage.conPasswordTitle.item")}
             name="confirmPassword"
+            hasFeedback
+            dependencies={['password']}
             rules={[
               {
                 required: true,
                 message: `${t("ResetPage.conPasswordTitle.error")}`,
+                validator: (_, value) => {
+                  if (validatePassword.test(value)) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(
+                      `${t("ResetPage.passwordTitle.error")}`
+                    );
+                  }
+                },
               },
             ]}
           >
@@ -156,7 +160,7 @@ const ResetPassword: React.FC = () => {
           </NavLink>
         </>
       </ModalWindow>
-    </>
+    </Section>
   );
 };
 

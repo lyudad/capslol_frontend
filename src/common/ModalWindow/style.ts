@@ -1,11 +1,11 @@
 ﻿import styled from "styled-components";
 import { colors } from "constants/index";
 
-const { textWhite, homeBgr } = colors;
+const { textWhite, homeBgr, bgBlack } = colors;
 
 export const Parent = styled.section`
   position: relative;
-  min-height: 17vh;
+  min-height: 14vh;
 `;
 
 export const Button = styled.button`
@@ -14,7 +14,7 @@ export const Button = styled.button`
   right: 0;
   top: 0;
   border: none;
-  color: ${textWhite};
+  color: ${homeBgr};
   border: none;
   background: none;
   font-size: 20px;
@@ -23,7 +23,7 @@ export const Button = styled.button`
   border-radius: 50%;
   padding: 0px 13px 5px;
   &:hover {
-    color: ${homeBgr} !important;
-    background: ${textWhite};
+    color: ${textWhite} !important;
+    background: ${homeBgr};
   }
 `;

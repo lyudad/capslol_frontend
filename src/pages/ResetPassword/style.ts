@@ -2,10 +2,15 @@ import { Input, Space, Typography } from "antd";
 import styled from "styled-components";
 import { colors } from "constants/index";
 
-const { textWhite, textWhiteRed } = colors;
+const { textWhite, textWhiteRed, bgWhiteDark, homeBgr } = colors;
 export interface Props {
   color: string;
 }
+
+export const Section = styled.section`
+  background: ${bgWhiteDark};
+  height: 100vh;
+`;
 
 export const StyledSpace = styled(Space)`
   display: block;
@@ -56,5 +61,5 @@ export const FormPassword = styled(Input.Password)`
 
 export const WindowTitle = styled(Typography.Title)`
   margin: 0 auto 1.5em;
-  color: ${textWhite} !important;
+  color: ${homeBgr} !important;
 `;
