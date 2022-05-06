@@ -1,15 +1,22 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { persistStore } from "redux-persist";
 import userReducer from "./reducers/userSlice";
+import { passwordApi } from "./services/passwordApi/passwordApi";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 const persistConfig = {
   key: "auth",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
+const reducers = combineReducers({
+  userReducer,
+  [passwordApi.reducerPath]: passwordApi.reducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -22,6 +29,8 @@ export const store = configureStore({
     }),
   devTools: process.env.NODE_ENV !== "production",
 });
+
+setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);
 

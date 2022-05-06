@@ -1,14 +1,24 @@
 import styled from "styled-components";
 import { Button, Form, Input } from "antd";
 import { colors } from "constants/index";
+import { IProps } from "./interfaces";
 
-const { textWhiteGrey, textWhite, textGreen, bgBlack } = colors;
+const { textWhiteGrey, textWhite, textGreen, bgBlack, homeBgr } = colors;
+
+export const Section = styled.section`
+  padding: 1px 12px;
+  height: 100vh;
+  background-color: ${homeBgr};
+  background-image: url(./images/bg-image.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-  width: 340px;
+  width: ${(props: IProps) => props.width}px;
   padding: 20px;
   position: absolute;
   top: 50%;
@@ -17,7 +27,6 @@ export const Wrapper = styled.div`
   border: 1px solid ${textWhiteGrey};
   background-color: ${bgBlack};
   color: ${textWhiteGrey};
-  border: 1px solid transparent;
   border-radius: 4px;
 `;
 
@@ -80,5 +89,4 @@ export const Title = styled.h3`
   text-align: center;
   color: ${textWhite};
   font-size: 22px;
-  word-break: break-all;
 `;

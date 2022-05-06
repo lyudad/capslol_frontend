@@ -25,6 +25,10 @@ export const colors: Colors = {
   textGreen: "#4caf50",
   textWhiteGrey: "#d9d9d9",
   textWhiteRed: "#ff4d4f",
+  linkColor: "#1890ff",
+  bgWhiteDark: "rgba(1,1,1,0.9)",
+  modalBg: "rgb(255, 255, 255)",
+  modalWindowBg: "rgba(255, 255, 255, 0.5)",
 };
 
 export const fonts: Fonts = {

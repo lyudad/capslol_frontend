@@ -1,8 +1,16 @@
-import { Space, Typography } from "antd";
+import { Input, Space, Typography } from "antd";
 import styled from "styled-components";
 import { colors } from "constants/index";
 
-const { textWhite, textWhiteRed, textGreen } = colors;
+const { textWhite, textWhiteRed, bgWhiteDark, homeBgr } = colors;
+export interface Props {
+  color: string;
+}
+
+export const Section = styled.section`
+  background: ${bgWhiteDark};
+  height: 100vh;
+`;
 
 export const StyledSpace = styled(Space)`
   display: block;
@@ -23,7 +31,7 @@ export const StyledSpace = styled(Space)`
 `;
 
 export const TypographyTitle = styled(Typography.Title)`
-  color: ${textWhite} !important;
+  color: ${(props: Props) => props.color} !important;
   margin: 0 auto 0.5em;
 `;
 
@@ -45,4 +53,13 @@ export const Error = styled.div`
   color: ${textWhiteRed};
   position: absolute;
   bottom: 120px;
+`;
+
+export const FormPassword = styled(Input.Password)`
+  width: 300px;
+`;
+
+export const WindowTitle = styled(Typography.Title)`
+  margin: 0 auto 1.5em;
+  color: ${homeBgr} !important;
 `;
