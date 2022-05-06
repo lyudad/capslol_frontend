@@ -1,15 +1,16 @@
 export interface IUser {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
+  id?: number | null;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
   role: string;
-  phoneNumber: string;
-  password: string;
+  phoneNumber: string | null;
+  password: string | null;
   createdAt?: Date;
+  isGoogle?: boolean;
 }
 
-export type Token = string;
+export type Token = string | null;
 
 export interface Auth {
   accessToken: string;
@@ -17,11 +18,12 @@ export interface Auth {
 }
 
 export interface IUserState {
-  isLoggedIn: boolean;
+  token?: string | null;
+  isLoggedIn?: boolean;
   users?: [];
-  user: IUser | null;
-  auth: Auth | null;
-  isLoading: boolean;
-  error: string | null;
-  isHasPassword: boolean | null;
+  user?: IUser | null;
+  auth?: Auth | null;
+  isLoading?: boolean;
+  error?: string | null;
+  isHasPassword?: boolean | null;
 }

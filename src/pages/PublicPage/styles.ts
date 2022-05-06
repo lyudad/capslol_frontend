@@ -4,7 +4,6 @@ import { Button } from "antd";
 
 export const Page = styled.section`
   padding: 1px 12px;
-  height: 100vh;
   background-color: ${colors.homeBgr};
   background-image: url(./images/bg-image.png);
   background-repeat: no-repeat;

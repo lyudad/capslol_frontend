@@ -3,76 +3,32 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { persistStore } from "redux-persist";
 import { userReducer } from "./reducers/userSlice";
-import { type } from "os";
+import { authApi } from "./authApiSlice";
 
-// const persistConfig = {
-//   key: "auth",
-//   storage,
-// };
-
-// const persistedReducer = persistReducer(persistConfig, userReducer);
-
-const rootReducer = combineReducers({
-  userReducer,
-});
-
-// export const store = configureStore({
-//   reducer: persistedReducer,
-
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: {
-//         ignoredActions: ["persist/PERSIST"],
-//       },
-//     }),
-//   devTools: process.env.NODE_ENV !== "production",
-// });
-
-export const setupStore = () => {
-  return configureStore({
-    reducer: userReducer,
-    // reducer: {
-    //   userState: userReducer,
-    // },
-  });
+const persistConfig = {
+  key: "auth",
+  storage,
 };
 
-// export const persistor = persistStore(store);
+const reducers = combineReducers({
+  userReducer,
+  [authApi.reducerPath]: authApi.reducer,
+});
 
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
+const persistedReducer = persistReducer(persistConfig, reducers);
 
-export type RootState = ReturnType<typeof rootReducer>;
-export type AppStore = ReturnType<typeof setupStore>;
-export type AppDispatch = AppStore["dispatch"];
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }).concat(authApi.middleware),
+  devTools: process.env.NODE_ENV !== "production",
+});
 
-//==========================================================================================
-// import { configureStore } from "@reduxjs/toolkit";
-// import { persistReducer } from "redux-persist";
-// import storage from "redux-persist/lib/storage";
-// import { persistStore } from "redux-persist";
-// import userReducer from "./reducers/userSlice";
+export const persistor = persistStore(store);
 
-// const persistConfig = {
-//   key: "auth",
-//   storage,
-// };
-
-// const persistedReducer = persistReducer(persistConfig, userReducer);
-
-// export const store = configureStore({
-//   reducer: persistedReducer,
-
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: {
-//         ignoredActions: ["persist/PERSIST"],
-//       },
-//     }),
-//   devTools: process.env.NODE_ENV !== "production",
-// });
-
-// export const persistor = persistStore(store);
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof reducers>;
+export type AppDispatch = typeof store.dispatch;

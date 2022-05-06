@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser, IUserState, Auth } from "./types";
+import { IUser, IUserState } from "./types";
 
 const initialState: IUserState = {
   user: {
-    id: 2,
-    email: "ro@qwer.ua;",
-    firstName: "Ro",
-    lastName: "Pe",
-    role: "free",
-    phoneNumber: "+066612345",
-    password: "123456789",
+    id: null,
+    email: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+    phoneNumber: null,
+    password: null,
+    isGoogle: false,
   },
+  token: null,
   isLoggedIn: false,
   auth: null,
   isLoading: false,
@@ -22,10 +24,19 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addEmail(state: IUserState, action: PayloadAction<string>) {
-      state.user.email = action.payload;
+    setCredentials: (
+      state: IUserState,
+      {
+        payload: { user, accessToken },
+      }: PayloadAction<{ user: IUser, accessToken: string }>
+    ) => {
+      state.user = user;
+      state.token = accessToken;
+      state.isLoggedIn = true;
     },
   },
 });
+
+export const { setCredentials } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

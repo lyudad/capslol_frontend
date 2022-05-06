@@ -13,7 +13,8 @@ import {
   StyledNavLink
 } from './styles';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { userSlice } from 'redux/reducers/userSlice';
+import { useLoginMutation } from 'redux/authApiSlice';
+import { setCredentials } from 'redux/reducers/userSlice'; 
 
 const SignInForm: React.FC = () => {
   const { t } = useTranslation();
@@ -22,39 +23,38 @@ const SignInForm: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const memoDisabled = useMemo<boolean>(() => !email || !password, [email, password]);
 
-  const { addEmail } = userSlice.actions;
   const dispatch = useAppDispatch();
 
-  const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = evt.currentTarget;
-    switch (name) {
-      case 'email':
-        setEmail(value);
-        break;
-      case 'password':
-        setPassword(value);
-        break;
-      default:
-        break;
-    }
+  const [login, { isLoading, isError, isSuccess }] = useLoginMutation();
+  const loginUser = async (value: any) => {
+    try {
+      const userData: any = await login(value).unwrap();
+      dispatch(setCredentials(userData));
+    } catch(error) {console.log('ERROR:',error)}
   };
+
+  function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+      const { name, value } = evt.currentTarget;
+      switch (name) {
+        case 'email':
+          setEmail(value);
+          break;
+        case 'password':
+          setPassword(value);
+          break;
+        default:
+          break;
+      }
+    }
 
   const onReset = () => {
     form.resetFields();
   };
 
-  const myEmail = useAppSelector(state => state.user.email);
   const myState = useAppSelector(state => state);
-  console.log('myState: ', myState);
-  console.log('email: ', myEmail);
-
-  // console.log(dispatch);
-
+  
   const onFinish = (values: FormValues) => {
-    console.log('Success:', values);
-    dispatch(addEmail(values.email));
-    // console.log('myState: ', myState);
-    // dispatch({user: 'qwertyui@poiuy.com'});
+    loginUser({ user: values });
     onReset();
     setEmail('');
     setPassword('');
@@ -77,7 +77,7 @@ const SignInForm: React.FC = () => {
               {
                 required: true,
                 type: 'email',
-                message: 'Check if the email you entered is correct our input your email!',
+                message: '', //'Check if the email you entered is correct our input your email!',
               },
             ]}
           >
