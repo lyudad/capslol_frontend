@@ -12,7 +12,7 @@ import {
   ButtonSignIn,
   StyledNavLink
 } from './styles';
-import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { useAppDispatch} from 'hooks/redux';
 import { useLoginMutation } from 'redux/authApiSlice';
 import { setCredentials } from 'redux/reducers/userSlice'; 
 
@@ -25,7 +25,7 @@ const SignInForm: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const [login, { isLoading, isError, isSuccess }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const loginUser = async (value: any) => {
     try {
       const userData: any = await login(value).unwrap();
@@ -50,8 +50,6 @@ const SignInForm: React.FC = () => {
   const onReset = () => {
     form.resetFields();
   };
-
-  const myState = useAppSelector(state => state);
   
   const onFinish = (values: FormValues) => {
     loginUser({ user: values });
