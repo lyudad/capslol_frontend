@@ -47,7 +47,7 @@ const ForgotPassword: React.FC = () => {
     <Section>
       {
         !(data || isError) && 
-        <Wrapper>
+        <Wrapper width="340">
           <TypographyTitle color={colors.textWhite} level={3}>{t('ForgotPage.title')}</TypographyTitle>
             <StyledForm
             name="normal_login"

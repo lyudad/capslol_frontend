@@ -22,6 +22,7 @@ import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
 import { useResetPasswordMutation } from "redux/services/passwordApi/passwordApi";
 import ModalWindow from "common/ModalWindow/ModalWindow";
+import { Password } from "redux/models/passwordModels/password.model";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ const ResetPassword: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [resetPassword, {data, error: dataError}] = useResetPasswordMutation()
+  const [resetPassword, {data, error: dataError, isError}] = useResetPasswordMutation()
 
   const validatePassword: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
@@ -46,13 +47,12 @@ const ResetPassword: React.FC = () => {
   const onFinish = async (values: IPassword): Promise<void> => {
     enterLoading();
     if (values.password === values.confirmPassword) {
-      const value = {
-        user: {
-          id: params.get("token"),
-          password: values.confirmPassword,
-        }
+      const value: Password = {
+        token: params.get("token")?.toString(),
+        password: values.confirmPassword,
+        
       };
-      await resetPassword(value)
+      await resetPassword(value);
       setError(false);
       onReset();
       openModal()
@@ -72,7 +72,7 @@ const ResetPassword: React.FC = () => {
 
   return (
     <Section>
-      <Wrapper>
+      <Wrapper width="340">
         <TypographyTitle color={colors.textWhite} level={3}>{t("ResetPage.title")}</TypographyTitle>
         <StyledForm
           name="normal_login"
@@ -153,6 +153,10 @@ const ResetPassword: React.FC = () => {
             data ? 
             <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle> 
             : dataError
+          }
+
+          {
+            isError && <WindowTitle level={3}>{t("ResetPage.passwordError")}</WindowTitle> 
           }
         
           <NavLink to="/" className="form_link">

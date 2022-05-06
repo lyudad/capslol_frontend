@@ -9,7 +9,7 @@ const NotFoundEmail: React.FC<IProps> = ({ data, isError }) => {
 
   return (
     <Section>
-      <Wrapper>
+      <Wrapper width="450">
         {data && (
           <>
             <Title>{t("VerifyEmail.fineTitle")}</Title>

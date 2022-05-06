@@ -2,11 +2,11 @@
   email: string;
 }
 
-export interface User {
-  id: string | null;
-  password: string;
+export interface Token {
+  token: string | undefined;
 }
 
 export interface Password {
-  user: User;
+  token: string | undefined;
+  password: string;
 }

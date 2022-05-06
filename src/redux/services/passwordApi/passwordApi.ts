@@ -16,9 +16,9 @@ export const passwordApi = createApi({
     }),
     resetPassword: build.mutation<Password, Password>({
       query: (value) => ({
-        url: `auth/changePassword`,
+        url: `auth/changePassword?token=${value.token}`,
         method: "PUT",
-        body: value,
+        body: { password: value.password },
       }),
     }),
   }),

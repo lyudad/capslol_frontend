@@ -71,7 +71,8 @@
          "error": "Passwords do not match, please try again",
          "btnText": "Save Password",
          "linkText": "Back to Login?",
-         "loginText": "Successfully done. Now please Login"
+         "loginText": "Successfully done. Now please Login",
+         "passwordError": "Something went error, please try again!"
      },
      "VerifyEmail": {
          "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
