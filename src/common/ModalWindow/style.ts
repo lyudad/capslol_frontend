@@ -1,7 +1,7 @@
 ﻿import styled from "styled-components";
 import { colors } from "constants/index";
 
-const { textWhite, homeBgr, bgBlack } = colors;
+const { textWhite, homeBgr } = colors;
 
 export const Parent = styled.section`
   position: relative;

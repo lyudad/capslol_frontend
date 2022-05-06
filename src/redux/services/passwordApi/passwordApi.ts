@@ -9,15 +9,15 @@ export const passwordApi = createApi({
   endpoints: (build) => ({
     confirmEmail: build.mutation<Email, Email>({
       query: (email) => ({
-        url: `password/forgotPassword`,
+        url: `auth/forgotPassword`,
         method: "POST",
         body: email,
       }),
     }),
     resetPassword: build.mutation<Password, Password>({
       query: (value) => ({
-        url: `password/changePassword`,
-        method: "PATCH",
+        url: `auth/changePassword`,
+        method: "PUT",
         body: value,
       }),
     }),
