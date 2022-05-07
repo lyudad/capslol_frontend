@@ -29,6 +29,13 @@ export const colors: Colors = {
   bgWhiteDark: "rgba(1,1,1,0.9)",
   modalBg: "rgb(255, 255, 255)",
   modalWindowBg: "rgba(255, 255, 255, 0.5)",
+  btnBoxShadow: "rgba(255, 255, 255, 0)",
+  btnOutline: "rgba(255, 255, 255, 0.5)",
+  btnShadow: "rgba(255, 255, 255, 0.2)",
+  btnTextShadow: "#427388",
+  btnDarkBlue: "#161a1d",
+  btnWhite: "#fafef6",
+  labelText: "#ced4da",
 };
 
 export const fonts: Fonts = {
