@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Form, Input } from 'antd';
-import { FormValues } from './props';
+import { FormValues, Values } from './props';
 import { useTranslation } from "react-i18next";
 import {
   Wrapper,
@@ -26,7 +26,7 @@ const SignInForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [login] = useLoginMutation();
-  const loginUser = async (value: any) => {
+  const loginUser = async (value: Values ) => {
     try {
       const userData: any = await login(value).unwrap();
       dispatch(setCredentials(userData));

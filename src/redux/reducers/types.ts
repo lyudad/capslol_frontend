@@ -26,4 +26,5 @@ export interface IUserState {
   isLoading?: boolean;
   error?: string | null;
   isHasPassword?: boolean | null;
+  isGoogle?: boolean;
 }

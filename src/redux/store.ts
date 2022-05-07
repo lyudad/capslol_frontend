@@ -1,3 +1,4 @@
+import { Token } from "./reducers/types";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -8,17 +9,18 @@ import { authApi } from "./authApiSlice";
 const persistConfig = {
   key: "auth",
   storage,
+  whitelist: ["token", "user", "isLoggedIn"],
 };
 
+const persistedReducer = persistReducer(persistConfig, userReducer);
+
 const reducers = combineReducers({
-  userReducer,
+  userReducer: persistedReducer,
   [authApi.reducerPath]: authApi.reducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducers);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: reducers,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

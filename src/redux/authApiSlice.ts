@@ -5,7 +5,7 @@ import { RootState } from "./store";
 export const authApi = createApi({
   reducerPath: "userApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000/",
+      baseUrl: process.env.REACT_APP_BASE_URL,
         prepareHeaders: (headers, { getState }) => {
           const token = (getState() as RootState).userReducer.token;
             // If we have a token set in state, let's assume that we should be passing it.
