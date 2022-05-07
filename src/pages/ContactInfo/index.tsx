@@ -1,6 +1,9 @@
-﻿import Button from "common/Button";
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
+import { Form } from "antd";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { LeftOutlined, UserOutlined } from "@ant-design/icons";
+
 import {
   Container,
   Wrapper,
@@ -15,12 +18,23 @@ import {
   Circle,
 } from "./styles";
 import { colors } from "constants/index";
-import { useNavigate } from "react-router-dom";
+import Button from "common/Button";
 import ModalWindow from "common/ModalWindow/ModalWindow";
+import { FormPassword } from "pages/ResetPassword/style";
+import { validatePassword } from "constants/validate";
+import { FormButton, FormItem, PwrButton, StyledForm } from "pages/ForgotPassword/styles";
 
 const ContactInfo: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+
+
+  const onFinish = async (values: any): Promise<void> => {
+    enterLoading()
+  };
 
   function openModal() {
     setIsOpen(true);
@@ -30,11 +44,22 @@ const ContactInfo: React.FC = () => {
     setIsOpen(false);
   }
 
+  const handleNavigate = () => navigate("/profile");
+
+  const enterLoading = (): void => {
+    setLoading(true);
+  };
+
   return (
     <Wrapper>
       <Container>
         <TitleGroup mb="50">
-          <Button mr="20" color={colors.btnWhite} bg={colors.btnDarkBlue}>
+          <Button
+            onClick={handleNavigate}
+            mr="20"
+            color={colors.btnWhite}
+            bg={colors.btnDarkBlue}
+          >
             <LeftOutlined />
           </Button>
           <Title fs="35">My Account</Title>
@@ -100,8 +125,73 @@ const ContactInfo: React.FC = () => {
         </Block>
       </Container>
 
-      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
-        <div>Hello</div>
+      <ModalWindow 
+        modalIsOpen={modalIsOpen} 
+        closeModal={closeModal}
+        bg={'#495057'}
+        modalBg={"#343a40"}
+      >
+        <StyledForm
+          name="normal_login"
+          className="form"
+          form={form}
+          initialValues={{ remember: true }}
+          onFinish={values => onFinish(values as any)}
+        >
+          <FormItem
+            label={t("ResetPage.passwordTitle.item")}
+            name="password"
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: `${t("ResetPage.passwordTitle.error")}`,
+              },
+            ]}
+          >
+            <FormPassword
+              placeholder={t("ResetPage.passwordTitle.placeholder")}
+            />
+          </FormItem>
+
+          <FormItem
+            label={t("ResetPage.conPasswordTitle.item")}
+            name="confirmPassword"
+            hasFeedback
+            dependencies={['password']}
+            rules={[
+              {
+                required: true,
+                message: `${t("ResetPage.conPasswordTitle.error")}`,
+                validator: (_: any, value: string) => {
+                  if (validatePassword.test(value)) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(
+                      `${t("ResetPage.passwordTitle.error")}`
+                    );
+                  }
+                },
+              },
+            ]}
+          >
+            <FormPassword
+              placeholder={t("ResetPage.conPasswordTitle.placeholder")}
+            />
+          </FormItem>
+
+          <FormButton>
+            <PwrButton
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              loading={loading}
+            >
+                {t('ForgotPage.btnText')}
+            </PwrButton>
+          </FormButton>
+
+        </StyledForm>
       </ModalWindow>
     </Wrapper>
   );
