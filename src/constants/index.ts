@@ -36,6 +36,8 @@ export const colors: Colors = {
   btnDarkBlue: "#161a1d",
   btnWhite: "#fafef6",
   labelText: "#ced4da",
+  passwordBg: "#495057",
+  passwordModalBg: "#343a40",
 };
 
 export const fonts: Fonts = {

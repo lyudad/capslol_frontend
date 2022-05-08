@@ -4,3 +4,7 @@
   justify?: string;
   fs?: string;
 }
+
+export interface IPassword {
+  password: string;
+}

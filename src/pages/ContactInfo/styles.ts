@@ -1,13 +1,8 @@
 ﻿import { Avatar } from "antd";
 import styled from "styled-components";
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { IProps } from "./props";
+import { IProps } from "./interfaces";
 import { colors } from "constants/index";
-
-export const Container = styled.div`
-  max-width: 1140px;
-  margin: 0 auto;
-`;
 
 export const Wrapper = styled.div`
   padding: 70px 0;

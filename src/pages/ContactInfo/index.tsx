@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { LeftOutlined, UserOutlined } from "@ant-design/icons";
 
 import {
-  Container,
   Wrapper,
   TitleGroup,
   Title,
@@ -17,12 +16,14 @@ import {
   Icon,
   Circle,
 } from "./styles";
-import { colors } from "constants/index";
-import Button from "common/Button";
-import ModalWindow from "common/ModalWindow/ModalWindow";
-import { FormPassword } from "pages/ResetPassword/style";
-import { validatePassword } from "constants/validate";
 import { FormButton, FormItem, PwrButton, StyledForm } from "pages/ForgotPassword/styles";
+import { FormPassword } from "pages/ResetPassword/style";
+import { colors } from "constants/index";
+import { validatePassword } from "constants/validate";
+import Button from "common/Button/Button";
+import ModalWindow from "common/ModalWindow/ModalWindow";
+import Container from "common/Container/Container";
+import { IPassword } from "./interfaces";
 
 const ContactInfo: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -32,7 +33,7 @@ const ContactInfo: React.FC = () => {
   const [form] = Form.useForm();
 
 
-  const onFinish = async (values: any): Promise<void> => {
+  const onFinish = async (values: IPassword): Promise<void> => {
     enterLoading()
   };
 
@@ -62,7 +63,7 @@ const ContactInfo: React.FC = () => {
           >
             <LeftOutlined />
           </Button>
-          <Title fs="35">My Account</Title>
+          <Title fs="35">{t("ContactInfo.title")}</Title>
         </TitleGroup>
 
         <Block>
@@ -70,45 +71,45 @@ const ContactInfo: React.FC = () => {
             <TitleGroup mb="35">
               <StyledAvatar size={64} icon={<UserOutlined />} />
               <div>
-                <Title fs="28">Jon Doe</Title>
-                <Circle>User</Circle>
+                <Title fs="28">{t("ContactInfo.userFullName")}</Title>
+                <Circle>{t("ContactInfo.userRole")}</Circle>
               </div>
             </TitleGroup>
             <Card>
               <CardInfo>
-                <Label>First Name</Label>
+                <Label>{t("ContactInfo.userFirstName")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">Jon</Title>
+                  <Title fs="16">---</Title>
                   <Icon />
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
-                <Label>Last Name</Label>
+                <Label>{t("ContactInfo.userLastName")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">Jon</Title>
+                  <Title fs="16">---</Title>
                   <Icon />
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
-                <Label>Email</Label>
+                <Label>{t("ContactInfo.userEmail")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">jondoe@gmail.com</Title>
+                  <Title fs="16">----</Title>
                   <Icon />
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
-                <Label>Phone</Label>
+                <Label>{t("ContactInfo.userPhone")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">+996705223352</Title>
+                  <Title fs="16">+</Title>
                   <Icon />
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
-                <Label>Password</Label>
+                <Label>{t("ContactInfo.userPassword")}</Label>
                 <TitleGroup justify="space-between">
                   <Title fs="16">********</Title>
                   <Button
@@ -116,7 +117,7 @@ const ContactInfo: React.FC = () => {
                     color={colors.btnWhite}
                     bg={colors.btnDarkBlue}
                   >
-                    Change
+                    {t("ContactInfo.btnChangeText")}
                   </Button>
                 </TitleGroup>
               </CardInfo>
@@ -128,47 +129,47 @@ const ContactInfo: React.FC = () => {
       <ModalWindow 
         modalIsOpen={modalIsOpen} 
         closeModal={closeModal}
-        bg={'#495057'}
-        modalBg={"#343a40"}
+        bg={colors.passwordBg}
+        modalBg={colors.passwordModalBg}
       >
         <StyledForm
           name="normal_login"
           className="form"
           form={form}
           initialValues={{ remember: true }}
-          onFinish={values => onFinish(values as any)}
+          onFinish={values => onFinish(values as IPassword)}
         >
           <FormItem
-            label={t("ResetPage.passwordTitle.item")}
-            name="password"
+            label={t("ContactInfo.passwordTitle.item")}
+            name="newPassword"
             hasFeedback
             rules={[
               {
                 required: true,
-                message: `${t("ResetPage.passwordTitle.error")}`,
+                message: `${t("ContactInfo.passwordTitle.error")}`,
               },
             ]}
           >
             <FormPassword
-              placeholder={t("ResetPage.passwordTitle.placeholder")}
+              placeholder={t("ContactInfo.passwordTitle.placeholder")}
             />
           </FormItem>
 
           <FormItem
-            label={t("ResetPage.conPasswordTitle.item")}
+            label={t("ContactInfo.conPasswordTitle.item")}
             name="confirmPassword"
             hasFeedback
-            dependencies={['password']}
+            dependencies={['newPassword']}
             rules={[
               {
                 required: true,
-                message: `${t("ResetPage.conPasswordTitle.error")}`,
-                validator: (_: any, value: string) => {
+                message: `${t("ContactInfo.conPasswordTitle.error")}`,
+                validator: (_, value) => {
                   if (validatePassword.test(value)) {
                     return Promise.resolve();
                   } else {
                     return Promise.reject(
-                      `${t("ResetPage.passwordTitle.error")}`
+                      `${t("ContactInfo.passwordTitle.error")}`
                     );
                   }
                 },
@@ -176,7 +177,7 @@ const ContactInfo: React.FC = () => {
             ]}
           >
             <FormPassword
-              placeholder={t("ResetPage.conPasswordTitle.placeholder")}
+              placeholder={t("ContactInfo.conPasswordTitle.placeholder")}
             />
           </FormItem>
 
@@ -187,11 +188,12 @@ const ContactInfo: React.FC = () => {
               className="login-form-button"
               loading={loading}
             >
-                {t('ForgotPage.btnText')}
+                {t('ContactInfo.btnText')}
             </PwrButton>
           </FormButton>
 
         </StyledForm>
+
       </ModalWindow>
     </Wrapper>
   );
