@@ -6,6 +6,7 @@ import PublicPage from "pages/PublicPage/PublicPage";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
+import SendProposal from "pages/SendProposal";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/reset_password/*" element={<ResetPassword />} />
+        <Route path="/send_proposal/*" element={<SendProposal />} />
       </Routes>
     </>
   );
