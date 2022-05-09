@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLazySignUpUseGoogleQuery } from "store/apis/auth";
 import { setCredentials } from "store/slices/auth/auth.slice";
-import { IResponseError } from "store/slices/auth/auth.type";
 
 const AuthGoogle: React.FC = () => {
   const [createGoogleUser] = useLazySignUpUseGoogleQuery();
