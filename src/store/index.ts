@@ -10,17 +10,17 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import userReducer from "./reducers/userSlice";
 import { baseApi } from "./apis";
 import authReducer from "./slices/auth/auth.slice";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 const persistConfig = {
   key: "auth",
   storage,
+  whitelist: ["token", "user", "isLoggedIn"],
 };
 
 const rootReducer = combineReducers({
-  userReducer,
   authReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
@@ -36,6 +36,8 @@ export const store = configureStore({
     }).concat(baseApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
+
+setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);
 

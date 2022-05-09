@@ -13,9 +13,8 @@ import {
   StyledNavLink
 } from './styles';
 import { useAppDispatch} from 'hooks/redux';
-import { useLoginMutation } from 'redux/authApiSlice';
-import { setCredentials } from 'redux/reducers/userSlice';
-import { IUser } from 'redux/reducers/types';
+import { useLoginMutation } from 'store/apis/auth';
+import { setCredentials } from 'store/slices/auth/auth.slice';
 
 const SignInForm: React.FC = () => {
   const { t } = useTranslation();
@@ -29,7 +28,7 @@ const SignInForm: React.FC = () => {
   const [login] = useLoginMutation();
   const loginUser = async (value: ILoginFormValues ) => {
     try {
-      const userData: IUserData = await login(value).unwrap();
+      const userData = await login(value).unwrap();
       dispatch(setCredentials(userData));
     } catch(error) {console.log('ERROR:',error)}
   };
@@ -119,7 +118,7 @@ const SignInForm: React.FC = () => {
         </StyledForm>
         <DontAccount>
           {t("SignInForm.dontHaveAccount")}
-          <StyledNavLink to="/test" className="styled">
+          <StyledNavLink to="/sign-up" className="styled">
               {t("SignInForm.registerNow")}
             </StyledNavLink>
         </DontAccount>

@@ -6,12 +6,14 @@ interface UsersState {
   accessToken: string;
   loading: "idle" | "loading" | "succeeded" | "failed";
   error: string;
+  isLoggedIn: boolean;
 }
 const initialState: UsersState = {
   user: {},
   accessToken: "",
   loading: "idle",
   error: "",
+  isLoggedIn: false,
 };
 
 const authSlice = createSlice({
