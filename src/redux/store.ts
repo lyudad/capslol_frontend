@@ -5,6 +5,8 @@ import storage from "redux-persist/lib/storage";
 import { persistStore } from "redux-persist";
 import { userReducer } from "./reducers/userSlice";
 import { authApi } from "./authApiSlice";
+import { passwordApi } from "./services/passwordApi/passwordApi";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 const persistConfig = {
   key: "auth",
@@ -29,6 +31,8 @@ export const store = configureStore({
     }).concat(authApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
+
+setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);
 

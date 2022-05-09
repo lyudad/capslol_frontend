@@ -8,7 +8,6 @@ const initialState: IUserState = {
   auth: null,
   isLoading: false,
   error: null,
-  isHasPassword: false,
 };
 
 export const userSlice = createSlice({

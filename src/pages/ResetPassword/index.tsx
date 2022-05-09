@@ -1,26 +1,40 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { Form } from "antd";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import {
   StyledForm,
-  FormInput,
   FormButton,
   PwrButton,
   FormLink,
   Wrapper,
+  FormItem,
 } from "pages/ForgotPassword/styles";
-import { Error, Star, StyledSpace, Title, TypographyTitle } from "./style";
+import {
+  Error,
+  FormPassword,
+  StyledSpace,
+  TypographyTitle,
+  WindowTitle,
+  Section,
+} from "./style";
+import { IPassword } from "./interfaces";
+import { colors } from "constants/index";
+import { useResetPasswordMutation } from "redux/services/passwordApi/passwordApi";
+import ModalWindow from "common/ModalWindow/ModalWindow";
+import { Password } from "redux/models/passwordModels/password.model";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
+  const [params, setParams] = useSearchParams();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [resetPassword, {data, error: dataError, isError}] = useResetPasswordMutation()
+
+  const validatePassword: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
   const onReset = (): void => {
     form.resetFields();
@@ -30,60 +44,88 @@ const ResetPassword: React.FC = () => {
     setLoading(true);
   };
 
-  const onFinish = (): void => {
-    if (password === confirmPassword) {
+  const onFinish = async (values: IPassword): Promise<void> => {
+    enterLoading();
+    if (values.password === values.confirmPassword) {
+      const value: Password = {
+        token: params.get("token")?.toString(),
+        password: values.confirmPassword,
+        
+      };
+      await resetPassword(value);
       setError(false);
       onReset();
-      enterLoading();
-      navigate("/");
+      openModal()
     } else {
       setError(true);
     }
   };
 
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+    navigate('/')
+  }
+
   return (
-    <Wrapper>
-      <TypographyTitle level={3}>{t("ResetPage.title")}</TypographyTitle>
-      <StyledForm
-        name="normal_login"
-        className="form"
-        form={form}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-      >
+    <Section>
+      <Wrapper width="340">
+        <TypographyTitle color={colors.textWhite} level={3}>{t("ResetPage.title")}</TypographyTitle>
+        <StyledForm
+          name="normal_login"
+          className="form"
+          form={form}
+          initialValues={{ remember: true }}
+          onFinish={values => onFinish(values as IPassword)}
+        >
+       
         <StyledSpace>
-          <div>
-            <div className="titles">
-              <Star>*</Star>
-              <Title>{t("ResetPage.passwordTitle.item")}</Title>
-            </div>
-            <FormInput.Password
+          <FormItem
+            label={t("ResetPage.passwordTitle.item")}
+            name="password"
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: `${t("ResetPage.passwordTitle.error")}`,
+              },
+            ]}
+          >
+            <FormPassword
               placeholder={t("ResetPage.passwordTitle.placeholder")}
-              minLength={8}
-              maxLength={16}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
+          </FormItem>
 
-          <div>
-            <div className="titles">
-              <Star>*</Star>
-              <Title>{t("ResetPage.conPasswordTitle.item")}</Title>
-            </div>
-            <FormInput.Password
+          <FormItem
+            label={t("ResetPage.conPasswordTitle.item")}
+            name="confirmPassword"
+            hasFeedback
+            dependencies={['password']}
+            rules={[
+              {
+                required: true,
+                message: `${t("ResetPage.conPasswordTitle.error")}`,
+                validator: (_, value) => {
+                  if (validatePassword.test(value)) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(
+                      `${t("ResetPage.passwordTitle.error")}`
+                    );
+                  }
+                },
+              },
+            ]}
+          >
+            <FormPassword
               placeholder={t("ResetPage.conPasswordTitle.placeholder")}
-              value={confirmPassword}
-              minLength={8}
-              maxLength={20}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              iconRender={(visible) =>
-                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-              }
             />
-          </div>
+            </FormItem>
 
-          {error ? <Error>{t("ResetPage.conPasswordTitle.error")}</Error> : ""}
+          {error ? <Error>{t("ResetPage.error")}</Error> : ''}
         </StyledSpace>
 
         <FormButton>
@@ -96,13 +138,33 @@ const ResetPassword: React.FC = () => {
             {t("ResetPage.btnText")}
           </PwrButton>
         </FormButton>
+
         <FormLink>
           <NavLink to="/" className="form_link">
             {t("ResetPage.linkText")}
           </NavLink>
         </FormLink>
       </StyledForm>
-    </Wrapper>
+      </Wrapper>
+      
+      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
+        <>
+          { 
+            data ? 
+            <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle> 
+            : dataError
+          }
+
+          {
+            isError && <WindowTitle level={3}>{t("ResetPage.passwordError")}</WindowTitle> 
+          }
+        
+          <NavLink to="/" className="form_link">
+            {t("ResetPage.linkText")}
+          </NavLink>
+        </>
+      </ModalWindow>
+    </Section>
   );
 };
 

@@ -60,15 +60,19 @@
          "title": "Reset Password",
          "passwordTitle": {
                  "item": "Password:",
-                 "placeholder": "Your password"
+                 "placeholder": "Your password",
+                 "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
              },
          "conPasswordTitle": {
                  "item": "Confirm Password:",
-                 "placeholder": "Confirm your password"
+                 "placeholder": "Confirm your password",
+                 "error": "Password must be same"
              },
-             "error": "Passwords do not match, please try again",
-             "btnText": "Submit",
-             "linkText": "Back to Login?"
+         "error": "Passwords do not match, please try again",
+         "btnText": "Save Password",
+         "linkText": "Back to Login?",
+         "loginText": "Successfully done. Now please Login",
+         "passwordError": "Something went error, please try again!"
      },
      "VerifyEmail": {
          "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
