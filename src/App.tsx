@@ -5,10 +5,13 @@ import MainLayout from "components/MainLayout";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
+<<<<<<< HEAD
 import VerifyEmail from "pages/ForgotPassword/components/VerifyEmail";
 import HomePage from "pages/HomePage";
 import AuthForm from "components/AuthForm";
 import RolePage from "pages/RolePage";
+=======
+>>>>>>> develop
 
 const App: React.FC = () => {
   return (
@@ -20,8 +23,7 @@ const App: React.FC = () => {
         <Route path="/profile" element={<PublicPage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
-        <Route path="/verify_email" element={<VerifyEmail />} />
-        <Route path="/reset_password/:id" element={<ResetPassword />} />
+        <Route path="/reset_password/*" element={<ResetPassword />} />
       </Routes>
     </MainLayout>
   );
