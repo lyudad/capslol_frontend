@@ -16,7 +16,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
           {
             required: true,
             type: "string",
-            message: "Please enter your first name.",
+            message: translator("AuthForm.enterFirstName"),
           },
         ]}
       >
@@ -32,7 +32,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
           {
             required: true,
             type: "string",
-            message: "Please enter your last name.",
+            message: translator("AuthForm.enterLastName"),
           },
         ]}
       >
@@ -45,8 +45,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
           {
             required: true,
             type: "email",
-            message:
-              "Check if the email you entered is correct our input your email!",
+            message: translator("AuthForm.checkEmail"),
           },
         ]}
       >
@@ -56,7 +55,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
         label={translator("AuthForm.password")}
         name="password"
         rules={[
-          { required: true, message: "Please enter your password!" },
+          { required: true, message: translator("AuthForm.enterPassword") },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue("password") === value) {
@@ -71,9 +70,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
                 }
               }
               return Promise.reject(
-                new Error(
-                  "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
-                )
+                new Error(translator("AuthForm.passwordCondition"))
               );
             },
           }),
@@ -92,16 +89,14 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!",
+            message: translator("confirmPassword"),
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue("password") === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(
-                new Error("The two passwords that you entered do not match!")
-              );
+              return Promise.reject(new Error(translator("AuthForm.notMatch")));
             },
           }),
         ]}
@@ -119,7 +114,3 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
 };
 
 export default SignUp;
-
-// <StyledButton type="primary" htmlType="submit" disabled={false}>
-// {translator("AuthForm.signUp")}
-// </StyledButton>

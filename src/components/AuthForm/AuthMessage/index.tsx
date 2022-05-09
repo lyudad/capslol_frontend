@@ -1,5 +1,6 @@
 import { Col, Row } from "antd";
 import { StyledParagraph } from "components/UI";
+import { colors } from "constants/index";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
@@ -23,7 +24,7 @@ const AuthMessage: React.FunctionComponent<IAuthMessageProps> = ({
       </Col>
       <Col span={8}>
         <Link to={href}>
-          <StyledParagraph color="#4caf50">
+          <StyledParagraph color={colors.brandColor}>
             {translator(rightText)}
           </StyledParagraph>
         </Link>
