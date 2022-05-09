@@ -1,3 +1,4 @@
+import { IUserData, ILoginFormValues } from './../components/SignInForm/props';
 import { IUser } from "./reducers/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "./store";
@@ -18,7 +19,7 @@ export const authApi = createApi({
     }),
   endpoints: (builder) => ({
 
-    login: builder.mutation<IUser, any>({
+    login: builder.mutation<IUserData, ILoginFormValues>({
       query: (body) => ({
         url: "auth/login",
         method: "POST",

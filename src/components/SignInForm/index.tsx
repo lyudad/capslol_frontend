@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Form, Input } from 'antd';
-import { FormValues, Values } from './props';
+import { FormValues, ILoginFormValues, IUserData} from './props';
 import { useTranslation } from "react-i18next";
 import {
   Wrapper,
@@ -15,6 +15,7 @@ import {
 import { useAppDispatch} from 'hooks/redux';
 import { useLoginMutation } from 'redux/authApiSlice';
 import { setCredentials } from 'redux/reducers/userSlice'; 
+import { IUser } from 'redux/reducers/types';
 
 const SignInForm: React.FC = () => {
   const { t } = useTranslation();
@@ -26,9 +27,9 @@ const SignInForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [login] = useLoginMutation();
-  const loginUser = async (value: Values ) => {
+  const loginUser = async (value: ILoginFormValues ) => {
     try {
-      const userData: any = await login(value).unwrap();
+      const userData: IUserData = await login(value).unwrap();
       dispatch(setCredentials(userData));
     } catch(error) {console.log('ERROR:',error)}
   };

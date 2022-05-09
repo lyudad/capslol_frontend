@@ -7,7 +7,10 @@ import {
 } from "./styles";
 import SignUpForm from "components/SignInForm";
 import { useAppSelector } from "hooks/redux";
+import { useTranslation } from "react-i18next";
+
 const HomePage: React.FC = () => {
+  const { t } = useTranslation();
   const isAuth = useAppSelector((state) => state.userReducer.isLoggedIn);
   const firstName = useAppSelector(
     (state) => state.userReducer.user?.firstName
@@ -19,12 +22,13 @@ const HomePage: React.FC = () => {
         <SignUpForm />
       ) : (
         <Message>
-          <HomeTitle>THE BEST WAY TO FIND YOUR JOB!</HomeTitle>
+          <HomeTitle>{t("HomePage.homeTitle")}</HomeTitle>
           <p>
-            Hello <Name>{firstName}</Name>, welcome to our service.
+            {t("HomePage.hello")} <Name>{firstName}</Name>
+            {t("HomePage.welcomeTo")}
           </p>
           <p>
-            You can view yours{" "}
+            {t("HomePage.youCanView")}{" "}
             <b>
               <StyledNavLink to="/profile">Profile</StyledNavLink>
             </b>
