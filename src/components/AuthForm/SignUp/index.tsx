@@ -60,6 +60,9 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue("password") === value) {
+                if (!getFieldValue("password")) {
+                  return;
+                }
                 const result = getFieldValue("password").match(
                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
                 );

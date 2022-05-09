@@ -1,20 +1,20 @@
 import { Col, Row } from "antd";
 import { StyledParagraph } from "components/UI";
 import * as React from "react";
-import { useLinkClickHandler } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface IAuthMessageProps {
   translator: (message: string) => string;
   leftText: string;
   rightText: string;
-  setValue: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  href: string;
 }
 
 const AuthMessage: React.FunctionComponent<IAuthMessageProps> = ({
   translator,
   leftText,
   rightText,
-  setValue,
+  href,
 }) => {
   return (
     <Row>
@@ -22,11 +22,11 @@ const AuthMessage: React.FunctionComponent<IAuthMessageProps> = ({
         <StyledParagraph>{translator(leftText)}</StyledParagraph>
       </Col>
       <Col span={8}>
-        <a onClick={() => setValue((prev) => !prev)}>
+        <Link to={href}>
           <StyledParagraph color="#4caf50">
             {translator(rightText)}
           </StyledParagraph>
-        </a>
+        </Link>
       </Col>
     </Row>
   );

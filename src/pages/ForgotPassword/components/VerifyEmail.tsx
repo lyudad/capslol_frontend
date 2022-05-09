@@ -5,24 +5,24 @@ import { useTranslation } from "react-i18next";
 import { FormLink, Title, Wrapper } from "../styles";
 
 const NotFoundEmail: React.FC = () => {
-  const { isHasPassword } = useAppSelector((s) => s);
-  const { t } = useTranslation();
+  const { isHasPassword } = useAppSelector((state) => state.userReducer);
+  const { t: translator } = useTranslation();
 
   return (
     <Wrapper>
       {isHasPassword ? (
         <div>
-          <Title>{t("VerifyEmail.fineTitle")}</Title>
+          <Title>{translator("VerifyEmail.fineTitle")}</Title>
           <FormLink>
-            <NavLink to="/">{t("VerifyEmail.linkToLogin")}</NavLink>
+            <NavLink to="/">{translator("VerifyEmail.linkToLogin")}</NavLink>
           </FormLink>
         </div>
       ) : (
         <div>
-          <Title>{t("VerifyEmail.poorTitle")}</Title>
+          <Title>{translator("VerifyEmail.poorTitle")}</Title>
           <FormLink>
             <NavLink to="/forgotten_password">
-              {t("VerifyEmail.linkToPasswordPage")}
+              {translator("VerifyEmail.linkToPasswordPage")}
             </NavLink>
           </FormLink>
         </div>

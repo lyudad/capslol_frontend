@@ -6,7 +6,6 @@ import AuthForm from "components/AuthForm";
 const HomePage: React.FC = () => {
   const [isSignIn, setIsSignIn] = useState(false);
   return <React.Fragment>{!isSignIn && <SignUpForm />}</React.Fragment>;
-  // return <HomeContainer>{!isSignIn && <AuthForm />}</HomeContainer>;
 };
 
 export default HomePage;

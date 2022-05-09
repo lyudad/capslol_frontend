@@ -1,36 +1,61 @@
-import { Col, Row } from "antd";
-import { StyledParagraph } from "components/UI";
+import { Col, message, notification, Row } from "antd";
 import * as React from "react";
-import { StyledLink } from "./style";
-import { GoogleLogin } from 'react-google-login'
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useLazySignUpUseGoogleQuery } from "store/apis/auth";
+import { setCredentials } from "store/slices/auth/auth.slice";
+import { IResponseError } from "store/slices/auth/auth.type";
 
-interface IAuthGoogle {
-  text?: string
-  translator?: (message: string) => string;
-  href?: string
-}
+const AuthGoogle: React.FC = () => {
+  const [createGoogleUser] = useLazySignUpUseGoogleQuery();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const AuthGoogle: React.FunctionComponent<IAuthGoogle> = ({ translator, text, href }) => {
+  const handleLogin = async (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    try {
+      if ("accessToken" in response) {
+        const authResponse = await createGoogleUser(response.tokenId).unwrap();
+        dispatch(setCredentials(authResponse));
 
-  const handleLogin = (googleData: any) => {
-    console.log(googleData)
-  }
+        notification.open({
+          message: "Congratulation!",
+          description: "New User was created!",
+          onClick: () => {
+            console.log("Notification Clicked!");
+          },
+        });
 
-  const handleFailure = (result: any) => {
-    alert(result)
-  }
+        navigate("/select-role");
+      }
+    } catch (error: any) {
+      if (error.data.message) {
+        message.error(error.data.message);
+      }
+    }
+  };
+
+  const handleFailure = (error: any) => {
+    message.error(error);
+  };
   return (
     <Row justify="center">
       <Col span={24}>
-        <GoogleLogin clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}
-          buttonText="Log in with Google"
+        <GoogleLogin
+          clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+          buttonText="Sign up with Google"
           onSuccess={handleLogin}
           onFailure={handleFailure}
-          cookiePolicy={'single_host_origin'} 
+          cookiePolicy={"single_host_origin"}
           theme="dark"
           className="google-auth"
-          />
-          
+        />
       </Col>
     </Row>
   );
