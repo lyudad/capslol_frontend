@@ -40,4 +40,5 @@ export const fonts: Fonts = {
   titlesOfProfile: "14px",
   logoFontWeight: "400",
   signUpButtonsFontWeight: "500",
+  homeMessageFontSize: "18px",
 };

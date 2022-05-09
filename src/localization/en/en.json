@@ -6,7 +6,7 @@
         "test": "TEST"
     },
 
-    "SignUpForm": {
+    "SignInForm": {
         "email": "Email",
         "inputEmail": "input your email",
         "password": "Password",
@@ -79,6 +79,15 @@
          "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
          "linkToLogin": "Login?",
          "linkToPasswordPage": "Forgot Password?"
+     },
+     "HomePage": {
+         "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
+         "hello": "Hello",  
+         "welcomeTo": ", welcome to our service.",
+         "youCanView": "You can view yours"
      }
+
+
+     
 }
   
