@@ -13,5 +13,3 @@ export interface IUserData {
   accessToken: string;
   message?: string;
 }
-
-//  type '{ user: IUser; accessToken: string; }':
