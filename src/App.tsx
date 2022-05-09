@@ -5,13 +5,10 @@ import MainLayout from "components/MainLayout";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
-<<<<<<< HEAD
 import VerifyEmail from "pages/ForgotPassword/components/VerifyEmail";
 import HomePage from "pages/HomePage";
 import AuthForm from "components/AuthForm";
 import RolePage from "pages/RolePage";
-=======
->>>>>>> develop
 
 const App: React.FC = () => {
   return (

@@ -14,7 +14,7 @@ import {
 } from './styles';
 import { useAppDispatch} from 'hooks/redux';
 import { useLoginMutation } from 'redux/authApiSlice';
-import { setCredentials } from 'redux/reducers/userSlice'; 
+import { setCredentials } from 'redux/reducers/userSlice';
 import { IUser } from 'redux/reducers/types';
 
 const SignInForm: React.FC = () => {
@@ -51,7 +51,7 @@ const SignInForm: React.FC = () => {
   const onReset = () => {
     form.resetFields();
   };
-  
+
   const onFinish = (values: FormValues) => {
     loginUser({ user: values });
     onReset();
@@ -118,15 +118,9 @@ const SignInForm: React.FC = () => {
           </Form.Item>
         </StyledForm>
         <DontAccount>
-<<<<<<< HEAD:src/components/SignUpForm/index.tsx
-          {t("SignUpForm.dontHaveAccount")}
-          <StyledNavLink to="/sign-up" className="styled">
-              {t("SignUpForm.registerNow")}
-=======
           {t("SignInForm.dontHaveAccount")}
           <StyledNavLink to="/test" className="styled">
               {t("SignInForm.registerNow")}
->>>>>>> develop:src/components/SignInForm/index.tsx
             </StyledNavLink>
         </DontAccount>
         <WithGoogle>

@@ -1,141 +1,100 @@
 {
-    "AppBar": {
-        "get": "Get",
-        "job": "JOB!",
-        "home": "HOME",
-        "test": "TEST"
+  "AppBar": {
+    "get": "Get",
+    "job": "JOB!",
+    "home": "HOME",
+    "test": "TEST"
+  },
+  "SignInForm": {
+    "email": "Email",
+    "inputEmail": "input your email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "inputPassword": "input your password",
+    "signIn": "Sign in",
+    "dontHaveAccount": "Don't have an account yet?",
+    "registerNow": "Register now",
+    "signInWith": "Sign in with"
+  },
+  "AuthForm": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "inputEmail": "input your email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "inputPassword": "input your password",
+    "signIn": "Sign in",
+    "signUp": "Sign Up",
+    "dontHaveAccount": "Don't have an account yet?",
+    "haveAccount": "You already have an account?",
+    "registerNow": "Register now",
+    "login": "Login",
+    "signInWith": "Sign in with"
+  },
+  "TestReusable": {
+    "wonderfulWorld": "What A Wonderful World"
+  },
+  "TestPage": {
+    "testPage": "Test Page"
+  },
+  "PublicProfile": {
+    "user_name": "User Name",
+    "hour_rate": "Hour rate",
+    "amount_hours": "The available amount of hours:",
+    "education": "Education:",
+    "name_of_courses": "Name of courses",
+    "specialization": "Specialization",
+    "period": "Period of Time",
+    "category": "Category",
+    "development": "Development",
+    "settings": "Settings",
+    "position": "Position",
+    "experience": "Experience",
+    "company_name": "Name of company",
+    "skills": "Skills",
+    "languages": "English",
+    "add_information": "Other additional information",
+    "text_type": "(Text type)",
+    "tag_type": "(tag type [ ])"
+  },
+  "ForgotPage": {
+    "title": "Forgot Password",
+    "email": {
+      "item": "Email",
+      "error": "Please input your Email!!"
     },
-<<<<<<< HEAD
-    "SignUpForm": {
-=======
-
-    "SignInForm": {
->>>>>>> develop
-        "email": "Email",
-        "inputEmail": "input your email",
-        "password": "Password",
-        "forgotPassword": "Forgot your password?",
-        "inputPassword": "input your password",
-        "signIn": "Sign in",
-        "dontHaveAccount": "Don't have an account yet?",
-        "registerNow": "Register now",
-        "signInWith": "Sign in with"
+    "btnText": "Submit",
+    "linkText": "Back to Login?"
+  },
+  "ResetPage": {
+    "title": "Reset Password",
+    "passwordTitle": {
+      "item": "Password:",
+      "placeholder": "Your password",
+      "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
     },
-    "AuthForm": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "email": "Email",
-        "inputEmail": "input your email",
-        "password": "Password",
-        "forgotPassword": "Forgot your password?",
-        "inputPassword": "input your password",
-        "signIn": "Sign in",
-        "signUp": "Sign Up",
-        "dontHaveAccount": "Don't have an account yet?",
-        "haveAccount": "You already have an account?",
-        "registerNow": "Register now",
-        "login": "Login",
-        "signInWith": "Sign in with"
+    "conPasswordTitle": {
+      "item": "Confirm Password:",
+      "placeholder": "Confirm your password",
+      "error": "Password must be same"
     },
-    "TestReusable": {
-        "wonderfulWorld": "What A Wonderful World"
-    },
-    "TestPage": {
-        "testPage": "Test Page"
-    },
-    "PublicProfile": {
-        "user_name": "User Name",
-        "hour_rate": "Hour rate",
-        "amount_hours": "The available amount of hours:",
-        "education": "Education:",
-        "name_of_courses": "Name of courses",
-        "specialization": "Specialization",
-        "period": "Period of Time",
-        "category": "Category",
-        "development": "Development",
-        "settings": "Settings",
-        "position": "Position",
-        "experience": "Experience",
-        "company_name": "Name of company",
-        "skills": "Skills",
-        "languages": "English",
-        "add_information": "Other additional information",
-        "text_type": "(Text type)",
-        "tag_type": "(tag type [ ])"
-    },
-    "ForgotPage": {
-<<<<<<< HEAD
-        "title": "Forgot Password",
-        "email": {
-            "item": "Email",
-            "error": "Please input your Email!!"
-        },
-        "btnText": "Submit",
-        "linkText": "Back to Login?"
-    },
-    "ResetPage": {
-        "title": "Reset Password",
-        "passwordTitle": {
-            "item": "Password:",
-            "placeholder": "Your password"
-        },
-        "conPasswordTitle": {
-            "item": "Confirm Password:",
-            "placeholder": "Confirm your password"
-        },
-        "error": "Passwords do not match, please try again",
-        "btnText": "Submit",
-        "linkText": "Back to Login?"
-    },
-    "VerifyEmail": {
-        "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
-        "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
-        "linkToLogin": "Login?",
-        "linkToPasswordPage": "Forgot Password?"
-    }
+    "error": "Passwords do not match, please try again",
+    "btnText": "Save Password",
+    "linkText": "Back to Login?",
+    "loginText": "Successfully done. Now please Login",
+    "passwordError": "Something went error, please try again!"
+  },
+  "VerifyEmail": {
+    "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
+    "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
+    "linkToLogin": "Login?",
+    "linkToPasswordPage": "Forgot Password?"
+  },
+  "HomePage": {
+    "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
+    "hello": "Hello",
+    "welcomeTo": ", welcome to our service.",
+    "youCanView": "You can view yours"
+  }
 }
-=======
-         "title": "Forgot Password",
-         "email": {
-             "item": "Email",
-             "error": "Please input your Email!!"
-         },
-         "btnText": "Submit",
-         "linkText": "Back to Login?"
-     },
-     "ResetPage": {
-         "title": "Reset Password",
-         "passwordTitle": {
-                 "item": "Password:",
-                 "placeholder": "Your password",
-                 "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
-             },
-         "conPasswordTitle": {
-                 "item": "Confirm Password:",
-                 "placeholder": "Confirm your password",
-                 "error": "Password must be same"
-             },
-         "error": "Passwords do not match, please try again",
-         "btnText": "Save Password",
-         "linkText": "Back to Login?",
-         "loginText": "Successfully done. Now please Login",
-         "passwordError": "Something went error, please try again!"
-     },
-     "VerifyEmail": {
-         "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
-         "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
-         "linkToLogin": "Login?",
-         "linkToPasswordPage": "Forgot Password?"
-     },
-     "HomePage": {
-         "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
-         "hello": "Hello",  
-         "welcomeTo": ", welcome to our service.",
-         "youCanView": "You can view yours"
-     }
-
-
-     
-}
-  
->>>>>>> develop
