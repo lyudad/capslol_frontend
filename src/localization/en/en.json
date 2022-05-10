@@ -79,6 +79,26 @@
          "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
          "linkToLogin": "Login?",
          "linkToPasswordPage": "Forgot Password?"
-     }
+     },
+
+    "Proposal": {
+        "title": "Submit Proposal",
+        "subTitle": "Terms",
+        "jobQuestion": "What is the rate you'd like to bid for this job?",
+        "youRate": "Your profile rate: $4.00/hr",
+        "jobOwnerRate": "Client’s budget: $5.00 - $20.00/hr",
+        "hourlyRate": "Hourly Rate",
+        "getJobRate": "20% GetJob Service Fee",
+        "gotRate": "You'll receive",
+        "letterTitle": "Letter",
+        "coverLetterTitle": " Cover Letter",
+        "uploadTitle": "Attachments",
+        "uploadBtnText": "Click to upload",
+        "submitBtnText": "Submit",
+        "error": {
+            "number": "Value should contain just number",
+            "length": "Value should be less than 4 character"
+        }
+    }
 }
   

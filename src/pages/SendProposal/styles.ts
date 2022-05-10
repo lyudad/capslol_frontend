@@ -1,23 +1,35 @@
 ﻿import styled from "styled-components";
-import { Input, Tooltip } from "antd";
+import { Button, Form, Input, Tooltip } from "antd";
 import { colors, fonts } from "constants/index";
 import { IProps } from "./interfaces";
 import TextArea from "antd/lib/input/TextArea";
 
+const {
+  bgProposal,
+  bgBlack,
+  proposalWhite,
+  proposalGreen,
+  proposalWhiteGreen,
+  textWhite,
+  appBarBrd,
+  brandColor,
+} = colors;
+
 export const Wrapper = styled.div`
-  background: ${colors.homeBgr};
-  background-image: url(./images/bg-image.jpg);
+  background: ${bgProposal};
+  background-image: url(./images/bg-image.png);
   background-size: cover;
   background-position: center;
+  background-blend-mode: darken;
   min-height: 100vh;
   padding: 70px;
 `;
 
 export const ProposalCard = styled.div`
   min-height: 20%;
-  background: #232b2b;
+  background: ${bgBlack};
   color: white;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${proposalWhite};
   border-radius: 5px;
   margin-bottom: 30px;
 `;
@@ -31,18 +43,50 @@ export const Font = styled.p`
 `;
 
 export const Section = styled.section`
-  border-top: 1px solid wheat;
+  border-top: 1px solid ${proposalWhite};
   padding: 20px;
 `;
 
-export const StyledInput = styled(Input)`
+export const FormItem = styled(Form.Item)`
   width: 35%;
-  background: transparent !important;
+`;
+
+export const StyledInput = styled(Input)`
+  width: 100%;
   border-radius: 5px;
+  font-size: 16px;
+  padding: 5px 10px;
   .ant-input-affix-wrapper > input.ant-input {
-    color: #fff;
+    color: ${textWhite};
     padding: 0 20px;
     text-align: end;
+  }
+  .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: ${proposalGreen};
+    border-right-width: 1px;
+    z-index: 1;
+  }
+  .ant-input-affix-wrapper-focused,
+  .ant-input-affix-wrapper:focus {
+    border-color: ${proposalGreen};
+    box-shadow: 0 0 0 2px ${appBarBrd};
+    border-right-width: 1px;
+    outline: 0;
+  }
+  .ant-input-affix-wrapper:hover {
+    border-color: ${proposalGreen};
+    border-right-width: 1px;
+  }
+  .ant-input:focus {
+    border-color: ${proposalGreen};
+    box-shadow: 0 0 0 2px ${appBarBrd};
+    border-right-width: 1px;
+    outline: 0;
+  }
+
+  .ant-input:hover {
+    border-color: ${proposalGreen};
+    border-right-width: 1px;
   }
 `;
 
@@ -59,21 +103,85 @@ export const Hr = styled.hr`
   margin-top: 18px;
   margin-bottom: 18px;
   border: 0;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid ${proposalWhite};
   height: 0;
   overflow: visible;
 `;
 
 export const StyledTooltip = styled(Tooltip)`
   .ant-input-textarea-show-count:after {
-    color: #fff;
+    color: ${textWhite};
+  }
+
+  textarea.ant-input {
+    background: transparent !important;
+    color: ${textWhite};
+    border-radius: 5px;
   }
 `;
 
 export const StyledTextArea = styled(TextArea)`
-  textarea {
-    background: transparent;
-    color: #fff;
-    border-radius: 5px;
+  background: transparent !important;
+  color: ${textWhite};
+  border-radius: 5px;
+  font-size: 18px;
+  &:focus {
+    border-color: ${brandColor};
+    box-shadow: 0 0 0 2px ${appBarBrd};
+    border-right-width: 1px;
+    outline: 0;
+  }
+
+  &:hover {
+    border-color: ${brandColor};
+    border-right-width: 1px;
+  }
+`;
+
+export const StyledButton = styled(Button)`
+  background: transparent;
+  color: ${textWhite};
+  &:active {
+    color: ${textWhite} !important;
+    border-color: ${proposalGreen};
+    background: ${proposalGreen};
+  }
+
+  &:focus,
+  &:hover {
+    color: ${textWhite};
+    border-color: ${proposalWhiteGreen};
+    background: ${proposalWhiteGreen};
+  }
+`;
+
+export const Block = styled.div`
+  padding: 20px 0;
+`;
+
+export const UploadForm = styled(Form.Item)`
+  border: 1px dashed ${brandColor};
+  padding: 20px;
+  text-align: center;
+  .ant-form-item-label > label {
+    color: ${textWhite};
+  }
+
+  button {
+    background: ${proposalGreen};
+    border: 1px solid black;
+    &:active {
+      color: ${textWhite} !important;
+      border-color: ${proposalGreen};
+      background: ${proposalGreen};
+    }
+
+    &:focus,
+    &:hover {
+      color: ${textWhite}f;
+      border-color: ${proposalWhiteGreen};
+      background: ${proposalWhiteGreen};
+      box-shadow: 0 0 0 2px ${appBarBrd};
+    }
   }
 `;

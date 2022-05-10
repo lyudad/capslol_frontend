@@ -29,6 +29,11 @@ export const colors: Colors = {
   bgWhiteDark: "rgba(1,1,1,0.9)",
   modalBg: "rgb(255, 255, 255)",
   modalWindowBg: "rgba(255, 255, 255, 0.5)",
+  textGrey: "#9aaa97",
+  bgProposal: "rgba(0, 0, 0, 0.6)",
+  proposalWhite: "#e0e0e0",
+  proposalGreen: "#4e944f",
+  proposalWhiteGreen: "#83bd75",
 };
 
 export const fonts: Fonts = {
