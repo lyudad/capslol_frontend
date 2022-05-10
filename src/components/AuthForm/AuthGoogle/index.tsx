@@ -1,4 +1,5 @@
 import { Col, message, notification, Row } from "antd";
+import { RequestHeader } from "constants/request.constants";
 import * as React from "react";
 import {
   GoogleLogin,
@@ -19,7 +20,7 @@ const AuthGoogle: React.FC = () => {
     response: GoogleLoginResponse | GoogleLoginResponseOffline
   ) => {
     try {
-      if ("accessToken" in response) {
+      if (RequestHeader.ACCESS_TOKEN in response) {
         const authResponse = await createGoogleUser(response.tokenId).unwrap();
         dispatch(setCredentials(authResponse));
 
