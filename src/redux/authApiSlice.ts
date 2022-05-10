@@ -1,7 +1,6 @@
 import { IUserData, ILoginFormValues } from './../components/SignInForm/props';
-import { IUser } from "./reducers/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "./store";
+import { RootState } from 'redux/index';
 
 export const authApi = createApi({
   reducerPath: "userApi",

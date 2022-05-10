@@ -51,7 +51,6 @@ export const Avatar = styled.div`
 `;
 export const ButtonSet = styled(Button)`
   display: flex;
-  margin-left: auto;
   background: none;
   border: 1px solid white;
   color: #fff;

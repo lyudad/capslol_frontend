@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,7 @@ import Button from "common/Button/Button";
 import ModalWindow from "common/ModalWindow/ModalWindow";
 import Container from "common/Container/Container";
 import { IPassword } from "./interfaces";
+import { useGetSingleUserQuery } from "redux/apis/settings";
 
 const ContactInfo: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -32,6 +33,12 @@ const ContactInfo: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
+  const { data } = useGetSingleUserQuery(3)
+
+  useEffect(() => {
+    console.log(data)
+
+  }, [])
 
   const onFinish = async (values: IPassword): Promise<void> => {
     enterLoading()

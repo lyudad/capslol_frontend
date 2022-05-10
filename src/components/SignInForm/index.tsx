@@ -14,8 +14,8 @@ import {
 } from './styles';
 import { useAppDispatch} from 'hooks/redux';
 import { useLoginMutation } from 'redux/authApiSlice';
-import { setCredentials } from 'redux/reducers/userSlice'; 
-import { IUser } from 'redux/reducers/types';
+import { setCredentials } from 'redux/slices/userSlice';
+// import { IUser } from 'redux/reducers/types';
 
 const SignInForm: React.FC = () => {
   const { t } = useTranslation();

@@ -1,4 +1,5 @@
-import { IUser } from "redux/reducers/types";
+import { IUser } from "redux/slices/types";
+
 export interface FormValues {
   email: string;
   password: string;

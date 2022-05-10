@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   Description,
   ProfileContainer,
@@ -8,13 +9,14 @@ import {
   Page,
   ButtonSet,
 } from "./styles";
-import { Button } from "antd";
+import { Button, Row } from "antd";
 import "antd/dist/antd.min.css";
 import avatar from "./avatar.png";
 import { colors } from "constants/index";
 
 const PublicPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <Page>
@@ -95,7 +97,13 @@ const PublicPage: React.FC = () => {
             <span>{t("PublicProfile.text_type")}</span>
           </Description>
         </Sections>
-        <ButtonSet type="default">{t("PublicProfile.settings")}</ButtonSet>
+        <Row justify="end">
+          {/* TODO:id в скопках нужно указать id user-a */}
+          <ButtonSet onClick={() => navigate(`/contact_info/`)} type="default">
+            {t("PublicProfile.contact_info")}
+          </ButtonSet>
+          <ButtonSet type="default">{t("PublicProfile.settings")}</ButtonSet>
+        </Row>
       </ProfileContainer>
     </Page>
   );
