@@ -2,12 +2,13 @@
 import Modal from "react-modal";
 import { Button, Parent } from "./style";
 import { ICustomStyles, IProps } from "./types";
-import { colors } from "constants/index";
 
 const ModalWindow: React.FC<IProps> = ({
   children,
   modalIsOpen,
   closeModal,
+  bg,
+  modalBg,
 }) => {
   const customStyles: ICustomStyles = {
     overlay: {
@@ -16,7 +17,7 @@ const ModalWindow: React.FC<IProps> = ({
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: colors.modalWindowBg,
+      backgroundColor: modalBg,
     },
     content: {
       position: "absolute",
@@ -24,7 +25,7 @@ const ModalWindow: React.FC<IProps> = ({
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      background: colors.modalBg,
+      background: bg,
     },
   };
 
