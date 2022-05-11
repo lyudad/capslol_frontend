@@ -98,7 +98,7 @@ const PublicPage: React.FC = () => {
           </Description>
         </Sections>
         <Row justify="end">
-          {/* TODO:id в скопках нужно указать id user-a */}
+          {/* TODO:id в фигурных скопках нужно указать id user-a */}
           <ButtonSet onClick={() => navigate(`/contact_info/`)} type="default">
             {t("PublicProfile.contact_info")}
           </ButtonSet>

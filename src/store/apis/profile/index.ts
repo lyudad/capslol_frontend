@@ -3,19 +3,17 @@ import { IPassword } from "./profile.types";
 
 export const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSingleUser: builder.query<any, any>({
-      query: (id: number) => ({
-        url: `auth/getUser/${id}`,
-      }),
-    }),
     changePassword: builder.mutation<IPassword, IPassword>({
-      query: (value) => ({
-        url: `auth/changePasswordWithId/${value.id}`,
-        method: "PUT",
-        body: { password: value.password },
-      }),
+      query(value) {
+        const { id, password } = value;
+        return {
+          url: `auth/changePasswordWithId/${id}`,
+          method: "PUT",
+          body: { password: password },
+        };
+      },
     }),
   }),
 });
 
-export const { useGetSingleUserQuery, useChangePasswordMutation } = profileApi;
+export const { useChangePasswordMutation } = profileApi;

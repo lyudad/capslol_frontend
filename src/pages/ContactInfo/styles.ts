@@ -6,13 +6,6 @@ import { colors } from "constants/index";
 
 export const Wrapper = styled.div`
   padding: 50px 0;
-  /* background: rgba(0, 0, 0, 0.8); */
-  background-image: url("../../../public/images/bg2.jpg") !important;
-  /* background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; */
-  min-height: 100vh;
-  background-blend-mode: darken;
 `;
 
 export const TitleGroup = styled.div`
@@ -35,7 +28,7 @@ export const Block = styled.div`
 `;
 
 export const Card = styled.div`
-  background: rgba(0, 0, 0, 0.8);
+  background: ${colors.bgBlack};
   width: 500px;
   border-radius: 10px;
   padding: 20px;
@@ -70,12 +63,14 @@ export const IconNotFound = styled(CloseOutlined)`
 export const Circle = styled.div`
   background: linear-gradient(
     90deg,
-    hsla(339, 100%, 55%, 1) 0%,
-    hsla(197, 100%, 64%, 1) 100%
+    ${colors.hslaCircleRed} 0%,
+    ${colors.hslaCircleBlue} 100%
   );
   border-radius: 5px;
   color: ${colors.navColor};
   font-size: 16px;
   text-align: center;
   font-weight: bold;
+  padding: 3px;
+  width: 60%;
 `;

@@ -1,5 +1,5 @@
-﻿import React, { useEffect, useState } from "react";
-import { Form } from "antd";
+﻿import React, { useState } from "react";
+import { Form, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { LeftOutlined, UserOutlined } from "@ant-design/icons";
@@ -23,11 +23,10 @@ import { colors } from "constants/index";
 import { validatePassword } from "constants/validate";
 import Button from "common/Button/Button";
 import ModalWindow from "common/ModalWindow/ModalWindow";
-import Container from "common/Container/Container";
 import { IChangePassword } from "./interfaces";
-import { useChangePasswordMutation, useGetSingleUserQuery } from "store/apis/profile";
-import { useAppSelector } from "hooks/redux";
+import { useChangePasswordMutation } from "store/apis/profile";
 import { IPassword } from "store/apis/profile/profile.types";
+import { useAppSelector } from "hooks/redux";
 
 const ContactInfo: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -35,34 +34,31 @@ const ContactInfo: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  // TODO:
-  // const {id} = useParams()
+  const { id } = useParams()
 
-  // const { data } = useGetSingleUserQuery(3)
-  const [changePassword, {isError, isSuccess}] = useChangePasswordMutation()
+  const [changePassword, {isError, isSuccess}] =useChangePasswordMutation()
   const { user } = useAppSelector(s => s.authReducer)
-
-  // const {email, firstName, lastName, phoneNumber} = data?.data
-
-  console.log(user)
 
   const onFinish = async (values: IChangePassword): Promise<void> => {
     enterLoading()
     try {
       if (values.newPassword === values.confirmPassword) {
         const value: IPassword = {
-          id: 1,
+          id: Number(id),
           password: values.confirmPassword,
         };
-
-        const response = await changePassword(value).unwrap()
+        await changePassword(value).unwrap()
+      } else {
+        message.error('Password do not match, please try again')
+        onReset()
+        setLoading(false)
       }
-    } catch (error) {
-      throw new Error(`Error, ${error} `)
+    } catch (error: any) {
+        message.error(error.data.message);
     }
   };
 
-  function openModal() {
+  function openModal(): void {
     setIsOpen(true);
   }
 
@@ -70,66 +66,67 @@ const ContactInfo: React.FC = () => {
     setIsOpen(false);
   }
 
-  const handleNavigate = () => navigate("/profile");
+  const handleNavigate = (): void => navigate("/profile");
 
-  const enterLoading = (): void => {
-    setLoading(true);
-  };
+  const enterLoading = (): void => setLoading(true);
+
+  const onReset = (): void => form.resetFields();
 
   return (
     <Wrapper>
-      <Container>
-        <TitleGroup mb="50">
-          <Button
-            onClick={handleNavigate}
-            mr="20"
-            color={colors.btnWhite}
-            bg={colors.btnDarkBlue}
-          >
-            <LeftOutlined />
-          </Button>
-          <Title fs="35">{t("ContactInfo.title")}</Title>
-        </TitleGroup>
+      <TitleGroup mb="50">
+        <Button
+          onClick={handleNavigate}
+          mr="20"
+          color={colors.btnWhite}
+          bg={colors.btnDarkBlue}
+        >
+          <LeftOutlined />
+        </Button>
+        <Title fs="35">{t("ContactInfo.title")}</Title>
+      </TitleGroup>
 
         <Block>
           <div>
             <TitleGroup mb="35">
               <StyledAvatar size={64} icon={<UserOutlined />} />
               <div>
-                {/* <Title fs="28">{`${firstName} ${lastName}`}</Title> */}
-                <Circle>{t("ContactInfo.userRole")}</Circle>
+                <Title fs="28">{`${user?.firstName} ${user?.lastName}`}</Title>
+                <Circle>{user?.role ? user?.role : 'Not Found'}</Circle>
               </div>
             </TitleGroup>
             <Card>
               <CardInfo>
                 <Label>{t("ContactInfo.userFirstName")}</Label>
                 <TitleGroup justify="space-between">
-                  {/* <Title fs="16">{firstName}</Title> */}
-                  {/* {firstName ? <Icon /> : <IconNotFound />} */}
+                  <Title fs="16">{user?.firstName}</Title>
+                  {user?.firstName ? <Icon /> : <IconNotFound />}
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
                 <Label>{t("ContactInfo.userLastName")}</Label>
                 <TitleGroup justify="space-between">
-                  {/* <Title fs="16">{lastName}</Title> */}
-                  {/* {lastName ? <Icon /> : <IconNotFound />} */}
+                  <Title fs="16">{user?.lastName}</Title>
+                  {user?.lastName ? <Icon /> : <IconNotFound />}
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
                 <Label>{t("ContactInfo.userEmail")}</Label>
                 <TitleGroup justify="space-between">
-                  {/* <Title fs="16">{email}</Title> */}
-                  {/* {email ? <Icon /> : <IconNotFound />} */}
+                  <Title fs="16">{user?.email}</Title>
+                  {user?.email ? <Icon /> : <IconNotFound />}
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
                 <Label>{t("ContactInfo.userPhone")}</Label>
                 <TitleGroup justify="space-between">
-                  {/* <Title fs="16">{phoneNumber ? phoneNumber : 'You phone number is empty'}</Title> */}
-                  {/* {phoneNumber ? <Icon /> : <IconNotFound />} */}
+                  <Title fs="16">
+                    {user?.phoneNumber ? user?.phoneNumber : 'You phone number is empty'}
+                  </Title>
+                  {user?.phoneNumber ? <Icon /> : <IconNotFound />}
                 </TitleGroup>
               </CardInfo>
 
@@ -150,7 +147,6 @@ const ContactInfo: React.FC = () => {
             </Card>
           </div>
         </Block>
-      </Container>
 
       <ModalWindow
         modalIsOpen={modalIsOpen}

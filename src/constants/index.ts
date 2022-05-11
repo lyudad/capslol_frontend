@@ -38,6 +38,8 @@ export const colors: Colors = {
   labelText: "#ced4da",
   passwordBg: "#495057",
   passwordModalBg: "#343a40",
+  hslaCircleRed: "hsla(339, 100%, 55%, 1)",
+  hslaCircleBlue: "hsla(197, 100%, 64%, 1) ",
 };
 
 export const fonts: Fonts = {
