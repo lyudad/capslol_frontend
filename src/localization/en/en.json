@@ -63,7 +63,8 @@
     "languages": "English",
     "add_information": "Other additional information",
     "text_type": "(Text type)",
-    "tag_type": "(tag type [ ])"
+    "tag_type": "(tag type [ ])",
+    "contact_info": "Contact Info"
   },
   "ForgotPage": {
     "title": "Forgot Password",
@@ -85,11 +86,8 @@
       "item": "Confirm Password:",
       "placeholder": "Confirm your password",
       "error": "Password must be same"
-    },
-
-    "TestPage": {
-            "testPage": "Test Page"
-        },
+    }
+  },
     "PublicProfile": {
             "user_name": "User Name",
             "hour_rate": "Hour rate",
@@ -109,19 +107,11 @@
             "add_information": "Other additional information",
             "text_type": "(Text type)",
             "tag_type": "(tag type [ ])",
-            "contact_info": "Contact Info"
+
         },
 
 
-    "ForgotPage": {
-         "title": "Forgot Password",
-         "email": {
-             "item": "Email",
-             "error": "Please input your Email!!"
-         },
-         "btnText": "Submit",
-         "linkText": "Back to Login?"
-     },
+
      "ResetPage": {
          "title": "Reset Password",
          "passwordTitle": {

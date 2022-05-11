@@ -21,13 +21,9 @@ import {
 import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
 import ModalWindow from "common/ModalWindow/ModalWindow";
-<<<<<<< HEAD
-import { Password } from "redux/models/passwordModels/password.model";
-import { validatePassword } from "constants/validate";
-=======
 import { Password } from "store/slices/auth/auth.type";
 import { useResetPasswordMutation } from "store/apis/auth";
->>>>>>> develop
+import { validatePassword } from "constants/validate";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -142,25 +138,20 @@ const ResetPassword: React.FC = () => {
           </PwrButton>
         </FormButton>
 
-        <FormLink>
-          <NavLink to="/" className="form_link">
-            {t("ResetPage.linkText")}
-          </NavLink>
-        </FormLink>
-      </StyledForm>
+          <FormLink>
+            <NavLink to="/" className="form_link">
+              {t("ResetPage.linkText")}
+            </NavLink>
+          </FormLink>
+        </StyledForm>
       </Wrapper>
-<<<<<<< HEAD
-      
-      <ModalWindow 
-          modalIsOpen={modalIsOpen} 
-          closeModal={closeModal} 
-          bg={colors.modalBg} 
+
+      <ModalWindow
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          bg={colors.modalBg}
           modalBg={colors.modalWindowBg}
       >
-=======
-
-      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
->>>>>>> develop
         <>
           {
             data ?
