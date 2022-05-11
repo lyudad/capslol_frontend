@@ -79,69 +79,67 @@ const SignInForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <Wrapper>
-        <StyledForm
-          form={form}
-          onFinish={values => onFinish(values as FormValues)}
-          name="basic"
-          initialValues={{ remember: true }}
-          autoComplete="off"
+    <Wrapper>
+      <StyledForm
+        form={form}
+        onFinish={values => onFinish(values as FormValues)}
+        name="basic"
+        initialValues={{ remember: true }}
+        autoComplete="off"
+      >
+        <Form.Item
+          label={translator("AuthForm.email")}
+          name="email"
+          rules={[
+            {
+              required: true,
+              type: 'email',
+              message: translator("AuthForm.checkEmail"),
+            },
+          ]}
         >
-          <Form.Item
-            label={translator("AuthForm.email")}
+          <Input
             name="email"
-            rules={[
-              {
-                required: true,
-                type: 'email',
-                message: translator("AuthForm.checkEmail"),
-              },
-            ]}
-          >
-            <Input
-              name="email"
-              placeholder={translator("AuthForm.inputEmail")}
-            />
-          </Form.Item>
-          <Form.Item
+            placeholder={translator("AuthForm.inputEmail")}
+          />
+        </Form.Item>
+        <Form.Item
 
-            label={translator("AuthForm.password")}
+          label={translator("AuthForm.password")}
+          name="password"
+          rules={[{ required: true, message: translator("AuthForm.enterPassword") }]}
+        >
+          <Input.Password
             name="password"
-            rules={[{ required: true, message: translator("AuthForm.enterPassword") }]}
-          >
-            <Input.Password
-              name="password"
-              minLength={8}
-              maxLength={20}
-              placeholder={translator("AuthForm.inputPassword")}
-              autoComplete=""
-            />
-          </Form.Item>
+            minLength={8}
+            maxLength={20}
+            placeholder={translator("AuthForm.inputPassword")}
+            autoComplete=""
+          />
+        </Form.Item>
 
-          <ForgotPass>
-            <StyledNavLink to={Paths.FORGOTTEN_PASSWORD}>
-              {translator("AuthForm.forgotPassword")}
-            </StyledNavLink>
-          </ForgotPass>
-          <Form.Item>
-            <ButtonSignIn
-              type="primary"
-              htmlType="submit"
-            >
-              {translator("AuthForm.signIn")}
-            </ButtonSignIn>
-          </Form.Item>
-          <DontAccount>
-            {translator("AuthForm.dontHaveAccount")}
-            <StyledNavLink to={Paths.SIGN_UP} className="styled">
-              {translator("AuthForm.registerNow")}
-            </StyledNavLink>
-          </DontAccount>
-          <AuthGoogle onFailure={handleFailure} onSuccess={handleLogin} buttonText={translator("AuthGoogle.signInMessage")} />
-        </StyledForm>
-      </Wrapper>
-    </div>
+        <ForgotPass>
+          <StyledNavLink to={Paths.FORGOTTEN_PASSWORD}>
+            {translator("AuthForm.forgotPassword")}
+          </StyledNavLink>
+        </ForgotPass>
+        <Form.Item>
+          <ButtonSignIn
+            type="primary"
+            htmlType="submit"
+          >
+            {translator("AuthForm.signIn")}
+          </ButtonSignIn>
+        </Form.Item>
+        <DontAccount>
+          {translator("AuthForm.dontHaveAccount")}
+          <StyledNavLink to={Paths.SIGN_UP} className="styled">
+            {translator("AuthForm.registerNow")}
+          </StyledNavLink>
+        </DontAccount>
+        <AuthGoogle onFailure={handleFailure} onSuccess={handleLogin} buttonText={translator("AuthGoogle.signInMessage")} />
+      </StyledForm>
+    </Wrapper>
   );
 };
 
