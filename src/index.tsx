@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
+<<<<<<< HEAD
 import { store, persistor } from "./redux";
+=======
+import { store, persistor } from "./store";
+>>>>>>> develop
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from "react-redux";
 import "antd/dist/antd.min.css";

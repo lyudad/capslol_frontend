@@ -11,9 +11,9 @@ import { useTranslation } from "react-i18next";
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
-  const isAuth = useAppSelector((state) => state.userReducer.isLoggedIn);
+  const isAuth = useAppSelector((state) => state.authReducer.isLoggedIn);
   const firstName = useAppSelector(
-    (state) => state.userReducer.user?.firstName
+    (state) => state.authReducer.user?.firstName
   );
 
   return (

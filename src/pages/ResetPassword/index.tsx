@@ -20,10 +20,14 @@ import {
 } from "./style";
 import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
-import { useResetPasswordMutation } from "redux/services/passwordApi/passwordApi";
 import ModalWindow from "common/ModalWindow/ModalWindow";
+<<<<<<< HEAD
 import { Password } from "redux/models/passwordModels/password.model";
 import { validatePassword } from "constants/validate";
+=======
+import { Password } from "store/slices/auth/auth.type";
+import { useResetPasswordMutation } from "store/apis/auth";
+>>>>>>> develop
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -49,7 +53,7 @@ const ResetPassword: React.FC = () => {
       const value: Password = {
         token: params.get("token")?.toString(),
         password: values.confirmPassword,
-        
+
       };
       await resetPassword(value);
       setError(false);
@@ -80,7 +84,7 @@ const ResetPassword: React.FC = () => {
           initialValues={{ remember: true }}
           onFinish={values => onFinish(values as IPassword)}
         >
-       
+
         <StyledSpace>
           <FormItem
             label={t("ResetPage.passwordTitle.item")}
@@ -145,6 +149,7 @@ const ResetPassword: React.FC = () => {
         </FormLink>
       </StyledForm>
       </Wrapper>
+<<<<<<< HEAD
       
       <ModalWindow 
           modalIsOpen={modalIsOpen} 
@@ -152,17 +157,21 @@ const ResetPassword: React.FC = () => {
           bg={colors.modalBg} 
           modalBg={colors.modalWindowBg}
       >
+=======
+
+      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
+>>>>>>> develop
         <>
-          { 
-            data ? 
-            <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle> 
+          {
+            data ?
+            <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle>
             : dataError
           }
 
           {
-            isError && <WindowTitle level={3}>{t("ResetPage.passwordError")}</WindowTitle> 
+            isError && <WindowTitle level={3}>{t("ResetPage.passwordError")}</WindowTitle>
           }
-        
+
           <NavLink to="/" className="form_link">
             {t("ResetPage.linkText")}
           </NavLink>
