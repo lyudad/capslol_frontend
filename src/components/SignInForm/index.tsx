@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, message, notification } from 'antd';
-import { FormValues,} from './props';
+import { FormValues, } from './props';
 import { useTranslation } from "react-i18next";
 import {
   Wrapper,
@@ -25,7 +25,7 @@ type FormType = {
 }
 
 const SignInForm: React.FC = () => {
-  const { t:translator } = useTranslation();
+  const { t: translator } = useTranslation();
   const [form] = Form.useForm();
   const [loginUser] = useLoginMutation();
   const [loginGoogleUser] = useLazySignInUseGoogleQuery();
@@ -108,7 +108,7 @@ const SignInForm: React.FC = () => {
 
             label={translator("AuthForm.password")}
             name="password"
-            rules={[{ required: true, message: translator("AuthForm.enterPassword")}]}
+            rules={[{ required: true, message: translator("AuthForm.enterPassword") }]}
           >
             <Input.Password
               name="password"
@@ -132,14 +132,14 @@ const SignInForm: React.FC = () => {
               {translator("AuthForm.signIn")}
             </ButtonSignIn>
           </Form.Item>
-        </StyledForm>
-        <DontAccount>
-          {translator("AuthForm.dontHaveAccount")}
-          <StyledNavLink to={Paths.SIGN_UP} className="styled">
+          <DontAccount>
+            {translator("AuthForm.dontHaveAccount")}
+            <StyledNavLink to={Paths.SIGN_UP} className="styled">
               {translator("AuthForm.registerNow")}
             </StyledNavLink>
-        </DontAccount>
-        <AuthGoogle  onFailure={handleFailure} onSuccess={handleLogin} buttonText={translator("AuthGoogle.signInMessage")}/>
+          </DontAccount>
+          <AuthGoogle onFailure={handleFailure} onSuccess={handleLogin} buttonText={translator("AuthGoogle.signInMessage")} />
+        </StyledForm>
       </Wrapper>
     </div>
   );
