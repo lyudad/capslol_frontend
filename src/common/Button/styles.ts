@@ -31,4 +31,10 @@ export const Wrapper = styled.button`
     color: ${(props: IProps) => props.bg};
     background: ${(props: IProps) => props.color};
   }
+
+  &:disabled {
+    color: white;
+    background: red;
+    cursor: no-drop;
+  }
 `;

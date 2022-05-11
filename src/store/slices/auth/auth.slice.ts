@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-﻿import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IResponse, UserType } from "./auth.types";
-=======
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IResponse, UserType } from "./auth.type";
->>>>>>> develop
 
 interface UsersState {
   user: UserType | null;

@@ -9,10 +9,7 @@ import {
   Page,
   ButtonSet,
 } from "./styles";
-<<<<<<< HEAD
 import { Button, Row } from "antd";
-=======
->>>>>>> develop
 import "antd/dist/antd.min.css";
 import avatar from "./avatar.png";
 import { colors } from "constants/index";

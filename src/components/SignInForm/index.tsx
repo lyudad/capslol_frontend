@@ -13,14 +13,8 @@ import {
   StyledNavLink
 } from './styles';
 import { useAppDispatch} from 'hooks/redux';
-<<<<<<< HEAD
-import { useLoginMutation } from 'redux/authApiSlice';
-import { setCredentials } from 'redux/slices/userSlice';
-// import { IUser } from 'redux/reducers/types';
-=======
 import { useLoginMutation } from 'store/apis/auth';
 import { setCredentials } from 'store/slices/auth/auth.slice';
->>>>>>> develop
 
 const SignInForm: React.FC = () => {
   const { t } = useTranslation();

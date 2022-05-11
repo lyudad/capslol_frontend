@@ -5,6 +5,8 @@
   fs?: string;
 }
 
-export interface IPassword {
-  password: string;
+export interface IChangePassword {
+  newPassword: string;
+
+  confirmPassword: string;
 }

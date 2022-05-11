@@ -1,16 +1,16 @@
 ﻿import { Avatar } from "antd";
 import styled from "styled-components";
-import { CheckCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import { IProps } from "./interfaces";
 import { colors } from "constants/index";
 
 export const Wrapper = styled.div`
-  padding: 70px 0;
-  background: rgba(0, 0, 0, 0.8);
-  background-image: url(./images/bg2.jpg);
-  background-position: center;
+  padding: 50px 0;
+  /* background: rgba(0, 0, 0, 0.8); */
+  background-image: url("../../../public/images/bg2.jpg") !important;
+  /* background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
   min-height: 100vh;
   background-blend-mode: darken;
 `;
@@ -35,7 +35,7 @@ export const Block = styled.div`
 `;
 
 export const Card = styled.div`
-  background: ${colors.bgBlack};
+  background: rgba(0, 0, 0, 0.8);
   width: 500px;
   border-radius: 10px;
   padding: 20px;
@@ -59,6 +59,11 @@ export const StyledAvatar = styled(Avatar)`
 
 export const Icon = styled(CheckCircleOutlined)`
   color: ${colors.textGreen};
+  font-size: 20px;
+`;
+
+export const IconNotFound = styled(CloseOutlined)`
+  color: ${colors.textWhiteRed};
   font-size: 20px;
 `;
 

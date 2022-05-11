@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LeftOutlined, UserOutlined } from "@ant-design/icons";
 
 import {
@@ -15,6 +15,7 @@ import {
   CardInfo,
   Icon,
   Circle,
+  IconNotFound,
 } from "./styles";
 import { FormButton, FormItem, PwrButton, StyledForm } from "pages/ForgotPassword/styles";
 import { FormPassword } from "pages/ResetPassword/style";
@@ -23,8 +24,10 @@ import { validatePassword } from "constants/validate";
 import Button from "common/Button/Button";
 import ModalWindow from "common/ModalWindow/ModalWindow";
 import Container from "common/Container/Container";
-import { IPassword } from "./interfaces";
-import { useGetSingleUserQuery } from "redux/apis/settings";
+import { IChangePassword } from "./interfaces";
+import { useChangePasswordMutation, useGetSingleUserQuery } from "store/apis/profile";
+import { useAppSelector } from "hooks/redux";
+import { IPassword } from "store/apis/profile/profile.types";
 
 const ContactInfo: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -32,16 +35,31 @@ const ContactInfo: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  // TODO:
+  // const {id} = useParams()
 
-  const { data } = useGetSingleUserQuery(3)
+  // const { data } = useGetSingleUserQuery(3)
+  const [changePassword, {isError, isSuccess}] = useChangePasswordMutation()
+  const { user } = useAppSelector(s => s.authReducer)
 
-  useEffect(() => {
-    console.log(data)
+  // const {email, firstName, lastName, phoneNumber} = data?.data
 
-  }, [])
+  console.log(user)
 
-  const onFinish = async (values: IPassword): Promise<void> => {
+  const onFinish = async (values: IChangePassword): Promise<void> => {
     enterLoading()
+    try {
+      if (values.newPassword === values.confirmPassword) {
+        const value: IPassword = {
+          id: 1,
+          password: values.confirmPassword,
+        };
+
+        const response = await changePassword(value).unwrap()
+      }
+    } catch (error) {
+      throw new Error(`Error, ${error} `)
+    }
   };
 
   function openModal() {
@@ -78,7 +96,7 @@ const ContactInfo: React.FC = () => {
             <TitleGroup mb="35">
               <StyledAvatar size={64} icon={<UserOutlined />} />
               <div>
-                <Title fs="28">{t("ContactInfo.userFullName")}</Title>
+                {/* <Title fs="28">{`${firstName} ${lastName}`}</Title> */}
                 <Circle>{t("ContactInfo.userRole")}</Circle>
               </div>
             </TitleGroup>
@@ -86,32 +104,32 @@ const ContactInfo: React.FC = () => {
               <CardInfo>
                 <Label>{t("ContactInfo.userFirstName")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">---</Title>
-                  <Icon />
+                  {/* <Title fs="16">{firstName}</Title> */}
+                  {/* {firstName ? <Icon /> : <IconNotFound />} */}
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
                 <Label>{t("ContactInfo.userLastName")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">---</Title>
-                  <Icon />
+                  {/* <Title fs="16">{lastName}</Title> */}
+                  {/* {lastName ? <Icon /> : <IconNotFound />} */}
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
                 <Label>{t("ContactInfo.userEmail")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">----</Title>
-                  <Icon />
+                  {/* <Title fs="16">{email}</Title> */}
+                  {/* {email ? <Icon /> : <IconNotFound />} */}
                 </TitleGroup>
               </CardInfo>
 
               <CardInfo>
                 <Label>{t("ContactInfo.userPhone")}</Label>
                 <TitleGroup justify="space-between">
-                  <Title fs="16">+</Title>
-                  <Icon />
+                  {/* <Title fs="16">{phoneNumber ? phoneNumber : 'You phone number is empty'}</Title> */}
+                  {/* {phoneNumber ? <Icon /> : <IconNotFound />} */}
                 </TitleGroup>
               </CardInfo>
 
@@ -123,6 +141,7 @@ const ContactInfo: React.FC = () => {
                     onClick={openModal}
                     color={colors.btnWhite}
                     bg={colors.btnDarkBlue}
+                    disabled={isSuccess || isError}
                   >
                     {t("ContactInfo.btnChangeText")}
                   </Button>
@@ -133,18 +152,19 @@ const ContactInfo: React.FC = () => {
         </Block>
       </Container>
 
-      <ModalWindow 
-        modalIsOpen={modalIsOpen} 
+      <ModalWindow
+        modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         bg={colors.passwordBg}
         modalBg={colors.passwordModalBg}
       >
+        {(isSuccess || isError) ||
         <StyledForm
           name="normal_login"
           className="form"
           form={form}
           initialValues={{ remember: true }}
-          onFinish={values => onFinish(values as IPassword)}
+          onFinish={values => onFinish(values as IChangePassword)}
         >
           <FormItem
             label={t("ContactInfo.passwordTitle.item")}
@@ -199,8 +219,10 @@ const ContactInfo: React.FC = () => {
             </PwrButton>
           </FormButton>
 
-        </StyledForm>
+        </StyledForm>}
 
+        {isSuccess && <Label>{t('ContactInfo.afterChangePassword.success')}</Label>}
+        {isError && <Label>{t('ContactInfo.afterChangePassword.error')}</Label>}
       </ModalWindow>
     </Wrapper>
   );

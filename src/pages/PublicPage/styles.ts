@@ -4,12 +4,9 @@ import { Button } from "antd";
 
 export const Page = styled.section`
   padding: 1px 12px;
-<<<<<<< HEAD
   min-height: 100vh;
-=======
   /* height: 100vh; */
   width: 100%;
->>>>>>> develop
   background-color: ${colors.homeBgr};
   background-image: url(./images/bg-image.png);
   background-repeat: no-repeat;
