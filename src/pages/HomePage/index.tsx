@@ -5,7 +5,7 @@ import {
   Name,
   StyledNavLink,
 } from "./styles";
-import SignUpForm from "components/SignInForm";
+import SignInForm from "components/SignInForm";
 import { useAppSelector } from "hooks/redux";
 import { useTranslation } from "react-i18next";
 
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
   return (
     <HomeContainer>
       {!isAuth ? (
-        <SignUpForm />
+        <SignInForm />
       ) : (
         <Message>
           <HomeTitle>{t("HomePage.homeTitle")}</HomeTitle>

@@ -4,8 +4,6 @@ import {
   IResponse,
   Password,
 } from "store/slices/auth/auth.type";
-//! TODO перенести в типы в соответствующий файл
-import { ILoginFormValues, IUserData } from "components/SignInForm/props";
 import { baseApi } from "..";
 
 export const authApi = baseApi.injectEndpoints({
@@ -35,11 +33,21 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    login: builder.mutation<IResponse, ILoginFormValues>({
-      query: (body) => ({
+    signInUseGoogle: builder.query<IResponse, string>({
+      query: (tokenId) => ({
+        url: "auth/loginUseGoogle",
+        params: {
+          tokenId,
+        },
+      }),
+    }),
+    login: builder.mutation<IResponse, IAuthRequest>({
+      query: (credentials) => ({
         url: "auth/login",
         method: "POST",
-        body,
+        body: {
+          user: credentials,
+        },
       }),
     }),
     confirmEmail: builder.mutation<Email, string>({
@@ -62,6 +70,7 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useCreateUserMutation,
   useLazySignUpUseGoogleQuery,
+  useLazySignInUseGoogleQuery,
   useLoginMutation,
   useLazySelectRoleQuery,
   useResetPasswordMutation,

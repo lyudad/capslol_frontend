@@ -1,21 +1,24 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import AuthMessage from "./AuthMessage";
-import AuthGoogle from "./AuthGoogle";
+import AuthGoogle from "../AuthGoogle";
 import SubmitButton from "./SubmitButton";
 import SignUp from "components/AuthForm/SignUp";
 import { StyledForm, Wrapper } from "components/UI";
 import { useNavigate } from "react-router-dom";
 
-import {  message, notification } from 'antd';
+import { message, notification } from 'antd';
 import { useDispatch } from "react-redux";
 import { setCredentials } from "store/slices/auth/auth.slice";
-import { useCreateUserMutation } from "store/apis/auth";
+import { useCreateUserMutation, useLazySignUpUseGoogleQuery } from "store/apis/auth";
+import { Paths } from "router/paths";
+import { RequestHeader } from "constants/request.constants";
+import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
 
 
 type FormType = {
-  firstName?: string
-  lastName?: string
+  firstName: string
+  lastName: string
   email: string
   password: string
   comfirm: string
@@ -25,7 +28,9 @@ type FormType = {
 const AuthForm: React.FC = () => {
   const [form] = StyledForm.useForm<FormType>();
   const { t: translator } = useTranslation();
-  const [createUser, { isLoading, isError, error }] = useCreateUserMutation()
+  const [createUser] = useCreateUserMutation()
+  const [createGoogleUser] = useLazySignUpUseGoogleQuery();
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -36,21 +41,44 @@ const AuthForm: React.FC = () => {
       dispatch(setCredentials(response))
 
       notification.open({
-        message: 'Congratulation!',
-        description: 'New User was created!',
-        onClick: () => {
-          console.log('Notification Clicked!');
-        },
+        message: translator("AuthGoogle.welcomeMessage")
+
       });
 
-      navigate('/select-role')
+      navigate(Paths.SELECT_ROLE)
 
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.data.message) {
         message.error(error.data.message);
       }
     }
   }
+
+
+  const handleLogin = async (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    try {
+      if (RequestHeader.ACCESS_TOKEN in response) {
+        const authResponse = await createGoogleUser(response.tokenId).unwrap();
+        dispatch(setCredentials(authResponse));
+
+        notification.open({
+          message: translator("AuthGoogle.welcomeMessage")
+        });
+
+        navigate(Paths.SELECT_ROLE);
+      }
+    } catch (error: any) {
+      if (error.data.message) {
+        message.error(error.data.message);
+      }
+    }
+  };
+
+  const handleFailure = (error: any) => {
+    message.error(error);
+  };
   return (
     <Wrapper>
       <StyledForm
@@ -68,7 +96,7 @@ const AuthForm: React.FC = () => {
           leftText="AuthForm.haveAccount"
           rightText="AuthForm.login"
         />
-        <AuthGoogle />
+        <AuthGoogle buttonText="AuthGoogle.signUpMessage" onSuccess={handleLogin} onFailure={handleFailure} />
       </StyledForm>
     </Wrapper>
   );

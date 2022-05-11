@@ -5,17 +5,7 @@
     "home": "HOME",
     "test": "TEST"
   },
-  "SignInForm": {
-    "email": "Email",
-    "inputEmail": "input your email",
-    "password": "Password",
-    "forgotPassword": "Forgot your password?",
-    "inputPassword": "input your password",
-    "signIn": "Sign in",
-    "dontHaveAccount": "Don't have an account yet?",
-    "registerNow": "Register now",
-    "signInWith": "Sign in with"
-  },
+  "SignInForm": {},
   "AuthForm": {
     "firstName": "First name",
     "lastName": "Last name",
@@ -38,6 +28,12 @@
     "login": "Login",
     "signInWith": "Sign in with",
     "passwordCondition": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+  },
+  "AuthGoogle": {
+    "signUpMessage": "Sign up with Google",
+    "signInMessage": "Sign in with Google",
+    "welcomeMessage": "Welcome!",
+    "comeBackMessage": "Welcome back!"
   },
   "TestReusable": {
     "wonderfulWorld": "What A Wonderful World"
