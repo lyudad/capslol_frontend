@@ -1,11 +1,10 @@
 ﻿import styled from "styled-components";
-import { Button, Form, Input, Tooltip } from "antd";
+import { Button, Form, Input, InputNumber, Tooltip } from "antd";
 import { colors, fonts } from "constants/index";
 import { IProps } from "./interfaces";
 import TextArea from "antd/lib/input/TextArea";
 
 const {
-  bgProposal,
   bgBlack,
   proposalWhite,
   proposalGreen,
@@ -16,8 +15,7 @@ const {
 } = colors;
 
 export const Wrapper = styled.div`
-  background: ${bgProposal};
-  background-image: url(./images/bg-image.png);
+  width: 100%;
   background-size: cover;
   background-position: center;
   background-blend-mode: darken;
@@ -51,7 +49,7 @@ export const FormItem = styled(Form.Item)`
   width: 35%;
 `;
 
-export const StyledInput = styled(Input)`
+export const StyledInput = styled(InputNumber)`
   width: 100%;
   border-radius: 5px;
   font-size: 16px;

@@ -29,13 +29,10 @@ export const colors: Colors = {
   bgWhiteDark: "rgba(1,1,1,0.9)",
   modalBg: "rgb(255, 255, 255)",
   modalWindowBg: "rgba(255, 255, 255, 0.5)",
-<<<<<<< HEAD
   textGrey: "#9aaa97",
-  bgProposal: "rgba(0, 0, 0, 0.6)",
   proposalWhite: "#e0e0e0",
   proposalGreen: "#4e944f",
   proposalWhiteGreen: "#83bd75",
-=======
   btnBoxShadow: "rgba(255, 255, 255, 0)",
   btnOutline: "rgba(255, 255, 255, 0.5)",
   btnShadow: "rgba(255, 255, 255, 0.2)",
@@ -47,7 +44,6 @@ export const colors: Colors = {
   passwordModalBg: "#343a40",
   hslaCircleRed: "hsla(339, 100%, 55%, 1)",
   hslaCircleBlue: "hsla(197, 100%, 64%, 1) ",
->>>>>>> develop
 };
 
 export const fonts: Fonts = {

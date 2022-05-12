@@ -111,8 +111,8 @@
       "title": "Submit Proposal",
       "subTitle": "Terms",
       "jobQuestion": "What is the rate you'd like to bid for this job?",
-      "youRate": "Your profile rate: $4.00/hr",
-      "jobOwnerRate": "Client’s budget: $5.00 - $20.00/hr",
+      "youRate": "Your profile rate: /hr",
+      "jobOwnerRate": "Client’s budget: /hr",
       "hourlyRate": "Hourly Rate",
       "getJobRate": "20% GetJob Service Fee",
       "gotRate": "You'll receive",
@@ -124,7 +124,8 @@
       "error": {
           "number": "Value should contain just number",
           "length": "Value should be less than 4 character"
-      }
+      },
+      "errorLetter": "You need write a cover letter"
   },
   "ContactInfo": {
       "title": "My Account",

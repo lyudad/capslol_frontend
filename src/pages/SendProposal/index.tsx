@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Form, Row, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -18,9 +18,26 @@ import {
   FormItem,
 } from "./styles";
 import { colors } from "constants/index";
+import { IFileUpload, IFormValue } from "./interfaces";
 
 const SendProposal: React.FC = () => {
   const { t } = useTranslation();
+  const [form] = Form.useForm();
+
+  const handleSubmit = async (values: IFormValue) => {
+    onReset();
+  };
+
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  const normFile = (e: IFileUpload) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
 
   return (
     <Wrapper>
@@ -28,7 +45,7 @@ const SendProposal: React.FC = () => {
         {t("Proposal.title")}
       </FontTitle>
 
-      <Form>
+      <Form form={form} onFinish={handleSubmit}>
         <ProposalCard>
           <Font color={colors.textWhite} fs="22">
             {t("Proposal.subTitle")}
@@ -64,16 +81,8 @@ const SendProposal: React.FC = () => {
                     message: `${t("Proposal.error.length")}`,
                   },
                 ]}
-                validateTrigger="onBlur"
               >
-                <StyledInput
-                  // {...this.props}
-                  // onChange={this.onChange}
-                  // onBlur={this.onBlur}
-                  prefix="$"
-                  suffix="/hr"
-                  maxLength={4}
-                />
+                <StyledInput prefix="$" maxLength={4} />
               </FormItem>
             </Row>
 
@@ -83,7 +92,9 @@ const SendProposal: React.FC = () => {
               <FontTitle color={colors.textWhite} fs="16">
                 {t("Proposal.getJobRate")}
               </FontTitle>
-              <div></div>
+              <FontTitle color={colors.textWhite} fs="16">
+                /hr
+              </FontTitle>
             </Row>
 
             <Hr />
@@ -92,29 +103,8 @@ const SendProposal: React.FC = () => {
               <FontTitle color={colors.textWhite} fs="16">
                 {t("Proposal.gotRate")}
               </FontTitle>
-              <FormItem
-                label=""
-                name="freelancerValue"
-                rules={[
-                  {
-                    pattern: /^(?:\d*)$/,
-                    message: `${t("Proposal.error.number")}`,
-                  },
-                  {
-                    pattern: /^[\d]{0,50}$/,
-                    message: `${t("Proposal.error.length")}`,
-                  },
-                ]}
-                validateTrigger="onBlur"
-              >
-                <StyledInput
-                  // {...this.props}
-                  // onChange={this.onChange}
-                  // onBlur={this.onBlur}
-                  prefix="$"
-                  suffix="/hr"
-                  maxLength={4}
-                />
+              <FormItem label="" name="freelancerValue">
+                <StyledInput disabled prefix="$" maxLength={4} />
               </FormItem>
             </Row>
           </Section>
@@ -129,11 +119,17 @@ const SendProposal: React.FC = () => {
                 {t("Proposal.coverLetterTitle")}
               </FontTitle>
 
-              <StyledTextArea
-                maxLength={500}
-                style={{ height: 150 }}
-                // onChange={onChange}
-              />
+              <Form.Item
+                name="coverLetter"
+                rules={[
+                  {
+                    required: true,
+                    message: `${t("Proposal.errorLetter")}`,
+                  },
+                ]}
+              >
+                <StyledTextArea maxLength={500} style={{ height: 150 }} />
+              </Form.Item>
             </Block>
 
             <Block>
@@ -144,7 +140,7 @@ const SendProposal: React.FC = () => {
               <UploadForm
                 name="Attachments"
                 valuePropName="fileList"
-                // getValueFromEvent={normFile}
+                getValueFromEvent={normFile}
               >
                 <Upload name="logo" action="/upload.do" listType="picture">
                   <Button icon={<UploadOutlined />}>
@@ -155,9 +151,13 @@ const SendProposal: React.FC = () => {
             </Block>
           </Section>
         </ProposalCard>
-      </Form>
 
-      <StyledButton>{t("Proposal.submitBtnText")}</StyledButton>
+        <Form.Item>
+          <StyledButton htmlType="submit" className="login-form-button">
+            {t("Proposal.submitBtnText")}
+          </StyledButton>
+        </Form.Item>
+      </Form>
     </Wrapper>
   );
 };
