@@ -16,7 +16,7 @@ import {
 import { TypographyTitle } from "pages/ResetPassword/style";
 import { IFormValue } from "./interfaces";
 import { colors } from "constants/index";
-import { useConfirmEmailMutation } from "redux/services/passwordApi/passwordApi";
+import { useConfirmEmailMutation } from "store/apis/auth";
 import VerifyEmail from "./components/VerifyEmail";
 
 const ForgotPassword: React.FC = () => {
@@ -34,9 +34,9 @@ const ForgotPassword: React.FC = () => {
   };
 
   const onFinish = async (values: IFormValue): Promise<void> => {
-    enterLoading();     
+    enterLoading();
     try {
-      await confirmEmail(values)
+      await confirmEmail(values.email)
     } catch (e) {
       throw new Error(`Error: ${e}`)
     }
@@ -46,7 +46,7 @@ const ForgotPassword: React.FC = () => {
   return (
     <Section>
       {
-        !(data || isError) && 
+        !(data || isError) &&
         <Wrapper width="340">
           <TypographyTitle color={colors.textWhite} level={3}>{t('ForgotPage.title')}</TypographyTitle>
             <StyledForm
@@ -72,7 +72,7 @@ const ForgotPassword: React.FC = () => {
                 placeholder="email@example.com"
               />
               </FormItem>
-  
+
               <FormButton>
                 <PwrButton
                   type="primary"
@@ -93,7 +93,7 @@ const ForgotPassword: React.FC = () => {
             </StyledForm>
         </Wrapper>
       }
-    
+
       {(data || isError) && <VerifyEmail data={data} isError={isError} />}
     </Section>
   );

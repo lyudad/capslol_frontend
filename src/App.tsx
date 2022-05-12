@@ -1,26 +1,37 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AppBar from "components/AppBar";
-import HomePage from "pages/HomePage";
 import PublicPage from "pages/PublicPage/PublicPage";
+import MainLayout from "components/MainLayout";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
+<<<<<<< HEAD
 import SendProposal from "pages/SendProposal";
+=======
+import ContactInfo from "pages/ContactInfo";
+import HomePage from "pages/HomePage";
+import AuthForm from "components/AuthForm";
+import RolePage from "pages/RolePage";
+>>>>>>> develop
 
 const App: React.FC = () => {
   return (
-    <>
-      <AppBar />
+    <MainLayout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/sign-up" element={<AuthForm />} />
+        <Route path="/select-role" element={<RolePage />} />
         <Route path="/profile" element={<PublicPage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/reset_password/*" element={<ResetPassword />} />
+<<<<<<< HEAD
         <Route path="/send_proposal/*" element={<SendProposal />} />
+=======
+        <Route path="/contact_info/:id" element={<ContactInfo />} />
+>>>>>>> develop
       </Routes>
-    </>
+    </MainLayout>
   );
 };
 

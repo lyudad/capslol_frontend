@@ -20,9 +20,10 @@ import {
 } from "./style";
 import { IPassword } from "./interfaces";
 import { colors } from "constants/index";
-import { useResetPasswordMutation } from "redux/services/passwordApi/passwordApi";
 import ModalWindow from "common/ModalWindow/ModalWindow";
-import { Password } from "redux/models/passwordModels/password.model";
+import { Password } from "store/slices/auth/auth.type";
+import { useResetPasswordMutation } from "store/apis/auth";
+import { validatePassword } from "constants/validate";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -33,8 +34,6 @@ const ResetPassword: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const [resetPassword, {data, error: dataError, isError}] = useResetPasswordMutation()
-
-  const validatePassword: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
   const onReset = (): void => {
     form.resetFields();
@@ -50,7 +49,7 @@ const ResetPassword: React.FC = () => {
       const value: Password = {
         token: params.get("token")?.toString(),
         password: values.confirmPassword,
-        
+
       };
       await resetPassword(value);
       setError(false);
@@ -81,7 +80,7 @@ const ResetPassword: React.FC = () => {
           initialValues={{ remember: true }}
           onFinish={values => onFinish(values as IPassword)}
         >
-       
+
         <StyledSpace>
           <FormItem
             label={t("ResetPage.passwordTitle.item")}
@@ -139,26 +138,31 @@ const ResetPassword: React.FC = () => {
           </PwrButton>
         </FormButton>
 
-        <FormLink>
-          <NavLink to="/" className="form_link">
-            {t("ResetPage.linkText")}
-          </NavLink>
-        </FormLink>
-      </StyledForm>
+          <FormLink>
+            <NavLink to="/" className="form_link">
+              {t("ResetPage.linkText")}
+            </NavLink>
+          </FormLink>
+        </StyledForm>
       </Wrapper>
-      
-      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal}>
+
+      <ModalWindow
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          bg={colors.modalBg}
+          modalBg={colors.modalWindowBg}
+      >
         <>
-          { 
-            data ? 
-            <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle> 
+          {
+            data ?
+            <WindowTitle level={3}>{t("ResetPage.loginText")}</WindowTitle>
             : dataError
           }
 
           {
-            isError && <WindowTitle level={3}>{t("ResetPage.passwordError")}</WindowTitle> 
+            isError && <WindowTitle level={3}>{t("ResetPage.passwordError")}</WindowTitle>
           }
-        
+
           <NavLink to="/" className="form_link">
             {t("ResetPage.linkText")}
           </NavLink>

@@ -1,32 +1,30 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { persistStore } from "redux-persist";
-import userReducer from "./reducers/userSlice";
-import { passwordApi } from "./services/passwordApi/passwordApi";
+import { baseApi } from "./apis";
+import authReducer from "./slices/auth/auth.slice";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 const persistConfig = {
   key: "auth",
   storage,
+  whitelist: ["token", "user", "isLoggedIn"],
 };
 
-const reducers = combineReducers({
-  userReducer,
-  [passwordApi.reducerPath]: passwordApi.reducer,
+const rootReducer = combineReducers({
+  authReducer,
+  [baseApi.reducerPath]: baseApi.reducer,
 });
-
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST"],
       },
-    }),
+    }).concat(baseApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
