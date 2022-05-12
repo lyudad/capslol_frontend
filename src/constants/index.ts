@@ -33,12 +33,15 @@ export const colors: Colors = {
 
 export const fonts: Fonts = {
   logoFontFamily: "Dodger",
+  logoFontWeight: "600",
   logoFontSize: "26px",
   primeLogoFontSize: "20px",
   logoLineHeight: "1.1",
   navFontSize: "14px",
   titlesOfProfile: "14px",
-  logoFontWeight: "400",
   signUpButtonsFontWeight: "500",
   homeMessageFontSize: "18px",
+  jobListTitleSize: "24px",
+  jobCardTitleSize: "20px",
+  jobListFontWeight: "600",
 };

@@ -103,5 +103,13 @@
     "hello": "Hello",
     "welcomeTo": ", welcome to our service.",
     "youCanView": "You can view yours"
+  },
+  "JobPage": {
+    "jobPageTitle": "Jobs on GetJOB!",
+    "jobOwner": "job owner:",
+    "skills": "skills:",
+    "category": "category:",
+    "timeAvailable": "time available:",
+    "english": "english:"
   }
 }
