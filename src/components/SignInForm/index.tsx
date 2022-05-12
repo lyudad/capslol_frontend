@@ -1,13 +1,8 @@
 import React from 'react';
 import { Form, Input, message, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from 'hooks/redux';
-import {
-    useLoginMutation,
-    useLazySignInUseGoogleQuery,
-    useLoginMutation,
-} from 'store/apis/auth';
-import { setCredentials, setCredentials } from 'store/slices/auth/auth.slice';
+import { useLoginMutation, useLazySignInUseGoogleQuery } from 'store/apis/auth';
+import { setCredentials } from 'store/slices/auth/auth.slice';
 import AuthGoogle from 'components/AuthGoogle';
 import { RequestHeader } from 'constants/request.constants';
 import {
@@ -40,7 +35,7 @@ const SignInForm: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const onFinish = async (values: FormType) => {
+    const onFinish = async (values: FormType): Promise<void> => {
         try {
             const response = await loginUser(values).unwrap();
             dispatch(setCredentials(response));
@@ -50,6 +45,7 @@ const SignInForm: React.FC = () => {
             });
 
             navigate(Paths.SELECT_ROLE);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             if (error.data.message) {
                 message.error(error.data.message);
@@ -59,7 +55,7 @@ const SignInForm: React.FC = () => {
 
     const handleLogin = async (
         response: GoogleLoginResponse | GoogleLoginResponseOffline
-    ) => {
+    ): Promise<void> => {
         try {
             if (RequestHeader.ACCESS_TOKEN in response) {
                 const authResponse = await loginGoogleUser(
@@ -73,6 +69,7 @@ const SignInForm: React.FC = () => {
 
                 navigate(Paths.SELECT_ROLE);
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             if (error.data.message) {
                 message.error(error.data.message);
@@ -80,7 +77,8 @@ const SignInForm: React.FC = () => {
         }
     };
 
-    const handleFailure = (error: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleFailure = (error: any): void => {
         message.error(error);
     };
 

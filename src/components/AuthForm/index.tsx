@@ -38,7 +38,7 @@ const AuthForm: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const onFinish = async (values: FormType) => {
+    const onFinish = async (values: FormType): Promise<void> => {
         try {
             const response = await createUser(values).unwrap();
             dispatch(setCredentials(response));
@@ -48,6 +48,7 @@ const AuthForm: React.FC = () => {
             });
 
             navigate(Paths.SELECT_ROLE);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             if (error.data.message) {
                 message.error(error.data.message);
@@ -57,7 +58,7 @@ const AuthForm: React.FC = () => {
 
     const handleLogin = async (
         response: GoogleLoginResponse | GoogleLoginResponseOffline
-    ) => {
+    ): Promise<void> => {
         try {
             if (RequestHeader.ACCESS_TOKEN in response) {
                 const authResponse = await createGoogleUser(
@@ -71,6 +72,7 @@ const AuthForm: React.FC = () => {
 
                 navigate(Paths.SELECT_ROLE);
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             if (error.data.message) {
                 message.error(error.data.message);
@@ -78,7 +80,8 @@ const AuthForm: React.FC = () => {
         }
     };
 
-    const handleFailure = (error: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleFailure = (error: any): void => {
         message.error(error);
     };
     return (

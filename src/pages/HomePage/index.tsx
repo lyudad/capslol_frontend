@@ -1,6 +1,5 @@
-import SignUpForm from 'components/SignInForm';
-import { useAppSelector, useAppSelector } from 'hooks/redux';
-import { useTranslation, useTranslation } from 'react-i18next';
+import { useAppSelector } from 'hooks/redux';
+import { useTranslation } from 'react-i18next';
 import SignInForm from 'components/SignInForm';
 import {
     HomeContainer,

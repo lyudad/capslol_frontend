@@ -1,227 +1,261 @@
-﻿import React, { useState } from "react";
-import { Form, message } from "antd";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { LeftOutlined, UserOutlined } from "@ant-design/icons";
+﻿import React, { useState } from 'react';
+import { Form, message } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { LeftOutlined, UserOutlined } from '@ant-design/icons';
 
-import { FormButton, FormItem, PwrButton, StyledForm } from "pages/ForgotPassword/styles";
-import { FormPassword } from "pages/ResetPassword/style";
-import { colors } from "constants/index";
-import { validatePassword } from "constants/validate";
-import Button from "common/Button/Button";
-import ModalWindow from "common/ModalWindow/ModalWindow";
-import { useChangePasswordMutation } from "store/apis/profile";
-import { IPassword } from "store/apis/profile/profile.types";
-import { useAppSelector } from "hooks/redux";
-import { IChangePassword } from "./interfaces";
 import {
-  Wrapper,
-  TitleGroup,
-  Title,
-  Block,
-  Card,
-  Label,
-  StyledAvatar,
-  CardInfo,
-  Icon,
-  Circle,
-  IconNotFound,
-} from "./styles";
+    FormButton,
+    FormItem,
+    PwrButton,
+    StyledForm,
+} from 'pages/ForgotPassword/styles';
+import { FormPassword } from 'pages/ResetPassword/style';
+import { colors } from 'constants/index';
+import { validatePassword } from 'constants/validate';
+import Button from 'common/Button/Button';
+import ModalWindow from 'common/ModalWindow/ModalWindow';
+import { useChangePasswordMutation } from 'store/apis/profile';
+import { IPassword } from 'store/apis/profile/profile.types';
+import { useAppSelector } from 'hooks/redux';
+import { IChangePassword } from './interfaces';
+import {
+    Wrapper,
+    TitleGroup,
+    Title,
+    Block,
+    Card,
+    Label,
+    StyledAvatar,
+    CardInfo,
+    Icon,
+    Circle,
+    IconNotFound,
+} from './styles';
 
 const ContactInfo: React.FC = () => {
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [form] = Form.useForm();
-  const { id } = useParams()
+    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
+    const { id } = useParams();
 
-  const [changePassword, {isError, isSuccess}] =useChangePasswordMutation()
-  const { user } = useAppSelector(s => s.authReducer)
+    const [changePassword, { isError, isSuccess }] =
+        useChangePasswordMutation();
+    const { user } = useAppSelector((s) => s.authReducer);
 
-  const onFinish = async (values: IChangePassword): Promise<void> => {
-    enterLoading()
-    try {
-      if (values.newPassword === values.confirmPassword) {
-        const value: IPassword = {
-          id: Number(id),
-          password: values.confirmPassword,
-        };
-        await changePassword(value).unwrap()
-      } else {
-        message.error('Password do not match, please try again')
-        onReset()
-        setLoading(false)
-      }
-    } catch (error: any) {
-        message.error(error.data.message);
+    const handleNavigate = (): void => navigate('/profile');
+
+    const enterLoading = (): void => setLoading(true);
+
+    const onReset = (): void => form.resetFields();
+
+    function openModal(): void {
+        setIsOpen(true);
     }
-  };
+    const onFinish = async (values: IChangePassword): Promise<void> => {
+        enterLoading();
+        try {
+            if (values.newPassword === values.confirmPassword) {
+                const value: IPassword = {
+                    id: Number(id),
+                    password: values.confirmPassword,
+                };
+                await changePassword(value).unwrap();
+            } else {
+                message.error('Password do not match, please try again');
+                onReset();
+                setLoading(false);
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            message.error(error.data.message);
+        }
+    };
 
-  function openModal(): void {
-    setIsOpen(true);
-  }
+    function closeModal(): void {
+        setIsOpen(false);
+    }
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  const handleNavigate = (): void => navigate("/profile");
-
-  const enterLoading = (): void => setLoading(true);
-
-  const onReset = (): void => form.resetFields();
-
-  return (
-    <Wrapper>
-      <TitleGroup mb="50">
-        <Button
-          onClick={handleNavigate}
-          mr="20"
-          color={colors.btnWhite}
-          bg={colors.btnDarkBlue}
-        >
-          <LeftOutlined />
-        </Button>
-        <Title fs="35">{t("ContactInfo.title")}</Title>
-      </TitleGroup>
-
-        <Block>
-          <div>
-            <TitleGroup mb="35">
-              <StyledAvatar size={64} icon={<UserOutlined />} />
-              <div>
-                <Title fs="28">{`${user?.firstName} ${user?.lastName}`}</Title>
-                <Circle>{user?.role ? user?.role : 'Not Found'}</Circle>
-              </div>
-            </TitleGroup>
-            <Card>
-              <CardInfo>
-                <Label>{t("ContactInfo.userFirstName")}</Label>
-                <TitleGroup justify="space-between">
-                  <Title fs="16">{user?.firstName}</Title>
-                  {user?.firstName ? <Icon /> : <IconNotFound />}
-                </TitleGroup>
-              </CardInfo>
-
-              <CardInfo>
-                <Label>{t("ContactInfo.userLastName")}</Label>
-                <TitleGroup justify="space-between">
-                  <Title fs="16">{user?.lastName}</Title>
-                  {user?.lastName ? <Icon /> : <IconNotFound />}
-                </TitleGroup>
-              </CardInfo>
-
-              <CardInfo>
-                <Label>{t("ContactInfo.userEmail")}</Label>
-                <TitleGroup justify="space-between">
-                  <Title fs="16">{user?.email}</Title>
-                  {user?.email ? <Icon /> : <IconNotFound />}
-                </TitleGroup>
-              </CardInfo>
-
-              <CardInfo>
-                <Label>{t("ContactInfo.userPhone")}</Label>
-                <TitleGroup justify="space-between">
-                  <Title fs="16">
-                    {user?.phoneNumber ? user?.phoneNumber : 'You phone number is empty'}
-                  </Title>
-                  {user?.phoneNumber ? <Icon /> : <IconNotFound />}
-                </TitleGroup>
-              </CardInfo>
-
-              <CardInfo>
-                <Label>{t("ContactInfo.userPassword")}</Label>
-                <TitleGroup justify="space-between">
-                  <Title fs="16">********</Title>
-                  <Button
-                    onClick={openModal}
+    return (
+        <Wrapper>
+            <TitleGroup mb="50">
+                <Button
+                    onClick={handleNavigate}
+                    mr="20"
                     color={colors.btnWhite}
                     bg={colors.btnDarkBlue}
-                    disabled={isSuccess || isError}
-                  >
-                    {t("ContactInfo.btnChangeText")}
-                  </Button>
-                </TitleGroup>
-              </CardInfo>
-            </Card>
-          </div>
-        </Block>
+                >
+                    <LeftOutlined />
+                </Button>
+                <Title fs="35">{t('ContactInfo.title')}</Title>
+            </TitleGroup>
 
-      <ModalWindow
-        modalIsOpen={modalIsOpen}
-        closeModal={closeModal}
-        bg={colors.passwordBg}
-        modalBg={colors.passwordModalBg}
-      >
-        {(isSuccess || isError) ||
-        <StyledForm
-          name="normal_login"
-          className="form"
-          form={form}
-          initialValues={{ remember: true }}
-          onFinish={values => onFinish(values as IChangePassword)}
-        >
-          <FormItem
-            label={t("ContactInfo.passwordTitle.item")}
-            name="newPassword"
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: `${t("ContactInfo.passwordTitle.error")}`,
-              },
-            ]}
-          >
-            <FormPassword
-              placeholder={t("ContactInfo.passwordTitle.placeholder")}
-            />
-          </FormItem>
+            <Block>
+                <div>
+                    <TitleGroup mb="35">
+                        <StyledAvatar size={64} icon={<UserOutlined />} />
+                        <div>
+                            <Title fs="28">{`${user?.firstName} ${user?.lastName}`}</Title>
+                            <Circle>
+                                {user?.role ? user?.role : 'Not Found'}
+                            </Circle>
+                        </div>
+                    </TitleGroup>
+                    <Card>
+                        <CardInfo>
+                            <Label>{t('ContactInfo.userFirstName')}</Label>
+                            <TitleGroup justify="space-between">
+                                <Title fs="16">{user?.firstName}</Title>
+                                {user?.firstName ? <Icon /> : <IconNotFound />}
+                            </TitleGroup>
+                        </CardInfo>
 
-          <FormItem
-            label={t("ContactInfo.conPasswordTitle.item")}
-            name="confirmPassword"
-            hasFeedback
-            dependencies={['newPassword']}
-            rules={[
-              {
-                required: true,
-                message: `${t("ContactInfo.conPasswordTitle.error")}`,
-                validator: (_, value) => {
-                  if (validatePassword.test(value)) {
-                    return Promise.resolve();
-                  } 
-                    return Promise.reject(
-                      `${t("ContactInfo.passwordTitle.error")}`
-                    );
-                  
-                },
-              },
-            ]}
-          >
-            <FormPassword
-              placeholder={t("ContactInfo.conPasswordTitle.placeholder")}
-            />
-          </FormItem>
+                        <CardInfo>
+                            <Label>{t('ContactInfo.userLastName')}</Label>
+                            <TitleGroup justify="space-between">
+                                <Title fs="16">{user?.lastName}</Title>
+                                {user?.lastName ? <Icon /> : <IconNotFound />}
+                            </TitleGroup>
+                        </CardInfo>
 
-          <FormButton>
-            <PwrButton
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              loading={loading}
+                        <CardInfo>
+                            <Label>{t('ContactInfo.userEmail')}</Label>
+                            <TitleGroup justify="space-between">
+                                <Title fs="16">{user?.email}</Title>
+                                {user?.email ? <Icon /> : <IconNotFound />}
+                            </TitleGroup>
+                        </CardInfo>
+
+                        <CardInfo>
+                            <Label>{t('ContactInfo.userPhone')}</Label>
+                            <TitleGroup justify="space-between">
+                                <Title fs="16">
+                                    {user?.phoneNumber
+                                        ? user?.phoneNumber
+                                        : 'You phone number is empty'}
+                                </Title>
+                                {user?.phoneNumber ? (
+                                    <Icon />
+                                ) : (
+                                    <IconNotFound />
+                                )}
+                            </TitleGroup>
+                        </CardInfo>
+
+                        <CardInfo>
+                            <Label>{t('ContactInfo.userPassword')}</Label>
+                            <TitleGroup justify="space-between">
+                                <Title fs="16">********</Title>
+                                <Button
+                                    onClick={() => openModal()}
+                                    color={colors.btnWhite}
+                                    bg={colors.btnDarkBlue}
+                                    disabled={isSuccess || isError}
+                                >
+                                    {t('ContactInfo.btnChangeText')}
+                                </Button>
+                            </TitleGroup>
+                        </CardInfo>
+                    </Card>
+                </div>
+            </Block>
+
+            <ModalWindow
+                modalIsOpen={modalIsOpen}
+                closeModal={() => closeModal()}
+                bg={colors.passwordBg}
+                modalBg={colors.passwordModalBg}
             >
-                {t('ContactInfo.btnText')}
-            </PwrButton>
-          </FormButton>
+                {isSuccess || isError || (
+                    <StyledForm
+                        name="normal_login"
+                        className="form"
+                        form={form}
+                        initialValues={{ remember: true }}
+                        onFinish={(values) =>
+                            onFinish(values as IChangePassword)
+                        }
+                    >
+                        <FormItem
+                            label={t('ContactInfo.passwordTitle.item')}
+                            name="newPassword"
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: `${t(
+                                        'ContactInfo.passwordTitle.error'
+                                    )}`,
+                                },
+                            ]}
+                        >
+                            <FormPassword
+                                placeholder={t(
+                                    'ContactInfo.passwordTitle.placeholder'
+                                )}
+                            />
+                        </FormItem>
 
-        </StyledForm>}
+                        <FormItem
+                            label={t('ContactInfo.conPasswordTitle.item')}
+                            name="confirmPassword"
+                            hasFeedback
+                            dependencies={['newPassword']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: `${t(
+                                        'ContactInfo.conPasswordTitle.error'
+                                    )}`,
+                                    validator: (_, value) => {
+                                        if (validatePassword.test(value)) {
+                                            Promise.resolve();
+                                            return;
+                                        }
+                                        Promise.reject(
+                                            new Error(
+                                                t(
+                                                    'ContactInfo.passwordTitle.error'
+                                                )
+                                            )
+                                        );
+                                    },
+                                },
+                            ]}
+                        >
+                            <FormPassword
+                                placeholder={t(
+                                    'ContactInfo.conPasswordTitle.placeholder'
+                                )}
+                            />
+                        </FormItem>
 
-        {isSuccess && <Label>{t('ContactInfo.afterChangePassword.success')}</Label>}
-        {isError && <Label>{t('ContactInfo.afterChangePassword.error')}</Label>}
-      </ModalWindow>
-    </Wrapper>
-  );
+                        <FormButton>
+                            <PwrButton
+                                type="primary"
+                                htmlType="submit"
+                                className="login-form-button"
+                                loading={loading}
+                            >
+                                {t('ContactInfo.btnText')}
+                            </PwrButton>
+                        </FormButton>
+                    </StyledForm>
+                )}
+
+                {isSuccess && (
+                    <Label>
+                        {t('ContactInfo.afterChangePassword.success')}
+                    </Label>
+                )}
+                {isError && (
+                    <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
+                )}
+            </ModalWindow>
+        </Wrapper>
+    );
 };
 
 export default ContactInfo;

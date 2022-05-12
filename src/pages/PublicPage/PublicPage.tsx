@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Row } from 'antd';
+import { colors } from 'constants/index';
 import {
     Description,
     ProfileContainer,
@@ -12,7 +13,6 @@ import {
 } from './styles';
 import 'antd/dist/antd.min.css';
 import avatar from './avatar.png';
-import { colors } from 'constants/index';
 
 const PublicPage: React.FC = () => {
     const { t } = useTranslation();

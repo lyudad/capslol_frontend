@@ -10,8 +10,8 @@
     "eject": "react-scripts eject",
     "precommit": "lint-staged",
     "eslint": "eslint",
-    "lint": "eslint --debug src/",
-    "lint:fix": "eslint \"{src,test}/**/*.{js,ts,jsx,tsx}\" --fix"
+    "lint": "eslint \"{src,test}/**/*.{js,ts,jsx,tsx}\" --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
