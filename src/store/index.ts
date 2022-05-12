@@ -9,13 +9,12 @@ import { publicProfileApi } from "./apis/publicProfile";
 const persistConfig = {
   key: "auth",
   storage,
-  whitelist: ["token", "user", "isLoggedIn"],
+  // whitelist: ["token", "user", "isLoggedIn"], asdadasd
 };
 
 const rootReducer = combineReducers({
   authReducer,
   [baseApi.reducerPath]: baseApi.reducer,
-  [publicProfileApi.reducerPath]: publicProfileApi.reducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -26,7 +25,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST"],
       },
-    }).concat(baseApi.middleware, publicProfileApi.middleware),
+    }).concat(baseApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 

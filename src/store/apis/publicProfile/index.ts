@@ -1,24 +1,11 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "..";
+import { Profile } from "./publicProfile.types";
 
-export const publicProfileApi = createApi({
-  reducerPath: "profile",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_SERVER_URL,
-
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = (getState() as RootState).auth.token
-    //   // If we have a token set in state, let's assume that we should be passing it.
-    //   if (token) {
-    //     headers.set("authorization", `Bearer ${token}`);
-    //   }
-
-    //   return headers;
-    // },
-  }),
+export const publicProfileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    searchUser: builder.query({
+    searchUser: builder.query<Profile, number | undefined>({
       query: (profileType) => ({
-        url: `profiles`,
+        url: `profiles/getBiId`,
         params: {
           user: profileType,
         },

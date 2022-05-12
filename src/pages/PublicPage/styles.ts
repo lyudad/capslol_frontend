@@ -26,6 +26,14 @@ export const ProfileContainer = styled.section`
   position: relative;
 `;
 
+export const TitleEmpty = styled.h1`
+  font-size: x-large;
+  margin-top: 14px;
+  margin-bottom: 20px;
+  /* margin-left: 15px; */
+  text-align: center;
+  color: ${colors.navColor};
+`;
 export const Title = styled.h1`
   font-size: x-large;
   margin-top: 8px;

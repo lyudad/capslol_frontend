@@ -9,7 +9,7 @@ interface UsersState {
   isLoggedIn: boolean;
 }
 const initialState: UsersState = {
-  user: {},
+  user: null,
   accessToken: "",
   loading: "idle",
   error: "",

@@ -8,6 +8,7 @@ import {
   Sections,
   Page,
   ButtonSet,
+  TitleEmpty,
 } from "./styles";
 import { Button, Row } from "antd";
 import "antd/dist/antd.min.css";
@@ -15,16 +16,31 @@ import avatar from "./avatar.png";
 import { colors } from "constants/index";
 import { useSearchUserQuery } from "store/apis/publicProfile";
 import { useAppSelector } from "hooks/redux";
+import { useEffect, useState } from "react";
 
 const PublicPage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user } = useAppSelector((s) => s.authReducer);
-  const { data } = useSearchUserQuery(22);
 
-  // console.log(user);
+  console.log(user);
+
+  if (!user) {
+    return (
+      <Page>
+        <ProfileContainer>
+          <TitleEmpty>Emtpy profile 🤷‍♂️</TitleEmpty>
+          <Row justify="end">
+            <ButtonSet type="default">{t("PublicProfile.settings")}</ButtonSet>
+          </Row>
+        </ProfileContainer>
+      </Page>
+    );
+  }
+
+  const { data } = useSearchUserQuery(user?.id);
+
   console.log(data);
-
   return (
     <Page>
       <ProfileContainer>
@@ -43,13 +59,16 @@ const PublicPage: React.FC = () => {
         <Sections>
           <Description>
             {t("PublicProfile.hour_rate")}{" "}
-            <span style={{ color: colors.brandColor }}>--</span>$
+            <span style={{ color: colors.brandColor }}>{data?.hourRate}</span>$
           </Description>
         </Sections>
         <Sections>
           <Description>
             {t("PublicProfile.amount_hours")}{" "}
-            <span style={{ color: colors.brandColor }}>--</span>h
+            <span style={{ color: colors.brandColor }}>
+              {data?.availableHours}
+            </span>
+            h
           </Description>
         </Sections>
         <Sections>
@@ -76,7 +95,7 @@ const PublicPage: React.FC = () => {
         <Sections>
           {t("PublicProfile.position")}:{" "}
           <Description>
-            <span>Text type</span>
+            <span>{data?.position}</span>
           </Description>
         </Sections>
         <Sections>
@@ -103,13 +122,15 @@ const PublicPage: React.FC = () => {
         <Sections>
           {t("PublicProfile.languages")}:{" "}
           <Description>
-            <span>level [Beginner, Intermediate, Advanced]</span>
+            <span>level [{data?.english}]</span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.add_information")}:{" "}
           <Description>
-            <span>{t("PublicProfile.text_type")}</span>
+            <span>
+              {data?.other ? data?.other : t("PublicProfile.text_type")}
+            </span>
           </Description>
         </Sections>
         <Row justify="end">
