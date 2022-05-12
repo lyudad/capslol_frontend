@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Form, Row, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -79,6 +79,10 @@ const SendProposal: React.FC = () => {
                   {
                     pattern: /^[\d]{0,50}$/,
                     message: `${t("Proposal.error.length")}`,
+                  },
+                  {
+                    required: true,
+                    message: `${t("Proposal.errorRate")}`,
                   },
                 ]}
               >

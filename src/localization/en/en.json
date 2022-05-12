@@ -125,7 +125,8 @@
           "number": "Value should contain just number",
           "length": "Value should be less than 4 character"
       },
-      "errorLetter": "You need write a cover letter"
+      "errorLetter": "You must write a cover letter",
+      "errorRate": "You must write your hourly rate"
   },
   "ContactInfo": {
       "title": "My Account",
