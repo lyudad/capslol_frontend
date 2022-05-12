@@ -4,6 +4,7 @@ import { Button } from "antd";
 
 export const Page = styled.section`
   padding: 1px 12px;
+  min-height: 100vh;
   /* height: 100vh; */
   width: 100%;
   background-color: ${colors.homeBgr};
@@ -52,7 +53,6 @@ export const Avatar = styled.div`
 `;
 export const ButtonSet = styled(Button)`
   display: flex;
-  margin-left: auto;
   background: none;
   border: 1px solid white;
   color: #fff;
