@@ -7,7 +7,6 @@ export const HomeContainer = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0px 12px;
   background-color: ${colors.homeBgr};
   background-image: url(./images/bg-image.png);
   background-repeat: no-repeat;

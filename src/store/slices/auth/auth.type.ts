@@ -5,7 +5,7 @@ export interface IResponse {
 
 export interface IAuthRequest {
   email: string;
-  password: string;
+  password?: string;
 }
 
 export interface IGoogleRequest {
