@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { colors, fonts } from "constants/index";
 import { NavLink } from "react-router-dom";
+
 export const HomeContainer = styled.section`
   display: flex;
   flex-direction: column;

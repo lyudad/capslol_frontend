@@ -3,6 +3,10 @@ import { NavLink } from "react-router-dom";
 import { Form } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { useTranslation } from 'react-i18next';
+import { TypographyTitle } from "pages/ResetPassword/style";
+import { colors } from "constants/index";
+import { useConfirmEmailMutation } from "store/apis/auth";
+import { IFormValue } from "./interfaces";
 import {
   FormButton,
   FormInput,
@@ -13,10 +17,6 @@ import {
   StyledForm,
   Wrapper,
 } from "./styles";
-import { TypographyTitle } from "pages/ResetPassword/style";
-import { IFormValue } from "./interfaces";
-import { colors } from "constants/index";
-import { useConfirmEmailMutation } from "store/apis/auth";
 import VerifyEmail from "./components/VerifyEmail";
 
 const ForgotPassword: React.FC = () => {

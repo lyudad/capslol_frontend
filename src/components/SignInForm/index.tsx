@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Form, Input } from 'antd';
-import { FormValues, ILoginFormValues, IUserData} from './props';
 import { useTranslation } from "react-i18next";
+import { useAppDispatch} from 'hooks/redux';
+import { useLoginMutation } from 'store/apis/auth';
+import { setCredentials } from 'store/slices/auth/auth.slice';
 import {
   Wrapper,
   DontAccount,
@@ -12,9 +14,7 @@ import {
   ButtonSignIn,
   StyledNavLink
 } from './styles';
-import { useAppDispatch} from 'hooks/redux';
-import { useLoginMutation } from 'store/apis/auth';
-import { setCredentials } from 'store/slices/auth/auth.slice';
+import { FormValues, ILoginFormValues, IUserData} from './props';
 
 const SignInForm: React.FC = () => {
   const { t } = useTranslation();
@@ -75,7 +75,7 @@ const SignInForm: React.FC = () => {
               {
                 required: true,
                 type: 'email',
-                message: '', //'Check if the email you entered is correct our input your email!',
+                message: '', // 'Check if the email you entered is correct our input your email!',
               },
             ]}
           >

@@ -1,5 +1,5 @@
 type LiteralObject = {
-  [key: string]: string,
+  [key: string]: string;
 };
 
 export type FlexType = {
@@ -8,13 +8,13 @@ export type FlexType = {
     | "flex-end"
     | "center"
     | "space-between"
-    | "space-evenly",
+    | "space-evenly";
 };
 
 export type BoxType = {
-  classes: LiteralObject,
+  classes: LiteralObject;
 };
 
 export type TextType = {
-  color?: string,
+  color?: string;
 };

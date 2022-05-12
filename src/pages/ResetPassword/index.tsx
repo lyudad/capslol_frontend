@@ -10,6 +10,12 @@ import {
   Wrapper,
   FormItem,
 } from "pages/ForgotPassword/styles";
+import { colors } from "constants/index";
+import ModalWindow from "common/ModalWindow/ModalWindow";
+import { Password } from "store/slices/auth/auth.type";
+import { useResetPasswordMutation } from "store/apis/auth";
+import { validatePassword } from "constants/validate";
+import { IPassword } from "./interfaces";
 import {
   Error,
   FormPassword,
@@ -18,12 +24,6 @@ import {
   WindowTitle,
   Section,
 } from "./style";
-import { IPassword } from "./interfaces";
-import { colors } from "constants/index";
-import ModalWindow from "common/ModalWindow/ModalWindow";
-import { Password } from "store/slices/auth/auth.type";
-import { useResetPasswordMutation } from "store/apis/auth";
-import { validatePassword } from "constants/validate";
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -110,11 +110,11 @@ const ResetPassword: React.FC = () => {
                 validator: (_, value) => {
                   if (validatePassword.test(value)) {
                     return Promise.resolve();
-                  } else {
+                  } 
                     return Promise.reject(
                       `${t("ResetPage.passwordTitle.error")}`
                     );
-                  }
+                  
                 },
               },
             ]}

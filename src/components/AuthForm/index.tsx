@@ -1,8 +1,5 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import AuthMessage from "./AuthMessage";
-import AuthGoogle from "./AuthGoogle";
-import SubmitButton from "./SubmitButton";
 import SignUp from "components/AuthForm/SignUp";
 import { StyledForm, Wrapper } from "components/UI";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +8,9 @@ import {  message, notification } from 'antd';
 import { useDispatch } from "react-redux";
 import { setCredentials } from "store/slices/auth/auth.slice";
 import { useCreateUserMutation } from "store/apis/auth";
+import SubmitButton from "./SubmitButton";
+import AuthGoogle from "./AuthGoogle";
+import AuthMessage from "./AuthMessage";
 
 
 type FormType = {

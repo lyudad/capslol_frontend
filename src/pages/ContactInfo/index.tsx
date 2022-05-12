@@ -4,6 +4,16 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { LeftOutlined, UserOutlined } from "@ant-design/icons";
 
+import { FormButton, FormItem, PwrButton, StyledForm } from "pages/ForgotPassword/styles";
+import { FormPassword } from "pages/ResetPassword/style";
+import { colors } from "constants/index";
+import { validatePassword } from "constants/validate";
+import Button from "common/Button/Button";
+import ModalWindow from "common/ModalWindow/ModalWindow";
+import { useChangePasswordMutation } from "store/apis/profile";
+import { IPassword } from "store/apis/profile/profile.types";
+import { useAppSelector } from "hooks/redux";
+import { IChangePassword } from "./interfaces";
 import {
   Wrapper,
   TitleGroup,
@@ -17,16 +27,6 @@ import {
   Circle,
   IconNotFound,
 } from "./styles";
-import { FormButton, FormItem, PwrButton, StyledForm } from "pages/ForgotPassword/styles";
-import { FormPassword } from "pages/ResetPassword/style";
-import { colors } from "constants/index";
-import { validatePassword } from "constants/validate";
-import Button from "common/Button/Button";
-import ModalWindow from "common/ModalWindow/ModalWindow";
-import { IChangePassword } from "./interfaces";
-import { useChangePasswordMutation } from "store/apis/profile";
-import { IPassword } from "store/apis/profile/profile.types";
-import { useAppSelector } from "hooks/redux";
 
 const ContactInfo: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -190,11 +190,11 @@ const ContactInfo: React.FC = () => {
                 validator: (_, value) => {
                   if (validatePassword.test(value)) {
                     return Promise.resolve();
-                  } else {
+                  } 
                     return Promise.reject(
                       `${t("ContactInfo.passwordTitle.error")}`
                     );
-                  }
+                  
                 },
               },
             ]}

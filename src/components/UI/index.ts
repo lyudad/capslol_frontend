@@ -1,6 +1,5 @@
 import { Button, Form, Typography } from "antd";
 import { colors, fonts } from "constants/index";
-import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FlexType, TextType } from "./ui.type";
 
@@ -19,10 +18,7 @@ export const StyledButton = styled(Button)`
   }
 `;
 
-export const StyledParagraph =
-  styled(Paragraph) <
-  TextType >
-  `
+export const StyledParagraph = styled(Paragraph)<TextType>`
   color: ${({ color }) => color || "#fff"};
 `;
 
@@ -68,10 +64,7 @@ export const StyledContent = styled.section`
   background-size: contain;
 `;
 
-export const Flex =
-  styled(Form.Item) <
-  FlexType >
-  `
+export const Flex = styled(Form.Item)<FlexType>`
   display: flex;
   justify-content: ${({ justify }) => justify || "flex-start"};
 `;

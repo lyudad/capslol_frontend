@@ -8,7 +8,7 @@ interface ISignUpProps {
 
 const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
   return (
-    <React.Fragment>
+    <>
       <StyledForm.Item
         label={translator("AuthForm.firstName")}
         name="firstName"
@@ -109,7 +109,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = ({ translator }) => {
           autoComplete=""
         />
       </StyledForm.Item>
-    </React.Fragment>
+    </>
   );
 };
 

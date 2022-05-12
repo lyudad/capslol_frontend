@@ -13,30 +13,30 @@ export interface IGoogleRequest {
 }
 
 export interface IUser {
-  user: UserType
+  user: UserType;
   accessToken: string;
 }
 
 export type UserType = {
-  id?: number,
-  firstName?: string,
-  lastName?: string,
-  role?: null,
-  email?: string,
-  phoneNumber?: null,
-  createdAt?: string,
-  isGoogle?: boolean,
+  id?: number;
+  firstName?: string;
+  lastName?: string;
+  role?: null;
+  email?: string;
+  phoneNumber?: null;
+  createdAt?: string;
+  isGoogle?: boolean;
 };
 
-export interface IResponseError  {
-  data: ErrorData
-  status: number
+export interface IResponseError {
+  data: ErrorData;
+  status: number;
 }
 
 type ErrorData = {
-  message: string,
-  statusCode: number
-}
+  message: string;
+  statusCode: number;
+};
 
 export interface Email {
   email: string;
@@ -45,4 +45,3 @@ export interface Password {
   token: string | undefined;
   password: string;
 }
-

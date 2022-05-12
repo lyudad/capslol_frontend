@@ -2,7 +2,19 @@
   "name": "get-job",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "start-3005": "PORT=3005 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "precommit": "lint-staged",
+    "eslint": "eslint",
+    "lint": "eslint --debug src/",
+    "lint:fix": "eslint \"{src,test}/**/*.{js,ts,jsx,tsx}\" --fix"
+  },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
@@ -28,25 +40,31 @@
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "start-3005": "PORT=3005 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "precommit": "lint-staged",
-    "eslint": "eslint",
-    "lint": "eslint --debug src/",
-    "lint:write": "eslint --debug src/ --fix"
+  "devDependencies": {
+    "@types/react": "^18.0.8",
+    "@types/react-modal": "^3.13.1",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.8",
+    "prettier": "^2.6.2"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "@typescript-eslint/no-unused-vars": "error"
-    }
+  "lint-staged": {
+    "src/**/*.{js, ts, jsx, tsx}": [
+      "node_modules/.bin/eslint --max-warnings=0",
+      "prettier --write",
+      "git add",
+      "eslint --fix"
+    ]
   },
   "browserslist": {
     "production": [
@@ -58,27 +76,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.8",
-    "@types/react-modal": "^3.13.1",
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.20.0",
-    "eslint": "^8.13.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.4",
-    "lint-staged": "^12.3.8",
-    "prettier": "^2.6.2"
-  },
-  "lint-staged": {
-    "src/**/*.{js, ts, jsx, tsx}": [
-      "node_modules/.bin/eslint --max-warnings=0",
-      "prettier --write",
-      "git add",
-      "eslint --fix"
     ]
   }
 }
