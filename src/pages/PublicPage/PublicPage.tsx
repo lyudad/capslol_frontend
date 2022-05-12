@@ -11,16 +11,31 @@ import {
 import "antd/dist/antd.min.css";
 import avatar from "./avatar.png";
 import { colors } from "constants/index";
+import { useSearchUserQuery } from "store/apis/publicProfile";
+import { useAppSelector } from "hooks/redux";
 
 const PublicPage: React.FC = () => {
   const { t } = useTranslation();
+  const { user } = useAppSelector((s) => s.authReducer);
+  const { data } = useSearchUserQuery(22);
+
+  // console.log(user);
+  console.log(data);
 
   return (
     <Page>
       <ProfileContainer>
-        <Title>{t("PublicProfile.user_name")}</Title>
+        <Title>
+          {user?.firstName
+            ? user?.firstName + " " + user?.lastName
+            : t("PublicProfile.user_name")}
+        </Title>
         <Avatar>
-          <img src={avatar} alt="" width={140} />
+          <img
+            src={data?.profileImage ? data?.profileImage : avatar}
+            alt=""
+            width={140}
+          />
         </Avatar>
         <Sections>
           <Description>

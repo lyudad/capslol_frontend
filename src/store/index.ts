@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { baseApi } from "./apis";
 import authReducer from "./slices/auth/auth.slice";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import { publicProfileApi } from "./apis/publicProfile";
 
 const persistConfig = {
   key: "auth",
@@ -14,13 +15,18 @@ const persistConfig = {
 const rootReducer = combineReducers({
   authReducer,
   [baseApi.reducerPath]: baseApi.reducer,
+  [publicProfileApi.reducerPath]: publicProfileApi.reducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }).concat(baseApi.middleware, publicProfileApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
