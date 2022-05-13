@@ -41,6 +41,7 @@ const PublicPage: React.FC = () => {
   const { data } = useSearchUserQuery(user?.id);
 
   console.log(data);
+
   return (
     <Page>
       <ProfileContainer>

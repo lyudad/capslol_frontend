@@ -5,7 +5,7 @@ export const publicProfileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     searchUser: builder.query<Profile, number | undefined>({
       query: (profileType) => ({
-        url: `profiles/getBiId`,
+        url: `profiles/getById`,
         params: {
           user: profileType,
         },
