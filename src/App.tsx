@@ -6,7 +6,7 @@ import MainLayout from "components/MainLayout";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
-import VerifyEmail from "pages/ForgotPassword/components/VerifyEmail";
+import ContactInfo from "pages/ContactInfo";
 import HomePage from "pages/HomePage";
 import AuthForm from "components/AuthForm";
 import RolePage from "pages/RolePage";
@@ -23,6 +23,7 @@ const App: React.FC = () => {
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/reset_password/*" element={<ResetPassword />} />
         <Route path="/jobs" element={<JobsPage />} />
+        <Route path="/contact_info/:id" element={<ContactInfo />} />
       </Routes>
     </MainLayout>
   );

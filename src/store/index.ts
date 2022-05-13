@@ -24,8 +24,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST"],
       },
-    }),
-  // getDefaultMiddleware().concat(baseApi.middleware),
+    }).concat(baseApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
