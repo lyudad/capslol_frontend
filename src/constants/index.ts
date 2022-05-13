@@ -29,6 +29,10 @@ export const colors: Colors = {
   bgWhiteDark: "rgba(1,1,1,0.9)",
   modalBg: "rgb(255, 255, 255)",
   modalWindowBg: "rgba(255, 255, 255, 0.5)",
+  textGrey: "#9aaa97",
+  proposalWhite: "#e0e0e0",
+  proposalGreen: "#4e944f",
+  proposalWhiteGreen: "#83bd75",
   btnBoxShadow: "rgba(255, 255, 255, 0)",
   btnOutline: "rgba(255, 255, 255, 0.5)",
   btnShadow: "rgba(255, 255, 255, 0.2)",
@@ -44,12 +48,15 @@ export const colors: Colors = {
 
 export const fonts: Fonts = {
   logoFontFamily: "Dodger",
+  logoFontWeight: "600",
   logoFontSize: "26px",
   primeLogoFontSize: "20px",
   logoLineHeight: "1.1",
   navFontSize: "14px",
   titlesOfProfile: "14px",
-  logoFontWeight: "400",
   signUpButtonsFontWeight: "500",
   homeMessageFontSize: "18px",
+  jobListTitleSize: "24px",
+  jobCardTitleSize: "20px",
+  jobListFontWeight: "600",
 };
