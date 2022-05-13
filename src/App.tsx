@@ -1,10 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import PublicPage from "pages/PublicPage/PublicPage";
+import JobsPage from "pages/JobsPage";
 import MainLayout from "components/MainLayout";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
+import SendProposal from "pages/SendProposal";
 import ContactInfo from "pages/ContactInfo";
 import HomePage from "pages/HomePage";
 import AuthForm from "components/AuthForm";
@@ -21,6 +23,11 @@ const App: React.FC = () => {
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/reset_password/*" element={<ResetPassword />} />
+<<<<<<< HEAD
+        <Route path="/send_proposal/" element={<SendProposal />} />
+=======
+        <Route path="/jobs" element={<JobsPage />} />
+>>>>>>> develop
         <Route path="/contact_info/:id" element={<ContactInfo />} />
       </Routes>
     </MainLayout>
