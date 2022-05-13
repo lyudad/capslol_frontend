@@ -56,11 +56,7 @@ const PublicPage: React.FC = () => {
             : t("PublicProfile.user_name")}
         </Title>
         <Avatar>
-          <img
-            src={data?.profileImage ? data?.profileImage : avatar}
-            alt=""
-            width={140}
-          />
+          <img src={data?.profileImage || avatar} alt="" width={140} />
         </Avatar>
         <Sections>
           <Description>
