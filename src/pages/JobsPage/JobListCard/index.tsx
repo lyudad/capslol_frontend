@@ -9,6 +9,7 @@ import {
   ValueBox,
   Field,
   FieldValue,
+  StyledNav,
 } from "./styles";
 import "antd/dist/antd.min.css";
 import { IJobObj } from "./props";
@@ -20,7 +21,6 @@ interface IProps {
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
   const { t } = useTranslation();
   const {
-    id,
     date,
     jobName,
     salary,
@@ -62,6 +62,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
           <FieldValue>{englishLevel}</FieldValue>
         </ValueBox>
       </OwnerContainer>
+      <StyledNav to="">{t("JobPage.sendProposal")}</StyledNav>
     </>
   );
 };

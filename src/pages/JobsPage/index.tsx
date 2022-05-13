@@ -11,10 +11,8 @@ import {
 import "antd/dist/antd.min.css";
 import JobsListCard from "./JobListCard";
 import { jobsExample } from "./example";
-//==================================================
-// import { Select } from "antd";
 import Filters from "./Filters";
-//===================================================
+
 const JobsPage: React.FC = () => {
   const { t } = useTranslation();
 

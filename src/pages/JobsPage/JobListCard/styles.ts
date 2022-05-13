@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { colors, fonts } from "constants/index";
 
@@ -61,6 +62,7 @@ export const OwnerContainer = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 4px;
 `;
 
 export const ValueBox = styled.div`
@@ -77,4 +79,10 @@ export const FieldValue = styled.span`
   font-weight: ${fonts.jobListFontWeight};
   font-size: 12px;
   margin-left: 3px;
+`;
+
+export const StyledNav = styled(NavLink)`
+  padding: 4px 8px;
+  color: ${colors.textWhite};
+  background-color: ${colors.brandColor};
 `;

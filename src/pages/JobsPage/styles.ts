@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors, fonts } from "constants/index";
 
 export const Page = styled.div`
-  padding: 12px 12px 12px 12px;
+  padding: 12px;
   width: 100%;
 `;
 
@@ -41,8 +41,9 @@ export const JobCard = styled.li`
 `;
 
 export const FiltersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   margin-left: 16px;
-  border-right: 1px solid ${colors.appBarBrd};
-  background-color: #fff;
+  background-color: ${colors.appBarBgr};
 `;
