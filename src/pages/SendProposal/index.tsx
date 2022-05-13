@@ -18,7 +18,7 @@ import {
   FormItem,
 } from "./styles";
 import { colors } from "constants/index";
-import { IFileUpload, IFormValue } from "./interfaces";
+import { IFormValue } from "./interfaces";
 
 const SendProposal: React.FC = () => {
   const { t } = useTranslation();
@@ -30,13 +30,6 @@ const SendProposal: React.FC = () => {
 
   const onReset = () => {
     form.resetFields();
-  };
-
-  const normFile = (e: IFileUpload) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
   };
 
   return (
@@ -134,24 +127,6 @@ const SendProposal: React.FC = () => {
               >
                 <StyledTextArea maxLength={500} style={{ height: 150 }} />
               </Form.Item>
-            </Block>
-
-            <Block>
-              <FontTitle color={colors.textWhite} fs="16" mb="15">
-                {t("Proposal.uploadTitle")}
-              </FontTitle>
-
-              <UploadForm
-                name="Attachments"
-                valuePropName="fileList"
-                getValueFromEvent={normFile}
-              >
-                <Upload name="logo" action="/upload.do" listType="picture">
-                  <Button icon={<UploadOutlined />}>
-                    {t("Proposal.uploadBtnText")}
-                  </Button>
-                </Upload>
-              </UploadForm>
             </Block>
           </Section>
         </ProposalCard>

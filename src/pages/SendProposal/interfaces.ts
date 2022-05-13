@@ -6,19 +6,7 @@ export interface IProps {
   mb?: string;
 }
 
-
 export interface IFormValue {
-  Attachments?: any
-  coverLetter: string
-  freelancerValue?: string
-  jobOwnerValue: number
-}
-
-export interface IFile {
-  name: string,
-  uid: string,
-  thumbUrl: string
-}
-export interface IFileUpload {
-  fileList: [IFile]
+  coverLetter: string;
+  freelancerValue: number;
 }

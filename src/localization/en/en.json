@@ -118,8 +118,6 @@
       "gotRate": "You'll receive",
       "letterTitle": "Letter",
       "coverLetterTitle": " Cover Letter",
-      "uploadTitle": "Attachments",
-      "uploadBtnText": "Click to upload",
       "submitBtnText": "Submit",
       "error": {
           "number": "Value should contain just number",
