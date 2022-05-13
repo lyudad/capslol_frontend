@@ -10,20 +10,25 @@ import {
   ButtonSet,
   TitleEmpty,
 } from "./styles";
-import { Button, Row } from "antd";
+import { Row } from "antd";
 import "antd/dist/antd.min.css";
 import avatar from "./avatar.png";
 import { colors } from "constants/index";
-import { useSearchUserQuery } from "store/apis/publicProfile";
+import {
+  useSearchEducationsQuery,
+  useSearchExperienceQuery,
+  useSearchSkillsQuery,
+  useSearchUserQuery,
+} from "store/apis/publicProfile";
 import { useAppSelector } from "hooks/redux";
 import { useEffect, useState } from "react";
 
 const PublicPage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user } = useAppSelector((s) => s.authReducer);
 
-  console.log(user);
+  const { user } = useAppSelector((s) => s.authReducer);
+  console.log(user?.id);
 
   if (!user) {
     return (
@@ -39,8 +44,16 @@ const PublicPage: React.FC = () => {
   }
 
   const { data } = useSearchUserQuery(user?.id);
-
   console.log(data);
+
+  const { data: exp } = useSearchExperienceQuery(48);
+  console.log(exp);
+
+  const { data: edu } = useSearchEducationsQuery(48);
+  console.log(edu);
+
+  const { data: ski } = useSearchSkillsQuery(48);
+  console.log(ski);
 
   return (
     <Page>
@@ -76,54 +89,69 @@ const PublicPage: React.FC = () => {
           {t("PublicProfile.education")}
           <Description>
             {t("PublicProfile.name_of_courses")}{" "}
-            <span style={{ color: colors.brandColor }}>--</span>
+            <span style={{ color: colors.brandColor }}>{edu?.name}</span>
           </Description>
           <Description>
             {t("PublicProfile.specialization")}:{" "}
-            <span style={{ color: colors.brandColor }}>--</span>
+            <span style={{ color: colors.brandColor }}>
+              {edu?.specialization}
+            </span>
           </Description>
           <Description>
             {t("PublicProfile.period")}:{" "}
-            <span style={{ color: colors.brandColor }}>--</span>
+            <span style={{ color: colors.brandColor }}>
+              {edu?.startAt} - {edu?.endAt}
+            </span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.category")}:
           <Description>
-            {t("PublicProfile.development")} [Js, Java, Python]
+            {t("PublicProfile.development")}{" "}
+            <span style={{ color: colors.brandColor }}>[Js, Java, Python]</span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.position")}:{" "}
           <Description>
-            <span>{data?.position}</span>
+            <span style={{ color: colors.brandColor }}>{data?.position}</span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.experience")}
           <Description>
-            {t("PublicProfile.company_name")}{" "}
-            <span style={{ color: colors.brandColor }}>--</span>
+            {t("PublicProfile.company_name")}:{" "}
+            <span style={{ color: colors.brandColor }}>{exp?.companyName}</span>
           </Description>
           <Description>
             {t("PublicProfile.position")}:{" "}
-            <span style={{ color: colors.brandColor }}>--</span>
+            <span style={{ color: colors.brandColor }}>{exp?.position}</span>
           </Description>
           <Description>
             {t("PublicProfile.period")}:{" "}
-            <span style={{ color: colors.brandColor }}>--</span>
+            <span style={{ color: colors.brandColor }}>
+              {exp?.startAt} - {exp?.endAt}
+            </span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.skills")}:{" "}
           <Description>
-            <span>{t("PublicProfile.tag_type")}</span>
+            <span style={{ color: colors.brandColor }}>
+              {/* {t("PublicProfile.tag_type")}  */}
+              {ski?.name}
+            </span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.languages")}:{" "}
           <Description>
-            <span>level [{data?.english}]</span>
+            <span>
+              level{" "}
+              <span style={{ color: colors.brandColor }}>
+                [{data?.english}]
+              </span>
+            </span>
           </Description>
         </Sections>
         <Sections>

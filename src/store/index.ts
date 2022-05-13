@@ -4,12 +4,11 @@ import storage from "redux-persist/lib/storage";
 import { baseApi } from "./apis";
 import authReducer from "./slices/auth/auth.slice";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { publicProfileApi } from "./apis/publicProfile";
 
 const persistConfig = {
   key: "auth",
   storage,
-  // whitelist: ["token", "user", "isLoggedIn"], asdadasd
+  // whitelist: ["token", "user", "isLoggedIn"],
 };
 
 const rootReducer = combineReducers({
