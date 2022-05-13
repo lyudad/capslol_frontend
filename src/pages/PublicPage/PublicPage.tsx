@@ -28,7 +28,6 @@ const PublicPage: React.FC = () => {
   const { t } = useTranslation();
 
   const { user } = useAppSelector((s) => s.authReducer);
-  console.log(user?.id);
 
   if (!user) {
     return (
@@ -44,16 +43,9 @@ const PublicPage: React.FC = () => {
   }
 
   const { data } = useSearchUserQuery(user?.id);
-  console.log(data);
-
-  const { data: exp } = useSearchExperienceQuery(48);
-  console.log(exp);
-
-  const { data: edu } = useSearchEducationsQuery(48);
-  console.log(edu);
-
-  const { data: ski } = useSearchSkillsQuery(48);
-  console.log(ski);
+  const { data: exp } = useSearchExperienceQuery(user?.id);
+  const { data: edu } = useSearchEducationsQuery(user?.id);
+  const { data: ski } = useSearchSkillsQuery(user?.id);
 
   return (
     <Page>
