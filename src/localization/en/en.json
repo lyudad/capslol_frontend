@@ -131,6 +131,25 @@
 
   },
 
+  "Proposal": {
+      "title": "Submit Proposal",
+      "subTitle": "Terms",
+      "jobQuestion": "What is the rate you'd like to bid for this job?",
+      "youRate": "Your profile rate: /hr",
+      "jobOwnerRate": "Client’s budget: /hr",
+      "hourlyRate": "Hourly Rate",
+      "getJobRate": "20% GetJob Service Fee",
+      "gotRate": "You'll receive",
+      "letterTitle": "Letter",
+      "coverLetterTitle": " Cover Letter",
+      "submitBtnText": "Submit",
+      "error": {
+          "number": "Value should contain just number",
+          "length": "Value should be less than 4 character"
+      },
+      "errorLetter": "You must write a cover letter",
+      "errorRate": "You must write your hourly rate"
+  },
   "ContactInfo": {
       "title": "My Account",
       "userRole": "Not Set",
