@@ -101,10 +101,34 @@
       "linkToPasswordPage": "Forgot Password?"
   },
   "HomePage": {
-      "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
-      "hello": "Hello",
-      "welcomeTo": ", welcome to our service.",
-      "youCanView": "You can view yours"
+    "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
+    "hello": "Hello",
+    "welcomeTo": ", welcome to our service.",
+    "youCanView": "You can view yours"
+  },
+  "JobPage": {
+    "jobPageTitle": "Jobs on GetJOB!",
+    "jobOwner": "job owner:",
+    "skills": "skills:",
+    "category": "category:",
+    "timeAvailable": "time available:",
+    "english": "english:",
+    "sendProposal": "Send proposal",
+    "englishLevel": "English level",
+    "filters": "Filters",
+    "search": "Search",
+    "none": "None",
+    "preIntermediate": "Pre-intermediate",
+    "intermediate": "Intermediate",
+    "upperIntermediate": "Upper Intermediate",
+    "fluent": "Fluent",
+    "Skills": "Skills",
+    "price": "Price",
+    "TimeAvailable": "Time available",
+    "perDay": "per day",
+    "hour": "hour",
+    "submit": "Submit"
+
   },
 
   "Proposal": {
