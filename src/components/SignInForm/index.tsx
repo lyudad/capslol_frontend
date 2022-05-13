@@ -45,10 +45,12 @@ const SignInForm: React.FC = () => {
             });
 
             navigate(Paths.SELECT_ROLE);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            if (error.data.message) {
+        } catch (error) {
+            if ('data' in error) {
                 message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
             }
         }
     };
@@ -69,17 +71,18 @@ const SignInForm: React.FC = () => {
 
                 navigate(Paths.SELECT_ROLE);
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            if (error.data.message) {
+        } catch (error) {
+            if ('data' in error) {
                 message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
             }
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleFailure = (error: any): void => {
-        message.error(error);
+    const handleFailure = (): void => {
+        message.error(translator('AuthGoogle.loginFail'));
     };
 
     return (

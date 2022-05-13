@@ -33,7 +33,8 @@
     "signUpMessage": "Sign up with Google",
     "signInMessage": "Sign in with Google",
     "welcomeMessage": "Welcome!",
-    "comeBackMessage": "Welcome back!"
+    "comeBackMessage": "Welcome back!",
+    "loginFail": "Failed to login, please try again later"
   },
   "TestReusable": {
     "wonderfulWorld": "What A Wonderful World"
@@ -74,58 +75,56 @@
   "ResetPage": {
     "title": "Reset Password",
     "passwordTitle": {
-            "item": "Password:",
-            "placeholder": "Your password",
-            "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
-        },
+      "item": "Password:",
+      "placeholder": "Your password",
+      "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+    },
     "conPasswordTitle": {
-            "item": "Confirm Password:",
-            "placeholder": "Confirm your password",
-            "error": "Password must be same"
-        },
+      "item": "Confirm Password:",
+      "placeholder": "Confirm your password",
+      "error": "Password must be same"
+    },
     "error": "Passwords do not match, please try again",
     "btnText": "Save Password",
     "linkText": "Back to Login?",
     "loginText": "Successfully done. Now please Login",
     "passwordError": "Something went error, please try again!"
   },
-
   "VerifyEmail": {
-      "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
-      "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
-      "linkToLogin": "Login?",
-      "linkToPasswordPage": "Forgot Password?"
+    "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
+    "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
+    "linkToLogin": "Login?",
+    "linkToPasswordPage": "Forgot Password?"
   },
   "HomePage": {
-      "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
-      "hello": "Hello",
-      "welcomeTo": ", welcome to our service.",
-      "youCanView": "You can view yours"
+    "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
+    "hello": "Hello",
+    "welcomeTo": ", welcome to our service.",
+    "youCanView": "You can view yours"
   },
-
   "ContactInfo": {
-      "title": "My Account",
-      "userRole": "Not Set",
-      "userFirstName": "First Name",
-      "userLastName": "Last Name",
-      "userPhone": "Phone",
-      "userEmail": "Email",
-      "userPassword": "Password",
-      "btnChangeText": "Change",
-      "passwordTitle": {
-          "item": "New Password:",
-          "placeholder": "Your new password",
-          "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
-      },
-      "conPasswordTitle": {
-          "item": "Confirm New Password:",
-          "placeholder": "Confirm your new password",
-          "error": "Password must be same"
-      },
-      "btnText":"Save Password",
-      "afterChangePassword": {
-        "success": "Password successfully changed!",
-        "error": "Something went wrong, please try again later!"
-      }
+    "title": "My Account",
+    "userRole": "Not Set",
+    "userFirstName": "First Name",
+    "userLastName": "Last Name",
+    "userPhone": "Phone",
+    "userEmail": "Email",
+    "userPassword": "Password",
+    "btnChangeText": "Change",
+    "passwordTitle": {
+      "item": "New Password:",
+      "placeholder": "Your new password",
+      "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+    },
+    "conPasswordTitle": {
+      "item": "Confirm New Password:",
+      "placeholder": "Confirm your new password",
+      "error": "Password must be same"
+    },
+    "btnText": "Save Password",
+    "afterChangePassword": {
+      "success": "Password successfully changed!",
+      "error": "Something went wrong, please try again later!"
+    }
   }
 }

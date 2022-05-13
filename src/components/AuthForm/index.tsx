@@ -40,18 +40,20 @@ const AuthForm: React.FC = () => {
 
     const onFinish = async (values: FormType): Promise<void> => {
         try {
-            const response = await createUser(values).unwrap();
-            dispatch(setCredentials(response));
+            const payload = await createUser(values).unwrap();
+            dispatch(setCredentials(payload));
 
             notification.open({
                 message: translator('AuthGoogle.welcomeMessage'),
             });
 
             navigate(Paths.SELECT_ROLE);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            if (error.data.message) {
+        } catch (error) {
+            if ('data' in error) {
                 message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
             }
         }
     };
@@ -72,17 +74,18 @@ const AuthForm: React.FC = () => {
 
                 navigate(Paths.SELECT_ROLE);
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            if (error.data.message) {
+        } catch (error) {
+            if ('data' in error) {
                 message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
             }
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleFailure = (error: any): void => {
-        message.error(error);
+    const handleFailure = (): void => {
+        message.error(translator('AuthGoogle.loginFail'));
     };
     return (
         <Wrapper>

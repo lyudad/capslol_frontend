@@ -67,7 +67,15 @@ const SignUp: React.FC<ISignUpProps> = ({ translator }) => {
                     },
 
                     ({ getFieldValue }) => ({
-                        validator() {
+                        validator(_, value) {
+                            if (!value) {
+                                return Promise.reject(
+                                    new Error(
+                                        translator('AuthForm.passwordCondition')
+                                    )
+                                );
+                            }
+
                             const matched = getFieldValue('password').match(
                                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
                             );
