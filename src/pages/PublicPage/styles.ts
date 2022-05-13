@@ -5,7 +5,6 @@ import { Button } from "antd";
 export const Page = styled.section`
   padding: 1px 12px;
   min-height: 100vh;
-  /* height: 100vh; */
   width: 100%;
   background-color: ${colors.homeBgr};
   background-image: url(./images/bg-image.png);
@@ -30,7 +29,6 @@ export const TitleEmpty = styled.h1`
   font-size: x-large;
   margin-top: 14px;
   margin-bottom: 20px;
-  /* margin-left: 15px; */
   text-align: center;
   color: ${colors.navColor};
 `;

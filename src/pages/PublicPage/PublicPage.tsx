@@ -125,29 +125,22 @@ const PublicPage: React.FC = () => {
         <Sections>
           {t("PublicProfile.skills")}:{" "}
           <Description>
-            <span style={{ color: colors.brandColor }}>
-              {/* {t("PublicProfile.tag_type")}  */}
-              {ski?.name}
-            </span>
+            <span style={{ color: colors.brandColor }}>{ski?.name}</span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.languages")}:{" "}
           <Description>
             <span>
-              level{" "}
-              <span style={{ color: colors.brandColor }}>
-                [{data?.english}]
-              </span>
+              level:{" "}
+              <span style={{ color: colors.brandColor }}>{data?.english}</span>
             </span>
           </Description>
         </Sections>
         <Sections>
           {t("PublicProfile.add_information")}:{" "}
           <Description>
-            <span>
-              {data?.other ? data?.other : t("PublicProfile.text_type")}
-            </span>
+            <span>{data?.other || t("PublicProfile.text_type")}</span>
           </Description>
         </Sections>
         <Row justify="end">

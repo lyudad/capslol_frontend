@@ -8,7 +8,7 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 const persistConfig = {
   key: "auth",
   storage,
-  // whitelist: ["token", "user", "isLoggedIn"],
+  whitelist: ["token", "user", "isLoggedIn"],
 };
 
 const rootReducer = combineReducers({
