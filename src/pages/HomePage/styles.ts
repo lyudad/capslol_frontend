@@ -6,11 +6,8 @@ export const HomeContainer = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: calc(100vh - 64px);
   padding: 0px 12px;
-  background-color: ${colors.homeBgr};
-  background-image: url(./images/bg-image.png);
-  background-repeat: no-repeat;
-  background-size: contain;
   font-size: ${fonts.homeMessageFontSize};
 `;
 

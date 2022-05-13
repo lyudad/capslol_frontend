@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import PublicPage from "pages/PublicPage/PublicPage";
+import JobsPage from "pages/JobsPage";
 import MainLayout from "components/MainLayout";
 import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
@@ -21,6 +22,7 @@ const App: React.FC = () => {
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/reset_password/*" element={<ResetPassword />} />
+        <Route path="/jobs" element={<JobsPage />} />
         <Route path="/contact_info/:id" element={<ContactInfo />} />
       </Routes>
     </MainLayout>
