@@ -1,7 +1,6 @@
-/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
     StyledForm,
@@ -37,36 +36,35 @@ const ResetPassword: React.FC = () => {
     const [resetPassword, { data, error: dataError, isError }] =
         useResetPasswordMutation();
 
-    const onReset = (): void => {
-        form.resetFields();
-    };
+    const onReset = (): void => form.resetFields();
 
-    const enterLoading = (): void => {
-        setLoading(true);
-    };
+    const enterLoading = (): void => setLoading(true);
 
-    function openModal(): void {
-        setIsOpen(true);
-    }
+    const openModal = (): void => setIsOpen(true);
 
-    function closeModal(): void {
+    const closeModal = (): void => {
         setIsOpen(false);
         navigate('/');
-    }
+    };
 
     const onFinish = async (values: IPassword): Promise<void> => {
         enterLoading();
-        if (values.password === values.confirmPassword) {
-            const value: Password = {
-                token: params.get('token')?.toString(),
-                password: values.confirmPassword,
-            };
-            await resetPassword(value);
-            setError(false);
-            onReset();
-            openModal();
-        } else {
-            setError(true);
+        try {
+            if (values.password === values.confirmPassword) {
+                const value: Password = {
+                    token: params.get('token')?.toString(),
+                    password: values.confirmPassword,
+                };
+                await resetPassword(value);
+                setError(false);
+                onReset();
+                openModal();
+            } else {
+                message.error('Password do not match, please try again');
+                setError(true);
+            }
+        } catch (e) {
+            message.error(e.data.message);
         }
     };
 
@@ -166,7 +164,7 @@ const ResetPassword: React.FC = () => {
 
             <ModalWindow
                 modalIsOpen={modalIsOpen}
-                closeModal={closeModal}
+                closeModal={() => closeModal()}
                 bg={colors.modalBg}
                 modalBg={colors.modalWindowBg}
             >

@@ -51,9 +51,10 @@ const ContactInfo: React.FC = () => {
 
     const onReset = (): void => form.resetFields();
 
-    function openModal(): void {
-        setIsOpen(true);
-    }
+    const openModal = (): void => setIsOpen(true);
+
+    const closeModal = (): void => setIsOpen(false);
+
     const onFinish = async (values: IChangePassword): Promise<void> => {
         enterLoading();
         try {
@@ -68,15 +69,10 @@ const ContactInfo: React.FC = () => {
                 onReset();
                 setLoading(false);
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
+        } catch (error) {
             message.error(error.data.message);
         }
     };
-
-    function closeModal(): void {
-        setIsOpen(false);
-    }
 
     return (
         <Wrapper>

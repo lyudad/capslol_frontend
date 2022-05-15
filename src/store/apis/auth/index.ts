@@ -40,8 +40,7 @@ export const authApi = baseApi.injectEndpoints({
                 body: email,
             }),
         }),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resetPassword: builder.mutation<any, Password>({
+        resetPassword: builder.mutation<Password, Password>({
             query: (value) => ({
                 url: `auth/changePassword?token=${value.token}`,
                 method: 'PUT',

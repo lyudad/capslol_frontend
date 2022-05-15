@@ -1,13 +1,14 @@
-﻿/* eslint-disable @typescript-eslint/ban-types */
+﻿import { TReactNode } from 'common/Button/props';
+import { CSSProperties } from 'react';
+
 export interface IProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    children: any;
+    children: TReactNode;
     modalIsOpen: boolean;
     closeModal: () => void;
     bg: string;
     modalBg: string;
 }
 export interface ICustomStyles {
-    overlay: {};
-    content: {};
+    overlay: CSSProperties | undefined;
+    content: CSSProperties | undefined;
 }

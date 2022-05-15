@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Select, Radio } from "antd";
+import { colors } from "constants/index";
 import {
   Title,
   StyledSlider,
@@ -10,7 +11,6 @@ import {
   PriceValue,
   StyledSubmitButton,
 } from "./styles";
-import { colors } from "constants/index";
 import "antd/dist/antd.min.css";
 
 const { Option } = Select;
@@ -118,10 +118,10 @@ const Filters: React.FC = () => {
       <StyledFilter>
         <FilterTitle>{t("JobPage.TimeAvailable")}</FilterTitle>
         <Radio.Group onChange={onChangeTime} value={timeAvailable}>
-          <Radio value={"per day"} style={{ color: `${colors.brandColor}` }}>
+          <Radio value="per day" style={{ color: `${colors.brandColor}` }}>
             {t("JobPage.perDay")}
           </Radio>
-          <Radio value={"hour"} style={{ color: `${colors.brandColor}` }}>
+          <Radio value="hour" style={{ color: `${colors.brandColor}` }}>
             {t("JobPage.hour")}
           </Radio>
         </Radio.Group>
