@@ -1,13 +1,13 @@
 ﻿import React from "react";
-import { Wrapper } from "./styles";
+import { AvatarImg, Image, Online, Wrapper } from "./styles";
 
-const Avatar: React.FC<any> = ({ image }) => {
+const Avatar: React.FC<any> = ({ image, alt, isOnline }) => {
   return (
     <Wrapper>
-      <div className="avatar-img">
-        <img src={image} alt="#" />
-      </div>
-      {/* <span className={`isOnline ${this.props.isOnline}`}></span> */}
+      <AvatarImg>
+        <Image src={image} alt={alt} />
+      </AvatarImg>
+      <Online className={`isOnline ${isOnline}`}></Online>
     </Wrapper>
   );
 };

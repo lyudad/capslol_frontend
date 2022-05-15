@@ -2,34 +2,9 @@
 
 export const Wrapper = styled.div`
   width: 65%;
-  .main__chatcontent {
-    flex-grow: 1;
-    padding: 20px 40px;
-    border-right: 1px solid #ebe7fb;
-  }
-  .content__header {
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ebe7fb;
-  }
-  .current-chatting-user {
-    display: flex;
-    align-items: center;
-  }
-  .current-chatting-user p {
-    margin: 0;
-    font-weight: 600;
-  }
-  .content__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+
   .settings .btn-nobg {
     color: #000;
-  }
-  .content__body {
-    max-height: calc(100vh - calc(100vh / 2));
-    overflow: auto;
   }
   .chat__item {
     display: flex;
@@ -146,5 +121,65 @@ export const Wrapper = styled.div`
   #sendMsgBtn {
     background-color: #3b5bfe;
     color: #fff;
+  }
+`;
+
+export const MainChat = styled.div`
+  flex-grow: 1;
+  padding: 20px 40px;
+`;
+
+export const ChatHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(76, 175, 80, 0.3);
+`;
+
+export const CurrentChatUser = styled.div`
+  display: flex;
+  align-items: center;
+
+  p {
+    margin: 0;
+    font-weight: 600;
+    color: white;
+  }
+`;
+
+export const ChatBody = styled.div`
+  max-height: calc(100vh - calc(100vh / 2));
+  overflow: auto;
+  padding: 20px 0 10px;
+`;
+
+export const ChatItemCard = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  transform-origin: right;
+  animation-name: showIn;
+  animation-duration: 0.2s; /* or: Xms */
+  animation-iteration-count: 1;
+  animation-direction: normal; /* or: normal */
+  animation-timing-function: cubic-bezier(
+    0.88,
+    0.19,
+    0.37,
+    1.11
+  ); /* or: ease, ease-in, ease-in-out, linear, cubic-bezier(x1, y1, x2, y2) */
+  animation-fill-mode: both; /* or: backwards, both, none */
+  animation-delay: 0.2s; /* or: Xms */
+  @keyframes showIn {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 `;

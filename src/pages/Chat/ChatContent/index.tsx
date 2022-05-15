@@ -1,7 +1,13 @@
 ﻿import React from "react";
 import Avatar from "../ChatList/Avatar";
 import ChatItem from "./ChatItem";
-import { Wrapper } from "./styles";
+import {
+  ChatBody,
+  ChatHeader,
+  CurrentChatUser,
+  MainChat,
+  Wrapper,
+} from "./styles";
 
 const ChatContent: React.FC<any> = () => {
   const chatItms = [
@@ -58,27 +64,27 @@ const ChatContent: React.FC<any> = () => {
 
   return (
     <Wrapper>
-      <div className="main__chatcontent">
-        <div className="content__header">
-          <div className="blocks">
-            <div className="current-chatting-user">
+      <MainChat>
+        <ChatHeader>
+          <div>
+            <CurrentChatUser>
               <Avatar
                 isOnline="active"
                 image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
               />
               <p>Tim Hover</p>
-            </div>
+            </CurrentChatUser>
           </div>
 
-          <div className="blocks">
+          <div>
             <div className="settings">
               <button className="btn-nobg">
                 <i className="fa fa-cog"></i>
               </button>
             </div>
           </div>
-        </div>
-        <div className="content__body">
+        </ChatHeader>
+        <ChatBody>
           <div className="chat__items">
             {chatItms.map((itm, index) => {
               return (
@@ -93,7 +99,7 @@ const ChatContent: React.FC<any> = () => {
             })}
             {/* <div ref={this.messagesEndRef} /> */}
           </div>
-        </div>
+        </ChatBody>
         <div className="content__footer">
           <div className="sendNewMessage">
             <button className="addFiles">
@@ -110,7 +116,7 @@ const ChatContent: React.FC<any> = () => {
             </button>
           </div>
         </div>
-      </div>
+      </MainChat>
     </Wrapper>
   );
 };

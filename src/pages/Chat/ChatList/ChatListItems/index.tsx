@@ -1,25 +1,31 @@
 ﻿import React from "react";
 import Avatar from "../Avatar";
-import { Wrapper } from "./styles";
+import { ChatListItem, ChatUser, ChatUserTime, Wrapper } from "./styles";
 
-const ChatListItems: React.FC<any> = ({ active, image, name }) => {
+const ChatListItems: React.FC<any> = ({
+  active,
+  image,
+  name,
+  animationDelay,
+  isOnline,
+}) => {
   return (
     <Wrapper>
-      <div
-        // style={{ animationDelay: `0.${this.props.animationDelay}s` }}
-        // onClick={this.selectChat}
+      <ChatListItem
+        style={{ animationDelay: `0.${animationDelay}s` }}
         className={`chatlist__item ${active ? active : ""} `}
       >
         <Avatar
           image={image ? image : "http://placehold.it/80x80"}
-          // isOnline={this.props.isOnline}
+          isOnline={isOnline}
+          alt={name}
         />
 
-        <div className="userMeta">
-          <p>{name}</p>
-          <span className="activeTime">32 mins ago</span>
+        <div>
+          <ChatUser>{name}</ChatUser>
+          <ChatUserTime>32 mins ago</ChatUserTime>
         </div>
-      </div>
+      </ChatListItem>
     </Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import ChatListItems from "./ChatListItems";
-import { Wrapper } from "./styles";
+import { ChatLists, Input, SearchWrap, Wrapper } from "./styles";
 
 const ChatList: React.FC = () => {
   const allChatUsers = [
@@ -87,40 +87,23 @@ const ChatList: React.FC = () => {
 
   return (
     <Wrapper>
-      <div className="main__chatlist">
-        <button className="btn">
-          <i className="fa fa-plus"></i>
-          <span>New conversation</span>
-        </button>
-        <div className="chatlist__heading">
-          <h2>Chats</h2>
-          <button className="btn-nobg">
-            <i className="fa fa-ellipsis-h"></i>
-          </button>
-        </div>
-        <div className="chatList__search">
-          <div className="search_wrap">
-            <input type="text" placeholder="Search Here" required />
-            <button className="search-btn">
-              <i className="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
-        <div className="chatlist__items">
-          {allChatUsers.map((item, index) => {
-            return (
-              <ChatListItems
-                name={item.name}
-                key={item.id}
-                animationDelay={index + 1}
-                active={item.active ? "active" : ""}
-                isOnline={item.isOnline ? "active" : ""}
-                image={item.image}
-              />
-            );
-          })}
-        </div>
-      </div>
+      <SearchWrap>
+        <Input type="text" placeholder="Search" />
+      </SearchWrap>
+      <ChatLists>
+        {allChatUsers.map((item, index) => {
+          return (
+            <ChatListItems
+              name={item.name}
+              key={item.id}
+              animationDelay={index + 1}
+              active={item.active ? "active" : ""}
+              isOnline={item.isOnline ? "active" : ""}
+              image={item.image}
+            />
+          );
+        })}
+      </ChatLists>
     </Wrapper>
   );
 };
