@@ -93,7 +93,10 @@ const ContactInfo: React.FC = () => {
                     <TitleGroup mb="35">
                         <StyledAvatar size={64} icon={<UserOutlined />} />
                         <div>
-                            <Title fs="28">{`${user?.firstName} ${user?.lastName}`}</Title>
+                            <Title fs="28">
+                                {`${user?.firstName ? user?.firstName : 'Not'}
+                                ${user?.lastName ? user?.lastName : 'Found'}`}
+                            </Title>
                             <Circle>
                                 {user?.role ? user?.role : 'Not Found'}
                             </Circle>

@@ -34,6 +34,7 @@ const ForgotPassword: React.FC = () => {
         enterLoading();
         try {
             await confirmEmail(values.email);
+            console.log(values);
         } catch (e) {
             message.error(e.data.message);
         }
