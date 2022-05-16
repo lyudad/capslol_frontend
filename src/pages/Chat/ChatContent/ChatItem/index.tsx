@@ -1,24 +1,35 @@
 ﻿import Avatar from "pages/Chat/ChatList/Avatar";
+import { IChatItemProps } from "pages/Chat/interfaces";
 import React from "react";
-import { Wrapper } from "./styles";
+import {
+  ChatItemCard,
+  ChatItemContent,
+  ChatMeta,
+  ChatMsg,
+  ChatTime,
+} from "./styles";
 
-const ChatItem: React.FC<any> = ({ user, msg, image }) => {
+const ChatItem: React.FC<IChatItemProps> = ({
+  user,
+  msg,
+  image,
+  animationDelay,
+}) => {
   return (
-    <Wrapper>
-      <div
-        style={{ animationDelay: `0.8s` }}
-        className={`chat__item ${user ? user : ""}`}
+    <>
+      <ChatItemCard
+        style={{ animationDelay: `0.${animationDelay}s` }}
+        className={`${user ? user : ""}`}
       >
-        <div className="chat__item__content">
-          <div className="chat__msg">{msg}</div>
-          <div className="chat__meta">
-            <span>16 mins ago</span>
-            <span>Seen 1.03PM</span>
-          </div>
-        </div>
-        <Avatar isOnline="active" image={image} />
-      </div>
-    </Wrapper>
+        <ChatItemContent className="chat__item__content">
+          <ChatMsg>{msg}</ChatMsg>
+          <ChatMeta>
+            <ChatTime>1.03 PM</ChatTime>
+          </ChatMeta>
+        </ChatItemContent>
+        <Avatar isOnline="active" image={image} alt={"me"} />
+      </ChatItemCard>
+    </>
   );
 };
 

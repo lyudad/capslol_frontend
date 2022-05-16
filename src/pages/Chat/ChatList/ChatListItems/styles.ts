@@ -1,5 +1,7 @@
 ﻿import styled from "styled-components";
 
+import { colors } from "constants/index";
+
 export const ChatListItem = styled.div`
   display: flex;
   align-items: center;
@@ -31,14 +33,14 @@ export const ChatListItem = styled.div`
 
   &:hover,
   &.active {
-    background: #243d25;
+    background: ${colors.chatNewMsg};
   }
 `;
 
 export const ChatUser = styled.p`
   margin: 0;
   padding: 0;
-  color: white;
+  color: ${colors.textWhite};
   font-weight: 600;
   font-size: 14px;
 `;
@@ -46,7 +48,7 @@ export const ChatUser = styled.p`
 export const ChatUserTime = styled.span`
   margin: 0;
   padding: 0;
-  color: #ceccd3;
+  color: ${colors.chatUserTime};
   font-weight: 400;
   font-size: 12px;
   display: block;

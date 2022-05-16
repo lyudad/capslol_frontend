@@ -1,7 +1,8 @@
 ﻿import React from "react";
 import { AvatarImg, Image, Online, Wrapper } from "./styles";
+import { IAvatarProps } from "pages/Chat/interfaces";
 
-const Avatar: React.FC<any> = ({ image, alt, isOnline }) => {
+const Avatar: React.FC<IAvatarProps> = ({ image, alt, isOnline }) => {
   return (
     <Wrapper>
       <AvatarImg>

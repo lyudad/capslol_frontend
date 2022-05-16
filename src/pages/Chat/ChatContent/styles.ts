@@ -1,5 +1,6 @@
 ﻿import styled from "styled-components";
 import { SendOutlined, PlusOutlined } from "@ant-design/icons";
+import { colors } from "constants/index";
 
 export const Wrapper = styled.div`
   width: 65%;
@@ -15,7 +16,7 @@ export const ChatHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 15px;
-  border-bottom: 1px solid rgba(76, 175, 80, 0.3);
+  border-bottom: 1px solid ${colors.chatHeader};
 `;
 
 export const CurrentChatUser = styled.div`
@@ -25,12 +26,12 @@ export const CurrentChatUser = styled.div`
   p {
     margin: 0;
     font-weight: 600;
-    color: white;
+    color: ${colors.textWhite};
   }
 `;
 
 export const SettingsBtn = styled.button`
-  color: #fff;
+  color: ${colors.textWhite};
   border: none;
   background: transparent;
   transition: all 0.3s ease;
@@ -51,16 +52,16 @@ export const ChatBody = styled.div`
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(33, 122, 34, 0.3);
+    background: ${colors.chatScrollTrack};
   }
 
   &::-webkit-scrollbar-thumb {
     transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
-    background: rgba(76, 175, 80, 0.3);
+    background: ${colors.chatHeader};
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(33, 122, 34, 0.3);
+    background: ${colors.chatScrollTrack};
   }
 `;
 
@@ -69,7 +70,7 @@ export const ChatFooter = styled.div`
 `;
 
 export const SendNewMessage = styled.div`
-  background-color: #243d25;
+  background-color: ${colors.chatNewMsg};
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -79,13 +80,13 @@ export const SendNewMessage = styled.div`
 export const SendNewMessageBtn = styled.button`
   width: 36px;
   height: 36px;
-  background-color: #ecefff;
+  background-color: ${colors.chatNewMsgBtn};
   border: none;
   box-shadow: none;
   outline: none;
   cursor: pointer;
   font-size: 16px;
-  color: #0f0e0e;
+  color: ${colors.textWhite};
   padding: 0;
   border-radius: 5px;
   line-height: 36px;
@@ -102,7 +103,7 @@ export const SendNewMessageInput = styled.input`
   border: none;
   outline: none;
   font-size: 16px;
-  color: white;
+  color: ${colors.textWhite};
 `;
 
 export const SendNewMessageIcon = styled(SendOutlined)`

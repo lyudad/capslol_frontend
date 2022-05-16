@@ -1,5 +1,7 @@
 ﻿import styled from "styled-components";
 
+import { colors } from "constants/index";
+
 export const Wrapper = styled.div`
   width: 40px;
   height: 40px;
@@ -27,10 +29,10 @@ export const Online = styled.span`
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #ddd;
+  background: ${colors.proposalWhite};
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid ${colors.textWhite};
   &.active {
-    background-color: tomato;
+    background: ${colors.textWhiteRed};
   }
 `;

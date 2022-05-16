@@ -1,8 +1,9 @@
 ﻿import React from "react";
 import Avatar from "../Avatar";
 import { ChatListItem, ChatUser, ChatUserTime } from "./styles";
+import { IChatListProps } from "pages/Chat/interfaces";
 
-const ChatListItems: React.FC<any> = ({
+const ChatListItems: React.FC<IChatListProps> = ({
   active,
   image,
   name,

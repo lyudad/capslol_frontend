@@ -16,7 +16,7 @@ import {
   Wrapper,
 } from "./styles";
 
-const ChatContent: React.FC<any> = () => {
+const ChatContent: React.FC = () => {
   const chatItms = [
     {
       key: 1,
@@ -56,7 +56,7 @@ const ChatContent: React.FC<any> = () => {
     {
       key: 6,
       image:
-        "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
       type: "",
       msg: "what plan mate?",
     },
@@ -78,6 +78,7 @@ const ChatContent: React.FC<any> = () => {
               <Avatar
                 isOnline="active"
                 image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
+                alt={"Tim Hover"}
               />
               <p>Tim Hover</p>
             </CurrentChatUser>
