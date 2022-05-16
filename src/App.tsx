@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import PublicPage from "pages/PublicPage/PublicPage";
 import JobsPage from "pages/JobsPage";
 import MainLayout from "components/MainLayout";
-import TestPage from "./pages/testPage";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
 import SendProposal from "pages/SendProposal";
@@ -11,6 +10,7 @@ import ContactInfo from "pages/ContactInfo";
 import HomePage from "pages/HomePage";
 import AuthForm from "components/AuthForm";
 import RolePage from "pages/RolePage";
+import TestPage from "./pages/testPage";
 
 const App: React.FC = () => {
   return (

@@ -1,4 +1,7 @@
-﻿import React from "react";
+﻿/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable react/function-component-definition */
+import React from "react";
 import Modal from "react-modal";
 import { Button, Parent } from "./style";
 import { ICustomStyles, IProps } from "./types";

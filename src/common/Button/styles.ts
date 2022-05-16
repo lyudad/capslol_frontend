@@ -1,6 +1,6 @@
 ﻿import styled from "styled-components";
-import { IProps } from "./props";
 import { colors } from "constants/index";
+import { IProps } from "./props";
 
 const { btnBoxShadow, btnOutline, btnShadow, btnTextShadow } = colors;
 

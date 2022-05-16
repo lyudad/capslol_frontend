@@ -1,4 +1,5 @@
 import { UserType } from "store/slices/auth/auth.type";
+
 export interface FormValues {
   email: string;
   password: string;

@@ -9,7 +9,7 @@ export const profileApi = baseApi.injectEndpoints({
         return {
           url: `auth/changePasswordWithId/${id}`,
           method: "PUT",
-          body: { password: password },
+          body: { password },
         };
       },
     }),

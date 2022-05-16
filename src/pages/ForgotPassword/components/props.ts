@@ -1,4 +1,5 @@
 ﻿export interface IProps {
-  data: any;
-  isError: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
+    isError: boolean;
 }
