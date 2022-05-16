@@ -23,11 +23,8 @@ const App: React.FC = () => {
         <Route path="/test" element={<TestPage />} />
         <Route path="/forgotten_password" element={<ForgotPassword />} />
         <Route path="/reset_password/*" element={<ResetPassword />} />
-<<<<<<< HEAD
         <Route path="/send_proposal/" element={<SendProposal />} />
-=======
         <Route path="/jobs" element={<JobsPage />} />
->>>>>>> develop
         <Route path="/contact_info/:id" element={<ContactInfo />} />
       </Routes>
     </MainLayout>
