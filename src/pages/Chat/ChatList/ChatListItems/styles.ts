@@ -1,12 +1,9 @@
 ﻿import styled from "styled-components";
 
-export const Wrapper = styled.div``;
-
 export const ChatListItem = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 10px;
-  margin-top: 10px;
   cursor: pointer;
   padding: 10px 10px 10px 20px;
   transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
@@ -32,13 +29,9 @@ export const ChatListItem = styled.div`
     margin-top: 0;
   }
 
-  &:hover {
-    color: black;
-  }
-
   &:hover,
   &.active {
-    background: #fff;
+    background: #243d25;
   }
 `;
 

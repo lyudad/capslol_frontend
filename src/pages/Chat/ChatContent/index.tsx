@@ -3,9 +3,16 @@ import Avatar from "../ChatList/Avatar";
 import ChatItem from "./ChatItem";
 import {
   ChatBody,
+  ChatFooter,
   ChatHeader,
   CurrentChatUser,
   MainChat,
+  SendNewMessage,
+  SendNewMessageBtn,
+  SendNewMessageIcon,
+  SendNewMessageIconPlus,
+  SendNewMessageInput,
+  SettingsBtn,
   Wrapper,
 } from "./styles";
 
@@ -77,15 +84,13 @@ const ChatContent: React.FC<any> = () => {
           </div>
 
           <div>
-            <div className="settings">
-              <button className="btn-nobg">
-                <i className="fa fa-cog"></i>
-              </button>
-            </div>
+            <SettingsBtn>
+              <span>...</span>
+            </SettingsBtn>
           </div>
         </ChatHeader>
         <ChatBody>
-          <div className="chat__items">
+          <div>
             {chatItms.map((itm, index) => {
               return (
                 <ChatItem
@@ -97,25 +102,19 @@ const ChatContent: React.FC<any> = () => {
                 />
               );
             })}
-            {/* <div ref={this.messagesEndRef} /> */}
           </div>
         </ChatBody>
-        <div className="content__footer">
-          <div className="sendNewMessage">
-            <button className="addFiles">
-              <i className="fa fa-plus"></i>
-            </button>
-            <input
-              type="text"
-              placeholder="Type a message here"
-              // onChange={this.onStateChange}
-              // value={this.state.msg}
-            />
-            <button className="btnSendMsg" id="sendMsgBtn">
-              <i className="fa fa-paper-plane"></i>
-            </button>
-          </div>
-        </div>
+        <ChatFooter>
+          <SendNewMessage>
+            <SendNewMessageBtn>
+              <SendNewMessageIconPlus />
+            </SendNewMessageBtn>
+            <SendNewMessageInput type="text" placeholder="Write a message..." />
+            <SendNewMessageBtn>
+              <SendNewMessageIcon />
+            </SendNewMessageBtn>
+          </SendNewMessage>
+        </ChatFooter>
       </MainChat>
     </Wrapper>
   );

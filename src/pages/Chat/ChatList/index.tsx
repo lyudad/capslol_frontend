@@ -91,15 +91,15 @@ const ChatList: React.FC = () => {
         <Input type="text" placeholder="Search" />
       </SearchWrap>
       <ChatLists>
-        {allChatUsers.map((item, index) => {
+        {allChatUsers.map((user, index) => {
           return (
             <ChatListItems
-              name={item.name}
-              key={item.id}
+              name={user.name}
+              key={user.id}
               animationDelay={index + 1}
-              active={item.active ? "active" : ""}
-              isOnline={item.isOnline ? "active" : ""}
-              image={item.image}
+              active={user.active ? "active" : ""}
+              isOnline={user.isOnline ? "active" : ""}
+              image={user.image}
             />
           );
         })}

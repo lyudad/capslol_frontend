@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import Avatar from "../Avatar";
-import { ChatListItem, ChatUser, ChatUserTime, Wrapper } from "./styles";
+import { ChatListItem, ChatUser, ChatUserTime } from "./styles";
 
 const ChatListItems: React.FC<any> = ({
   active,
@@ -10,10 +10,10 @@ const ChatListItems: React.FC<any> = ({
   isOnline,
 }) => {
   return (
-    <Wrapper>
+    <>
       <ChatListItem
         style={{ animationDelay: `0.${animationDelay}s` }}
-        className={`chatlist__item ${active ? active : ""} `}
+        className={`${active ? active : ""} `}
       >
         <Avatar
           image={image ? image : "http://placehold.it/80x80"}
@@ -26,7 +26,7 @@ const ChatListItems: React.FC<any> = ({
           <ChatUserTime>32 mins ago</ChatUserTime>
         </div>
       </ChatListItem>
-    </Wrapper>
+    </>
   );
 };
 

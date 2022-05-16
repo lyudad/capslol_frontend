@@ -7,7 +7,7 @@ const Avatar: React.FC<any> = ({ image, alt, isOnline }) => {
       <AvatarImg>
         <Image src={image} alt={alt} />
       </AvatarImg>
-      <Online className={`isOnline ${isOnline}`}></Online>
+      <Online className={`${isOnline}`}></Online>
     </Wrapper>
   );
 };
