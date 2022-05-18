@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import 'antd/dist/antd.min.css';
+import { useGetJobByIdQuery } from 'store/apis/jobs';
+import { langLevel } from 'constants/index';
 import {
     Page,
     Title,
@@ -19,12 +21,16 @@ import { job } from './job-example';
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
 
+    const { data } = useGetJobByIdQuery(3);
+
+    // console.log('DATA: ', data);
+
     return (
         <Page>
             <JobCard>
-                <Date>{job.date}</Date>
+                <Date>{data?.createdAt.substring(0, 10)}</Date>
 
-                <Title>{job.jobName}</Title>
+                <Title>{data?.title}</Title>
                 <Owner>
                     <AvatarImg>
                         <img src={avatar} alt="" />
@@ -32,33 +38,37 @@ const OneJobPage: React.FC = () => {
                     {job.jobOwner}
                 </Owner>
 
-                <Description>{job.description}</Description>
+                <Description>{data?.description}</Description>
 
                 <OptionContent>
                     <Field>{t('JobPage.salary')} </Field>
-                    <Value>{job.salary}$</Value>
+                    <Value>{data?.price}$</Value>
                 </OptionContent>
 
                 <OptionContent>
                     <Field>{t('JobPage.category')} </Field>
-                    <Value>{job.category}</Value>
+                    <Value>{data?.categories[0].categoryName}</Value>
                 </OptionContent>
 
                 <OptionContent>
                     <Field>{t('JobPage.timeAvailable')} </Field>
-                    <Value>{job.timeAvailable}</Value>
+                    <Value>{data?.timeAvailable}</Value>
                 </OptionContent>
 
                 <SubTitle>{t('JobPage.requirements')}</SubTitle>
 
                 <OptionContent>
                     <Field>{t('JobPage.skills')} </Field>
-                    <Value>{job.skills.join(', ')}</Value>
+                    <Value>
+                        {data?.skills.map((item) => item.name).join(', ')}
+                    </Value>
                 </OptionContent>
 
                 <OptionContent>
                     <Field>{t('JobPage.english')} </Field>
-                    <Value>{job.englishLevel}</Value>
+                    {data?.languageLevel && (
+                        <Value>{langLevel[data?.languageLevel]}</Value>
+                    )}
                 </OptionContent>
             </JobCard>
         </Page>

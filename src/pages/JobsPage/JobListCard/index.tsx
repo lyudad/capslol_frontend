@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import { IJobs } from 'store/apis/jobs/jobs.types';
+import { langLevel } from 'constants/index';
 import {
     DateContainer,
     JobTitle,
@@ -12,46 +14,47 @@ import {
     StyledNav,
 } from './styles';
 import 'antd/dist/antd.min.css';
-import { IJobObj } from './props';
 
 interface IProps {
-    jobObj: IJobObj;
+    jobObj: IJobs;
 }
 
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const { t } = useTranslation();
     const {
-        date,
-        jobName,
-        salary,
+        id,
+        createdAt,
+        title,
         description,
-        jobOwner,
-        skills,
-        category,
+        price,
         timeAvailable,
-        englishLevel,
+        categories,
+        skills,
+        languageLevel,
     } = jobObj;
 
     return (
         <>
-            <DateContainer>{date}</DateContainer>
-            <NavLink to="/.........">
-                <JobTitle>{jobName},</JobTitle>
-                <Salary>{salary}$</Salary>
+            <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
+            <NavLink to="/job">
+                <JobTitle>{title},</JobTitle>
+                <Salary>{price}$</Salary>
             </NavLink>
             <Descriptions>{description}</Descriptions>
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.jobOwner')}</Field>
-                    <FieldValue>{jobOwner}</FieldValue>
+                    <FieldValue>jobOwner</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.skills')}</Field>
-                    <FieldValue>{skills.join(', ')}</FieldValue>
+                    <FieldValue>
+                        {skills.map((item) => item.name).join(', ')}
+                    </FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
-                    <FieldValue>{category}</FieldValue>
+                    <FieldValue>{categories[0].categoryName}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.timeAvailable')}</Field>
@@ -59,7 +62,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.english')}</Field>
-                    <FieldValue>{englishLevel}</FieldValue>
+                    <FieldValue>{langLevel[languageLevel]}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
             <StyledNav to="">{t('JobPage.sendProposal')}</StyledNav>

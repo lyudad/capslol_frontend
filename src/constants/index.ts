@@ -61,11 +61,10 @@ export const fonts: Fonts = {
     jobListFontWeight: '600',
 };
 
-export const skills: string[] = [
-    'skill#1',
-    'skill#2',
-    'skill#3',
-    'skill#4',
-    'skill#5',
-    'skill#6',
+export const langLevel: string[] = [
+    'None',
+    'Pre-intermediate',
+    'Intermediate',
+    'Upper Intermediate',
+    'Fluent',
 ];
