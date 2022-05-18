@@ -22,12 +22,16 @@ export const ChatHeader = styled.div`
 export const CurrentChatUser = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  p {
-    margin: 0;
-    font-weight: 600;
-    color: ${colors.textWhite};
-  }
+export const ProjectOwner = styled.h3`
+  margin: 0;
+  color: ${colors.textWhite};
+`;
+
+export const Project = styled.h5`
+  margin: 0;
+  color: ${colors.labelText};
 `;
 
 export const SettingsBtn = styled.button`
@@ -44,6 +48,7 @@ export const SettingsBtn = styled.button`
 export const ChatBody = styled.div`
   max-height: calc(100vh - calc(100vh / 2));
   overflow: auto;
+  height: 100vh;
   padding: 20px 0 10px;
   &::-webkit-scrollbar {
     transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);

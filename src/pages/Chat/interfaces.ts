@@ -1,9 +1,12 @@
 ﻿export interface IChatListProps {
   active?: string | boolean;
-  image: string;
-  name: string;
+  image?: string;
+  name?: string;
   animationDelay?: number;
   isOnline?: string | boolean;
+  onChangeChat: (value: any) => void;
+  user?: any;
+  index: any;
 }
 
 export interface IAvatarProps {
@@ -13,8 +16,10 @@ export interface IAvatarProps {
 }
 
 export interface IChatItemProps {
-  image: string;
-  user: string;
-  msg: string;
   animationDelay?: number;
+  item?: any;
+}
+
+export interface IChatContent {
+  currentChat: any;
 }

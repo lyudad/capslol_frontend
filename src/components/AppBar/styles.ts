@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NotificationOutlined, MessageOutlined } from "@ant-design/icons";
 import { colors, fonts } from "constants/index";
 
 export const Header = styled.header`
@@ -62,4 +63,37 @@ export const Logo = styled.div`
       font-size: ${fonts.logoFontSize};
     }
   }
+`;
+
+export const NotificationIcon = styled(NotificationOutlined)`
+  color: ${colors.textGreen};
+  font-size: 18px;
+  position: relative;
+`;
+
+export const MessageIcon = styled(MessageOutlined)`
+  color: ${colors.textGreen};
+  font-size: 18px;
+  margin-left: 15px;
+`;
+
+export const NotificationFlex = styled.div`
+  margin-left: auto;
+`;
+
+export const Counter = styled.div`
+  width: 5px;
+  height: 5px;
+  background-color: ${colors.textWhiteRed};
+  color: ${colors.textWhite};
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  right: 54px;
+  z-index: 10;
 `;
