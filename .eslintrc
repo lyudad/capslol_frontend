@@ -33,6 +33,10 @@
         "import/extensions": [
             "error",
             "ignorePackages",
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
             {
                 "js": "never",
                 "ts": "never",
