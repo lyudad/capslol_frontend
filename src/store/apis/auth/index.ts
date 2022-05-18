@@ -33,7 +33,8 @@ export const authApi = baseApi.injectEndpoints({
                 },
             }),
         }),
-        confirmEmail: builder.mutation<Email, string>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        confirmEmail: builder.mutation<any, any>({
             query: (email) => ({
                 url: `auth/forgotPassword`,
                 method: 'POST',
