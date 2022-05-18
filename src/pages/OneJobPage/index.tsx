@@ -13,7 +13,7 @@ import {
     Owner,
     AvatarImg,
 } from './styles';
-import avatar from './avatar.png';
+import avatar from '../../assets/avatar.png';
 import { job } from './job-example';
 
 const OneJobPage: React.FC = () => {
