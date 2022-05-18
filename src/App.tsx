@@ -10,10 +10,7 @@ import ContactInfo from 'pages/ContactInfo';
 import HomePage from 'pages/HomePage';
 import AuthForm from 'components/AuthForm';
 import RolePage from 'pages/RolePage';
-<<<<<<< HEAD
-=======
 import OneJobPage from 'pages/OneJobPage';
->>>>>>> develop
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
@@ -32,11 +29,8 @@ const App: React.FC = () => {
                 <Route path="/reset_password/*" element={<ResetPassword />} />
                 <Route path="/send_proposal/" element={<SendProposal />} />
                 <Route path="/jobs" element={<JobsPage />} />
-                <Route path="/contact_info/:id" element={<ContactInfo />} />
-<<<<<<< HEAD
-=======
+                <Route path="/contact_info" element={<ContactInfo />} />
                 <Route path="/job" element={<OneJobPage />} />
->>>>>>> develop
             </Routes>
         </MainLayout>
     );

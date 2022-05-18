@@ -33,8 +33,7 @@ const ForgotPassword: React.FC = () => {
     const onFinish = async (values: IFormValue): Promise<void> => {
         enterLoading();
         try {
-            await confirmEmail(values.email);
-            console.log(values);
+            await confirmEmail({ email: values.email });
         } catch (e) {
             message.error(e.data.message);
         }

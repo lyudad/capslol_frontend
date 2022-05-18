@@ -113,20 +113,36 @@ const ResetPassword: React.FC = () => {
                                     message: `${t(
                                         'ResetPage.conPasswordTitle.error'
                                     )}`,
-                                    validator: (_, value) => {
-                                        if (validatePassword.test(value)) {
-                                            Promise.resolve();
-                                            return;
-                                        }
-                                        Promise.reject(
-                                            new Error(
-                                                t(
-                                                    'ResetPage.passwordTitle.error'
-                                                )
-                                            )
-                                        );
-                                    },
                                 },
+
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value) {
+                                            return Promise.reject(
+                                                new Error(
+                                                    t(
+                                                        'ResetPage.passwordTitle.error'
+                                                    )
+                                                )
+                                            );
+                                        }
+
+                                        const matched =
+                                            getFieldValue('password').match(
+                                                validatePassword
+                                            );
+                                        if (!matched) {
+                                            return Promise.reject(
+                                                new Error(
+                                                    t(
+                                                        'ResetPage.passwordTitle.error'
+                                                    )
+                                                )
+                                            );
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <FormPassword

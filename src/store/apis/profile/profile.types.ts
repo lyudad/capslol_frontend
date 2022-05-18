@@ -1,4 +1,4 @@
 ﻿export interface IPassword {
-    id: number;
+    id: number | undefined;
     password: string;
 }

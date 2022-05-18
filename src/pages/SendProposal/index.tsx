@@ -1,11 +1,6 @@
 ﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
-<<<<<<< HEAD
 import { Form, message, Row } from 'antd';
-=======
-import { Button, Form, Row, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
->>>>>>> develop
 
 import { colors } from 'constants/index';
 import {
@@ -18,10 +13,6 @@ import {
     StyledButton,
     StyledInput,
     StyledTextArea,
-<<<<<<< HEAD
-=======
-    UploadForm,
->>>>>>> develop
     Wrapper,
     FormItem,
 } from './styles';
@@ -31,7 +22,6 @@ const SendProposal: React.FC = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
 
-<<<<<<< HEAD
     const onReset = (): void => form.resetFields();
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
@@ -41,16 +31,6 @@ const SendProposal: React.FC = () => {
             message.error(`${error.data.message}`);
         }
         onReset();
-=======
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const handleSubmit = async () => {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        onReset();
-    };
-
-    const onReset = (): void => {
-        form.resetFields();
->>>>>>> develop
     };
 
     return (

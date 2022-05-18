@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { Form, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, UserOutlined } from '@ant-design/icons';
 
 import {
@@ -39,7 +39,6 @@ const ContactInfo: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const { id } = useParams();
 
     const [changePassword, { isError, isSuccess }] =
         useChangePasswordMutation();
@@ -60,7 +59,7 @@ const ContactInfo: React.FC = () => {
         try {
             if (values.newPassword === values.confirmPassword) {
                 const value: IPassword = {
-                    id: Number(id),
+                    id: user?.id,
                     password: values.confirmPassword,
                 };
                 await changePassword(value).unwrap();
@@ -208,20 +207,35 @@ const ContactInfo: React.FC = () => {
                                     message: `${t(
                                         'ContactInfo.conPasswordTitle.error'
                                     )}`,
-                                    validator: (_, value) => {
-                                        if (validatePassword.test(value)) {
-                                            Promise.resolve();
-                                            return;
-                                        }
-                                        Promise.reject(
-                                            new Error(
-                                                t(
-                                                    'ContactInfo.passwordTitle.error'
-                                                )
-                                            )
-                                        );
-                                    },
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value) {
+                                            return Promise.reject(
+                                                new Error(
+                                                    t(
+                                                        'ContactInfo.conPasswordTitle.error'
+                                                    )
+                                                )
+                                            );
+                                        }
+
+                                        const rightPassword =
+                                            getFieldValue('newPassword').match(
+                                                validatePassword
+                                            );
+                                        if (!rightPassword) {
+                                            return Promise.reject(
+                                                new Error(
+                                                    t(
+                                                        'ContactInfo.conPasswordTitle.error'
+                                                    )
+                                                )
+                                            );
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <FormPassword
