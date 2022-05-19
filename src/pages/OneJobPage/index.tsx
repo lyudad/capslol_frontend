@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import 'antd/dist/antd.min.css';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
+import { useAppSelector } from 'hooks/redux';
 import { langLevel } from 'constants/index';
 import {
     Page,
@@ -15,44 +16,43 @@ import {
     Owner,
     AvatarImg,
 } from './styles';
-import avatar from './avatar.png';
-import { job } from './job-example';
+import avatar from '../../assets/avatar.png';
 
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
 
-    const { data } = useGetJobByIdQuery(3);
+    const jobID = useAppSelector((state) => state.jobsReducer.jobId);
 
-    // console.log('DATA: ', data);
+    const { data: jobData } = useGetJobByIdQuery(jobID);
 
     return (
         <Page>
             <JobCard>
-                <Date>{data?.createdAt.substring(0, 10)}</Date>
+                <Date>{jobData?.createdAt.substring(0, 10)}</Date>
 
-                <Title>{data?.title}</Title>
+                <Title>{jobData?.title}</Title>
                 <Owner>
                     <AvatarImg>
                         <img src={avatar} alt="" />
                     </AvatarImg>
-                    {job.jobOwner}
+                    {t('JobPage.noName')}
                 </Owner>
 
-                <Description>{data?.description}</Description>
+                <Description>{jobData?.description}</Description>
 
                 <OptionContent>
                     <Field>{t('JobPage.salary')} </Field>
-                    <Value>{data?.price}$</Value>
+                    <Value>{jobData?.price}$</Value>
                 </OptionContent>
 
                 <OptionContent>
                     <Field>{t('JobPage.category')} </Field>
-                    <Value>{data?.categories[0].categoryName}</Value>
+                    <Value>{jobData?.categories[0].categoryName}</Value>
                 </OptionContent>
 
                 <OptionContent>
                     <Field>{t('JobPage.timeAvailable')} </Field>
-                    <Value>{data?.timeAvailable}</Value>
+                    <Value>{jobData?.timeAvailable}</Value>
                 </OptionContent>
 
                 <SubTitle>{t('JobPage.requirements')}</SubTitle>
@@ -60,14 +60,14 @@ const OneJobPage: React.FC = () => {
                 <OptionContent>
                     <Field>{t('JobPage.skills')} </Field>
                     <Value>
-                        {data?.skills.map((item) => item.name).join(', ')}
+                        {jobData?.skills.map((item) => item.name).join(', ')}
                     </Value>
                 </OptionContent>
 
                 <OptionContent>
                     <Field>{t('JobPage.english')} </Field>
-                    {data?.languageLevel && (
-                        <Value>{langLevel[data?.languageLevel]}</Value>
+                    {jobData?.languageLevel && (
+                        <Value>{langLevel[jobData?.languageLevel]}</Value>
                     )}
                 </OptionContent>
             </JobCard>

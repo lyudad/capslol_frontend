@@ -128,7 +128,8 @@
         "perDay": "per day",
         "hour": "hour",
         "submit": "Submit",
-        "requirements": "Requirements for the candidate:"
+        "requirements": "Requirements for the candidate:",
+        "noName": "No Name"
     },
 
     "Proposal": {

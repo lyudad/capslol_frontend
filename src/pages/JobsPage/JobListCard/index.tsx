@@ -1,9 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
-import { IJobs } from 'store/apis/jobs/jobs.types';
+import { useNavigate } from 'react-router-dom';
+import { Paths } from 'router/paths';
+import { IJob } from 'store/apis/jobs/jobs.types';
 import { langLevel } from 'constants/index';
+import { useAppDispatch } from 'hooks/redux';
+import { setJobId } from 'store/slices/jobs/jobs.slice';
 import {
     DateContainer,
+    StyledButton,
     JobTitle,
     Salary,
     OwnerContainer,
@@ -16,11 +20,16 @@ import {
 import 'antd/dist/antd.min.css';
 
 interface IProps {
-    jobObj: IJobs;
+    jobObj: IJob;
 }
 
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const { t } = useTranslation();
+
+    const navigate = useNavigate();
+
+    const dispatch = useAppDispatch();
+
     const {
         id,
         createdAt,
@@ -33,18 +42,22 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
         languageLevel,
     } = jobObj;
 
+    const onClickJob = (): void => {
+        dispatch(setJobId(id));
+        navigate(Paths.JOB_PAGE);
+    };
     return (
         <>
             <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
-            <NavLink to="/job">
+            <StyledButton onClick={onClickJob} type="submit">
                 <JobTitle>{title},</JobTitle>
                 <Salary>{price}$</Salary>
-            </NavLink>
+            </StyledButton>
             <Descriptions>{description}</Descriptions>
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.jobOwner')}</Field>
-                    <FieldValue>jobOwner</FieldValue>
+                    <FieldValue>{t('JobPage.noName')}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.skills')}</Field>

@@ -1,84 +1,98 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetCategoriesQuery, useGetSkillsQuery } from 'store/apis/jobs';
-import { Select, Radio, RadioChangeEvent } from 'antd';
+import { useAppDispatch } from 'hooks/redux';
+import { setJobs } from 'store/slices/jobs/jobs.slice';
+import {
+    useGetCategoriesQuery,
+    useGetSkillsQuery,
+    useLazyGetJobsQuery,
+} from 'store/apis/jobs';
+import { Select, Form, Button, Input } from 'antd';
 import { colors, langLevel } from 'constants/index';
+import { IQueryFilters } from './props';
 import {
     Title,
     StyledSlider,
+    StyledRangeSlider,
     FilterTitle,
     StyledFilter,
-    StyledSearch,
     PriceValue,
-    StyledSubmitButton,
-    StyledTimeSlider,
+    ButtonsItem,
 } from './styles';
 import 'antd/dist/antd.min.css';
 
 const { Option } = Select;
 
 const Filters: React.FC = () => {
-    const [searchValue, setSearchValue] = useState<string>();
-    const [englishLevel, setEnglishLevel] = useState<string>();
-    // const [timeAvailable, setTimeAvailable] = useState<string>();
-    const [timeAvailable, setTimeAvailable] = useState<number>(
-        Math.round(30 * 0.24)
-    );
-    const [filteredSkills, setFilteredSkills] = useState<string[]>();
-    const [category, setCategory] = useState<string>();
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(10000);
+    const initialState = {
+        category: '',
+        englishLevel: '',
+        filteredSkills: [],
+        maxSalary: undefined,
+        searchValue: '',
+        timeAvailable: undefined,
+    };
+    const [queryFilters, setQueryFilters] =
+        useState<IQueryFilters>(initialState);
+    const [timeAvailable, setTimeAvailable] = useState<number>();
+    const [maxSalary, setMaxSalary] = useState<number>();
+    // const [minPrice, setMinPrice] = useState(0);
+    // const [maxPrice, setMaxPrice] = useState(10000); //Math.round(30 * 0.24)
+
+    const [form] = Form.useForm();
 
     const { t } = useTranslation();
+
+    const dispatch = useAppDispatch();
+
+    const [getJobs] = useLazyGetJobsQuery();
 
     const { data: categoryData } = useGetCategoriesQuery('');
 
     const { data: skillsData } = useGetSkillsQuery('');
 
-    // console.log('catDATA=', categoryData);
-
-    // console.log('skillsDATA=', skillsData);
-
-    const onClickButton = (): void => {
-        console.log('englishLevel=', englishLevel);
-        console.log('timeAvailable=', timeAvailable);
-        console.log('search=', searchValue);
-        console.log('skills=', filteredSkills);
-        console.log('category=', category);
+    const handleGetJobs = async (filters: IQueryFilters): Promise<void> => {
+        const query = `?q=${filters?.searchValue}`;
+        const jobs = await getJobs(query).unwrap();
+        dispatch(setJobs(jobs));
+        // console.log('JOBS=', jobs);
     };
 
-    const onSearch = (value: string): void => {
-        setSearchValue(value);
+    useEffect(() => {
+        handleGetJobs(queryFilters);
+    }, [queryFilters]);
+
+    const onFinish = (values: IQueryFilters): void => {
+        console.log('Success:', values);
+        setQueryFilters(values);
     };
 
-    const handleChangeEng = (value: string): void => {
-        setEnglishLevel(value);
+    const onReset = (): void => {
+        form.resetFields();
     };
 
-    const handleChangeCategory = (value: string): void => {
-        setCategory(value);
+    const onFill = (): void => {
+        form.setFieldsValue({
+            category: 'Hello world!',
+            englishLevel: 'None',
+            filteredSkills: ['hello', 'world'],
+            maxSalary: 50,
+            timeAvailable: 30,
+        });
     };
 
-    const priceRange = (value: number[]): void => {
-        setMinPrice(value[0] * 100);
-        setMaxPrice(value[1] * 100);
-    };
-
-    // const onChangeTime = (e: RadioChangeEvent): void => {
-    //     setTimeAvailable(e.target.value);
+    // const priceRange = (value: number[]): void => {
+    //     setMinPrice(value[0] * 100);
+    //     setMaxPrice(value[1] * 100);
     // };
 
-    const handleChangeSkills = (value: string[]): void => {
-        setFilteredSkills(value);
+    const onChangeSalary = (value: number): void => {
+        setMaxSalary(Math.round(value * 50));
     };
 
     const onChangeTimeAvailable = (value: number): void => {
         setTimeAvailable(Math.round(value * 0.24));
     };
-
-    // const onAfterChangeTimeAvailable = (value: number): void => {
-    //     console.log('onAfterChange: ', value);
-    // };
 
     const categoryChildren = useMemo(() => {
         if (categoryData) {
@@ -133,97 +147,137 @@ const Filters: React.FC = () => {
     return (
         <>
             <Title>{t('JobPage.filters')}</Title>
-            <StyledFilter>
-                <FilterTitle>{t('JobPage.search')}</FilterTitle>
-                <StyledSearch
-                    placeholder="input search text"
-                    allowClear
-                    onSearch={onSearch}
-                    enterButton
-                    style={{ width: 300 }}
-                />
-            </StyledFilter>
+            <Form
+                form={form}
+                name="basic"
+                initialValues={initialState}
+                onFinish={onFinish}
+                // onReset={onReset}
+                // onFinishFailed={onFinishFailed}
+                // autoComplete="on"
+            >
+                <StyledFilter>
+                    <FilterTitle>{t('JobPage.search')}</FilterTitle>
+                    <Form.Item
+                        name="searchValue"
+                        style={{
+                            marginBottom: '0px',
+                        }}
+                    >
+                        <Input
+                            placeholder="Please enter"
+                            style={{ width: 300 }}
+                        />
+                    </Form.Item>
+                </StyledFilter>
 
-            <StyledFilter>
-                <FilterTitle>{t('JobPage.Category')}</FilterTitle>
-                <Select
-                    style={{ width: 300 }}
-                    onChange={handleChangeCategory}
-                    placeholder="select category"
-                >
-                    {categoryChildren}
-                </Select>
-            </StyledFilter>
+                <StyledFilter>
+                    <FilterTitle>{t('JobPage.Category')}</FilterTitle>
+                    <Form.Item name="category" noStyle>
+                        <Select
+                            placeholder="Select category"
+                            style={{ width: 300 }}
+                        >
+                            <Option value="" label="All">
+                                <div>All</div>
+                            </Option>
+                            {categoryChildren}
+                        </Select>
+                    </Form.Item>
+                </StyledFilter>
 
-            <StyledFilter>
-                <FilterTitle>{t('JobPage.englishLevel')}</FilterTitle>
-                <Select
-                    defaultValue="None"
-                    style={{ width: 300 }}
-                    onChange={handleChangeEng}
-                >
-                    {langChildren}
-                </Select>
-            </StyledFilter>
+                <StyledFilter>
+                    <FilterTitle>{t('JobPage.englishLevel')}</FilterTitle>
+                    <Form.Item name="englishLevel" noStyle>
+                        <Select style={{ width: 300 }}>
+                            <Option value="" label="All">
+                                <div>All</div>
+                            </Option>
+                            {langChildren}
+                        </Select>
+                    </Form.Item>
+                </StyledFilter>
 
-            <StyledFilter>
-                <FilterTitle>{t('JobPage.Skills')}</FilterTitle>
-                <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: 300 }}
-                    placeholder="Please select"
-                    onChange={handleChangeSkills}
-                >
-                    {skillsChildren}
-                </Select>
-            </StyledFilter>
+                <StyledFilter>
+                    <FilterTitle>{t('JobPage.Skills')}</FilterTitle>
+                    <Form.Item name="filteredSkills" noStyle>
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            style={{ width: 300 }}
+                            placeholder="Please select"
+                        >
+                            {skillsChildren}
+                        </Select>
+                    </Form.Item>
+                </StyledFilter>
 
-            <StyledFilter>
-                <FilterTitle>{t('JobPage.price')}</FilterTitle>
-                <PriceValue>
+                <StyledFilter>
+                    <FilterTitle>{t('JobPage.price')}</FilterTitle>
+                    <PriceValue>
+                        <span>min: 0$</span>
+                        <span>max: {maxSalary && `${maxSalary}`}$</span>
+                    </PriceValue>
+                    <Form.Item name="maxSalary" noStyle>
+                        <StyledSlider onChange={onChangeSalary} />
+                    </Form.Item>
+                </StyledFilter>
+
+                <StyledFilter>
+                    <FilterTitle>{t('JobPage.TimeAvailable')}</FilterTitle>
+                    <PriceValue>
+                        <span>
+                            time: {timeAvailable && `${timeAvailable}`} h/day
+                        </span>
+                    </PriceValue>
+                    <Form.Item name="timeAvailable" noStyle>
+                        <StyledSlider
+                            // defaultValue={30}
+                            onChange={onChangeTimeAvailable}
+                        />
+                    </Form.Item>
+                </StyledFilter>
+
+                <ButtonsItem>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                            width: 80,
+                            background: `${colors.brandColor}`,
+                            borderColor: `${colors.brandColor}`,
+                            marginTop: '12px',
+                        }}
+                    >
+                        {t('JobPage.submit')}
+                    </Button>
+                    <Button
+                        type="primary"
+                        htmlType="button"
+                        onClick={onReset}
+                        style={{
+                            width: 80,
+                            background: `${colors.brandColor}`,
+                            borderColor: `${colors.brandColor}`,
+                            marginTop: '12px',
+                        }}
+                    >
+                        Reset
+                    </Button>
+                </ButtonsItem>
+            </Form>
+
+            {/* <PriceValue>
                     <span>min: {`${minPrice}`}</span>
                     <span>max: {`${maxPrice}`}</span>
                 </PriceValue>
-                <StyledSlider
+                <StyledRangeSlider
                     range
                     step={5}
                     defaultValue={[0, 100]}
                     onAfterChange={priceRange}
                     trackStyle={[{ backgroundColor: `${colors.brandColor} ` }]}
-                />
-            </StyledFilter>
-
-            <StyledFilter>
-                <FilterTitle>{t('JobPage.TimeAvailable')}</FilterTitle>
-                {/* <Radio.Group onChange={onChangeTime} value={timeAvailable}>
-                    <Radio
-                        value="per day"
-                        style={{ color: `${colors.brandColor}` }}
-                    >
-                        {t('JobPage.perDay')}
-                    </Radio>
-                    <Radio
-                        value="hour"
-                        style={{ color: `${colors.brandColor}` }}
-                    >
-                        {t('JobPage.hour')}
-                    </Radio>
-                </Radio.Group> */}
-
-                <PriceValue>
-                    <span>time: {`${timeAvailable}`} h/day</span>
-                </PriceValue>
-                <StyledTimeSlider
-                    defaultValue={30}
-                    onChange={onChangeTimeAvailable}
-                    // onAfterChange={onAfterChangeTimeAvailable}
-                />
-            </StyledFilter>
-
-            <StyledSubmitButton type="submit" onClick={onClickButton}>
-                {t('JobPage.submit')}
-            </StyledSubmitButton>
+                /> */}
         </>
     );
 };

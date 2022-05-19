@@ -1,13 +1,13 @@
 import { baseApi } from '..';
-import { IJobs, ICategory, ISkill } from './jobs.types';
+import { IJob, ICategory, ISkill } from './jobs.types';
 
 export const jobsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getJobs: builder.query<IJobs[], string>({
-            query: () => `jobs`,
+        getJobs: builder.query<IJob[], string>({
+            query: (value) => `jobs${value}`,
         }),
 
-        getJobById: builder.query<IJobs, number>({
+        getJobById: builder.query<IJob, number | null>({
             query: (id) => `jobs/${id}`,
         }),
 
@@ -26,4 +26,5 @@ export const {
     useGetJobByIdQuery,
     useGetCategoriesQuery,
     useGetSkillsQuery,
+    useLazyGetJobsQuery,
 } = jobsApi;

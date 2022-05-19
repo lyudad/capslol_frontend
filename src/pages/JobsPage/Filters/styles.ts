@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import { colors } from 'constants/index';
-import { Input, Slider } from 'antd';
+import { Slider, Form } from 'antd';
 import 'antd/dist/antd.min.css';
 
-const { Search } = Input;
-
 export const StyledFilter = styled.div`
-    padding-top: 8px;
+    padding-top: 0px;
     padding-bottom: 8px;
     border-bottom: 1px solid ${colors.appBarBrd};
 `;
@@ -28,7 +26,7 @@ export const PriceValue = styled.div`
     color: ${colors.brandColor};
 `;
 
-export const StyledSlider = styled(Slider)`
+export const StyledRangeSlider = styled(Slider)`
     .ant-slider-handle {
         border-color: ${colors.brandColor} !important;
         background-color: ${colors.brandColor} !important;
@@ -39,7 +37,7 @@ export const StyledSlider = styled(Slider)`
     }
 `;
 
-export const StyledTimeSlider = styled(Slider)`
+export const StyledSlider = styled(Slider)`
     .ant-slider-handle {
         border-color: ${colors.brandColor} !important;
         background-color: ${colors.brandColor} !important;
@@ -49,20 +47,10 @@ export const StyledTimeSlider = styled(Slider)`
     }
 `;
 
-export const StyledSearch = styled(Search)`
-    .ant-btn-primary {
-        border-color: ${colors.brandColor};
-        background: ${colors.brandColor};
+export const ButtonsItem = styled(Form.Item)`
+    .ant-form-item-control-input-content {
+        display: flex;
+        justify-content: space-evenly;
+        width: 300px;
     }
-`;
-export const StyledSubmitButton = styled.button`
-    margin-top: 12px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100px;
-    padding: 4px 12px;
-    border: none;
-    cursor: pointer;
-    background: ${colors.brandColor};
-    color: ${colors.textWhiteGrey};
 `;

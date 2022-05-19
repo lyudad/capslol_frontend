@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useGetJobsQuery } from 'store/apis/jobs';
+import { useAppSelector } from 'hooks/redux';
 import {
     Page,
     ListContainer,
@@ -11,14 +11,14 @@ import {
 } from './styles';
 import 'antd/dist/antd.min.css';
 import JobsListCard from './JobListCard';
-import { jobsExample } from './example';
 import Filters from './Filters';
 
 const JobsPage: React.FC = () => {
     const { t } = useTranslation();
-    const { data: jobsData } = useGetJobsQuery('');
 
-    console.log('JOBS: ', jobsData);
+    const jobsData = useAppSelector((state) => state.jobsReducer.jobs);
+
+    // console.log('jobsState:', jobsData);
 
     return (
         <Page>

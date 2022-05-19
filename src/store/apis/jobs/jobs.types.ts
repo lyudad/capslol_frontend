@@ -8,7 +8,7 @@ export interface ICategory {
     categoryName: string;
 }
 
-export interface IJobs {
+export interface IJob {
     id: number;
     title: string;
     description: string;
