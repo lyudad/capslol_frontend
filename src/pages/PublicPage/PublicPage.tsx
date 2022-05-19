@@ -15,7 +15,7 @@ import {
     ButtonSet,
     TitleEmpty,
 } from './styles';
-import avatar from './avatar.png';
+import avatar from '../../assets/avatar.png';
 
 const PublicPage: React.FC = () => {
     const navigate = useNavigate();
@@ -164,7 +164,7 @@ const PublicPage: React.FC = () => {
                 <Row justify="end">
                     {/* TODO:id в фигурных скопках нужно указать id user-a */}
                     <ButtonSet
-                        onClick={() => navigate(`/contact_info/`)}
+                        onClick={() => navigate(`/contact_info/${user?.id}`)}
                         type="default"
                     >
                         {t('PublicProfile.contact_info')}
