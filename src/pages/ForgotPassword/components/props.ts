@@ -1,5 +1,7 @@
-﻿export interface IProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: any;
+﻿export interface Email {
+    email: string;
+}
+export interface IProps {
+    data: Email | undefined;
     isError: boolean;
 }

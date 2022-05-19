@@ -1,8 +1,8 @@
 ﻿import React from 'react';
+import { IButtonProps } from './props';
 import { Wrapper } from './styles';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Button: React.FC<any> = ({
+const Button: React.FC<IButtonProps> = ({
     children,
     mr,
     onClick,
