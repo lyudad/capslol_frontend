@@ -1,143 +1,124 @@
-﻿import { message } from "antd";
-import axios from "axios";
-import { useAppSelector } from "hooks/redux";
-import React, { useEffect, useState } from "react";
-import Avatar from "../ChatList/Avatar";
-// import { chatItms, Messages, offers } from "../data";
-import { IChatContent } from "../interfaces";
-import ChatItem from "./ChatItem";
+﻿import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { message } from 'antd';
+
+import { useAppSelector } from 'hooks/redux';
+import Avatar from '../ChatList/Avatar';
+import { IChatContentProps, IMessages } from '../interfaces';
+import ChatItem from './ChatItem';
 import {
-  ChatBody,
-  ChatFooter,
-  ChatHeader,
-  CurrentChatUser,
-  MainChat,
-  Project,
-  ProjectOwner,
-  SendNewMessage,
-  SendNewMessageBtn,
-  SendNewMessageIcon,
-  SendNewMessageIconPlus,
-  SendNewMessageInput,
-  SettingsBtn,
-  Wrapper,
-} from "./styles";
+    ChatBody,
+    ChatFooter,
+    ChatHeader,
+    CurrentChatUser,
+    MainChat,
+    Project,
+    ProjectOwner,
+    SendNewMessage,
+    SendNewMessageBtn,
+    SendNewMessageIcon,
+    SendNewMessageIconPlus,
+    SendNewMessageInput,
+    SettingsBtn,
+    Wrapper,
+} from './styles';
 
-const ChatContent: React.FC<IChatContent> = ({ currentChat }) => {
-  const [messages, setMessages] = useState([]);
-  const [messageText, setMessageText] = useState<string>("");
-  const { user } = useAppSelector((s) => s.authReducer);
-  const [notifications, setNotifications] = useState([]);
+const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
+    const [messages, setMessages] = useState<IMessages[]>([]);
+    const [messageText, setMessageText] = useState<string>('');
+    const { user } = useAppSelector((s) => s.authReducer);
 
-  const handleMessage = async (): Promise<void> => {
-    try {
-      const newMessage = {
-        sender: {
-          pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-          _id: user?.id || 1,
-          name: `${user?.firstName} ${user?.lastName}`,
-        },
-        content: messageText,
-        chat: currentChat.id,
-      };
-      const response = await axios.post(
-        `http://localhost:3002/messages`,
-        newMessage
-      );
-      setMessageText("");
-    } catch (e: any) {
-      message.error(e.data.message);
-    }
-  };
+    const handleMessage = async (): Promise<void> => {
+        try {
+            const newMessage = {
+                sender: {
+                    pic: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
+                    id: user?.id || 1,
+                    name: `${user?.firstName} ${user?.lastName}`,
+                },
+                content: messageText,
+                chat: currentChat.id,
+            };
+            await axios.post(`http://localhost:3002/messages`, newMessage);
+            setMessageText('');
+        } catch (e) {
+            message.error('Something went wrong, please try again');
+        }
+    };
 
-  const fetchMessage = async (): Promise<void> => {
-    try {
-      const { data } = await axios.get("http://localhost:3002/messages");
-      setMessages(data);
-    } catch (e: any) {
-      message.error(e.data.message);
-    }
-  };
+    const fetchMessages = async (): Promise<void> => {
+        try {
+            const { data } = await axios.get('http://localhost:3002/messages');
+            setMessages(data);
+        } catch (e) {
+            message.error('Not Found, we coudn`\t get messages');
+        }
+    };
 
-  useEffect(() => {
-    fetchMessage();
-  }, [currentChat]);
+    useEffect(() => {
+        fetchMessages();
+    }, [currentChat]);
 
-  const fetchOffers = async () => {
-    try {
-      const { data } = await axios.get(`http://localhost:3002/offers`);
-      setNotifications(data);
-    } catch (e: unknown) {
-      message.error(`Coudn\`t get offers ${e}`);
-    }
-  };
+    return (
+        <Wrapper>
+            <MainChat>
+                <ChatHeader>
+                    <div>
+                        <CurrentChatUser>
+                            <Avatar
+                                isOnline="active"
+                                image={currentChat.image}
+                                alt={currentChat.name}
+                            />
+                            <div>
+                                <ProjectOwner>{currentChat.name}</ProjectOwner>
+                                <Project>{currentChat.project}</Project>
+                            </div>
+                        </CurrentChatUser>
+                    </div>
 
-  useEffect(() => {
-    fetchOffers();
-  }, []);
-
-  return (
-    <Wrapper>
-      <MainChat>
-        <ChatHeader>
-          <div>
-            <CurrentChatUser>
-              <Avatar
-                isOnline="active"
-                image={currentChat.image}
-                alt={currentChat.name}
-              />
-              <div>
-                <ProjectOwner>{currentChat.name}</ProjectOwner>
-                <Project>{currentChat.project}</Project>
-              </div>
-            </CurrentChatUser>
-          </div>
-
-          <div>
-            <SettingsBtn>
-              <span>...</span>
-            </SettingsBtn>
-          </div>
-        </ChatHeader>
-        <ChatBody>
-          <div>
-            {messages
-              .filter((contact: any) => contact.chat === currentChat.id)
-              .map((itm: any, index) => {
-                return (
-                  <ChatItem
-                    animationDelay={index + 2}
-                    key={itm.id}
-                    item={itm}
-                  />
-                );
-              })}
-            {notifications &&
-              notifications.map((itm: any, index) => (
-                <ChatItem animationDelay={index + 2} key={itm.id} item={itm} />
-              ))}
-          </div>
-        </ChatBody>
-        <ChatFooter>
-          <SendNewMessage>
-            <SendNewMessageBtn>
-              <SendNewMessageIconPlus />
-            </SendNewMessageBtn>
-            <SendNewMessageInput
-              value={messageText}
-              type="text"
-              placeholder="Write a message..."
-              onChange={(e) => setMessageText(e.target.value)}
-            />
-            <SendNewMessageBtn onClick={handleMessage}>
-              <SendNewMessageIcon />
-            </SendNewMessageBtn>
-          </SendNewMessage>
-        </ChatFooter>
-      </MainChat>
-    </Wrapper>
-  );
+                    <div>
+                        <SettingsBtn>
+                            <span>...</span>
+                        </SettingsBtn>
+                    </div>
+                </ChatHeader>
+                <ChatBody>
+                    <div>
+                        {messages
+                            .filter(
+                                (contact) => contact.chat === currentChat.id
+                            )
+                            .map((msg, index) => {
+                                return (
+                                    <ChatItem
+                                        animationDelay={index + 2}
+                                        key={msg.id}
+                                        msg={msg}
+                                    />
+                                );
+                            })}
+                    </div>
+                </ChatBody>
+                <ChatFooter>
+                    <SendNewMessage>
+                        <SendNewMessageBtn>
+                            <SendNewMessageIconPlus />
+                        </SendNewMessageBtn>
+                        <SendNewMessageInput
+                            value={messageText}
+                            type="text"
+                            placeholder="Write a message..."
+                            onChange={(e) => setMessageText(e.target.value)}
+                        />
+                        <SendNewMessageBtn onClick={handleMessage}>
+                            <SendNewMessageIcon />
+                        </SendNewMessageBtn>
+                    </SendNewMessage>
+                </ChatFooter>
+            </MainChat>
+        </Wrapper>
+    );
 };
 
 export default ChatContent;

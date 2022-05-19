@@ -11,8 +11,8 @@ import HomePage from 'pages/HomePage';
 import AuthForm from 'components/AuthForm';
 import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
-import TestPage from './pages/testPage';
 import Chat from 'pages/Chat';
+import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
     return (
