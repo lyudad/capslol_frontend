@@ -20,11 +20,11 @@ export interface IChatOffer {
     };
     message: string;
     messageType: string;
-    id: number;
+    id?: number | undefined;
 }
 
 export interface IMessages {
-    id: number;
+    id?: undefined;
     sender: {
         pic: string;
         id: number;

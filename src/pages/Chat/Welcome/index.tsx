@@ -1,35 +1,25 @@
-﻿import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+﻿import React from 'react';
 import { message } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from 'hooks/redux';
+import { useGetOffersQuery } from 'store/apis/chat';
+import Loader from 'common/Loader/Loader';
 import { WelcomeTitle, Wrapper, ChatBody } from './styles';
 import ChatItem from '../ChatContent/ChatItem';
-import { IChatOffer, IMessages } from '../interfaces';
 
 const Welcome: React.FC = () => {
     const { user } = useAppSelector((s) => s.authReducer);
-    const [offers, setOffers] = useState<IChatOffer[] | IMessages[]>([]);
+    const { t } = useTranslation();
 
-    const fetchOffers = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get(`http://localhost:3002/offers`);
-            setOffers(data);
-        } catch (e) {
-            message.error(`Coudn\`t get offers ${e}`);
-        }
-    };
-
-    useEffect(() => {
-        fetchOffers();
-    }, []);
+    const { data: offers, isLoading, isError } = useGetOffersQuery();
 
     return (
         <Wrapper>
-            {offers.length ? (
+            {offers?.length ? (
                 <ChatBody>
                     {offers &&
-                        offers.map((itm, index) => (
+                        offers?.map((itm, index) => (
                             <ChatItem
                                 animationDelay={index + 2}
                                 key={itm.id}
@@ -40,14 +30,16 @@ const Welcome: React.FC = () => {
             ) : (
                 <>
                     <WelcomeTitle>
-                        Welcome,{' '}
+                        {t('Chat.welcome')},{' '}
                         <span>{user?.firstName ? user?.firstName : ''}!</span>
                     </WelcomeTitle>
-                    <WelcomeTitle>
-                        Please select a chat to Start messaging.
-                    </WelcomeTitle>
+                    <WelcomeTitle>{t('Chat.welcomeText')}</WelcomeTitle>
                 </>
             )}
+            <>
+                {isLoading && <Loader />}
+                {isError && message.error('Not found any contacts')}
+            </>
         </Wrapper>
     );
 };

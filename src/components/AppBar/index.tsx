@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { message, notification } from 'antd';
+import { notification } from 'antd';
 
-import { IChatOffer } from 'pages/Chat/interfaces';
+import { useGetOffersQuery } from 'store/apis/chat';
 import {
     Header,
     NavigationContainer,
@@ -18,29 +17,16 @@ import {
 const AppBar: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [offers, setOffers] = useState<IChatOffer[]>([]);
-
-    const fetchOffers = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get(`http://localhost:3002/offers`);
-            setOffers(data);
-        } catch (e) {
-            message.error(`Not Found, coudn\`t get offers`);
-        }
-    };
+    const { data: offers } = useGetOffersQuery();
 
     const handleNotification = (): void => {
-        offers.map((offer) => {
+        offers?.map((offer) => {
             return notification.open({
                 message: 'You have new notification',
                 description: offer.messageType,
             });
         });
     };
-
-    useEffect(() => {
-        fetchOffers();
-    }, []);
 
     return (
         <Header>
@@ -66,7 +52,7 @@ const AppBar: React.FC = () => {
                 </div>
 
                 <NotificationFlex>
-                    {offers.length && <Counter>{offers.length}</Counter>}
+                    {offers?.length && <Counter>{offers?.length}</Counter>}
                     <NotificationIcon onClick={handleNotification} />
                     <MessageIcon onClick={() => navigate('/chat')} />
                 </NotificationFlex>

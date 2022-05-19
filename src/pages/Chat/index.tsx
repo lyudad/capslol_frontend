@@ -1,30 +1,19 @@
-﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+﻿import React, { useState } from 'react';
 import { message } from 'antd';
+
+import { useGetContactsQuery } from 'store/apis/chat';
+import Loader from 'common/Loader/Loader';
 import ChatContent from './ChatContent';
 import ChatList from './ChatList';
 import { Wrapper } from './styles';
 import Welcome from './Welcome';
-import { IChatUser, TChatArgument } from './interfaces';
+import { TChatArgument } from './interfaces';
 
 const Chat: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
         undefined
     );
-    const [contacts, setContacts] = useState<IChatUser[]>([]);
-
-    const fetchContacts = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get(`http://localhost:3002/contacts`);
-            setContacts(data);
-        } catch (e) {
-            message.error('Not Found, we coudn`\t get a contacts');
-        }
-    };
-
-    useEffect(() => {
-        fetchContacts();
-    }, [currentChat]);
+    const { data: contacts, isLoading, isError } = useGetContactsQuery();
 
     const handleChat = (chat: TChatArgument): void => {
         setCurrentChat(chat);
@@ -32,12 +21,20 @@ const Chat: React.FC = () => {
 
     return (
         <Wrapper>
-            <ChatList onChangeChat={handleChat} contacts={contacts} />
-            {currentChat === undefined ? (
-                <Welcome />
-            ) : (
-                <ChatContent currentChat={currentChat} />
+            {contacts && (
+                <>
+                    <ChatList onChangeChat={handleChat} contacts={contacts} />
+                    {currentChat === undefined ? (
+                        <Welcome />
+                    ) : (
+                        <ChatContent currentChat={currentChat} />
+                    )}
+                </>
             )}
+            <>
+                {isLoading && <Loader />}
+                {isError && message.error('Not found any contacts')}
+            </>
         </Wrapper>
     );
 };

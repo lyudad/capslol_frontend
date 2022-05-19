@@ -1,7 +1,8 @@
 ﻿import React, { useState } from 'react';
-import axios from 'axios';
-import { message } from 'antd';
+import { message, Row } from 'antd';
+import { useTranslation } from 'react-i18next';
 
+import { usePostOfferMutation } from 'store/apis/chat';
 import Avatar from './Avatar';
 import {
     ChatListItem,
@@ -14,11 +15,13 @@ import {
     Wrapper,
     StyledRow,
 } from './styles';
-import { IChatListProps, IChatOffer, TChatArgument } from '../interfaces';
+import { IChatListProps, TChatArgument } from '../interfaces';
 
 const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
     const [currentSelected, setCurrentSelected] = useState<number>();
-    const [_, setOffers] = useState<IChatOffer[]>([]);
+    const { t } = useTranslation();
+
+    const [postOffer, { isError }] = usePostOfferMutation();
 
     const changeChat = (id: number, chat: TChatArgument): void => {
         setCurrentSelected(id);
@@ -40,14 +43,9 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
             messageType: 'Offer',
         };
         try {
-            const { data } = await axios.post(
-                `http://localhost:3002/offers`,
-                newOffer
-            );
-
-            setOffers(data);
+            await postOffer(newOffer);
         } catch (e) {
-            message.error(`Offer doesn\`t send ${e}`);
+            message.error(e?.data?.message);
         }
     };
 
@@ -56,11 +54,11 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
             <SearchWrap>
                 <Input type="text" placeholder="Search" />
             </SearchWrap>
-            <div>
+            <Row justify="center">
                 <button type="button" onClick={handleNotification}>
-                    Job Offer
+                    {t('Chat.offerBtnText')}
                 </button>
-            </div>
+            </Row>
             <ChatLists>
                 {contacts.map((contact, index: number) => {
                     return (
@@ -85,7 +83,9 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
                             <div>
                                 <StyledRow>
                                     <ChatUser>{contact.name}</ChatUser>
-                                    <ChatUserTime>32 mins ago</ChatUserTime>
+                                    <ChatUserTime>
+                                        {t('Chat.contactTime')}
+                                    </ChatUserTime>
                                 </StyledRow>
                                 <ChatProject>{contact.project}</ChatProject>
                             </div>
@@ -93,6 +93,7 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
                     );
                 })}
             </ChatLists>
+            <> {isError && message.error('Not send a offer')}</>
         </Wrapper>
     );
 };

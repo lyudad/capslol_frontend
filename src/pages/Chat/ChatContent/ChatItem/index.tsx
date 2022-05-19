@@ -1,12 +1,18 @@
 ﻿import React from 'react';
 import axios from 'axios';
 import { message } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'common/Button/Button';
 import { colors } from 'constants/index';
 import { useAppSelector } from 'hooks/redux';
 import Avatar from 'pages/Chat/ChatList/Avatar';
 import { IChatItemProps } from 'pages/Chat/interfaces';
+import {
+    usePostMessageMutation,
+    useDeleteOfferByIdMutation,
+    usePostContactsMutation,
+} from 'store/apis/chat';
 import {
     ButtonGroup,
     ChatItemCard,
@@ -18,11 +24,16 @@ import {
 
 const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
     const { user } = useAppSelector((s) => s.authReducer);
+    const { t } = useTranslation();
+
+    const [postMessage] = usePostMessageMutation();
+    const [deleteOffer] = useDeleteOfferByIdMutation();
+    const [postContact] = usePostContactsMutation();
 
     const handleAgree = async (id: number): Promise<void> => {
         try {
             const { data } = await axios.get(
-                `http://localhost:3002/offers/${id}`
+                `http://localhost:3000/offers/${id}`
             );
             const newMessage = {
                 sender: {
@@ -33,7 +44,6 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
                 content: data.message,
                 chat: data.sender.id,
             };
-            await axios.post(`http://localhost:3002/messages`, newMessage);
 
             const newContact = {
                 image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU',
@@ -44,19 +54,21 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
                 isOnline: false,
             };
 
-            await axios.post(`http://localhost:3002/contacts`, newContact);
+            await postMessage(newMessage);
 
-            await axios.delete(`http://localhost:3002/offers/${id}`);
+            await postContact(newContact);
+
+            await deleteOffer(id);
         } catch (e) {
-            message.error('Not Found');
+            message.error(e?.data?.message);
         }
     };
 
     const handleNotAgree = async (id: number): Promise<void> => {
         try {
-            await axios.delete(`http://localhost:3002/offers${id}`);
+            await deleteOffer(id);
         } catch (e) {
-            message.error('Not Found, not deleted');
+            message.error(e?.data?.message);
         }
     };
 
@@ -76,20 +88,20 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
                             onClick={() => handleAgree(msg.id)}
                             mr="34"
                         >
-                            Agree
+                            {t('Chat.offerYes')}
                         </Button>
                         <Button
                             bg={colors.textWhiteRed}
                             color={colors.textWhite}
                             onClick={() => handleNotAgree(msg.id)}
                         >
-                            No
+                            {t('Chat.offerNo')}
                         </Button>
                     </ButtonGroup>
                 )}
 
                 <ChatMeta>
-                    <ChatTime>1.03 PM</ChatTime>
+                    <ChatTime>{t('Chat.sendTime')}</ChatTime>
                 </ChatMeta>
             </ChatItemContent>
 

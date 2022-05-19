@@ -1,10 +1,11 @@
-﻿import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+﻿import React, { useState } from 'react';
 import { message } from 'antd';
 
 import { useAppSelector } from 'hooks/redux';
+import { useGetMessagesQuery, usePostMessageMutation } from 'store/apis/chat';
+import Loader from 'common/Loader/Loader';
 import Avatar from '../ChatList/Avatar';
-import { IChatContentProps, IMessages } from '../interfaces';
+import { IChatContentProps } from '../interfaces';
 import ChatItem from './ChatItem';
 import {
     ChatBody,
@@ -24,9 +25,15 @@ import {
 } from './styles';
 
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
-    const [messages, setMessages] = useState<IMessages[]>([]);
     const [messageText, setMessageText] = useState<string>('');
     const { user } = useAppSelector((s) => s.authReducer);
+
+    const {
+        data: messages,
+        isLoading,
+        isError: msgIsError,
+    } = useGetMessagesQuery();
+    const [postMessage, { isError }] = usePostMessageMutation();
 
     const handleMessage = async (): Promise<void> => {
         try {
@@ -39,25 +46,17 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 content: messageText,
                 chat: currentChat.id,
             };
-            await axios.post(`http://localhost:3002/messages`, newMessage);
+            await postMessage(newMessage);
             setMessageText('');
         } catch (e) {
-            message.error('Something went wrong, please try again');
+            message.error(e?.data?.message);
         }
     };
 
-    const fetchMessages = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get('http://localhost:3002/messages');
-            setMessages(data);
-        } catch (e) {
-            message.error('Not Found, we coudn`\t get messages');
-        }
+    const handleOnChange = (e: React.FormEvent<HTMLInputElement>): void => {
+        const newValue = e.currentTarget.value;
+        setMessageText(newValue);
     };
-
-    useEffect(() => {
-        fetchMessages();
-    }, [currentChat]);
 
     return (
         <Wrapper>
@@ -84,21 +83,30 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     </div>
                 </ChatHeader>
                 <ChatBody>
-                    <div>
-                        {messages
-                            .filter(
-                                (contact) => contact.chat === currentChat.id
-                            )
-                            .map((msg, index) => {
-                                return (
-                                    <ChatItem
-                                        animationDelay={index + 2}
-                                        key={msg.id}
-                                        msg={msg}
-                                    />
-                                );
-                            })}
-                    </div>
+                    {messages && (
+                        <div>
+                            {messages
+                                .filter(
+                                    (contact) => contact.chat === currentChat.id
+                                )
+                                .map((msg, index) => {
+                                    return (
+                                        <ChatItem
+                                            animationDelay={index + 2}
+                                            key={msg.id}
+                                            msg={msg}
+                                        />
+                                    );
+                                })}
+                        </div>
+                    )}
+                    <>
+                        {isLoading && <Loader />}
+                        {msgIsError &&
+                            message.error(
+                                'Something went wrong, messages not found'
+                            )}
+                    </>
                 </ChatBody>
                 <ChatFooter>
                     <SendNewMessage>
@@ -109,12 +117,13 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                             value={messageText}
                             type="text"
                             placeholder="Write a message..."
-                            onChange={(e) => setMessageText(e.target.value)}
+                            onChange={handleOnChange}
                         />
                         <SendNewMessageBtn onClick={handleMessage}>
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>
                     </SendNewMessage>
+                    <> {isError && message.error('Message not send')}</>
                 </ChatFooter>
             </MainChat>
         </Wrapper>
