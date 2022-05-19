@@ -1,136 +1,158 @@
-import React, { useState, useMemo } from 'react';
-import { Form, Input } from 'antd';
-import { FormValues, ILoginFormValues, IUserData} from './props';
-import { useTranslation } from "react-i18next";
-import {
-  Wrapper,
-  DontAccount,
-  WithGoogle,
-  GoogleLink,
-  StyledForm,
-  ForgotPass,
-  ButtonSignIn,
-  StyledNavLink
-} from './styles';
-import { useAppDispatch} from 'hooks/redux';
-import { useLoginMutation } from 'store/apis/auth';
+import React from 'react';
+import { Form, Input, message, notification } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { useLoginMutation, useLazySignInUseGoogleQuery } from 'store/apis/auth';
 import { setCredentials } from 'store/slices/auth/auth.slice';
+import AuthGoogle from 'components/AuthGoogle';
+import { RequestHeader } from 'constants/request.constants';
+import {
+    GoogleLoginResponse,
+    GoogleLoginResponseOffline,
+} from 'react-google-login';
+import { Paths } from 'router/paths';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {
+    Wrapper,
+    DontAccount,
+    StyledForm,
+    ForgotPass,
+    ButtonSignIn,
+    StyledNavLink,
+} from './styles';
+import { FormValues } from './props';
+
+type FormType = {
+    email: string;
+    password: string;
+};
 
 const SignInForm: React.FC = () => {
-  const { t } = useTranslation();
-  const [form] = Form.useForm();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const memoDisabled = useMemo<boolean>(() => !email || !password, [email, password]);
+    const { t: translator } = useTranslation();
+    const [form] = Form.useForm();
+    const [loginUser] = useLoginMutation();
+    const [loginGoogleUser] = useLazySignInUseGoogleQuery();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-  const dispatch = useAppDispatch();
+    const onFinish = async (values: FormType): Promise<void> => {
+        try {
+            const response = await loginUser(values).unwrap();
+            dispatch(setCredentials(response));
 
-  const [login] = useLoginMutation();
-  const loginUser = async (value: ILoginFormValues ) => {
-    try {
-      const userData = await login(value).unwrap();
-      dispatch(setCredentials(userData));
-    } catch(error) {console.log('ERROR:',error)}
-  };
+            notification.open({
+                message: translator('AuthGoogle.comeBackMessage'),
+            });
 
-  function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
-      const { name, value } = evt.currentTarget;
-      switch (name) {
-        case 'email':
-          setEmail(value);
-          break;
-        case 'password':
-          setPassword(value);
-          break;
-        default:
-          break;
-      }
-    }
+            navigate(Paths.SELECT_ROLE);
+        } catch (error) {
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+        }
+    };
 
-  const onReset = () => {
-    form.resetFields();
-  };
+    const handleLogin = async (
+        response: GoogleLoginResponse | GoogleLoginResponseOffline
+    ): Promise<void> => {
+        try {
+            if (RequestHeader.ACCESS_TOKEN in response) {
+                const authResponse = await loginGoogleUser(
+                    response.tokenId
+                ).unwrap();
+                dispatch(setCredentials(authResponse));
 
-  const onFinish = (values: FormValues) => {
-    loginUser({ user: values });
-    onReset();
-    setEmail('');
-    setPassword('');
-  };
+                notification.open({
+                    message: translator('AuthGoogle.comeBackMessage'),
+                });
 
-  return (
-    <div>
-      <Wrapper>
-        <StyledForm
-          form={form}
-          onFinish={values => onFinish(values as FormValues)}
-          name="basic"
-          initialValues={{ remember: true }}
-          autoComplete="off"
-        >
-          <Form.Item
-            label={t("SignInForm.email")}
-            name="email"
-            rules={[
-              {
-                required: true,
-                type: 'email',
-                message: '', //'Check if the email you entered is correct our input your email!',
-              },
-            ]}
-          >
-            <Input
-              name="email"
-              placeholder={t("SignInForm.inputEmail")}
-              onChange={onChange}
-            />
-          </Form.Item>
-          <Form.Item
+                navigate(Paths.SELECT_ROLE);
+            }
+        } catch (error) {
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+        }
+    };
 
-            label={t("SignInForm.password")}
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password
-              name="password"
-              minLength={8}
-              maxLength={20}
-              placeholder={t("SignInForm.inputPassword")}
-              autoComplete=""
-              onChange={onChange}
-            />
-          </Form.Item>
+    const handleFailure = (): void => {
+        message.error(translator('AuthGoogle.loginFail'));
+    };
 
-          <ForgotPass>
-            <StyledNavLink to="/forgotten_password">
-              {t("SignInForm.forgotPassword")}
-            </StyledNavLink>
-          </ForgotPass>
-          <Form.Item>
-            <ButtonSignIn
-              type="primary"
-              htmlType="submit"
-              disabled={memoDisabled}
+    return (
+        <Wrapper>
+            <StyledForm
+                form={form}
+                onFinish={(values) => onFinish(values as FormValues)}
+                name="basic"
+                initialValues={{ remember: true }}
+                autoComplete="off"
             >
-              {t("SignInForm.signIn")}
-            </ButtonSignIn>
-          </Form.Item>
-        </StyledForm>
-        <DontAccount>
-          {t("SignInForm.dontHaveAccount")}
-          <StyledNavLink to="/sign-up" className="styled">
-              {t("SignInForm.registerNow")}
-            </StyledNavLink>
-        </DontAccount>
-        <WithGoogle>
-          <p>{t("SignInForm.signInWith")}</p>
-          <GoogleLink href="https:/................./auth/google">
-            Google
-          </GoogleLink>
-        </WithGoogle>
-      </Wrapper>
-    </div>
-  );
+                <Form.Item
+                    label={translator('AuthForm.email')}
+                    name="email"
+                    rules={[
+                        {
+                            required: true,
+                            type: 'email',
+                            message: translator('AuthForm.checkEmail'),
+                        },
+                    ]}
+                >
+                    <Input
+                        name="email"
+                        placeholder={translator('AuthForm.inputEmail')}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={translator('AuthForm.password')}
+                    name="password"
+                    rules={[
+                        {
+                            required: true,
+                            message: translator('AuthForm.enterPassword'),
+                        },
+                    ]}
+                >
+                    <Input.Password
+                        name="password"
+                        minLength={8}
+                        maxLength={20}
+                        placeholder={translator('AuthForm.inputPassword')}
+                        autoComplete=""
+                    />
+                </Form.Item>
+
+                <ForgotPass>
+                    <StyledNavLink to={Paths.FORGOTTEN_PASSWORD}>
+                        {translator('AuthForm.forgotPassword')}
+                    </StyledNavLink>
+                </ForgotPass>
+                <Form.Item>
+                    <ButtonSignIn type="primary" htmlType="submit">
+                        {translator('AuthForm.signIn')}
+                    </ButtonSignIn>
+                </Form.Item>
+                <DontAccount>
+                    {translator('AuthForm.dontHaveAccount')}
+                    <StyledNavLink to={Paths.SIGN_UP} className="styled">
+                        {translator('AuthForm.registerNow')}
+                    </StyledNavLink>
+                </DontAccount>
+                <AuthGoogle
+                    onFailure={handleFailure}
+                    onSuccess={handleLogin}
+                    buttonText={translator('AuthGoogle.signInMessage')}
+                />
+            </StyledForm>
+        </Wrapper>
+    );
 };
 
 export default SignInForm;

@@ -1,4 +1,7 @@
-﻿export interface IProps {
-  data: any;
-  isError: boolean;
+﻿export interface Email {
+    email: string;
+}
+export interface IProps {
+    data: Email | undefined;
+    isError: boolean;
 }

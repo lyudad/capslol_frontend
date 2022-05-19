@@ -1,9 +1,9 @@
 interface Colors {
-  [key: string]: string;
+    [key: string]: string;
 }
 
 interface Fonts {
-  [key: string]: string;
+    [key: string]: string;
 }
 
 export const colors: Colors = {
@@ -55,16 +55,25 @@ export const colors: Colors = {
 };
 
 export const fonts: Fonts = {
-  logoFontFamily: "Dodger",
-  logoFontWeight: "600",
-  logoFontSize: "26px",
-  primeLogoFontSize: "20px",
-  logoLineHeight: "1.1",
-  navFontSize: "14px",
-  titlesOfProfile: "14px",
-  signUpButtonsFontWeight: "500",
-  homeMessageFontSize: "18px",
-  jobListTitleSize: "24px",
-  jobCardTitleSize: "20px",
-  jobListFontWeight: "600",
+    logoFontFamily: 'Dodger',
+    logoFontWeight: '600',
+    logoFontSize: '26px',
+    primeLogoFontSize: '20px',
+    logoLineHeight: '1.1',
+    navFontSize: '14px',
+    titlesOfProfile: '14px',
+    signUpButtonsFontWeight: '500',
+    homeMessageFontSize: '18px',
+    jobListTitleSize: '24px',
+    jobCardTitleSize: '20px',
+    jobListFontWeight: '600',
 };
+
+export const skills: string[] = [
+    'skill#1',
+    'skill#2',
+    'skill#3',
+    'skill#4',
+    'skill#5',
+    'skill#6',
+];

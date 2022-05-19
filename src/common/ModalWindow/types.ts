@@ -1,11 +1,14 @@
-﻿export interface IProps {
-  children: any;
-  modalIsOpen: boolean;
-  closeModal: () => void;
-  bg: string;
-  modalBg: string;
+﻿import { TReactNode } from 'common/Button/props';
+import { CSSProperties } from 'react';
+
+export interface IProps {
+    children: TReactNode;
+    modalIsOpen: boolean;
+    closeModal: () => void;
+    bg: string;
+    modalBg: string;
 }
 export interface ICustomStyles {
-  overlay: {};
-  content: {};
+    overlay: CSSProperties | undefined;
+    content: CSSProperties | undefined;
 }
