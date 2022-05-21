@@ -5,7 +5,7 @@
             "title": "Senior Software Developer",
             "description": "Svitla Systems Inc. is looking for a Senior Software Developer for a full-time position (40 hours per week) in Ukraine.",
             "price": 1000,
-            "timeAvailable": 100,
+            "timeAvailable": 8,
             "createdAt": "2022-05-14T07:17:42.000Z",
             "categories": [
                 {
@@ -35,7 +35,7 @@
             "title": "e-commerce app design",
             "description": "I looking for designer who makes user interface for e-commerce mobile app",
             "price": 10,
-            "timeAvailable": 100,
+            "timeAvailable": 10,
             "createdAt": "2022-05-15T07:17:42.000Z",
             "categories": [
                 {
@@ -63,9 +63,9 @@
         {
             "id": 3,
             "title": "NodeJS Engineer",
-            "description": "We are a team that through intelligent software and live data optimizes work of wind turbines (Renewable Energy sector) for our Danish client. We are in the middle of expanding our system with a weather forecast, manual data analysis, and earnings functionality. And we need one more FE Developer.",
+            "description": "We are a team that through intelligent software and live data optimizes work of wind turbines (Renewable Energy sector) for our Danish client. We are in the middle of expanding our system with a weather forecast, manual data analysis, and earnings functionality. And we senior need one more FE Developer.",
             "price": 10,
-            "timeAvailable": 100,
+            "timeAvailable": 4,
             "createdAt": "2022-05-15T07:17:42.000Z",
             "categories": [
                 {
@@ -99,12 +99,12 @@
         },
 
         {
-            "id": 4,
-            "title": "Senior UI Designer",
-            "description": "Looking for a talented visual designer who loves to design Applications, web-aplications and had experience with it. Try yourself at fintech, delivery services, tourism, e-commerce & custom solutions for business.",
-            "price": 2000,
-            "timeAvailable": 100,
-            "createdAt": "2022-05-15T07:17:42.000Z",
+            "id": 5,
+            "title": "Middle Full Stack Developer (NodeJS/Angular)",
+            "description": "Hive on behalf of JiBe is looking for Middle Full Stack Developer (NodeJS/Angular). JiBe - is a cloud-based maritime ERP system that provides a complete solution for ship management.",
+            "price": 500,
+            "timeAvailable": 8,
+            "createdAt": "2022-05-10T07:17:42.000Z",
             "categories": [
                 {
                     "id": 3,
@@ -121,12 +121,46 @@
                     "name": "Google Analytics"
                 },
                 {
-                    "id": 3,
-                    "name": "Yandex Metrics"
-                },
+                    "id": 4,
+                    "name": "Figma"
+                }
+            ],
+            "languageLevel": 2
+        },
+
+        {
+            "id": 4,
+            "title": "NodeJS Engineer",
+            "description": "We are a team that through intelligent software and live data optimizes work of wind turbines (Renewable Energy sector) for our Danish client. We are in the middle of expanding our system with a weather forecast, manual data analysis, and earnings functionality. And we need one more FE Developer.",
+            "price": 10,
+            "timeAvailable": 100,
+            "createdAt": "2022-05-15T07:17:42.000Z",
+            "categories": [
+                {
+                    "id": 2,
+                    "categoryName": "Web development"
+                }
+            ],
+            "skills": [
                 {
                     "id": 4,
                     "name": "Figma"
+                },
+                {
+                    "id": 5,
+                    "name": "Flask"
+                },
+                {
+                    "id": 6,
+                    "name": "Typescript"
+                },
+                {
+                    "id": 9,
+                    "name": "SolidJS"
+                },
+                {
+                    "id": 10,
+                    "name": "SQL"
                 }
             ],
             "languageLevel": 2

@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import { IJob } from 'store/apis/jobs/jobs.types';
-import { langLevel } from 'constants/index';
 import { useAppDispatch } from 'hooks/redux';
 import { setJobId } from 'store/slices/jobs/jobs.slice';
 import {
@@ -37,9 +36,10 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
         description,
         price,
         timeAvailable,
-        categories,
+        categoryId,
         skills,
         languageLevel,
+        ownerId,
     } = jobObj;
 
     const onClickJob = (): void => {
@@ -57,7 +57,9 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.jobOwner')}</Field>
-                    <FieldValue>{t('JobPage.noName')}</FieldValue>
+                    <FieldValue>
+                        {`${ownerId.firstName} ${ownerId.lastName}`}
+                    </FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.skills')}</Field>
@@ -67,7 +69,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
-                    <FieldValue>{categories[0].categoryName}</FieldValue>
+                    <FieldValue>{categoryId.categoryName}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.timeAvailable')}</Field>
@@ -75,7 +77,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.english')}</Field>
-                    <FieldValue>{langLevel[languageLevel]}</FieldValue>
+                    <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
             <StyledNav to="">{t('JobPage.sendProposal')}</StyledNav>

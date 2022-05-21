@@ -48,9 +48,9 @@ export const colors: Colors = {
 
 export const fonts: Fonts = {
     logoFontFamily: 'Dodger',
-    logoFontWeight: '600',
-    logoFontSize: '26px',
-    primeLogoFontSize: '20px',
+    logoFontWeight: '800',
+    logoFontSize: '28px',
+    primeLogoFontSize: '24px',
     logoLineHeight: '1.1',
     navFontSize: '14px',
     titlesOfProfile: '14px',
@@ -62,9 +62,10 @@ export const fonts: Fonts = {
 };
 
 export const langLevel: string[] = [
-    'None',
-    'Pre-intermediate',
+    'No English',
+    'Beginner',
+    'Pre-Intermediate',
     'Intermediate',
-    'Upper Intermediate',
-    'Fluent',
+    'Advanced',
+    'No set',
 ];

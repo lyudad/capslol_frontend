@@ -13,7 +13,6 @@ import { IQueryFilters } from './props';
 import {
     Title,
     StyledSlider,
-    StyledRangeSlider,
     FilterTitle,
     StyledFilter,
     PriceValue,
@@ -24,20 +23,14 @@ import 'antd/dist/antd.min.css';
 const { Option } = Select;
 
 const Filters: React.FC = () => {
-    const initialState = {
-        category: '',
-        englishLevel: '',
-        filteredSkills: [],
-        maxSalary: undefined,
-        searchValue: '',
-        timeAvailable: undefined,
-    };
-    const [queryFilters, setQueryFilters] =
-        useState<IQueryFilters>(initialState);
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const [categoryQuery, setCategoryQuery] = useState<string>('');
+    const [hoursQuery, setHoursQuery] = useState<string>('');
+    const [languageLevelQuery, setLanguageLevelQuery] = useState<string>('');
+    const [timeAvailableQuery, setTimeAvailableQuery] = useState<string>('');
+    const [skillsQuery, setSkillsQuery] = useState<string>('');
     const [timeAvailable, setTimeAvailable] = useState<number>();
     const [maxSalary, setMaxSalary] = useState<number>();
-    // const [minPrice, setMinPrice] = useState(0);
-    // const [maxPrice, setMaxPrice] = useState(10000); //Math.round(30 * 0.24)
 
     const [form] = Form.useForm();
 
@@ -51,47 +44,76 @@ const Filters: React.FC = () => {
 
     const { data: skillsData } = useGetSkillsQuery('');
 
-    const handleGetJobs = async (filters: IQueryFilters): Promise<void> => {
-        const query = `?q=${filters?.searchValue}`;
-        const jobs = await getJobs(query).unwrap();
-        dispatch(setJobs(jobs));
-        // console.log('JOBS=', jobs);
-    };
-
     useEffect(() => {
-        handleGetJobs(queryFilters);
-    }, [queryFilters]);
+        const handleGetJobs = async (): Promise<void> => {
+            const query = `/search?${searchQuery}${categoryQuery}${hoursQuery}${languageLevelQuery}${timeAvailableQuery}${skillsQuery}`;
+            const jobs = await getJobs(query).unwrap();
+            dispatch(setJobs(jobs));
+        };
+        handleGetJobs();
+    }, [
+        dispatch,
+        getJobs,
+        searchQuery,
+        categoryQuery,
+        hoursQuery,
+        languageLevelQuery,
+        timeAvailableQuery,
+        skillsQuery,
+    ]);
 
     const onFinish = (values: IQueryFilters): void => {
-        console.log('Success:', values);
-        setQueryFilters(values);
+        setSearchQuery(`&q=${values.searchValue}`);
+
+        if (values.category) {
+            setCategoryQuery(`&category=${values.category}`);
+        } else {
+            setCategoryQuery('');
+        }
+
+        if (values.maxSalary) {
+            setHoursQuery(`&price=${values.maxSalary}`);
+        } else {
+            setHoursQuery('');
+        }
+
+        if (values.englishLevel) {
+            setLanguageLevelQuery(`&languageLevel=${values.englishLevel}`);
+        } else {
+            setLanguageLevelQuery('');
+        }
+
+        if (values.timeAvailable) {
+            setTimeAvailableQuery(
+                `&timeAvailable=${Math.round(values.timeAvailable * 0.12)}`
+            );
+        } else {
+            setTimeAvailableQuery('');
+        }
+
+        if (values.filteredSkills) {
+            setSkillsQuery(`&skills=${values.filteredSkills?.join('')}`);
+        } else {
+            setSkillsQuery('');
+        }
     };
 
     const onReset = (): void => {
         form.resetFields();
+        setSearchQuery('');
+        setCategoryQuery('');
+        setHoursQuery('');
+        setLanguageLevelQuery('');
+        setTimeAvailableQuery('');
+        setSkillsQuery('');
     };
-
-    const onFill = (): void => {
-        form.setFieldsValue({
-            category: 'Hello world!',
-            englishLevel: 'None',
-            filteredSkills: ['hello', 'world'],
-            maxSalary: 50,
-            timeAvailable: 30,
-        });
-    };
-
-    // const priceRange = (value: number[]): void => {
-    //     setMinPrice(value[0] * 100);
-    //     setMaxPrice(value[1] * 100);
-    // };
 
     const onChangeSalary = (value: number): void => {
-        setMaxSalary(Math.round(value * 50));
+        setMaxSalary(value);
     };
 
     const onChangeTimeAvailable = (value: number): void => {
-        setTimeAvailable(Math.round(value * 0.24));
+        setTimeAvailable(Math.round(value * 0.12));
     };
 
     const categoryChildren = useMemo(() => {
@@ -101,7 +123,7 @@ const Filters: React.FC = () => {
                 result.push(
                     <Option
                         key={i}
-                        value={categoryData[i].categoryName}
+                        value={categoryData[i].id}
                         label={categoryData[i].categoryName}
                     >
                         <div>{categoryData[i].categoryName}</div>
@@ -120,7 +142,7 @@ const Filters: React.FC = () => {
                 result.push(
                     <Option
                         key={i}
-                        value={skillsData[i].name}
+                        value={skillsData[i].id}
                         label={skillsData[i].name}
                     >
                         <div>{skillsData[i].name}</div>
@@ -150,11 +172,15 @@ const Filters: React.FC = () => {
             <Form
                 form={form}
                 name="basic"
-                initialValues={initialState}
+                initialValues={{
+                    category: undefined,
+                    englishLevel: '',
+                    filteredSkills: undefined,
+                    maxSalary: undefined,
+                    searchValue: '',
+                    timeAvailable: undefined,
+                }}
                 onFinish={onFinish}
-                // onReset={onReset}
-                // onFinishFailed={onFinishFailed}
-                // autoComplete="on"
             >
                 <StyledFilter>
                     <FilterTitle>{t('JobPage.search')}</FilterTitle>
@@ -219,7 +245,10 @@ const Filters: React.FC = () => {
                         <span>max: {maxSalary && `${maxSalary}`}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>
-                        <StyledSlider onChange={onChangeSalary} />
+                        <StyledSlider
+                            // step={10}
+                            onChange={onChangeSalary}
+                        />
                     </Form.Item>
                 </StyledFilter>
 
@@ -231,10 +260,7 @@ const Filters: React.FC = () => {
                         </span>
                     </PriceValue>
                     <Form.Item name="timeAvailable" noStyle>
-                        <StyledSlider
-                            // defaultValue={30}
-                            onChange={onChangeTimeAvailable}
-                        />
+                        <StyledSlider onChange={onChangeTimeAvailable} />
                     </Form.Item>
                 </StyledFilter>
 
@@ -266,18 +292,6 @@ const Filters: React.FC = () => {
                     </Button>
                 </ButtonsItem>
             </Form>
-
-            {/* <PriceValue>
-                    <span>min: {`${minPrice}`}</span>
-                    <span>max: {`${maxPrice}`}</span>
-                </PriceValue>
-                <StyledRangeSlider
-                    range
-                    step={5}
-                    defaultValue={[0, 100]}
-                    onAfterChange={priceRange}
-                    trackStyle={[{ backgroundColor: `${colors.brandColor} ` }]}
-                /> */}
         </>
     );
 };

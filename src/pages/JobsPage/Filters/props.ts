@@ -1,8 +1,8 @@
 export interface IQueryFilters {
-    category: string | undefined;
+    category: number | undefined;
     englishLevel: string | undefined;
-    filteredSkills: string[] | undefined;
-    maxSalary: number | undefined | null;
+    filteredSkills: number[] | undefined;
+    maxSalary: number | undefined;
     searchValue: string | undefined;
-    timeAvailable: number | undefined | null;
+    timeAvailable: number;
 }

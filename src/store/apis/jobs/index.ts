@@ -1,5 +1,5 @@
 import { baseApi } from '..';
-import { IJob, ICategory, ISkill } from './jobs.types';
+import { IJob, ICategory, ISkill, IUserProfile } from './jobs.types';
 
 export const jobsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -18,6 +18,10 @@ export const jobsApi = baseApi.injectEndpoints({
         getSkills: builder.query<ISkill[], string>({
             query: () => `skills`,
         }),
+
+        getUserProfile: builder.query<IUserProfile, number | undefined>({
+            query: (userId) => `profiles/getByUserId/${userId}`,
+        }),
     }),
 });
 
@@ -27,4 +31,6 @@ export const {
     useGetCategoriesQuery,
     useGetSkillsQuery,
     useLazyGetJobsQuery,
+    useGetUserProfileQuery,
+    useLazyGetUserProfileQuery,
 } = jobsApi;

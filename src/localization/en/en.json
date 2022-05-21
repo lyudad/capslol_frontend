@@ -3,7 +3,9 @@
         "get": "Get",
         "job": "JOB!",
         "home": "HOME",
-        "test": "TEST"
+        "test": "TEST",
+        "profile": "PROFILE",
+        "jobs": "JOBS"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -109,7 +111,7 @@
         "category": "category:",
         "category#1": "category#1",
         "category#2": "category#2",
-        "salary": "salary:",
+        "salary": "hourly:",
         "timeAvailable": "time available:",
         "english": "english:",
         "sendProposal": "Send proposal",
@@ -123,7 +125,7 @@
         "fluent": "Fluent",
         "Skills": "Skills",
         "Category": "Category",
-        "price": "Price",
+        "price": "Hourly",
         "TimeAvailable": "Time available",
         "perDay": "per day",
         "hour": "hour",

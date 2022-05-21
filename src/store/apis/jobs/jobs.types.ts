@@ -8,14 +8,37 @@ export interface ICategory {
     categoryName: string;
 }
 
-export interface IJob {
+export interface IOwner {
+    createdAt: string;
+    email: string;
+    firstName: string;
     id: number;
+    isGoogle: boolean;
+    lastName: string;
+    phoneNumber: string;
+    role: string;
+}
+
+export interface IJob {
+    id: number | undefined;
     title: string;
     description: string;
     price: number;
     timeAvailable: number;
     createdAt: string;
-    categories: ICategory[];
+    categoryId: ICategory;
     skills: ISkill[];
-    languageLevel: number;
+    languageLevel: string;
+    ownerId: IOwner;
+}
+
+export interface IUserProfile {
+    id: number;
+    profileImage: string | undefined;
+    availableHours: string | undefined;
+    position: string | undefined;
+    english: string | undefined;
+    other: string | undefined;
+    createdAt: string | undefined;
+    updatedAt: string | undefined;
 }

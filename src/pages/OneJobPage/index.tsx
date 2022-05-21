@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import 'antd/dist/antd.min.css';
-import { useGetJobByIdQuery } from 'store/apis/jobs';
+import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { useAppSelector } from 'hooks/redux';
-import { langLevel } from 'constants/index';
 import {
     Page,
     Title,
@@ -16,14 +15,21 @@ import {
     Owner,
     AvatarImg,
 } from './styles';
+
 import avatar from '../../assets/avatar.png';
 
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
 
-    const jobID = useAppSelector((state) => state.jobsReducer.jobId);
+    const jobID = useAppSelector((state) => state.jobsReducer?.jobId);
 
-    const { data: jobData } = useGetJobByIdQuery(jobID);
+    const jobData = useAppSelector((state) => state.jobsReducer?.jobs).find(
+        (item) => item.id === jobID
+    );
+
+    const ownerId = jobData?.ownerId.id;
+
+    const { data: ownerProfile } = useGetUserProfileQuery(ownerId);
 
     return (
         <Page>
@@ -33,9 +39,13 @@ const OneJobPage: React.FC = () => {
                 <Title>{jobData?.title}</Title>
                 <Owner>
                     <AvatarImg>
-                        <img src={avatar} alt="" />
+                        {ownerProfile?.profileImage ? (
+                            <img src={ownerProfile?.profileImage} alt="" />
+                        ) : (
+                            <img src={avatar} alt="" />
+                        )}
                     </AvatarImg>
-                    {t('JobPage.noName')}
+                    {`${jobData?.ownerId.firstName} ${jobData?.ownerId.lastName}`}
                 </Owner>
 
                 <Description>{jobData?.description}</Description>
@@ -47,7 +57,7 @@ const OneJobPage: React.FC = () => {
 
                 <OptionContent>
                     <Field>{t('JobPage.category')} </Field>
-                    <Value>{jobData?.categories[0].categoryName}</Value>
+                    <Value>{jobData?.categoryId.categoryName}</Value>
                 </OptionContent>
 
                 <OptionContent>
@@ -66,9 +76,7 @@ const OneJobPage: React.FC = () => {
 
                 <OptionContent>
                     <Field>{t('JobPage.english')} </Field>
-                    {jobData?.languageLevel && (
-                        <Value>{langLevel[jobData?.languageLevel]}</Value>
-                    )}
+                    <Value>{jobData?.languageLevel}</Value>
                 </OptionContent>
             </JobCard>
         </Page>

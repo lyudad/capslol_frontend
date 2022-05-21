@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IJob } from 'store/apis/jobs/jobs.types';
 
 interface IJobsState {
-    jobId: number | null;
+    jobId: number | undefined;
     jobs: Array<IJob>;
 }
 const initialState: IJobsState = {
-    jobId: null,
+    jobId: undefined,
     jobs: [],
 };
 
@@ -20,7 +20,7 @@ const jobsSlice = createSlice({
 
         setJobId: (
             state: IJobsState,
-            { payload }: PayloadAction<number | null>
+            { payload }: PayloadAction<number | undefined>
         ) => {
             state.jobId = payload;
         },

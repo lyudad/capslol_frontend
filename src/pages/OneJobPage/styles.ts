@@ -29,9 +29,11 @@ export const Owner = styled.div`
 
 export const AvatarImg = styled.div`
     display: block;
+    overflow: hidden;
     width: 48px;
     margin-right: 8px;
     border-radius: 50%;
+    border: 1px solid ${colors.brandColor};
     background-color: ${colors.brandColor};
 `;
 
