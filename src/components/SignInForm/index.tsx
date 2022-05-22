@@ -40,8 +40,6 @@ const SignInForm: React.FC = () => {
             const response = await loginUser(values).unwrap();
             dispatch(setCredentials(response));
 
-            console.log('response', response);
-
             notification.open({
                 message: translator('AuthGoogle.comeBackMessage'),
             });

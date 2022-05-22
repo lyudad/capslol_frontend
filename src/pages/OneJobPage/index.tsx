@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import 'antd/dist/antd.min.css';
-import { useGetUserProfileQuery } from 'store/apis/jobs';
+import { useGetJobByIdQuery, useGetUserProfileQuery } from 'store/apis/jobs';
 import { useAppSelector } from 'hooks/redux';
+import avatar from 'assets/avatar.png';
 import {
     Page,
     Title,
@@ -16,16 +17,12 @@ import {
     AvatarImg,
 } from './styles';
 
-import avatar from '../../assets/avatar.png';
-
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
 
     const jobID = useAppSelector((state) => state.jobsReducer?.jobId);
 
-    const jobData = useAppSelector((state) => state.jobsReducer?.jobs).find(
-        (item) => item.id === jobID
-    );
+    const { data: jobData } = useGetJobByIdQuery(jobID);
 
     const ownerId = jobData?.ownerId.id;
 

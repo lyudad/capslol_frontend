@@ -7,7 +7,7 @@ export const jobsApi = baseApi.injectEndpoints({
             query: (value) => `jobs${value}`,
         }),
 
-        getJobById: builder.query<IJob, number | null>({
+        getJobById: builder.query<IJob, number | undefined>({
             query: (id) => `jobs/${id}`,
         }),
 

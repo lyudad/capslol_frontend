@@ -9,7 +9,6 @@ import {
     JobCard,
     FiltersContainer,
 } from './styles';
-import 'antd/dist/antd.min.css';
 import JobsListCard from './JobListCard';
 import Filters from './Filters';
 
@@ -17,8 +16,6 @@ const JobsPage: React.FC = () => {
     const { t } = useTranslation();
 
     const jobsData = useAppSelector((state) => state.jobsReducer.jobs);
-
-    // console.log('jobsState:', jobsData);
 
     return (
         <Page>
