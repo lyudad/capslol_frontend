@@ -1,4 +1,4 @@
 ﻿export interface IPassword {
-  password: string;
-  confirmPassword: string;
+    password: string;
+    confirmPassword: string;
 }

@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { baseApi } from './apis';
 import authReducer from './slices/auth/auth.slice';
+import jobsReducer from './slices/jobs/jobs.slice';
 
 const persistConfig = {
     key: 'auth',
@@ -13,6 +14,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     authReducer,
+    jobsReducer,
     [baseApi.reducerPath]: baseApi.reducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,102 +1,101 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Form } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Form, message } from 'antd';
+import { MailOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { TypographyTitle } from "pages/ResetPassword/style";
-import { colors } from "constants/index";
-import { useConfirmEmailMutation } from "store/apis/auth";
-import { IFormValue } from "./interfaces";
+import { TypographyTitle } from 'pages/ResetPassword/style';
+import { colors } from 'constants/index';
+import { useConfirmEmailMutation } from 'store/apis/auth';
+import { IFormValue } from './interfaces';
 import {
-  FormButton,
-  FormInput,
-  FormItem,
-  FormLink,
-  PwrButton,
-  Section,
-  StyledForm,
-  Wrapper,
-} from "./styles";
-import VerifyEmail from "./components/VerifyEmail";
+    FormButton,
+    FormInput,
+    FormItem,
+    FormLink,
+    PwrButton,
+    Section,
+    StyledForm,
+    Wrapper,
+} from './styles';
+import VerifyEmail from './components/VerifyEmail';
 
 const ForgotPassword: React.FC = () => {
-  const { t } = useTranslation();
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [confirmEmail, { data, isError }] = useConfirmEmailMutation()
+    const { t } = useTranslation();
+    const [form] = Form.useForm();
+    const [loading, setLoading] = useState<boolean>(false);
 
-  const onReset = (): void => {
-    form.resetFields();
-  };
+    const [confirmEmail, { data, isError }] = useConfirmEmailMutation();
 
-  const enterLoading = (): void => {
-    setLoading(true);
-  };
+    const onReset = (): void => form.resetFields();
 
-  const onFinish = async (values: IFormValue): Promise<void> => {
-    enterLoading();
-    try {
-      await confirmEmail(values.email)
-    } catch (e) {
-      throw new Error(`Error: ${e}`)
-    }
-    onReset();
-  };
+    const enterLoading = (): void => setLoading(true);
 
-  return (
-    <Section>
-      {
-        !(data || isError) &&
-        <Wrapper width="340">
-          <TypographyTitle color={colors.textWhite} level={3}>{t('ForgotPage.title')}</TypographyTitle>
-            <StyledForm
-            name="normal_login"
-            className="form"
-            form={form}
-            initialValues={{ remember: true }}
-            onFinish={(values) => onFinish(values as IFormValue)}
-            >
-              <FormItem
-                name="email"
-                label={t('ForgotPage.email.item')}
-                rules={[
-                  {
-                    required: true,
-                    message: `${t('ForgotPage.email.error')}`,
-                    type: "email",
-                  },
-                ]}
-              >
-              <FormInput
-                prefix={<MailOutlined className="site-form-item-icon" />}
-                placeholder="email@example.com"
-              />
-              </FormItem>
+    const onFinish = async (values: IFormValue): Promise<void> => {
+        enterLoading();
+        try {
+            await confirmEmail({ email: values.email });
+        } catch (e) {
+            message.error(e.data.message);
+        }
+        onReset();
+    };
 
-              <FormButton>
-                <PwrButton
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
-                  loading={loading}
-                >
-                  {t('ForgotPage.btnText')}
-                </PwrButton>
-              </FormButton>
+    return (
+        <Section>
+            {!(data || isError) && (
+                <Wrapper width="340">
+                    <TypographyTitle color={colors.textWhite} level={3}>
+                        {t('ForgotPage.title')}
+                    </TypographyTitle>
+                    <StyledForm
+                        name="normal_login"
+                        className="form"
+                        form={form}
+                        initialValues={{ remember: true }}
+                        onFinish={(values) => onFinish(values as IFormValue)}
+                    >
+                        <FormItem
+                            name="email"
+                            label={t('ForgotPage.email.item')}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: `${t('ForgotPage.email.error')}`,
+                                    type: 'email',
+                                },
+                            ]}
+                        >
+                            <FormInput
+                                prefix={
+                                    <MailOutlined className="site-form-item-icon" />
+                                }
+                                placeholder="email@example.com"
+                            />
+                        </FormItem>
 
-              <FormLink>
-                <NavLink to="/" className="form_link">
-                  {t('ForgotPage.linkText')}
-                </NavLink>
-              </FormLink>
+                        <FormButton>
+                            <PwrButton
+                                type="primary"
+                                htmlType="submit"
+                                className="login-form-button"
+                                loading={loading}
+                            >
+                                {t('ForgotPage.btnText')}
+                            </PwrButton>
+                        </FormButton>
 
-            </StyledForm>
-        </Wrapper>
-      }
+                        <FormLink>
+                            <NavLink to="/" className="form_link">
+                                {t('ForgotPage.linkText')}
+                            </NavLink>
+                        </FormLink>
+                    </StyledForm>
+                </Wrapper>
+            )}
 
-      {(data || isError) && <VerifyEmail data={data} isError={isError} />}
-    </Section>
-  );
+            {(data || isError) && <VerifyEmail data={data} isError={isError} />}
+        </Section>
+    );
 };
 
 export default ForgotPassword;

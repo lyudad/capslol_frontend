@@ -1,12 +1,12 @@
 ﻿export interface IProps {
-  mb?: string;
-  padding?: string;
-  justify?: string;
-  fs?: string;
+    mb?: string;
+    padding?: string;
+    justify?: string;
+    fs?: string;
 }
 
 export interface IChangePassword {
-  newPassword: string;
+    newPassword: string;
 
-  confirmPassword: string;
+    confirmPassword: string;
 }

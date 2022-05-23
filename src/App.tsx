@@ -31,7 +31,7 @@ const App: React.FC = () => {
                 <Route path="/reset_password/*" element={<ResetPassword />} />
                 <Route path="/send_proposal/" element={<SendProposal />} />
                 <Route path="/jobs" element={<JobsPage />} />
-                <Route path="/contact_info/:id" element={<ContactInfo />} />
+                <Route path="/contact_info" element={<ContactInfo />} />
                 <Route path="/job" element={<OneJobPage />} />
             </Routes>
         </MainLayout>

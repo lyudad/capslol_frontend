@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { Form, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, UserOutlined } from '@ant-design/icons';
 
 import {
@@ -39,7 +39,6 @@ const ContactInfo: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const { id } = useParams();
 
     const [changePassword, { isError, isSuccess }] =
         useChangePasswordMutation();
@@ -51,15 +50,16 @@ const ContactInfo: React.FC = () => {
 
     const onReset = (): void => form.resetFields();
 
-    function openModal(): void {
-        setIsOpen(true);
-    }
+    const openModal = (): void => setIsOpen(true);
+
+    const closeModal = (): void => setIsOpen(false);
+
     const onFinish = async (values: IChangePassword): Promise<void> => {
         enterLoading();
         try {
             if (values.newPassword === values.confirmPassword) {
                 const value: IPassword = {
-                    id: Number(id),
+                    id: user?.id,
                     password: values.confirmPassword,
                 };
                 await changePassword(value).unwrap();
@@ -68,15 +68,10 @@ const ContactInfo: React.FC = () => {
                 onReset();
                 setLoading(false);
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
+        } catch (error) {
             message.error(error.data.message);
         }
     };
-
-    function closeModal(): void {
-        setIsOpen(false);
-    }
 
     return (
         <Wrapper>
@@ -97,7 +92,10 @@ const ContactInfo: React.FC = () => {
                     <TitleGroup mb="35">
                         <StyledAvatar size={64} icon={<UserOutlined />} />
                         <div>
-                            <Title fs="28">{`${user?.firstName} ${user?.lastName}`}</Title>
+                            <Title fs="28">
+                                {`${user?.firstName ? user?.firstName : 'Not'}
+                                ${user?.lastName ? user?.lastName : 'Found'}`}
+                            </Title>
                             <Circle>
                                 {user?.role ? user?.role : 'Not Found'}
                             </Circle>
@@ -209,20 +207,35 @@ const ContactInfo: React.FC = () => {
                                     message: `${t(
                                         'ContactInfo.conPasswordTitle.error'
                                     )}`,
-                                    validator: (_, value) => {
-                                        if (validatePassword.test(value)) {
-                                            Promise.resolve();
-                                            return;
-                                        }
-                                        Promise.reject(
-                                            new Error(
-                                                t(
-                                                    'ContactInfo.passwordTitle.error'
-                                                )
-                                            )
-                                        );
-                                    },
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value) {
+                                            return Promise.reject(
+                                                new Error(
+                                                    t(
+                                                        'ContactInfo.conPasswordTitle.error'
+                                                    )
+                                                )
+                                            );
+                                        }
+
+                                        const rightPassword =
+                                            getFieldValue('newPassword').match(
+                                                validatePassword
+                                            );
+                                        if (!rightPassword) {
+                                            return Promise.reject(
+                                                new Error(
+                                                    t(
+                                                        'ContactInfo.conPasswordTitle.error'
+                                                    )
+                                                )
+                                            );
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <FormPassword

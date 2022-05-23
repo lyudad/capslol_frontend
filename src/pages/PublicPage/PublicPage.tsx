@@ -162,7 +162,6 @@ const PublicPage: React.FC = () => {
                     </Description>
                 </Sections>
                 <Row justify="end">
-                    {/* TODO:id в фигурных скопках нужно указать id user-a */}
                     <ButtonSet
                         onClick={() => navigate(`/contact_info/${user?.id}`)}
                         type="default"

@@ -1,7 +1,7 @@
 export interface IFormValue {
-  email: string;
+    email: string;
 }
 
 export interface IProps {
-  width: string;
+    width: string;
 }
