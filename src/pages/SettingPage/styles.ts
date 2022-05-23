@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, fonts } from 'constants/index';
+import { colors } from 'constants/index';
 import { Button } from 'antd';
 
 export const Page = styled.section`
@@ -15,9 +15,9 @@ export const ProfileContainer = styled.section`
     margin-right: auto;
     margin-left: auto;
     margin-top: 80px;
-    height: 880px;
+    width: 800px;
     padding: 8px 12px;
-    padding-bottom: 12px;
+    padding-bottom: 22px;
     border: 1px solid ${colors.signUpForm};
     background-color: ${colors.formWrapperBgr};
     color: ${colors.signUpFormColor};
@@ -25,10 +25,15 @@ export const ProfileContainer = styled.section`
 `;
 
 export const TitleEmpty = styled.h1`
+    /* display: flex; */
+    width: 200px;
     font-size: x-large;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 14px;
     margin-bottom: 20px;
-    text-align: center;
+    /* text-align: center; */
+    /* justify-items: center; */
     color: ${colors.navColor};
 `;
 export const Title = styled.h1`
@@ -37,14 +42,17 @@ export const Title = styled.h1`
     margin-left: 15px;
     color: ${colors.navColor};
 `;
-export const Sections = styled.h3`
+export const Sections = styled.div`
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
     margin-top: 8px;
     margin-left: 25px;
     color: ${colors.navColor};
 `;
 
-export const Description = styled.p`
-    font-size: ${fonts.titlesOfProfile};
+export const Description = styled.span`
+    font-size: 18px;
     margin-top: 15px;
     margin-left: 35px;
     color: ${colors.titleOfSectionsProfile};

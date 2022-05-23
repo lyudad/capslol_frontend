@@ -22,7 +22,7 @@ const App: React.FC = () => {
                 <Route path="/sign-up" element={<AuthForm />} />
                 <Route path="/select-role" element={<RolePage />} />
                 <Route path="/profile" element={<PublicPage />} />
-                <Route path="/setting" element={<SettingPage />} />
+                <Route path="/setting/:id" element={<SettingPage />} />
                 <Route path="/test" element={<TestPage />} />
                 <Route
                     path="/forgotten_password"

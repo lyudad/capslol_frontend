@@ -169,7 +169,10 @@ const PublicPage: React.FC = () => {
                     >
                         {t('PublicProfile.contact_info')}
                     </ButtonSet>
-                    <ButtonSet type="default">
+                    <ButtonSet
+                        onClick={() => navigate(`/setting/${user?.id}`)}
+                        type="default"
+                    >
                         {t('PublicProfile.settings')}
                     </ButtonSet>
                 </Row>

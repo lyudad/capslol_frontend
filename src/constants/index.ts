@@ -53,7 +53,7 @@ export const fonts: Fonts = {
     primeLogoFontSize: '20px',
     logoLineHeight: '1.1',
     navFontSize: '14px',
-    titlesOfProfile: '14px',
+    titlesOfProfile: '16px',
     signUpButtonsFontWeight: '500',
     homeMessageFontSize: '18px',
     jobListTitleSize: '24px',

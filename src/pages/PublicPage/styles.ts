@@ -9,7 +9,6 @@ export const Page = styled.section`
     background-color: ${colors.homeBgr};
     background-image: url(./images/bg-image.png);
     background-repeat: no-repeat;
-    background-size: contain;
 `;
 
 export const ProfileContainer = styled.section`
