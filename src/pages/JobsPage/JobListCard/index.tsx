@@ -1,7 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Paths } from 'router/paths';
+import { IJob } from 'store/apis/jobs/jobs.types';
 import {
     DateContainer,
+    StyledButton,
     JobTitle,
     Salary,
     OwnerContainer,
@@ -12,46 +15,56 @@ import {
     StyledNav,
 } from './styles';
 import 'antd/dist/antd.min.css';
-import { IJobObj } from './props';
 
 interface IProps {
-    jobObj: IJobObj;
+    jobObj: IJob;
 }
 
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const { t } = useTranslation();
+
+    const navigate = useNavigate();
+
     const {
-        date,
-        jobName,
-        salary,
+        id,
+        createdAt,
+        title,
         description,
-        jobOwner,
-        skills,
-        category,
+        price,
         timeAvailable,
-        englishLevel,
+        categoryId,
+        skills,
+        languageLevel,
+        ownerId,
     } = jobObj;
 
+    const onClickJob = (): void => {
+        navigate(Paths.JOB_PAGE, { state: { id } });
+    };
     return (
         <>
-            <DateContainer>{date}</DateContainer>
-            <NavLink to="/.........">
-                <JobTitle>{jobName},</JobTitle>
-                <Salary>{salary}$</Salary>
-            </NavLink>
+            <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
+            <StyledButton onClick={onClickJob} type="submit">
+                <JobTitle>{title},</JobTitle>
+                <Salary>{price}$</Salary>
+            </StyledButton>
             <Descriptions>{description}</Descriptions>
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.jobOwner')}</Field>
-                    <FieldValue>{jobOwner}</FieldValue>
+                    <FieldValue>
+                        {`${ownerId.firstName} ${ownerId.lastName}`}
+                    </FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.skills')}</Field>
-                    <FieldValue>{skills.join(', ')}</FieldValue>
+                    <FieldValue>
+                        {skills.map((item) => item.name).join(', ')}
+                    </FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
-                    <FieldValue>{category}</FieldValue>
+                    <FieldValue>{categoryId.categoryName}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.timeAvailable')}</Field>
@@ -59,7 +72,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.english')}</Field>
-                    <FieldValue>{englishLevel}</FieldValue>
+                    <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
             <StyledNav to="">{t('JobPage.sendProposal')}</StyledNav>

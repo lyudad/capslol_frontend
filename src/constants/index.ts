@@ -48,9 +48,9 @@ export const colors: Colors = {
 
 export const fonts: Fonts = {
     logoFontFamily: 'Dodger',
-    logoFontWeight: '600',
-    logoFontSize: '26px',
-    primeLogoFontSize: '20px',
+    logoFontWeight: '800',
+    logoFontSize: '28px',
+    primeLogoFontSize: '24px',
     logoLineHeight: '1.1',
     navFontSize: '14px',
     titlesOfProfile: '14px',
@@ -61,11 +61,11 @@ export const fonts: Fonts = {
     jobListFontWeight: '600',
 };
 
-export const skills: string[] = [
-    'skill#1',
-    'skill#2',
-    'skill#3',
-    'skill#4',
-    'skill#5',
-    'skill#6',
+export const langLevel: string[] = [
+    'No English',
+    'Beginner',
+    'Pre-Intermediate',
+    'Intermediate',
+    'Advanced',
+    'No set',
 ];
