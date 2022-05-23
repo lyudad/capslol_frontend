@@ -137,9 +137,9 @@ const PublicPage: React.FC = () => {
                 <Sections>
                     {t('PublicProfile.skills')}:{' '}
                     <Description>
-                        <span style={{ color: colors.brandColor }}>
+                        {/* <span style={{ color: colors.brandColor }}>
                             {data?.skills.id}
-                        </span>
+                        </span> */}
                     </Description>
                 </Sections>
                 <Sections>
