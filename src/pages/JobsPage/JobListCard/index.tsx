@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import { IJob } from 'store/apis/jobs/jobs.types';
-import { useAppDispatch } from 'hooks/redux';
-import { setJobId } from 'store/slices/jobs/jobs.slice';
 import {
     DateContainer,
     StyledButton,
@@ -27,8 +25,6 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
 
     const navigate = useNavigate();
 
-    const dispatch = useAppDispatch();
-
     const {
         id,
         createdAt,
@@ -43,8 +39,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     } = jobObj;
 
     const onClickJob = (): void => {
-        dispatch(setJobId(id));
-        navigate(Paths.JOB_PAGE);
+        navigate(Paths.JOB_PAGE, { state: { id } });
     };
     return (
         <>

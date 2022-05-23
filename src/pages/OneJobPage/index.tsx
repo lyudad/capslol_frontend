@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import 'antd/dist/antd.min.css';
+import { useLocation } from 'react-router-dom';
 import { useGetJobByIdQuery, useGetUserProfileQuery } from 'store/apis/jobs';
-import { useAppSelector } from 'hooks/redux';
 import avatar from 'assets/avatar.png';
+import { CustomState } from './props';
 import {
     Page,
     Title,
@@ -20,9 +21,11 @@ import {
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
 
-    const jobID = useAppSelector((state) => state.jobsReducer?.jobId);
+    const location = useLocation();
 
-    const { data: jobData } = useGetJobByIdQuery(jobID);
+    const state = location.state as CustomState;
+
+    const { data: jobData } = useGetJobByIdQuery(state.id);
 
     const ownerId = jobData?.ownerId.id;
 
