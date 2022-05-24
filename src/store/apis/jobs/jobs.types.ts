@@ -41,4 +41,8 @@ export interface IUserProfile {
     other: string | undefined;
     createdAt: string | undefined;
     updatedAt: string | undefined;
+    categories: {
+        id: number;
+        categoryName: string;
+    };
 }

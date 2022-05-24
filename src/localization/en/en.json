@@ -102,7 +102,9 @@
         "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
         "hello": "Hello",
         "welcomeTo": ", welcome to our service.",
-        "youCanView": "You can view yours"
+        "youCanView": "You can view yours",
+        "orView": "or view",
+        "offers": "offers"
     },
     "JobPage": {
         "jobPageTitle": "Jobs on GetJOB!",

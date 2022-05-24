@@ -1,11 +1,12 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setJobs } from 'store/slices/jobs/jobs.slice';
 import {
     useGetCategoriesQuery,
     useGetSkillsQuery,
     useLazyGetJobsQuery,
+    useLazyGetUserProfileQuery,
 } from 'store/apis/jobs';
 import { Select, Form, Button, Input } from 'antd';
 import { colors, langLevel } from 'constants/index';
@@ -40,19 +41,47 @@ const Filters: React.FC = () => {
 
     const [getJobs] = useLazyGetJobsQuery();
 
+    const [getUserProfile] = useLazyGetUserProfileQuery();
+
     const { data: categoryData } = useGetCategoriesQuery('');
 
     const { data: skillsData } = useGetSkillsQuery('');
 
+    const userId = useAppSelector((state) => state.auth.user?.id);
+
+    // console.log('USER_ID: ', userId);
+
+    // console.log('USER_PROFILE: ', userProfile);
+
+    const handleGetJobs = async (): Promise<void> => {
+        const query = `/search?${searchQuery}${categoryQuery}${hoursQuery}${languageLevelQuery}${timeAvailableQuery}${skillsQuery}`;
+        const jobs = await getJobs(query).unwrap();
+        dispatch(setJobs(jobs));
+    };
+
+    const handleGetProfile = async (): Promise<void> => {
+        const profile = await (await getUserProfile(userId)).data;
+        // console.log('PROFILE; ', profile);
+        await setCategoryQuery(`&q=${profile?.categories.id}`);
+        // console.log('categoryQuery: ', categoryQuery);
+
+        // return profile.data
+    };
+
     useEffect(() => {
-        const handleGetJobs = async (): Promise<void> => {
-            const query = `/search?${searchQuery}${categoryQuery}${hoursQuery}${languageLevelQuery}${timeAvailableQuery}${skillsQuery}`;
-            const jobs = await getJobs(query).unwrap();
-            dispatch(setJobs(jobs));
-        };
+        handleGetProfile();
+
+        // console.log('USER_PROFILE = ', userProfile);
+
+        // console.log('categoryQuery2: ', categoryQuery);
+
         handleGetJobs();
+    }, []);
+
+    useEffect(() => {
+        // handleGetJobs();
     }, [
-        dispatch,
+        // dispatch,
         getJobs,
         searchQuery,
         categoryQuery,

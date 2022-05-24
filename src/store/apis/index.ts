@@ -7,7 +7,7 @@ export const baseApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.REACT_APP_SERVER_URL,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).authReducer.accessToken;
+            const token = (getState() as RootState).auth.accessToken;
 
             if (token) {
                 headers.set(

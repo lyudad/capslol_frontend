@@ -42,7 +42,7 @@ const ContactInfo: React.FC = () => {
 
     const [changePassword, { isError, isSuccess }] =
         useChangePasswordMutation();
-    const { user } = useAppSelector((s) => s.authReducer);
+    const { user } = useAppSelector((s) => s.auth);
 
     const handleNavigate = (): void => navigate('/profile');
 

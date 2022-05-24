@@ -11,10 +11,8 @@ import {
 
 const HomePage: React.FC = () => {
     const { t } = useTranslation();
-    const isAuth = useAppSelector((state) => state.authReducer.isLoggedIn);
-    const firstName = useAppSelector(
-        (state) => state.authReducer.user?.firstName
-    );
+    const isAuth = useAppSelector((state) => state.auth.isLoggedIn);
+    const firstName = useAppSelector((state) => state.auth.user?.firstName);
 
     return (
         <HomeContainer>
@@ -32,6 +30,13 @@ const HomePage: React.FC = () => {
                         <b>
                             <StyledNavLink to="/profile">Profile</StyledNavLink>
                         </b>
+                    </p>
+                    <p>
+                        {t('HomePage.orView')}{' '}
+                        <b>
+                            <StyledNavLink to="/jobs">job</StyledNavLink>
+                        </b>{' '}
+                        {t('HomePage.offers')}
                     </p>
                 </Message>
             )}

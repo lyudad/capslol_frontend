@@ -20,7 +20,7 @@ import avatar from './avatar.png';
 const PublicPage: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { user } = useAppSelector((s) => s.authReducer);
+    const { user } = useAppSelector((s) => s.auth);
 
     const { data } = useSearchUserQuery(user?.id);
 
