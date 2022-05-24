@@ -5,6 +5,7 @@ import { Row } from 'antd';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useSearchUserQuery } from 'store/apis/publicProfile';
+import avatar from 'assets/avatar.png';
 import {
     Description,
     ProfileContainer,
@@ -15,7 +16,6 @@ import {
     ButtonSet,
     TitleEmpty,
 } from './styles';
-import avatar from '../../assets/avatar.png';
 
 const PublicPage: React.FC = () => {
     const navigate = useNavigate();

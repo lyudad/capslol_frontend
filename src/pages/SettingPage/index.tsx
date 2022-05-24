@@ -10,9 +10,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useNavigate } from 'react-router-dom';
-
-import avatar from '../../assets/avatar.png';
-
+import avatar from 'assets/avatar.png';
 import {
     ProfileContainer,
     Avatar,
@@ -120,7 +118,7 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.save_changes')}
                     </ButtonSet>
                 </Avatar>
-                {/* HOURS/RATE */}
+
                 <Sections>
                     <Description>
                         {t('PublicProfile.hour_rate')}{' '}
@@ -149,7 +147,7 @@ const SettingPage: React.FC = () => {
                         {' h'}
                     </Description>
                 </Sections>
-                {/* EDUCATION */}
+
                 <Sections>
                     {t('PublicProfile.education')}
                     <Description>
@@ -187,7 +185,7 @@ const SettingPage: React.FC = () => {
                         </Space>
                     </Description>
                 </Sections>
-                {/* CATEGORY */}
+
                 <Sections>
                     {t('PublicProfile.category')}:
                     <Description>
@@ -215,7 +213,7 @@ const SettingPage: React.FC = () => {
                         </Select>
                     </Description>
                 </Sections>
-                {/* POSITION */}
+
                 <Sections>
                     {t('PublicProfile.position')}:{' '}
                     <Description>
@@ -225,7 +223,7 @@ const SettingPage: React.FC = () => {
                         />
                     </Description>
                 </Sections>
-                {/* EXPERIENCE */}
+
                 <Sections>
                     {t('PublicProfile.experience')}
                     <Description>
@@ -259,7 +257,7 @@ const SettingPage: React.FC = () => {
                         </Space>
                     </Description>
                 </Sections>
-                {/* SKILLS */}
+
                 <Sections>
                     {t('PublicProfile.skills')}:{' '}
                     <Description>
