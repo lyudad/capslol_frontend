@@ -63,7 +63,9 @@
         "add_information": "Other additional information",
         "text_type": "(Text type)",
         "tag_type": "(tag type [ ])",
-        "contact_info": "Contact Info"
+        "contact_info": "Contact Info",
+        "save_changes": "Save canges",
+        "education_name": "Name of Education"
     },
     "ForgotPage": {
         "title": "Forgot Password",

@@ -31,7 +31,7 @@ export interface Profile {
     experiense: Experiences;
     educations: Educations;
     categories: Category;
-    skills: Skills;
+    skills: Skills[];
     english: string;
     other: string;
     createdAt: Date;

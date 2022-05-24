@@ -11,6 +11,7 @@ import HomePage from 'pages/HomePage';
 import AuthForm from 'components/AuthForm';
 import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
+import SettingPage from 'pages/SettingPage';
 import Protected from 'router/Protected';
 import TestPage from './pages/testPage';
 
@@ -29,6 +30,7 @@ const App: React.FC = () => {
 
                 <Route path="/" element={<HomePage />} />
                 <Route path="/sign-up" element={<AuthForm />} />
+                <Route path="/setting/:id" element={<SettingPage />} />
                 <Route
                     path="/forgotten_password"
                     element={<ForgotPassword />}
