@@ -110,9 +110,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 </ChatBody>
                 <ChatFooter>
                     <SendNewMessage>
-                        <SendNewMessageBtn>
-                            <SendNewMessageIconPlus />
-                        </SendNewMessageBtn>
                         <SendNewMessageInput
                             value={messageText}
                             type="text"
