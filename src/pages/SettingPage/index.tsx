@@ -156,17 +156,14 @@ const SettingPage: React.FC = () => {
                     />
                 </TitleEmpty>
                 <Avatar>
-                    <ImgCrop rotate>
-                        <Upload
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            listType="picture-card"
-                            fileList={fileList}
-                            onChange={onChange}
-                            onPreview={onPreview}
-                        >
-                            {fileList.length < 1 && 'Upload'}
-                        </Upload>
-                    </ImgCrop>
+                    <img
+                        src={data?.profileImage || avatar}
+                        alt=""
+                        width={140}
+                    />
+                    <ButtonSet type="default">
+                        {t('PublicProfile.save_changes')}
+                    </ButtonSet>
                 </Avatar>
                 {/* HOURS/RATE */}
                 <Sections>
@@ -261,11 +258,6 @@ const SettingPage: React.FC = () => {
                             <Option value="Services">Services</Option>
                             <Option value="Legal">Legal</Option>
                         </Select>
-                        {/* <span style={{ color: colors.brandColor }}>
-                            {' '}
-                            {data?.categories.categoryName ||
-                                t('PublicProfile.development')}{' '}
-                        </span> */}
                     </Description>
                 </Sections>
                 {/* POSITION */}
