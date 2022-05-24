@@ -5,18 +5,8 @@ import {
     useSearchUserQuery,
 } from 'store/apis/publicProfile';
 import { useState } from 'react';
-import { UploadFile, UploadFileStatus } from 'antd/lib/upload/interface';
-import {
-    Upload,
-    InputNumber,
-    Input,
-    DatePicker,
-    Space,
-    Select,
-    Row,
-} from 'antd';
+import { InputNumber, Input, DatePicker, Space, Select, Row } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import ImgCrop from 'antd-img-crop';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useNavigate } from 'react-router-dom';
@@ -33,12 +23,6 @@ import {
     ButtonSet,
 } from './styles';
 
-interface File {
-    uid: string;
-    name: string;
-    url: string | undefined;
-    status?: UploadFileStatus;
-}
 const english = ['Beginner', 'Pre-Intermediate', 'Intermediate', 'Advanced'];
 
 const SettingPage: React.FC = () => {
@@ -48,15 +32,6 @@ const SettingPage: React.FC = () => {
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
     const { data: allSkills } = useGetAllSkillsQuery('');
-    const imgProgile = data?.profileImage || avatar;
-    const [fileList, setFileList] = useState<File[]>([
-        {
-            uid: '-1',
-            name: 'image.png',
-            status: 'done',
-            url: imgProgile,
-        },
-    ]);
     const { TextArea } = Input;
     const [name, setName] = useState(`${user?.firstName} ${user?.lastName}`);
     const [hourRate, setHourRate] = useState(data?.hourRate);
@@ -112,35 +87,15 @@ const SettingPage: React.FC = () => {
         setEndExperiense(dateString);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onChange = ({ fileList: newFileList }: any): void => {
-        setFileList(newFileList);
-    };
-
     const handleChange = (value: string): void => {
+        // eslint-disable-next-line no-console
         console.log(`selected ${value}`);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChangeTag = (value: any): void => {
+        // eslint-disable-next-line no-console
         console.log(`selected ${value}`);
-    };
-
-    const onPreview = async (file: UploadFile): Promise<void> => {
-        let src = file.url;
-        if (!src) {
-            src = await new Promise((resolve): void => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj as Blob);
-                reader.onload = () => resolve(reader.result as string);
-            });
-        }
-        if (typeof src === 'string') {
-            const image = new Image();
-            image.src = src;
-            const imgWindow = window.open(src);
-            imgWindow?.document.write(image.outerHTML);
-        }
     };
 
     return (
