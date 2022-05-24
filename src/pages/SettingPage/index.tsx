@@ -62,11 +62,17 @@ const SettingPage: React.FC = () => {
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
     const [educationName, setEducationName] = useState(data?.educations.name);
-    const [specializ, setSpecializ] = useState(data?.educations.specialization);
-    const [startEduc, setStartEduc] = useState(data?.educations.startAt);
-    const [startExp, setStartExp] = useState(data?.experiense.startAt);
-    const [endEduc, setEndEduc] = useState(data?.educations.endAt);
-    const [endExp, setEndtExp] = useState(data?.experiense.endAt);
+    const [specialization, setSpecialization] = useState(
+        data?.educations.specialization
+    );
+    const [startEducation, setStartEducation] = useState(
+        data?.educations.startAt
+    );
+    const [startExperiense, setStartExperiense] = useState(
+        data?.experiense.startAt
+    );
+    const [endEducation, setEndEducation] = useState(data?.educations.endAt);
+    const [endExperiense, setEndExperiense] = useState(data?.experiense.endAt);
 
     const onChangeName = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setName(event.target.value);
@@ -85,25 +91,25 @@ const SettingPage: React.FC = () => {
     const onSpecialization = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
-        setSpecializ(event.target.value);
+        setSpecialization(event.target.value);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onStartDate = (date: any, dateString: string): void => {
-        setStartEduc(dateString);
+    const onStartEducation = (date: any, dateString: string): void => {
+        setStartEducation(dateString);
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onEndDate = (date: any, dateString: string): void => {
-        setEndEduc(dateString);
+    const onEndEducation = (date: any, dateString: string): void => {
+        setEndEducation(dateString);
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onStartExp = (date: any, dateString: string): void => {
-        setStartExp(dateString);
+    const onStartExperiense = (date: any, dateString: string): void => {
+        setStartExperiense(dateString);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onEndExp = (date: any, dateString: string): void => {
-        setEndtExp(dateString);
+    const onEndExperiense = (date: any, dateString: string): void => {
+        setEndExperiense(dateString);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -207,7 +213,7 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.specialization')}:{' '}
                         <Input
                             style={{ width: 200 }}
-                            value={specializ}
+                            value={specialization}
                             onChange={onSpecialization}
                             placeholder={t('PublicProfile.specialization')}
                         />
@@ -216,15 +222,15 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.period')}: start{' '}
                         <Space direction="vertical">
                             <DatePicker
-                                placeholder={startEduc}
-                                onChange={onStartDate}
+                                placeholder={startEducation}
+                                onChange={onStartEducation}
                             />
                         </Space>{' '}
                         end{' '}
                         <Space direction="vertical">
                             <DatePicker
-                                placeholder={endEduc}
-                                onChange={onEndDate}
+                                placeholder={endEducation}
+                                onChange={onEndEducation}
                             />
                         </Space>
                     </Description>
@@ -293,15 +299,15 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.period')}:{' '}
                         <Space direction="vertical">
                             <DatePicker
-                                placeholder={startExp}
-                                onChange={onStartExp}
+                                placeholder={startExperiense}
+                                onChange={onStartExperiense}
                             />
                         </Space>{' '}
                         end{' '}
                         <Space direction="vertical">
                             <DatePicker
-                                placeholder={endExp}
-                                onChange={onEndExp}
+                                placeholder={endExperiense}
+                                onChange={onEndExperiense}
                             />
                         </Space>
                     </Description>
