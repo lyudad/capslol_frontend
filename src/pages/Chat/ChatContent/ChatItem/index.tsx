@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'common/Button/Button';
-import { colors } from 'constants/index';
+import { colors, Img } from 'constants/index';
 import { useAppSelector } from 'hooks/redux';
 import Avatar from 'pages/Chat/ChatList/Avatar';
 import { IChatItemProps } from 'pages/Chat/interfaces';
@@ -33,11 +33,11 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
     const handleAgree = async (id: number): Promise<void> => {
         try {
             const { data } = await axios.get(
-                `http://localhost:3000/offers/${id}`
+                `${process.env.REACT_APP_OFFER}/${id}`
             );
             const newMessage = {
                 sender: {
-                    pic: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
+                    pic: Img.userLogo,
                     id: data.sender.id,
                     name: data.sender.name,
                 },
@@ -46,7 +46,7 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
             };
 
             const newContact = {
-                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU',
+                image: Img.userLogo,
                 id: data.sender.id,
                 name: data.sender.name,
                 project: data.sender.project,

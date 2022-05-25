@@ -31,7 +31,9 @@ const Welcome: React.FC = () => {
                 <>
                     <WelcomeTitle>
                         {t('Chat.welcome')},{' '}
-                        <span>{user?.firstName ? user?.firstName : ''}!</span>
+                        <span>
+                            {user?.firstName ? user?.firstName : 'User'}!
+                        </span>
                     </WelcomeTitle>
                     <WelcomeTitle>{t('Chat.welcomeText')}</WelcomeTitle>
                 </>

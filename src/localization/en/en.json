@@ -183,6 +183,7 @@
         "contactTime": "32 mins ago",
         "offerBtnText": "Job Offer",
         "welcome": "Welcome",
-        "welcomeText": "Please select a chat to Start messaging."
+        "welcomeText": "Please select a chat to Start messaging.",
+        "notFound": "Not found any chats"
     }
 }
