@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
@@ -49,39 +50,77 @@ const Filters: React.FC = () => {
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
-    // console.log('USER_ID: ', userId);
-
-    // console.log('USER_PROFILE: ', userProfile);
-
-    const handleGetJobs = async (): Promise<void> => {
-        const query = `/search?${searchQuery}${categoryQuery}${hoursQuery}${languageLevelQuery}${timeAvailableQuery}${skillsQuery}`;
-        const jobs = await getJobs(query).unwrap();
-        dispatch(setJobs(jobs));
-    };
-
-    const handleGetProfile = async (): Promise<void> => {
-        const profile = await (await getUserProfile(userId)).data;
-        // console.log('PROFILE; ', profile);
-        await setCategoryQuery(`&q=${profile?.categories.id}`);
-        // console.log('categoryQuery: ', categoryQuery);
-
-        // return profile.data
+    const onFill = (
+        catId: number | undefined,
+        engLevel: string | undefined,
+        skills: number[] | undefined,
+        salary: number | undefined,
+        time: number | undefined
+    ): void => {
+        form.setFieldsValue({
+            category: catId,
+            englishLevel: engLevel,
+            filteredSkills: skills,
+            maxSalary: salary,
+            timeAvailable: time,
+        });
     };
 
     useEffect(() => {
+        const handleGetProfile = async (): Promise<void> => {
+            const profile = await getUserProfile(userId).unwrap();
+
+            profile?.categories.id
+                ? setCategoryQuery(`&category=${profile?.categories.id}`)
+                : setCategoryQuery('');
+
+            profile?.hourRate
+                ? setHoursQuery(`&price=${profile?.hourRate}`)
+                : setHoursQuery('');
+
+            profile?.hourRate
+                ? setMaxSalary(profile?.hourRate)
+                : setMaxSalary(0);
+
+            profile?.availableHours
+                ? setTimeAvailableQuery(
+                      `&timeAvailable=${profile?.availableHours}`
+                  )
+                : setTimeAvailableQuery('');
+
+            profile?.availableHours
+                ? setTimeAvailable(profile?.availableHours)
+                : setTimeAvailable(0);
+
+            profile?.skills
+                ? setSkillsQuery(
+                      `&skills=${profile?.skills
+                          .map((item) => item.id)
+                          .join('')}`
+                  )
+                : setSkillsQuery('');
+
+            onFill(
+                profile?.categories.id,
+                profile?.english,
+                profile?.skills.map((item) => item.id),
+                profile?.hourRate,
+                profile?.availableHours
+            );
+        };
         handleGetProfile();
-
-        // console.log('USER_PROFILE = ', userProfile);
-
-        // console.log('categoryQuery2: ', categoryQuery);
-
-        handleGetJobs();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userId, getUserProfile]);
 
     useEffect(() => {
-        // handleGetJobs();
+        const handleGetJobs = async (): Promise<void> => {
+            const query = `/search?${searchQuery}${categoryQuery}${hoursQuery}${languageLevelQuery}${timeAvailableQuery}${skillsQuery}`;
+            const jobs = await getJobs(query).unwrap();
+            dispatch(setJobs(jobs));
+        };
+        handleGetJobs();
     }, [
-        // dispatch,
+        dispatch,
         getJobs,
         searchQuery,
         categoryQuery,
@@ -94,37 +133,25 @@ const Filters: React.FC = () => {
     const onFinish = (values: IQueryFilters): void => {
         setSearchQuery(`&q=${values.searchValue}`);
 
-        if (values.category) {
-            setCategoryQuery(`&category=${values.category}`);
-        } else {
-            setCategoryQuery('');
-        }
+        values.category
+            ? setCategoryQuery(`&category=${values.category}`)
+            : setCategoryQuery('');
 
-        if (values.maxSalary) {
-            setHoursQuery(`&price=${values.maxSalary}`);
-        } else {
-            setHoursQuery('');
-        }
+        values.maxSalary
+            ? setHoursQuery(`&price=${values.maxSalary}`)
+            : setHoursQuery('');
 
-        if (values.englishLevel) {
-            setLanguageLevelQuery(`&languageLevel=${values.englishLevel}`);
-        } else {
-            setLanguageLevelQuery('');
-        }
+        values.englishLevel
+            ? setLanguageLevelQuery(`&languageLevel=${values.englishLevel}`)
+            : setLanguageLevelQuery('');
 
-        if (values.timeAvailable) {
-            setTimeAvailableQuery(
-                `&timeAvailable=${Math.round(values.timeAvailable * 0.12)}`
-            );
-        } else {
-            setTimeAvailableQuery('');
-        }
+        values.timeAvailable
+            ? setTimeAvailableQuery(`&timeAvailable=${values.timeAvailable}`)
+            : setTimeAvailableQuery('');
 
-        if (values.filteredSkills) {
-            setSkillsQuery(`&skills=${values.filteredSkills?.join('')}`);
-        } else {
-            setSkillsQuery('');
-        }
+        values.filteredSkills
+            ? setSkillsQuery(`&skills=${values.filteredSkills?.join('')}`)
+            : setSkillsQuery('');
     };
 
     const onReset = (): void => {
@@ -142,7 +169,7 @@ const Filters: React.FC = () => {
     };
 
     const onChangeTimeAvailable = (value: number): void => {
-        setTimeAvailable(Math.round(value * 0.12));
+        setTimeAvailable(value);
     };
 
     const categoryChildren = useMemo(() => {
@@ -271,25 +298,27 @@ const Filters: React.FC = () => {
                     <FilterTitle>{t('JobPage.price')}</FilterTitle>
                     <PriceValue>
                         <span>min: 0$</span>
-                        <span>max: {maxSalary && `${maxSalary}`}$</span>
+                        <span>current: {maxSalary && `${maxSalary}`}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>
-                        <StyledSlider
-                            // step={10}
-                            onChange={onChangeSalary}
-                        />
+                        <StyledSlider step={5} onChange={onChangeSalary} />
                     </Form.Item>
                 </StyledFilter>
 
                 <StyledFilter>
                     <FilterTitle>{t('JobPage.TimeAvailable')}</FilterTitle>
                     <PriceValue>
+                        <span> </span>
                         <span>
-                            time: {timeAvailable && `${timeAvailable}`} h/day
+                            time: {timeAvailable ? `${timeAvailable}` : 0} h/day
                         </span>
                     </PriceValue>
                     <Form.Item name="timeAvailable" noStyle>
-                        <StyledSlider onChange={onChangeTimeAvailable} />
+                        <StyledSlider
+                            step={1}
+                            max={12}
+                            onChange={onChangeTimeAvailable}
+                        />
                     </Form.Item>
                 </StyledFilter>
 
