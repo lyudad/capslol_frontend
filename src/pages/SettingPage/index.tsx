@@ -31,7 +31,9 @@ const SettingPage: React.FC = () => {
     const { data } = useSearchUserQuery(user?.id);
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { TextArea } = Input;
-    const [name, setName] = useState(`${user?.firstName} ${user?.lastName}`);
+    const [firstName, setFirstName] = useState(user?.firstName);
+    const [lastName, setLastName] = useState(user?.lastName);
+
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
     const [educationName, setEducationName] = useState(data?.educations.name);
@@ -46,9 +48,39 @@ const SettingPage: React.FC = () => {
     );
     const [endEducation, setEndEducation] = useState(data?.educations.endAt);
     const [endExperiense, setEndExperiense] = useState(data?.experiense.endAt);
+    const [category, setCategory] = useState(data?.categories.categoryName);
+    const [position, setPosition] = useState(data?.position);
+    const [nameCompany, setNameCompany] = useState(
+        data?.experiense.companyName
+    );
 
-    const onChangeName = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setName(event.target.value);
+    const [experiensePosition, setExperiensePosition] = useState(
+        data?.experiense.companyName
+    );
+
+    const onChangeFirstName = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setFirstName(event.target.value);
+    };
+    const onChangeLastName = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setLastName(event.target.value);
+    };
+    const onNameCompany = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setNameCompany(event.target.value);
+    };
+
+    const onExpiriensePosition = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setExperiensePosition(event.target.value);
+    };
+    const onPosition = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        setPosition(event.target.value);
     };
     const onChangeHuorRate = (value: number): void => {
         setHourRate(value);
@@ -85,6 +117,10 @@ const SettingPage: React.FC = () => {
         setEndExperiense(dateString);
     };
 
+    const handleChangeCategory = (value: string): void => {
+        setCategory(value);
+    };
+
     const handleChange = (value: string): void => {
         // eslint-disable-next-line no-console
         console.log(`selected ${value}`);
@@ -101,11 +137,18 @@ const SettingPage: React.FC = () => {
             <ProfileContainer>
                 <TitleEmpty>
                     <Input
-                        size="large"
-                        onChange={onChangeName}
-                        value={name}
-                        placeholder={t('PublicProfile.user_name')}
+                        size="middle"
+                        style={{ marginRight: 10 }}
+                        placeholder={t('PublicProfile.first_name')}
+                        onChange={onChangeFirstName}
+                        value={firstName}
                         prefix={<UserOutlined />}
+                    />
+                    <Input
+                        size="middle"
+                        placeholder={t('PublicProfile.last_name')}
+                        onChange={onChangeLastName}
+                        value={lastName}
                     />
                 </TitleEmpty>
                 <Avatar>
@@ -127,6 +170,7 @@ const SettingPage: React.FC = () => {
                             <InputNumber
                                 min={1}
                                 max={50}
+                                placeholder="max 50"
                                 defaultValue={hourRate}
                                 onChange={onChangeHuorRate}
                             />
@@ -140,6 +184,7 @@ const SettingPage: React.FC = () => {
                             <InputNumber
                                 min={1}
                                 max={12}
+                                placeholder="max 12"
                                 defaultValue={availableHours}
                                 onChange={onChangeAvailableHours}
                             />
@@ -190,9 +235,10 @@ const SettingPage: React.FC = () => {
                     {t('PublicProfile.category')}:
                     <Description>
                         <Select
-                            defaultValue="Web Developer"
+                            defaultValue={category}
                             style={{ width: 220 }}
-                            onChange={handleChange}
+                            onChange={handleChangeCategory}
+                            placeholder={t('PublicProfile.choose_category')}
                         >
                             <Option value="Research and Development">
                                 Research and Development
@@ -219,7 +265,9 @@ const SettingPage: React.FC = () => {
                     <Description>
                         <Input
                             style={{ width: 200 }}
-                            placeholder={data?.position}
+                            value={position}
+                            onChange={onPosition}
+                            placeholder={t('PublicProfile.position')}
                         />
                     </Description>
                 </Sections>
@@ -230,14 +278,18 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.company_name')}:{' '}
                         <Input
                             style={{ width: 200 }}
-                            placeholder={data?.experiense.companyName}
+                            placeholder={t('PublicProfile.company_name')}
+                            value={nameCompany}
+                            onChange={onNameCompany}
                         />
                     </Description>
                     <Description>
                         {t('PublicProfile.position')}:{' '}
                         <Input
                             style={{ width: 200 }}
-                            placeholder={data?.experiense.position}
+                            value={experiensePosition}
+                            onChange={onExpiriensePosition}
+                            placeholder={t('PublicProfile.position')}
                         />
                     </Description>
                     <Description>
@@ -264,7 +316,7 @@ const SettingPage: React.FC = () => {
                         <Select
                             mode="multiple"
                             allowClear
-                            style={{ width: '35%' }}
+                            style={{ width: '65%' }}
                             placeholder="Please select"
                             defaultValue={data?.skills.map((e) => (
                                 <Option key={e.name}>{e.name}</Option>
@@ -284,6 +336,7 @@ const SettingPage: React.FC = () => {
                         <span>
                             level:{' '}
                             <Select
+                                placeholder="NO SET"
                                 defaultValue={data?.english}
                                 style={{ width: 220 }}
                                 onChange={handleChange}

@@ -25,8 +25,8 @@ export const ProfileContainer = styled.section`
 `;
 
 export const TitleEmpty = styled.h1`
-    /* display: flex; */
-    width: 200px;
+    display: flex;
+    width: 250px;
     font-size: x-large;
     margin-left: auto;
     margin-right: auto;
