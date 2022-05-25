@@ -28,6 +28,12 @@ const AppBar: React.FC = () => {
         });
     };
 
+import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Header, NavigationContainer, Logo } from './styles';
+
+const AppBar: React.FC = () => {
+    const { t } = useTranslation();
     return (
         <Header>
             <NavigationContainer>
@@ -56,6 +62,18 @@ const AppBar: React.FC = () => {
                     <NotificationIcon onClick={handleNotification} />
                     <MessageIcon onClick={() => navigate('/chat')} />
                 </NotificationFlex>
+                <NavLink to="/" className="navLink">
+                    {t('AppBar.home')}
+                </NavLink>
+                <NavLink to="/profile" className="navLink">
+                    {t('AppBar.profile')}
+                </NavLink>
+                <NavLink to="/jobs" className="navLink">
+                    {t('AppBar.jobs')}
+                </NavLink>
+                <NavLink to="/test" className="navLink">
+                    {t('AppBar.test')}
+                </NavLink>
             </NavigationContainer>
         </Header>
     );

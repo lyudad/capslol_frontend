@@ -29,6 +29,15 @@ export const JobsList = styled.ul`
     margin: 0;
 `;
 
+export const StyledButton = styled.button`
+    padding: 0;
+    margin-bottom: 8px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid ${colors.appBarBrd};
+    cursor: pointer;
+`;
+
 export const JobCard = styled.li`
     padding: 8px;
     background-color: ${colors.appBarBgr};
