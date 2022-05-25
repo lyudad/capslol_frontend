@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { notification } from 'antd';
+import { Button, notification } from 'antd';
 
 import { useGetOffersQuery } from 'store/apis/chat';
 import {
@@ -20,12 +20,34 @@ const AppBar: React.FC = () => {
 
     const { data: offers } = useGetOffersQuery();
 
+    const close = (): void => {
+        /* eslint-disable no-console */
+        console.log('Close');
+    };
+
+    const openNotification = (type: string): void => {
+        const key = `open${Date.now()}`;
+        const btn = (
+            <Button
+                type="primary"
+                size="small"
+                onClick={() => notification.close(key)}
+            >
+                Confirm
+            </Button>
+        );
+        notification.open({
+            message: 'You have new notification',
+            description: type,
+            btn,
+            key,
+            onClose: close,
+        });
+    };
+
     const handleNotification = (): void => {
         offers?.map((offer) => {
-            return notification.open({
-                message: 'You have new notification',
-                description: offer.messageType,
-            });
+            return openNotification(offer.messageType);
         });
     };
     return (

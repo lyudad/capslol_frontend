@@ -53,6 +53,20 @@ export const chatApi = apiWithTag.injectEndpoints({
             }),
             invalidatesTags: ['Offer'],
         }),
+        deleteMessageById: builder.mutation<IMessages, number>({
+            query: (id: number) => ({
+                url: `/messages/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Message'],
+        }),
+        deleteContactById: builder.mutation<IChatUser, number>({
+            query: (id: number) => ({
+                url: `/contacts/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Contact'],
+        }),
     }),
 });
 
@@ -65,4 +79,6 @@ export const {
     useGetSingleOfferQuery,
     usePostContactsMutation,
     useDeleteOfferByIdMutation,
+    useDeleteContactByIdMutation,
+    useDeleteMessageByIdMutation,
 } = chatApi;

@@ -1,9 +1,12 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-import { usePostOfferMutation } from 'store/apis/chat';
+import {
+    usePostMessageMutation,
+    usePostContactsMutation,
+} from 'store/apis/chat';
+import { Img } from 'constants/index';
 import Avatar from './Avatar';
 import {
     ChatListItem,
@@ -24,7 +27,8 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
     const { t } = useTranslation();
     const [search, setSearch] = useState<string>('');
 
-    const [postOffer, { isError }] = usePostOfferMutation();
+    const [postMessage] = usePostMessageMutation();
+    const [postContact] = usePostContactsMutation();
 
     const changeChat = (id: number, chat: TChatArgument): void => {
         setCurrentSelected(id);
@@ -32,28 +36,38 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
     };
 
     const handleNotification = async (): Promise<void> => {
-        const newOffer = {
-            sender: {
-                name: 'Ali',
-                id: Date.now(),
-                project: 'Create UI Chat',
-            },
-            to: {
-                name: 'Jon',
-                id: 1,
-            },
-            message: 'We are interested you',
-            messageType: 'Offer',
-        };
         try {
-            await postOffer(newOffer);
+            const newMessage = {
+                sender: {
+                    pic: Img.userLogo,
+                    id: Date.now(),
+                    name: 'Jonanhton',
+                },
+                content: 'We are interested you',
+                chat: Date.now(),
+                isOffer: true,
+            };
+
+            const newContact = {
+                image: Img.userLogo,
+                id: Date.now(),
+                name: 'Jonanhton',
+                project: 'Create UI Chat',
+                active: false,
+                isOnline: false,
+            };
+
+            await postMessage(newMessage);
+
+            await postContact(newContact);
         } catch (e) {
             message.error(e?.data?.message);
         }
     };
 
-    const onChange = (e: any): void => {
-        setSearch(e);
+    const onChange = (e: React.FormEvent<HTMLInputElement>): void => {
+        const newValue = e.currentTarget.value;
+        setSearch(newValue);
     };
 
     return (
@@ -61,7 +75,7 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
             <SearchWrap>
                 <Input
                     type="text"
-                    onChange={(e) => onChange(e.target.value)}
+                    onChange={(e) => onChange(e)}
                     placeholder="Search"
                 />
             </SearchWrap>
@@ -127,7 +141,6 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
                     )}
                 </>
             </ChatLists>
-            <> {isError && message.error('Not send a offer')}</>
         </Wrapper>
     );
 };

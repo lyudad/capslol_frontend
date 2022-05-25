@@ -1,17 +1,15 @@
 ﻿import React from 'react';
-import axios from 'axios';
 import { message } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'common/Button/Button';
-import { colors, Img } from 'constants/index';
+import { colors } from 'constants/index';
 import { useAppSelector } from 'hooks/redux';
 import Avatar from 'pages/Chat/ChatList/Avatar';
-import { IChatItemProps } from 'pages/Chat/interfaces';
+import { IChatItemProps, IOfferAccept } from 'pages/Chat/interfaces';
 import {
-    usePostMessageMutation,
-    useDeleteOfferByIdMutation,
-    usePostContactsMutation,
+    useDeleteContactByIdMutation,
+    useDeleteMessageByIdMutation,
 } from 'store/apis/chat';
 import {
     ButtonGroup,
@@ -26,47 +24,21 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
     const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
 
-    const [postMessage] = usePostMessageMutation();
-    const [deleteOffer] = useDeleteOfferByIdMutation();
-    const [postContact] = usePostContactsMutation();
+    const [deleteContact] = useDeleteContactByIdMutation();
+    const [deleteMessage] = useDeleteMessageByIdMutation();
 
-    const handleAgree = async (id: number): Promise<void> => {
+    const handleAgree = async (): Promise<void> => {
         try {
-            const { data } = await axios.get(
-                `${process.env.REACT_APP_OFFER}/${id}`
-            );
-            const newMessage = {
-                sender: {
-                    pic: Img.userLogo,
-                    id: data.sender.id,
-                    name: data.sender.name,
-                },
-                content: data.message,
-                chat: data.sender.id,
-            };
-
-            const newContact = {
-                image: Img.userLogo,
-                id: data.sender.id,
-                name: data.sender.name,
-                project: data.sender.project,
-                active: false,
-                isOnline: false,
-            };
-
-            await postMessage(newMessage);
-
-            await postContact(newContact);
-
-            await deleteOffer(id);
+            message.success('You accept offer');
         } catch (e) {
             message.error(e?.data?.message);
         }
     };
 
-    const handleNotAgree = async (id: number): Promise<void> => {
+    const handleNotAgree = async (chat: IOfferAccept): Promise<void> => {
         try {
-            await deleteOffer(id);
+            await deleteContact(chat.chat);
+            await deleteMessage(chat?.id);
         } catch (e) {
             message.error(e?.data?.message);
         }
@@ -78,14 +50,14 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
             className={`${msg.sender.id === (user?.id || 1) ? '' : 'other'}`}
         >
             <ChatItemContent className="chat__item__content">
-                <ChatMsg>{msg.content || msg.message}</ChatMsg>
+                <ChatMsg>{msg.content}</ChatMsg>
 
-                {msg.message && (
+                {msg.isOffer && (
                     <ButtonGroup>
                         <Button
                             bg={colors.textGreen}
                             color={colors.textWhite}
-                            onClick={() => handleAgree(msg.id)}
+                            onClick={handleAgree}
                             mr="34"
                         >
                             {t('Chat.offerYes')}
@@ -93,7 +65,7 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
                         <Button
                             bg={colors.textWhiteRed}
                             color={colors.textWhite}
-                            onClick={() => handleNotAgree(msg.id)}
+                            onClick={() => handleNotAgree(msg)}
                         >
                             {t('Chat.offerNo')}
                         </Button>

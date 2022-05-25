@@ -32,6 +32,7 @@ export interface IMessages {
     };
     content: string;
     chat: number;
+    isOffer?: boolean;
 }
 export interface IChatListProps {
     onChangeChat: (value: TChatArgument) => void;
@@ -53,3 +54,8 @@ export interface IChatContentProps {
 }
 
 export type TChatArgument = IChatUser | undefined;
+
+export interface IOfferAccept {
+    id: number;
+    chat: number;
+}
