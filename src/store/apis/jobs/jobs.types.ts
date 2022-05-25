@@ -35,10 +35,13 @@ export interface IJob {
 export interface IUserProfile {
     id: number;
     profileImage: string | undefined;
-    availableHours: string | undefined;
+    availableHours: number | undefined;
     position: string | undefined;
     english: string | undefined;
     other: string | undefined;
     createdAt: string | undefined;
     updatedAt: string | undefined;
+    hourRate: number | undefined;
+    categories: ICategory;
+    skills: ISkill[];
 }

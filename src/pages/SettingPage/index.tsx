@@ -26,7 +26,7 @@ const english = ['Beginner', 'Pre-Intermediate', 'Intermediate', 'Advanced'];
 const SettingPage: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { user } = useAppSelector((s) => s.authReducer);
+    const { user } = useAppSelector((s) => s.auth);
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
     const { data: allSkills } = useGetAllSkillsQuery('');
