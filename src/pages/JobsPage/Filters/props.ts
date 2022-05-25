@@ -4,5 +4,5 @@ export interface IQueryFilters {
     filteredSkills: number[] | undefined;
     maxSalary: number | undefined;
     searchValue: string | undefined;
-    timeAvailable: number;
+    timeAvailable: number | undefined;
 }
