@@ -1,5 +1,5 @@
 import { baseApi } from '..';
-import { Profile } from './publicProfile.types';
+import { Profile, Skills } from './publicProfile.types';
 
 export const publicProfileApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -11,7 +11,12 @@ export const publicProfileApi = baseApi.injectEndpoints({
                 },
             }),
         }),
+        getAllSkills: builder.query<Skills[], string>({
+            query: () => ({
+                url: `skills`,
+            }),
+        }),
     }),
 });
 
-export const { useSearchUserQuery } = publicProfileApi;
+export const { useSearchUserQuery, useGetAllSkillsQuery } = publicProfileApi;

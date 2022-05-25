@@ -63,7 +63,9 @@
         "add_information": "Other additional information",
         "text_type": "(Text type)",
         "tag_type": "(tag type [ ])",
-        "contact_info": "Contact Info"
+        "contact_info": "Contact Info",
+        "save_changes": "Save canges",
+        "education_name": "Name of Education"
     },
     "ForgotPage": {
         "title": "Forgot Password",
@@ -102,7 +104,9 @@
         "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
         "hello": "Hello",
         "welcomeTo": ", welcome to our service.",
-        "youCanView": "You can view yours"
+        "youCanView": "You can view yours",
+        "orView": "or view",
+        "offers": "offers"
     },
     "JobPage": {
         "jobPageTitle": "Jobs on GetJOB!",

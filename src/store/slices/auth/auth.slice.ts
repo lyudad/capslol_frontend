@@ -21,11 +21,12 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (
-            state,
+            state: UsersState,
             { payload: { data } }: PayloadAction<IResponse>
         ) => {
             state.user = data.user;
             state.accessToken = data.accessToken;
+            state.isLoggedIn = true;
         },
     },
 });
