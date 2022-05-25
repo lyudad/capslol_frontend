@@ -26,6 +26,7 @@ const SendProposal: React.FC = () => {
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
+            // eslint-disable-next-line no-console
             console.log(values);
         } catch (error) {
             message.error(`${error.data.message}`);

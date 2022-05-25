@@ -5,6 +5,7 @@ import { Row } from 'antd';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useSearchUserQuery } from 'store/apis/publicProfile';
+import avatar from 'assets/avatar.png';
 import {
     Description,
     ProfileContainer,
@@ -15,7 +16,6 @@ import {
     ButtonSet,
     TitleEmpty,
 } from './styles';
-import avatar from './avatar.png';
 
 const PublicPage: React.FC = () => {
     const navigate = useNavigate();
@@ -137,9 +137,9 @@ const PublicPage: React.FC = () => {
                 <Sections>
                     {t('PublicProfile.skills')}:{' '}
                     <Description>
-                        <span style={{ color: colors.brandColor }}>
+                        {/* <span style={{ color: colors.brandColor }}>
                             {data?.skills.id}
-                        </span>
+                        </span> */}
                     </Description>
                 </Sections>
                 <Sections>
@@ -163,12 +163,15 @@ const PublicPage: React.FC = () => {
                 </Sections>
                 <Row justify="end">
                     <ButtonSet
-                        onClick={() => navigate(`/contact_info/`)}
+                        onClick={() => navigate(`/contact_info/${user?.id}`)}
                         type="default"
                     >
                         {t('PublicProfile.contact_info')}
                     </ButtonSet>
-                    <ButtonSet type="default">
+                    <ButtonSet
+                        onClick={() => navigate(`/setting/${user?.id}`)}
+                        type="default"
+                    >
                         {t('PublicProfile.settings')}
                     </ButtonSet>
                 </Row>
