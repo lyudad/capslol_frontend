@@ -51,7 +51,7 @@ const Filters: React.FC = () => {
     const userId = useAppSelector((state) => state.auth.user?.id);
 
     const onFill = (
-        catId: number | undefined,
+        catId: number,
         engLevel: string | undefined,
         skills: number[] | undefined,
         salary: number | undefined,
