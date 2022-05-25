@@ -40,11 +40,18 @@ const SignInForm: React.FC = () => {
             const response = await loginUser(values).unwrap();
             dispatch(setCredentials(response));
 
+            const { user } = response.data;
+
             notification.open({
                 message: translator('AuthGoogle.comeBackMessage'),
             });
 
-            navigate(Paths.SELECT_ROLE);
+            if (!user.role) {
+                navigate(Paths.SELECT_ROLE);
+                return;
+            }
+
+            navigate(Paths.PROFILE);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -69,7 +76,14 @@ const SignInForm: React.FC = () => {
                     message: translator('AuthGoogle.comeBackMessage'),
                 });
 
-                navigate(Paths.SELECT_ROLE);
+                const { user } = authResponse.data;
+
+                if (!user.role) {
+                    navigate(Paths.SELECT_ROLE);
+                    return;
+                }
+
+                navigate(Paths.PROFILE);
             }
         } catch (error) {
             if ('data' in error) {

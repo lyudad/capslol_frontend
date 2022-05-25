@@ -1,33 +1,33 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IResponse, UserType } from "./auth.type";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IResponse, UserType } from './auth.type';
 
 interface UsersState {
-  user: UserType | null;
-  accessToken: string;
-  loading: "idle" | "loading" | "succeeded" | "failed";
-  error: string;
-  isLoggedIn: boolean;
+    user: UserType | null;
+    accessToken: string | null | undefined;
+    loading: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string;
+    isLoggedIn: boolean;
 }
 const initialState: UsersState = {
-  user: null,
-  accessToken: "",
-  loading: "idle",
-  error: "",
-  isLoggedIn: false,
+    user: null,
+    accessToken: '',
+    loading: 'idle',
+    error: '',
+    isLoggedIn: false,
 };
 
 const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {
-    setCredentials: (
-      state,
-      { payload: { data } }: PayloadAction<IResponse>
-    ) => {
-      state.user = data.user;
-      state.accessToken = data.accessToken;
+    name: 'auth',
+    initialState,
+    reducers: {
+        setCredentials: (
+            state,
+            { payload: { data } }: PayloadAction<IResponse>
+        ) => {
+            state.user = data.user;
+            state.accessToken = data.accessToken;
+        },
     },
-  },
 });
 
 export const { setCredentials } = authSlice.actions;

@@ -7,6 +7,7 @@ const Protected: React.FC = () => {
     const isAuthenticated = useAppSelector(
         (state) => state.authReducer.accessToken
     );
+    // const isAuthenticated = true;
     if (isAuthenticated) {
         return <Outlet />;
     }
