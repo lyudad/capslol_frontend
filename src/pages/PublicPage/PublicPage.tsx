@@ -23,6 +23,7 @@ const PublicPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
 
     const { data } = useSearchUserQuery(user?.id);
+    console.log(data);
 
     if (!user) {
         return (
@@ -75,7 +76,7 @@ const PublicPage: React.FC = () => {
                 <Sections>
                     {t('PublicProfile.education')}
                     <Description>
-                        {t('PublicProfile.name_of_courses')}{' '}
+                        {t('PublicProfile.name_of_courses')}:{' '}
                         <span style={{ color: colors.brandColor }}>
                             {data?.educations.name}
                         </span>
@@ -99,8 +100,7 @@ const PublicPage: React.FC = () => {
                     <Description>
                         <span style={{ color: colors.brandColor }}>
                             {' '}
-                            {data?.categories.categoryName ||
-                                t('PublicProfile.development')}{' '}
+                            {data?.categories.categoryName || ''}{' '}
                         </span>
                     </Description>
                 </Sections>
@@ -137,9 +137,9 @@ const PublicPage: React.FC = () => {
                 <Sections>
                     {t('PublicProfile.skills')}:{' '}
                     <Description>
-                        {/* <span style={{ color: colors.brandColor }}>
-                            {data?.skills.id}
-                        </span> */}
+                        <span style={{ color: colors.brandColor }}>
+                            {data?.skills.map((e) => e.name)}
+                        </span>
                     </Description>
                 </Sections>
                 <Sections>
