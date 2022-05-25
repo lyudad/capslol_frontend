@@ -23,7 +23,7 @@ import {
 } from './styles';
 
 const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
-    const { user } = useAppSelector((s) => s.authReducer);
+    const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
 
     const [postMessage] = usePostMessageMutation();

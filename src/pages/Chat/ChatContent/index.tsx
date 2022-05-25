@@ -4,6 +4,7 @@ import { message } from 'antd';
 import { useAppSelector } from 'hooks/redux';
 import { useGetMessagesQuery, usePostMessageMutation } from 'store/apis/chat';
 import Loader from 'common/Loader/Loader';
+import { Img } from 'constants/index';
 import Avatar from '../ChatList/Avatar';
 import { IChatContentProps } from '../interfaces';
 import ChatItem from './ChatItem';
@@ -18,7 +19,6 @@ import {
     SendNewMessage,
     SendNewMessageBtn,
     SendNewMessageIcon,
-    SendNewMessageIconPlus,
     SendNewMessageInput,
     SettingsBtn,
     Wrapper,
@@ -26,7 +26,7 @@ import {
 
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [messageText, setMessageText] = useState<string>('');
-    const { user } = useAppSelector((s) => s.authReducer);
+    const { user } = useAppSelector((s) => s.auth);
 
     const {
         data: messages,
@@ -39,7 +39,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         try {
             const newMessage = {
                 sender: {
-                    pic: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
+                    pic: Img.userLogo,
                     id: user?.id || 1,
                     name: `${user?.firstName} ${user?.lastName}`,
                 },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { notification } from 'antd';
 
@@ -17,6 +17,7 @@ import {
 const AppBar: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+
     const { data: offers } = useGetOffersQuery();
 
     const handleNotification = (): void => {
@@ -27,13 +28,6 @@ const AppBar: React.FC = () => {
             });
         });
     };
-
-import { NavLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Header, NavigationContainer, Logo } from './styles';
-
-const AppBar: React.FC = () => {
-    const { t } = useTranslation();
     return (
         <Header>
             <NavigationContainer>
@@ -55,6 +49,9 @@ const AppBar: React.FC = () => {
                     <NavLink to="/test" className="navLink">
                         {t('AppBar.test')}
                     </NavLink>
+                    <NavLink to="/jobs" className="navLink">
+                        {t('AppBar.jobs')}
+                    </NavLink>
                 </div>
 
                 <NotificationFlex>
@@ -62,18 +59,6 @@ const AppBar: React.FC = () => {
                     <NotificationIcon onClick={handleNotification} />
                     <MessageIcon onClick={() => navigate('/chat')} />
                 </NotificationFlex>
-                <NavLink to="/" className="navLink">
-                    {t('AppBar.home')}
-                </NavLink>
-                <NavLink to="/profile" className="navLink">
-                    {t('AppBar.profile')}
-                </NavLink>
-                <NavLink to="/jobs" className="navLink">
-                    {t('AppBar.jobs')}
-                </NavLink>
-                <NavLink to="/test" className="navLink">
-                    {t('AppBar.test')}
-                </NavLink>
             </NavigationContainer>
         </Header>
     );

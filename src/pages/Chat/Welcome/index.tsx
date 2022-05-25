@@ -9,7 +9,7 @@ import { WelcomeTitle, Wrapper, ChatBody } from './styles';
 import ChatItem from '../ChatContent/ChatItem';
 
 const Welcome: React.FC = () => {
-    const { user } = useAppSelector((s) => s.authReducer);
+    const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
 
     const { data: offers, isLoading, isError } = useGetOffersQuery();
