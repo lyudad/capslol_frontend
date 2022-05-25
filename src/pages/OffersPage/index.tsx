@@ -1,27 +1,44 @@
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from 'hooks/redux';
+// import { useAppSelector } from 'hooks/redux';
 import {
     Page,
     ListContainer,
     Title,
-    JobsContainer,
+    OffersContainer,
     JobsList,
-    JobCard,
+    TopButtonContainer,
+    StyledNavBtn,
 } from './styles';
-import JobsListCard from '../JobsPage/JobListCard/index';
+import OfferCard from './OfferCard';
 
 const OffersPage: React.FC = () => {
     const { t } = useTranslation();
 
-    const jobsData = useAppSelector((state) => state.jobsReducer.jobs);
+    // const jobsData = useAppSelector((state) => state.jobsReducer.jobs);
 
     return (
         <Page>
-            <Title>{t('JobPage.jobPageTitle')}</Title>
-            <JobsContainer>
+            <TopButtonContainer>
+                <StyledNavBtn>My Offers</StyledNavBtn>
+                <StyledNavBtn>My Invitations</StyledNavBtn>
+                <StyledNavBtn>My proposals</StyledNavBtn>
+            </TopButtonContainer>
+            <Title>My offers</Title>
+            <OffersContainer>
                 <ListContainer>
                     <JobsList>
-                        <li>qwertyuiop</li>
+                        <li>
+                            <OfferCard />
+                        </li>
+                        <li>
+                            <OfferCard />
+                        </li>
+                        <li>
+                            <OfferCard />
+                        </li>
+                        <li>
+                            <OfferCard />
+                        </li>
                     </JobsList>
 
                     {/* {jobsData && (
@@ -37,7 +54,7 @@ const OffersPage: React.FC = () => {
                         </JobsList>
                     )} */}
                 </ListContainer>
-            </JobsContainer>
+            </OffersContainer>
         </Page>
     );
 };

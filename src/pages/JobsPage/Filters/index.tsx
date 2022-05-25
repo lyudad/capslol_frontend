@@ -31,8 +31,8 @@ const Filters: React.FC = () => {
     const [languageLevelQuery, setLanguageLevelQuery] = useState<string>('');
     const [timeAvailableQuery, setTimeAvailableQuery] = useState<string>('');
     const [skillsQuery, setSkillsQuery] = useState<string>('');
-    const [timeAvailable, setTimeAvailable] = useState<number>();
-    const [maxSalary, setMaxSalary] = useState<number>();
+    const [timeAvailable, setTimeAvailable] = useState<number | string>();
+    const [maxSalary, setMaxSalary] = useState<number | string>();
 
     const [form] = Form.useForm();
 
@@ -51,7 +51,7 @@ const Filters: React.FC = () => {
     const userId = useAppSelector((state) => state.auth.user?.id);
 
     const onFill = (
-        catId: number | undefined,
+        catId: number,
         engLevel: string | undefined,
         skills: number[] | undefined,
         salary: number | undefined,
@@ -80,7 +80,7 @@ const Filters: React.FC = () => {
 
             profile?.hourRate
                 ? setMaxSalary(profile?.hourRate)
-                : setMaxSalary(0);
+                : setMaxSalary('all');
 
             profile?.availableHours
                 ? setTimeAvailableQuery(
@@ -90,7 +90,7 @@ const Filters: React.FC = () => {
 
             profile?.availableHours
                 ? setTimeAvailable(profile?.availableHours)
-                : setTimeAvailable(0);
+                : setTimeAvailable('all');
 
             profile?.skills
                 ? setSkillsQuery(
@@ -162,6 +162,8 @@ const Filters: React.FC = () => {
         setLanguageLevelQuery('');
         setTimeAvailableQuery('');
         setSkillsQuery('');
+        setTimeAvailable('all');
+        setMaxSalary('all');
     };
 
     const onChangeSalary = (value: number): void => {
