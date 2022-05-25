@@ -1,8 +1,18 @@
-﻿import React from 'react';
+﻿/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, message, Row } from 'antd';
+import { useLocation } from 'react-router-dom';
 
 import { colors } from 'constants/index';
+import axios from 'axios';
+import {
+    useGetJobByIdQuery,
+    useSendProposalMutation,
+} from 'store/apis/proposals';
+import { useAppSelector } from 'hooks/redux';
 import {
     Block,
     Font,
@@ -15,23 +25,74 @@ import {
     StyledTextArea,
     Wrapper,
     FormItem,
+    StyledFormItem,
 } from './styles';
-import { IFormValue } from './interfaces';
+import { IFormValue, IJob } from './interfaces';
 
 const SendProposal: React.FC = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
+    const location = useLocation();
+    const [job, setJob] = useState<any>();
+    const [rate, setRate] = useState<number>(job?.price);
+    const f = +((rate / 100) * 12.5);
+
+    const [getJob, setGetJob] = useState<number>(f);
+    const [g, setFreelancerValue] = useState<number>();
+    const { user } = useAppSelector((s) => s.authReducer);
+
+    const state = location.state as IJob;
+
+    // const { data } = useGetJobByIdQuery(state.id);
+    const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
+
+    // console.log(data, state.id);
 
     const onReset = (): void => form.resetFields();
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
             // eslint-disable-next-line no-console
-            console.log(values);
+            const newProposal = {
+                jobId: state.id,
+                freelancerId: user?.id || 16,
+                coverLetter: values.coverLetter,
+                hourRate: rate,
+            };
+            await postProposal(newProposal);
+            setRate(0);
+            setGetJob(0);
+            setFreelancerValue(0);
         } catch (error) {
             message.error(`${error.data.message}`);
         }
         onReset();
+    };
+
+    // const onChange = (e: any): void => {
+    //     setRate(e);
+    // };
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:3000/jobs/getbyid?job=${state.id}`, {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImZpcnN0TmFtZSI6IlRob21hcyIsImxhc3ROYW1lIjoiQW5kZXJzb24iLCJyb2xlIjoiTm8gc2V0IiwiZW1haWwiOiJ0aG9tYXMuYW5kZXJzb25AbWF0cml4LmNvbSIsInBob25lTnVtYmVyIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIyLTA1LTI1VDA2OjEyOjI3LjAwMFoiLCJpc0dvb2dsZSI6ZmFsc2UsImlhdCI6MTY1MzQ1OTE0NywiZXhwIjoxNjUzNTQ1NTQ3fQ.xi3qB4UoF4p8mLfQLU3HKkQ-INoD3JefH4Rgq-UdvcU `,
+                },
+            })
+            .then((res) => {
+                setJob(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, [state.id]);
+
+    const onChange = (value: number) => {
+        setRate(value);
+        setGetJob(f);
+        setFreelancerValue((rate - getJob) * 10);
+        console.log(getJob.toFixed(2));
     };
 
     return (
@@ -40,7 +101,20 @@ const SendProposal: React.FC = () => {
                 {t('Proposal.title')}
             </FontTitle>
 
-            <Form form={form} onFinish={handleSubmit}>
+            <Form
+                form={form}
+                onFinish={handleSubmit}
+                // initialValues={[
+                //     {
+                //         name: ['jobOwnerValue'],
+                //         value: newLocal,
+                //     },
+                //     {
+                //         name: ['freelancerValue'],
+                //         value: freelancerValue,
+                //     },
+                // ]}
+            >
                 <ProposalCard>
                     <Font color={colors.textWhite} fs="22">
                         {t('Proposal.subTitle')}
@@ -52,10 +126,10 @@ const SendProposal: React.FC = () => {
 
                         <Row justify="space-between">
                             <FontTitle color={colors.textGrey} fs="16">
-                                {t('Proposal.youRate')}
+                                {t('Proposal.youRate')} $ {rate}/hr
                             </FontTitle>
                             <FontTitle color={colors.textGrey} fs="16">
-                                {t('Proposal.jobOwnerRate')}
+                                {t('Proposal.jobOwnerRate')} $ {job?.price} /hr
                             </FontTitle>
                         </Row>
 
@@ -66,6 +140,7 @@ const SendProposal: React.FC = () => {
                             <FormItem
                                 label=""
                                 name="jobOwnerValue"
+                                // initialValue={{ jobOwnerValue: job?.price }}
                                 rules={[
                                     {
                                         pattern: /^(?:\d*)$/,
@@ -85,7 +160,15 @@ const SendProposal: React.FC = () => {
                                     },
                                 ]}
                             >
-                                <StyledInput prefix="$" maxLength={4} />
+                                <StyledInput
+                                    value={rate}
+                                    prefix="$"
+                                    maxLength={4}
+                                    onChange={(value) =>
+                                        onChange(value as number)
+                                    }
+                                    // placeholder={job?.price}
+                                />
                             </FormItem>
                         </Row>
 
@@ -96,6 +179,7 @@ const SendProposal: React.FC = () => {
                                 {t('Proposal.getJobRate')}
                             </FontTitle>
                             <FontTitle color={colors.textWhite} fs="16">
+                                $ {(getJob || 0).toFixed(2) || '0'}
                                 /hr
                             </FontTitle>
                         </Row>
@@ -108,8 +192,9 @@ const SendProposal: React.FC = () => {
                             </FontTitle>
                             <FormItem label="" name="freelancerValue">
                                 <StyledInput
-                                    disabled
+                                    readOnly
                                     prefix="$"
+                                    placeholder={`${g || '0'}`}
                                     maxLength={4}
                                 />
                             </FormItem>
@@ -126,7 +211,7 @@ const SendProposal: React.FC = () => {
                                 {t('Proposal.coverLetterTitle')}
                             </FontTitle>
 
-                            <Form.Item
+                            <StyledFormItem
                                 name="coverLetter"
                                 rules={[
                                     {
@@ -136,10 +221,11 @@ const SendProposal: React.FC = () => {
                                 ]}
                             >
                                 <StyledTextArea
+                                    showCount
                                     maxLength={500}
                                     style={{ height: 150 }}
                                 />
-                            </Form.Item>
+                            </StyledFormItem>
                         </Block>
                     </Section>
                 </ProposalCard>
@@ -153,6 +239,13 @@ const SendProposal: React.FC = () => {
                     </StyledButton>
                 </Form.Item>
             </Form>
+
+            <>
+                {' '}
+                {isSuccess && message.success('Successfully send')}
+                {isError &&
+                    message.error('Something went wrong! Please try again')}
+            </>
         </Wrapper>
     );
 };

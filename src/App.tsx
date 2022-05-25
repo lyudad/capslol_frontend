@@ -36,7 +36,7 @@ const App: React.FC = () => {
                     element={<ForgotPassword />}
                 />
                 <Route path="/reset_password/*" element={<ResetPassword />} />
-                <Route path="/send_proposal/" element={<SendProposal />} />
+                <Route path="/send_proposal" element={<SendProposal />} />
             </Routes>
         </MainLayout>
     );

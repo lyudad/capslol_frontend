@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import { IJob } from 'store/apis/jobs/jobs.types';
+import Button from 'common/Button/Button';
+import { colors } from 'constants/index';
 import {
     DateContainer,
     StyledButton,
@@ -41,6 +43,10 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id } });
     };
+
+    const handleSendProposal = (): void => {
+        navigate(Paths.SEND_PROPOSAL, { state: { id } });
+    };
     return (
         <>
             <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
@@ -75,7 +81,13 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav to="">{t('JobPage.sendProposal')}</StyledNav>
+            <Button
+                color={colors.textWhite}
+                bg={colors.textGreen}
+                onClick={handleSendProposal}
+            >
+                {t('JobPage.sendProposal')}
+            </Button>
         </>
     );
 };
