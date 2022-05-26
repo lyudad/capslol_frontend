@@ -11,8 +11,8 @@ export const Title = styled.h2`
     margin-bottom: 4px;
     text-align: left;
     font-weight: ${fonts.jobListFontWeight};
-    /* font-size: ${fonts.jobListTitleSize}; */
     font-size: 24px;
+    margin-left: calc(10vw + 15px);
     color: ${colors.brandColor};
 `;
 
@@ -25,10 +25,13 @@ export const StyledNavBtn = styled.button`
     border-right: 1px solid ${colors.appBarBrd};
     border-left: 1px solid ${colors.appBarBrd};
     font-size: 14px;
-    /* font-weight: 600; */
     font-style: italic;
     color: ${colors.textWhite};
     background-color: ${colors.appBarBgr};
+`;
+
+export const NavBtnIsActive = styled(StyledNavBtn)`
+    color: ${colors.brandColor};
 `;
 
 export const TopButtonContainer = styled.div`
@@ -40,7 +43,7 @@ export const TopButtonContainer = styled.div`
     border-bottom: 1px solid ${colors.appBarBrd};
 `;
 
-export const OffersContainer = styled.div`
+export const ListWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -53,7 +56,7 @@ export const ListContainer = styled.div`
     width: 80vw;
 `;
 
-export const JobsList = styled.ul`
+export const List = styled.li`
     list-style: none;
     margin: 0;
 `;

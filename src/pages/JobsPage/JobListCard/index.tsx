@@ -75,7 +75,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav to="">{t('JobPage.sendProposal')}</StyledNav>
+            <StyledNav>{t('JobPage.sendProposal')}</StyledNav>
         </>
     );
 };

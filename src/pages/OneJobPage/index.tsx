@@ -17,6 +17,7 @@ import {
     Owner,
     AvatarImg,
 } from './styles';
+import { StyledNav } from '../JobsPage/JobListCard/styles';
 
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
@@ -77,6 +78,10 @@ const OneJobPage: React.FC = () => {
                 <OptionContent>
                     <Field>{t('JobPage.english')} </Field>
                     <Value>{jobData?.languageLevel}</Value>
+                </OptionContent>
+
+                <OptionContent>
+                    <StyledNav>{t('JobPage.sendProposal')}</StyledNav>
                 </OptionContent>
             </JobCard>
         </Page>

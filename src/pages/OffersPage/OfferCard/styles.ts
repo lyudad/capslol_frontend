@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors, fonts } from 'constants/index';
 
@@ -42,7 +41,6 @@ export const OneOfferCard = styled.li`
     padding: 8px;
     background-color: ${colors.appBarBgr};
     border-bottom: 1px solid ${colors.appBarBrd};
-    /* color: ${colors.textWhite}; */
 `;
 
 export const DateContainer = styled.div`
@@ -91,11 +89,13 @@ export const FieldValue = styled.span`
     margin-left: 3px;
 `;
 
-export const StyledNav = styled(NavLink)`
+export const StyledNavBtn = styled.button`
     width: 100px;
     padding: 4px 8px;
     margin-right: 8px;
     text-align: center;
+    cursor: pointer;
+    border: none;
     color: ${colors.textWhite};
     background-color: ${colors.brandColor};
 `;

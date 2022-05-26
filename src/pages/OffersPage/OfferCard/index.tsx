@@ -1,7 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Paths } from 'router/paths';
-import { IJob } from 'store/apis/jobs/jobs.types';
 import {
     DateContainer,
     StyledButton,
@@ -12,33 +9,13 @@ import {
     ValueBox,
     Field,
     FieldValue,
-    StyledNav,
+    StyledNavBtn,
     OneOfferCard,
 } from './styles';
 import 'antd/dist/antd.min.css';
-import { JobCard } from '../styles';
-
-// interface IProps {
-//     jobObj: IJob;
-// }
 
 const OfferCard: React.FC = () => {
     const { t } = useTranslation();
-
-    // const navigate = useNavigate();
-
-    // const {
-    //     id,
-    //     createdAt,
-    //     title,
-    //     description,
-    //     price,
-    //     timeAvailable,
-    //     categoryId,
-    //     skills,
-    //     languageLevel,
-    //     ownerId,
-    // } = jobObj;
 
     const onClickJob = (): void => {
         // navigate(Paths.JOB_PAGE, { state: { id } });
@@ -54,10 +31,7 @@ const OfferCard: React.FC = () => {
 
             <ValueBox>
                 <Field>{t('JobPage.jobOwner')}</Field>
-                <FieldValue>
-                    {/* {`${ownerId.firstName} ${ownerId.lastName}`} */}
-                    Qwert Ertyui
-                </FieldValue>
+                <FieldValue>Qwert Ertyui</FieldValue>
             </ValueBox>
 
             <ValueBox>
@@ -70,10 +44,15 @@ const OfferCard: React.FC = () => {
                 </Descriptions>
             </ValueBox>
 
+            <ValueBox>
+                <Field>status</Field>
+                <FieldValue>Pending</FieldValue>
+            </ValueBox>
+
             <ButtonContainer>
-                <StyledNav to="">Accept </StyledNav>
-                <StyledNav to="">Decline</StyledNav>
-                <StyledNav to="">Go to chat</StyledNav>
+                <StyledNavBtn>{t('OffersPage.accept')}</StyledNavBtn>
+                <StyledNavBtn>{t('OffersPage.decline')}</StyledNavBtn>
+                <StyledNavBtn>{t('OffersPage.goToChat')}</StyledNavBtn>
             </ButtonContainer>
         </OneOfferCard>
     );

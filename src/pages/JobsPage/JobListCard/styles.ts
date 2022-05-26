@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors, fonts } from 'constants/index';
 
@@ -91,8 +90,10 @@ export const FieldValue = styled.span`
     margin-left: 3px;
 `;
 
-export const StyledNav = styled(NavLink)`
+export const StyledNav = styled.button`
     padding: 4px 8px;
+    border: none;
+    cursor: pointer;
     color: ${colors.textWhite};
     background-color: ${colors.brandColor};
 `;
