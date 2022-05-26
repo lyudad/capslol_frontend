@@ -5,7 +5,16 @@ import {
     useSearchUserQuery,
 } from 'store/apis/publicProfile';
 import { useState } from 'react';
-import { InputNumber, Input, DatePicker, Space, Select, Row } from 'antd';
+import {
+    InputNumber,
+    Input,
+    DatePicker,
+    Space,
+    Select,
+    Row,
+    notification,
+} from 'antd';
+
 import { UserOutlined } from '@ant-design/icons';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
@@ -21,7 +30,12 @@ import {
     ButtonSet,
 } from './styles';
 
-const english = ['Beginner', 'Pre-Intermediate', 'Intermediate', 'Advanced'];
+const englishEnum = [
+    'Beginner',
+    'Pre-Intermediate',
+    'Intermediate',
+    'Advanced',
+];
 
 const SettingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -57,6 +71,10 @@ const SettingPage: React.FC = () => {
         data?.experiense.position
     );
     const [other, setOther] = useState(data?.other);
+    const [english, setEnglish] = useState(data?.english);
+    const [skills, setSkills] = useState(
+        data?.skills.map((e) => <Option key={e.name}>{e.name}</Option>)
+    );
 
     const onChangeFirstName = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -126,14 +144,44 @@ const SettingPage: React.FC = () => {
     };
 
     const handleChange = (value: string): void => {
-        // eslint-disable-next-line no-console
-        console.log(`selected ${value}`);
+        setEnglish(value);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChangeTag = (value: any): void => {
-        // eslint-disable-next-line no-console
-        console.log(`selected ${value}`);
+        setSkills(value);
+    };
+
+    const onSaveChanges = (): void => {
+        if (!hourRate) {
+            return notification.warning({
+                message: 'Please input your Hour Rate!',
+            });
+        }
+        if (!availableHours) {
+            return notification.warning({
+                message: 'Please input your available amount of hours',
+            });
+        }
+        if (!category) {
+            return notification.warning({
+                message: 'Please choose your Category',
+            });
+        }
+        if (!skills) {
+            return notification.warning({
+                message: 'Please choose your Skills',
+            });
+        }
+        if (!english) {
+            return notification.warning({
+                message: 'Please choose your English level',
+            });
+        }
+        navigate(`/profile`);
+        return notification.success({
+            message: 'Changes saved',
+        });
     };
 
     return (
@@ -168,6 +216,7 @@ const SettingPage: React.FC = () => {
 
                 <Sections>
                     <Description>
+                        <span style={{ color: colors.brandColor }}>*</span>{' '}
                         {t('PublicProfile.hour_rate')}{' '}
                         <span style={{ color: colors.brandColor }}>
                             {' '}
@@ -182,6 +231,7 @@ const SettingPage: React.FC = () => {
                         {' $'}
                     </Description>
                     <Description>
+                        <span style={{ color: colors.brandColor }}>*</span>{' '}
                         {t('PublicProfile.amount_hours')}{' '}
                         <span style={{ color: colors.brandColor }}>
                             {' '}
@@ -236,7 +286,10 @@ const SettingPage: React.FC = () => {
                 </Sections>
 
                 <Sections>
-                    {t('PublicProfile.category')}:
+                    <span>
+                        <span style={{ color: colors.brandColor }}>* </span>{' '}
+                        {t('PublicProfile.category')}:
+                    </span>
                     <Description>
                         <Select
                             defaultValue={category}
@@ -315,16 +368,18 @@ const SettingPage: React.FC = () => {
                 </Sections>
 
                 <Sections>
-                    {t('PublicProfile.skills')}:{' '}
+                    <span>
+                        <span style={{ color: colors.brandColor }}>* </span>{' '}
+                        {t('PublicProfile.skills')}:
+                    </span>
+
                     <Description>
                         <Select
                             mode="multiple"
                             allowClear
                             style={{ width: '65%' }}
                             placeholder="Please select"
-                            defaultValue={data?.skills.map((e) => (
-                                <Option key={e.name}>{e.name}</Option>
-                            ))}
+                            defaultValue={skills}
                             onChange={handleChangeTag}
                         >
                             {allSkills?.map((e) => (
@@ -335,17 +390,21 @@ const SettingPage: React.FC = () => {
                 </Sections>
 
                 <Sections>
-                    {t('PublicProfile.languages')}:{' '}
+                    <span>
+                        <span style={{ color: colors.brandColor }}>* </span>{' '}
+                        {t('PublicProfile.languages')}:
+                    </span>
+
                     <Description>
                         <span>
                             level:{' '}
                             <Select
                                 placeholder="NO SET"
-                                defaultValue={data?.english}
+                                defaultValue={english}
                                 style={{ width: 220 }}
                                 onChange={handleChange}
                             >
-                                {english.map((e) => (
+                                {englishEnum.map((e) => (
                                     <Option key={e} value={e}>
                                         {e}
                                     </Option>
@@ -369,10 +428,7 @@ const SettingPage: React.FC = () => {
                     </Description>
                 </Sections>
                 <Row justify="end">
-                    <ButtonSet
-                        onClick={() => navigate(`/profile`)}
-                        type="default"
-                    >
+                    <ButtonSet onClick={onSaveChanges} type="default">
                         {t('PublicProfile.save_changes')}
                     </ButtonSet>
                 </Row>

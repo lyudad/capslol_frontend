@@ -137,7 +137,10 @@ const PublicPage: React.FC = () => {
                     {t('PublicProfile.skills')}:{' '}
                     <Description>
                         <span style={{ color: colors.brandColor }}>
-                            {data?.skills.map((e) => e.name)}
+                            {data?.skills.map((e) => (
+                                <span key={e.id}>| {e.name} </span>
+                            ))}{' '}
+                            |
                         </span>
                     </Description>
                 </Sections>
