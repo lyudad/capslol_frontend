@@ -23,7 +23,6 @@ const PublicPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
 
     const { data } = useSearchUserQuery(user?.id);
-    console.log(data);
 
     if (!user) {
         return (

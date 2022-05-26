@@ -53,10 +53,10 @@ const SettingPage: React.FC = () => {
     const [nameCompany, setNameCompany] = useState(
         data?.experiense.companyName
     );
-
     const [experiensePosition, setExperiensePosition] = useState(
-        data?.experiense.companyName
+        data?.experiense.position
     );
+    const [other, setOther] = useState(data?.other);
 
     const onChangeFirstName = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -72,6 +72,10 @@ const SettingPage: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
         setNameCompany(event.target.value);
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onOther = (event: any): void => {
+        setOther(event.target.value);
     };
 
     const onExpiriensePosition = (
@@ -293,7 +297,7 @@ const SettingPage: React.FC = () => {
                         />
                     </Description>
                     <Description>
-                        {t('PublicProfile.period')}:{' '}
+                        {t('PublicProfile.period')}: start{' '}
                         <Space direction="vertical">
                             <DatePicker
                                 placeholder={startExperiense}
@@ -329,7 +333,7 @@ const SettingPage: React.FC = () => {
                         </Select>
                     </Description>
                 </Sections>
-                {/* ENGLISH */}
+
                 <Sections>
                     {t('PublicProfile.languages')}:{' '}
                     <Description>
@@ -357,9 +361,10 @@ const SettingPage: React.FC = () => {
                         <TextArea
                             rows={4}
                             style={{ width: 420 }}
-                            value={data?.other}
                             placeholder={t('PublicProfile.text_type')}
-                            maxLength={6}
+                            value={other}
+                            onChange={onOther}
+                            maxLength={500}
                         />
                     </Description>
                 </Sections>

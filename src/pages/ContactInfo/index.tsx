@@ -96,9 +96,7 @@ const ContactInfo: React.FC = () => {
                                 {`${user?.firstName ? user?.firstName : 'Not'}
                                 ${user?.lastName ? user?.lastName : 'Found'}`}
                             </Title>
-                            <Circle>
-                                {user?.role ? user?.role : 'Not Found'}
-                            </Circle>
+                            <Circle>Frelancer</Circle>
                         </div>
                     </TitleGroup>
                     <Card>
