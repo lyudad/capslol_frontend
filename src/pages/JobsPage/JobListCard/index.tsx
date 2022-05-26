@@ -12,7 +12,7 @@ import {
     ValueBox,
     Field,
     FieldValue,
-    StyledNav,
+    CustomButton,
 } from './styles';
 import 'antd/dist/antd.min.css';
 
@@ -40,6 +40,10 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id } });
+    };
+
+    const handleSendProposal = (): void => {
+        navigate(Paths.SEND_PROPOSAL, { state: { id } });
     };
     return (
         <>
@@ -75,7 +79,9 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav to="">{t('JobPage.sendProposal')}</StyledNav>
+            <CustomButton onClick={handleSendProposal}>
+                {t('JobPage.sendProposal')}
+            </CustomButton>
         </>
     );
 };

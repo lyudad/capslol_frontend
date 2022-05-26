@@ -1,8 +1,14 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, message, Row } from 'antd';
+import { Form, message, notification, Row } from 'antd';
+import { useLocation } from 'react-router-dom';
 
 import { colors } from 'constants/index';
+import {
+    useGetSingleJobQuery,
+    useSendProposalMutation,
+} from 'store/apis/proposals';
+import { useAppSelector } from 'hooks/redux';
 import {
     Block,
     Font,
@@ -15,23 +21,54 @@ import {
     StyledTextArea,
     Wrapper,
     FormItem,
+    StyledFormItem,
 } from './styles';
-import { IFormValue } from './interfaces';
+import { IFormValue, IJob } from './interfaces';
 
 const SendProposal: React.FC = () => {
+    const location = useLocation();
+
+    const state = location.state as IJob;
+
+    const { data: job } = useGetSingleJobQuery(state.id);
+    const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
+
+    const { user } = useAppSelector((s) => s.auth);
+
     const { t } = useTranslation();
     const [form] = Form.useForm();
+
+    const [freelancerValue, setFreelancerValue] = useState<number>();
+    const [hourRate, setHourRate] = useState<number | undefined>(job?.price);
+    const getJobHourRate = +(((hourRate || 0) / 100) * 12.5);
+
+    const [getJob, setGetJob] = useState<number>(getJobHourRate);
 
     const onReset = (): void => form.resetFields();
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
-            // eslint-disable-next-line no-console
-            console.log(values);
+            const newProposal = {
+                jobId: state.id,
+                freelancerId: user?.id,
+                coverLetter: values.coverLetter,
+                hourRate: freelancerValue,
+            };
+            await postProposal(newProposal);
+            setHourRate(0);
+            setGetJob(0);
+            setFreelancerValue(0);
+            onReset();
         } catch (error) {
             message.error(`${error.data.message}`);
         }
         onReset();
+    };
+
+    const onChange = (value: number): void => {
+        setHourRate(value);
+        setGetJob(getJobHourRate);
+        setFreelancerValue(((hourRate || 0) - getJob) * 10);
     };
 
     return (
@@ -52,10 +89,11 @@ const SendProposal: React.FC = () => {
 
                         <Row justify="space-between">
                             <FontTitle color={colors.textGrey} fs="16">
-                                {t('Proposal.youRate')}
+                                {t('Proposal.youRate')} $ {hourRate || '0'}/hr
                             </FontTitle>
                             <FontTitle color={colors.textGrey} fs="16">
-                                {t('Proposal.jobOwnerRate')}
+                                {t('Proposal.jobOwnerRate')} ${' '}
+                                {job?.price || '0'} /hr
                             </FontTitle>
                         </Row>
 
@@ -85,7 +123,14 @@ const SendProposal: React.FC = () => {
                                     },
                                 ]}
                             >
-                                <StyledInput prefix="$" maxLength={4} />
+                                <StyledInput
+                                    value={hourRate}
+                                    prefix="$"
+                                    maxLength={4}
+                                    onChange={(value) =>
+                                        onChange(value as number)
+                                    }
+                                />
                             </FormItem>
                         </Row>
 
@@ -96,6 +141,7 @@ const SendProposal: React.FC = () => {
                                 {t('Proposal.getJobRate')}
                             </FontTitle>
                             <FontTitle color={colors.textWhite} fs="16">
+                                $ {(getJob || 0).toFixed(2) || '0'}
                                 /hr
                             </FontTitle>
                         </Row>
@@ -108,8 +154,9 @@ const SendProposal: React.FC = () => {
                             </FontTitle>
                             <FormItem label="" name="freelancerValue">
                                 <StyledInput
-                                    disabled
+                                    readOnly
                                     prefix="$"
+                                    placeholder={`${freelancerValue || '0'}`}
                                     maxLength={4}
                                 />
                             </FormItem>
@@ -126,7 +173,7 @@ const SendProposal: React.FC = () => {
                                 {t('Proposal.coverLetterTitle')}
                             </FontTitle>
 
-                            <Form.Item
+                            <StyledFormItem
                                 name="coverLetter"
                                 rules={[
                                     {
@@ -136,23 +183,46 @@ const SendProposal: React.FC = () => {
                                 ]}
                             >
                                 <StyledTextArea
+                                    showCount
                                     maxLength={500}
                                     style={{ height: 150 }}
                                 />
-                            </Form.Item>
+                            </StyledFormItem>
                         </Block>
                     </Section>
                 </ProposalCard>
 
                 <Form.Item>
-                    <StyledButton
-                        htmlType="submit"
-                        className="login-form-button"
-                    >
-                        {t('Proposal.submitBtnText')}
-                    </StyledButton>
+                    {isSuccess ? (
+                        <FontTitle fs="16" color={colors.textWhite}>
+                            You have already responded to this project. Try
+                            another one!
+                        </FontTitle>
+                    ) : (
+                        <StyledButton
+                            htmlType="submit"
+                            className="login-form-button"
+                        >
+                            {t('Proposal.submitBtnText')}
+                        </StyledButton>
+                    )}
                 </Form.Item>
             </Form>
+
+            <>
+                {' '}
+                {isSuccess &&
+                    notification.success({
+                        message: 'Success',
+                        description: 'You proposals successfully send!',
+                    })}
+                {isError &&
+                    notification.error({
+                        message: 'Error',
+                        description:
+                            'You have already responded to this project. Try another one!',
+                    })}
+            </>
         </Wrapper>
     );
 };
