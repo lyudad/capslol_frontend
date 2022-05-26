@@ -13,7 +13,8 @@ import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
 import SettingPage from 'pages/SettingPage';
 import Protected from 'router/Protected';
-import OffersPage from 'pages/OffersPage';
+import OffersPage from 'pages/OffersPage/index';
+import Chat from 'pages/Chat';
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
@@ -39,6 +40,7 @@ const App: React.FC = () => {
                 />
                 <Route path="/reset_password/*" element={<ResetPassword />} />
                 <Route path="/send_proposal/" element={<SendProposal />} />
+                <Route path="/chat" element={<Chat />} />
             </Routes>
         </MainLayout>
     );

@@ -182,6 +182,7 @@
             "error": "Something went wrong, please try again later!"
         }
     },
+
     "OffersPage": {
         "accept": "Accept",
         "decline": "Decline",
@@ -189,5 +190,16 @@
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
         "myProposals": "My Proposals"
+    },
+
+    "Chat": {
+        "offerYes": "Accept",
+        "offerNo": "Refuse",
+        "sendTime": "1.03 PM",
+        "contactTime": "32 mins ago",
+        "offerBtnText": "Job Offer",
+        "welcome": "Welcome",
+        "welcomeText": "Please select a chat to Start messaging.",
+        "notFound": "Not found any chats"
     }
 }
