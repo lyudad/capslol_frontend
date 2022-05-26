@@ -104,7 +104,9 @@
         "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
         "hello": "Hello",
         "welcomeTo": ", welcome to our service.",
-        "youCanView": "You can view yours"
+        "youCanView": "You can view yours",
+        "orView": "or view",
+        "offers": "offers"
     },
     "JobPage": {
         "jobPageTitle": "Jobs on GetJOB!",
@@ -179,5 +181,16 @@
             "success": "Password successfully changed!",
             "error": "Something went wrong, please try again later!"
         }
+    },
+
+    "Chat": {
+        "offerYes": "Accept",
+        "offerNo": "Refuse",
+        "sendTime": "1.03 PM",
+        "contactTime": "32 mins ago",
+        "offerBtnText": "Job Offer",
+        "welcome": "Welcome",
+        "welcomeText": "Please select a chat to Start messaging.",
+        "notFound": "Not found any chats"
     }
 }

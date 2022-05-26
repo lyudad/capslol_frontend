@@ -13,6 +13,7 @@ import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
 import SettingPage from 'pages/SettingPage';
 import Protected from 'router/Protected';
+import Chat from 'pages/Chat';
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
@@ -26,6 +27,8 @@ const App: React.FC = () => {
                     <Route path="/select-role" element={<RolePage />} />
                     <Route path="/profile" element={<PublicPage />} />
                     <Route path="/test" element={<TestPage />} />
+                    <Route path="/send_proposal/" element={<SendProposal />} />
+                    <Route path="/chat" element={<Chat />} />
                 </Route>
 
                 <Route path="/" element={<HomePage />} />
@@ -36,7 +39,6 @@ const App: React.FC = () => {
                     element={<ForgotPassword />}
                 />
                 <Route path="/reset_password/*" element={<ResetPassword />} />
-                <Route path="/send_proposal" element={<SendProposal />} />
             </Routes>
         </MainLayout>
     );

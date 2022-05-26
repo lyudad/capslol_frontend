@@ -44,7 +44,7 @@ const SignInForm: React.FC = () => {
                 message: translator('AuthGoogle.comeBackMessage'),
             });
 
-            navigate(Paths.SELECT_ROLE);
+            // navigate(Paths.SELECT_ROLE);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
