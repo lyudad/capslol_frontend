@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import { IJob } from 'store/apis/jobs/jobs.types';
-import Button from 'common/Button/Button';
-import { colors } from 'constants/index';
 import {
     DateContainer,
     StyledButton,
@@ -14,7 +12,7 @@ import {
     ValueBox,
     Field,
     FieldValue,
-    StyledNav,
+    CustomButton,
 } from './styles';
 import 'antd/dist/antd.min.css';
 
@@ -81,13 +79,9 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <Button
-                color={colors.textWhite}
-                bg={colors.textGreen}
-                onClick={handleSendProposal}
-            >
+            <CustomButton onClick={handleSendProposal}>
                 {t('JobPage.sendProposal')}
-            </Button>
+            </CustomButton>
         </>
     );
 };

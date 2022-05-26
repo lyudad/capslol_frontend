@@ -1,9 +1,9 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import { baseApi } from '..';
+﻿import { baseApi } from '..';
+import { IProposal, IJob } from './proposal.types';
 
 export const proposalApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        sendProposal: builder.mutation<any, any>({
+        sendProposal: builder.mutation<IProposal, IProposal>({
             query(value) {
                 return {
                     url: '/proposals',
@@ -12,12 +12,12 @@ export const proposalApi = baseApi.injectEndpoints({
                 };
             },
         }),
-        getJobById: builder.query<any, any>({
+        getSingleJob: builder.query<IJob, number | undefined>({
             query: (value: number) => ({
-                url: `/jobs?job=${value}`,
+                url: `/jobs/getbyid?job=${value}`,
             }),
         }),
     }),
 });
 
-export const { useSendProposalMutation, useGetJobByIdQuery } = proposalApi;
+export const { useSendProposalMutation, useGetSingleJobQuery } = proposalApi;
