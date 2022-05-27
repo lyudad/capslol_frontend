@@ -1,21 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
-import InvitationCard from '../InvitationCard';
+import ProposalCard from '../ProposalCard';
 
-const MyInvitations: React.FC = () => {
+const MyProposals: React.FC = () => {
     const { t } = useTranslation();
 
     return (
         <>
-            <Title>{t('OffersPage.myInvitations')}</Title>
+            <Title>{t('OffersPage.myProposals')}</Title>
             <ListWrapper>
                 <ListContainer>
                     <List>
                         <ul>
-                            <InvitationCard />
+                            <ProposalCard />
                         </ul>
                         <ul>
-                            <InvitationCard />
+                            <ProposalCard />
                         </ul>
                     </List>
                 </ListContainer>
@@ -24,4 +24,4 @@ const MyInvitations: React.FC = () => {
     );
 };
 
-export default MyInvitations;
+export default MyProposals;
