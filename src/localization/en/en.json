@@ -183,6 +183,15 @@
         }
     },
 
+    "OffersPage": {
+        "accept": "Accept",
+        "decline": "Decline",
+        "goToChat": "Go to chat",
+        "myOffers": "My Offers",
+        "myInvitations": "My Invitations",
+        "myProposals": "My Proposals"
+    },
+
     "Chat": {
         "offerYes": "Accept",
         "offerNo": "Refuse",
