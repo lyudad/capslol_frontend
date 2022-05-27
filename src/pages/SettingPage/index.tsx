@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
     useGetAllSkillsQuery,
     useSearchUserQuery,
+    useCreateProfileMutation,
 } from 'store/apis/publicProfile';
 import { useState } from 'react';
 import {
@@ -13,6 +14,7 @@ import {
     Select,
     Row,
     notification,
+    message,
 } from 'antd';
 
 import { UserOutlined } from '@ant-design/icons';
@@ -20,6 +22,7 @@ import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useNavigate } from 'react-router-dom';
 import avatar from 'assets/avatar.png';
+import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
 import {
     ProfileContainer,
     Avatar,
@@ -44,6 +47,7 @@ const SettingPage: React.FC = () => {
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
     const { data: allSkills } = useGetAllSkillsQuery('');
+    const [createProfile] = useCreateProfileMutation();
     const { TextArea } = Input;
     const [firstName, setFirstName] = useState(user?.firstName);
     const [lastName, setLastName] = useState(user?.lastName);
@@ -75,6 +79,7 @@ const SettingPage: React.FC = () => {
     const [skills, setSkills] = useState(
         data?.skills.map((e) => <Option key={e.name}>{e.name}</Option>)
     );
+    const [skillsId, setSkillsId] = useState<number[]>();
 
     const onChangeFirstName = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -150,9 +155,17 @@ const SettingPage: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChangeTag = (value: any): void => {
         setSkills(value);
+
+        const res: number[] = [];
+        allSkills?.forEach(({ id, name }) => {
+            if (value.includes(name)) {
+                res.push(id);
+            }
+        });
+        setSkillsId(res);
     };
 
-    const onSaveChanges = (): void => {
+    const onSaveChanges = async (): Promise<void> => {
         if (!hourRate) {
             return notification.warning({
                 message: 'Please input your Hour Rate!',
@@ -178,7 +191,19 @@ const SettingPage: React.FC = () => {
                 message: 'Please choose your English level',
             });
         }
-        navigate(`/profile`);
+
+        const UpdateProfile: newProfile = {
+            id: user?.id,
+            skills: skillsId,
+            english,
+        };
+
+        try {
+            await createProfile(UpdateProfile);
+            navigate(`/profile`);
+        } catch (error) {
+            message.error(error.status);
+        }
         return notification.success({
             message: 'Changes saved',
         });
@@ -203,6 +228,7 @@ const SettingPage: React.FC = () => {
                         value={lastName}
                     />
                 </TitleEmpty>
+
                 <Avatar>
                     <img
                         src={data?.profileImage || avatar}
@@ -213,7 +239,7 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.save_changes')}
                     </ButtonSet>
                 </Avatar>
-
+                {/* HOURE-RATE + AMOUN HOUR */}
                 <Sections>
                     <Description>
                         <span style={{ color: colors.brandColor }}>*</span>{' '}
@@ -246,7 +272,7 @@ const SettingPage: React.FC = () => {
                         {' h'}
                     </Description>
                 </Sections>
-
+                {/* EDUCATION */}
                 <Sections>
                     {t('PublicProfile.education')}
                     <Description>
@@ -284,7 +310,7 @@ const SettingPage: React.FC = () => {
                         </Space>
                     </Description>
                 </Sections>
-
+                {/* CATEGORY */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}
@@ -316,7 +342,7 @@ const SettingPage: React.FC = () => {
                         </Select>
                     </Description>
                 </Sections>
-
+                {/* POSITION */}
                 <Sections>
                     {t('PublicProfile.position')}:{' '}
                     <Description>
@@ -328,7 +354,7 @@ const SettingPage: React.FC = () => {
                         />
                     </Description>
                 </Sections>
-
+                {/* EXPERIENCE */}
                 <Sections>
                     {t('PublicProfile.experience')}
                     <Description>
@@ -366,7 +392,7 @@ const SettingPage: React.FC = () => {
                         </Space>
                     </Description>
                 </Sections>
-
+                {/* SKILLS */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}
@@ -388,7 +414,7 @@ const SettingPage: React.FC = () => {
                         </Select>
                     </Description>
                 </Sections>
-
+                {/* ENGLISH */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}

@@ -1,5 +1,5 @@
 import { baseApi } from '..';
-import { Profile, Skills } from './publicProfile.types';
+import { newProfile, Profile, Skills } from './publicProfile.types';
 
 export const publicProfileApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -10,6 +10,15 @@ export const publicProfileApi = baseApi.injectEndpoints({
                     user: profileType,
                 },
             }),
+            providesTags: ['Profile'],
+        }),
+        createProfile: builder.mutation<newProfile, newProfile | undefined>({
+            query: (value) => ({
+                url: 'profiles/',
+                method: 'POST',
+                body: value,
+            }),
+            invalidatesTags: ['Profile'],
         }),
         getAllSkills: builder.query<Skills[], string>({
             query: () => ({
@@ -19,4 +28,8 @@ export const publicProfileApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useSearchUserQuery, useGetAllSkillsQuery } = publicProfileApi;
+export const {
+    useSearchUserQuery,
+    useGetAllSkillsQuery,
+    useCreateProfileMutation,
+} = publicProfileApi;

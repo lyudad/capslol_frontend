@@ -22,6 +22,22 @@ export interface Skills {
     name: string;
 }
 
+export interface newProfile {
+    id: number | undefined;
+    profileImage?: string | undefined;
+    hourRate?: number | undefined;
+    availableHours?: number | undefined;
+    position?: string | undefined;
+    experiense?: Experiences | undefined;
+    educations?: Educations | undefined;
+    categories?: Category | undefined;
+    skills: number[] | undefined;
+    english?: string | undefined;
+    other?: string | undefined;
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
+}
+
 export interface Profile {
     id: number;
     profileImage: string;

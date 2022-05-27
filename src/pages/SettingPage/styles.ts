@@ -32,8 +32,7 @@ export const TitleEmpty = styled.h1`
     margin-right: auto;
     margin-top: 14px;
     margin-bottom: 20px;
-    /* text-align: center; */
-    /* justify-items: center; */
+
     color: ${colors.navColor};
 `;
 export const Title = styled.h1`
