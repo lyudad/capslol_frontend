@@ -45,6 +45,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const handleSendProposal = (): void => {
         navigate(Paths.SEND_PROPOSAL, { state: { id } });
     };
+
     return (
         <>
             <DateContainer>{createdAt.substring(0, 10)}</DateContainer>

@@ -9,6 +9,8 @@ import {
     useSendProposalMutation,
 } from 'store/apis/proposals';
 import { useAppSelector } from 'hooks/redux';
+import { useDispatch } from 'react-redux';
+import { setIsSent } from 'store/slices/proposals/proposals.slice';
 import {
     Block,
     Font,
@@ -34,6 +36,7 @@ const SendProposal: React.FC = () => {
     const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
 
     const { user } = useAppSelector((s) => s.auth);
+    const dispatch = useDispatch();
 
     const { t } = useTranslation();
     const [form] = Form.useForm();
@@ -55,6 +58,7 @@ const SendProposal: React.FC = () => {
                 hourRate: freelancerValue,
             };
             await postProposal(newProposal);
+            await dispatch(setIsSent(newProposal));
             setHourRate(0);
             setGetJob(0);
             setFreelancerValue(0);

@@ -1,7 +1,10 @@
-﻿import React, { useState } from 'react';
-import { Form, message } from 'antd';
+﻿/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import React, { useState } from 'react';
+import { Form, message, Row, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { LeftOutlined, UserOutlined } from '@ant-design/icons';
 
 import {
@@ -15,10 +18,13 @@ import { colors } from 'constants/index';
 import { validatePassword } from 'constants/validate';
 import Button from 'common/Button/Button';
 import ModalWindow from 'common/ModalWindow/ModalWindow';
-import { useChangePasswordMutation } from 'store/apis/profile';
+import {
+    useChangePasswordMutation,
+    useEditUserValueMutation,
+    useGetUserByIdQuery,
+} from 'store/apis/profile';
 import { IPassword } from 'store/apis/profile/profile.types';
-import { useAppSelector } from 'hooks/redux';
-import { IChangePassword } from './interfaces';
+import { IChangePassword, IContactInfo } from './interfaces';
 import {
     Wrapper,
     TitleGroup,
@@ -31,18 +37,36 @@ import {
     Icon,
     Circle,
     IconNotFound,
+    EditIcon,
+    StyledInput,
+    SaveIcon,
 } from './styles';
 
 const ContactInfo: React.FC = () => {
+    const location = useLocation();
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [updateFirstName, setUpdateFirstName] = useState<boolean>(false);
+    const [updateLastName, setUpdateLastName] = useState<boolean>(false);
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [form] = Form.useForm();
 
+    const state = location.state as IContactInfo;
+
     const [changePassword, { isError, isSuccess }] =
         useChangePasswordMutation();
-    const { user } = useAppSelector((s) => s.auth);
+    const [editUserValue, { isError: isUserError }] =
+        useEditUserValueMutation();
+    const { data: singleUser } = useGetUserByIdQuery(state.id);
+    const { data: user } = singleUser;
+
+    const [updateUserFirstName, setUpdateUserFirstName] = useState<
+        string | undefined
+    >(user?.firstName);
+    const [updateUserLastName, setUpdateUserLastName] = useState<
+        string | undefined
+    >(user?.lastName);
 
     const handleNavigate = (): void => navigate('/profile');
 
@@ -59,7 +83,7 @@ const ContactInfo: React.FC = () => {
         try {
             if (values.newPassword === values.confirmPassword) {
                 const value: IPassword = {
-                    id: user?.id,
+                    id: state?.id,
                     password: values.confirmPassword,
                 };
                 await changePassword(value).unwrap();
@@ -70,6 +94,37 @@ const ContactInfo: React.FC = () => {
             }
         } catch (error) {
             message.error(error.data.message);
+        }
+    };
+
+    const handleEditUserFirstName = (): void => setUpdateFirstName(true);
+
+    const handleEditUserLastName = (): void => setUpdateLastName(true);
+
+    const handleUpdate = async (value: string) => {
+        switch (value) {
+            case 'firstName':
+                await editUserValue({
+                    id: user?.id,
+                    firstName: updateUserFirstName,
+                });
+                notification.success({
+                    message: t('ContactInfo.changedFirstName'),
+                });
+                setUpdateFirstName(false);
+                break;
+            case 'lastName':
+                await editUserValue({
+                    id: user?.id,
+                    lastName: updateUserLastName,
+                });
+                notification.success({
+                    message: t('ContactInfo.changedLastName'),
+                });
+                setUpdateLastName(false);
+                break;
+            default:
+                return null;
         }
     };
 
@@ -105,16 +160,78 @@ const ContactInfo: React.FC = () => {
                         <CardInfo>
                             <Label>{t('ContactInfo.userFirstName')}</Label>
                             <TitleGroup justify="space-between">
-                                <Title fs="16">{user?.firstName}</Title>
-                                {user?.firstName ? <Icon /> : <IconNotFound />}
+                                <Title fs="16">
+                                    {updateFirstName ? (
+                                        <StyledInput
+                                            value={updateUserFirstName}
+                                            onChange={(e) =>
+                                                setUpdateUserFirstName(
+                                                    e.target.value
+                                                )
+                                            }
+                                            type="text"
+                                        />
+                                    ) : (
+                                        <span>{user?.firstName}</span>
+                                    )}
+                                </Title>
+                                <Row>
+                                    {updateFirstName ? (
+                                        <SaveIcon
+                                            onClick={() =>
+                                                handleUpdate('firstName')
+                                            }
+                                        />
+                                    ) : (
+                                        <EditIcon
+                                            onClick={handleEditUserFirstName}
+                                        />
+                                    )}
+                                    {user?.firstName ? (
+                                        <Icon />
+                                    ) : (
+                                        <IconNotFound />
+                                    )}
+                                </Row>
                             </TitleGroup>
                         </CardInfo>
 
                         <CardInfo>
                             <Label>{t('ContactInfo.userLastName')}</Label>
                             <TitleGroup justify="space-between">
-                                <Title fs="16">{user?.lastName}</Title>
-                                {user?.lastName ? <Icon /> : <IconNotFound />}
+                                <Title fs="16">
+                                    {updateLastName ? (
+                                        <StyledInput
+                                            value={updateUserLastName}
+                                            onChange={(e) =>
+                                                setUpdateUserLastName(
+                                                    e.target.value
+                                                )
+                                            }
+                                            type="text"
+                                        />
+                                    ) : (
+                                        <span>{user?.lastName}</span>
+                                    )}
+                                </Title>
+                                <Row>
+                                    {updateLastName ? (
+                                        <SaveIcon
+                                            onClick={() =>
+                                                handleUpdate('lastName')
+                                            }
+                                        />
+                                    ) : (
+                                        <EditIcon
+                                            onClick={handleEditUserLastName}
+                                        />
+                                    )}
+                                    {user?.lastName ? (
+                                        <Icon />
+                                    ) : (
+                                        <IconNotFound />
+                                    )}
+                                </Row>
                             </TitleGroup>
                         </CardInfo>
 
@@ -157,6 +274,11 @@ const ContactInfo: React.FC = () => {
                         </CardInfo>
                     </Card>
                 </div>
+                <>
+                    {' '}
+                    {isUserError &&
+                        message.error('Something went wrong, please try again')}
+                </>
             </Block>
 
             <ModalWindow
@@ -256,16 +378,19 @@ const ContactInfo: React.FC = () => {
                         </FormButton>
                     </StyledForm>
                 )}
-
-                {isSuccess && (
-                    <Label>
-                        {t('ContactInfo.afterChangePassword.success')}
-                    </Label>
-                )}
-                {isError && (
-                    <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
-                )}
             </ModalWindow>
+
+            <>
+                {' '}
+                {isSuccess &&
+                    notification.success({
+                        message: t('ContactInfo.afterChangePassword.success'),
+                    })}
+                {isError &&
+                    notification.error({
+                        message: t('ContactInfo.afterChangePassword.error'),
+                    })}
+            </>
         </Wrapper>
     );
 };

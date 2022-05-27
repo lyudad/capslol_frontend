@@ -9,4 +9,5 @@ export enum Paths {
     RESET_PASSWORD = '/reset_password/*',
     JOB_PAGE = '/job',
     SEND_PROPOSAL = '/send_proposal',
+    CONTACT_INFO = '/contact_info',
 }

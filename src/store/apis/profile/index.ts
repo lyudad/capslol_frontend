@@ -1,7 +1,10 @@
-﻿import { baseApi } from '..';
-import { IPassword } from './profile.types';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import { baseApi } from '..';
+import { IPassword, IUserValue, IUser } from './profile.types';
 
-export const profileApi = baseApi.injectEndpoints({
+const apiProfileTag = baseApi.enhanceEndpoints({ addTagTypes: ['User'] });
+
+export const profileApi = apiProfileTag.injectEndpoints({
     endpoints: (builder) => ({
         changePassword: builder.mutation<IPassword, IPassword>({
             query(value) {
@@ -13,7 +16,27 @@ export const profileApi = baseApi.injectEndpoints({
                 };
             },
         }),
+        editUserValue: builder.mutation<IUserValue, IUserValue>({
+            query(value) {
+                return {
+                    url: `auth/updateUser/${value.id}`,
+                    method: 'PUT',
+                    body: { user: value },
+                };
+            },
+            invalidatesTags: ['User'],
+        }),
+        getUserById: builder.query<any, number>({
+            query: (value) => ({
+                url: `auth/getUser/${value}`,
+            }),
+            providesTags: ['User'],
+        }),
     }),
 });
 
-export const { useChangePasswordMutation } = profileApi;
+export const {
+    useChangePasswordMutation,
+    useEditUserValueMutation,
+    useGetUserByIdQuery,
+} = profileApi;

@@ -180,7 +180,9 @@
         "afterChangePassword": {
             "success": "Password successfully changed!",
             "error": "Something went wrong, please try again later!"
-        }
+        },
+        "changedFirstName": "Your first name successfully changed!",
+        "changedLastName": "Your last name successfully changed!"
     },
 
     "OffersPage": {

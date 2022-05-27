@@ -6,6 +6,7 @@ import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useSearchUserQuery } from 'store/apis/publicProfile';
 import avatar from 'assets/avatar.png';
+import { Paths } from 'router/paths';
 import {
     Description,
     ProfileContainer,
@@ -38,6 +39,10 @@ const PublicPage: React.FC = () => {
             </Page>
         );
     }
+
+    const handleSendProposal = (): void => {
+        navigate(Paths.CONTACT_INFO, { state: { id: user?.id } });
+    };
 
     return (
         <Page>
@@ -162,10 +167,7 @@ const PublicPage: React.FC = () => {
                     </Description>
                 </Sections>
                 <Row justify="end">
-                    <ButtonSet
-                        onClick={() => navigate(`/contact_info/${user?.id}`)}
-                        type="default"
-                    >
+                    <ButtonSet onClick={handleSendProposal} type="default">
                         {t('PublicProfile.contact_info')}
                     </ButtonSet>
                     <ButtonSet

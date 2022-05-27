@@ -14,7 +14,7 @@ export const proposalApi = baseApi.injectEndpoints({
         }),
         getSingleJob: builder.query<IJob, number | undefined>({
             query: (value: number) => ({
-                url: `/jobs/getbyid?job=${value}`,
+                url: `/jobs/${value}`,
             }),
         }),
     }),
