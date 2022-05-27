@@ -47,6 +47,9 @@ export const Section = styled.section`
 
 export const FormItem = styled(Form.Item)`
     width: 35%;
+    .ant-input-textarea-show-count:after {
+        color: white;
+    }
 `;
 
 export const StyledInput = styled(InputNumber)`
@@ -134,6 +137,30 @@ export const StyledTextArea = styled(TextArea)`
         border-color: ${brandColor};
         border-right-width: 1px;
     }
+    &:after {
+        float: right;
+        color: white;
+        white-space: nowrap;
+        content: attr(data-count);
+        pointer-events: none;
+        font-size: 14px;
+    }
+    textarea.ant-input {
+        border-radius: 5px;
+        font-size: 16px;
+
+        &:focus {
+            border-color: ${brandColor};
+            box-shadow: 0 0 0 2px ${appBarBrd};
+            border-right-width: 1px;
+            outline: 0;
+        }
+
+        &:hover {
+            border-color: ${brandColor};
+            border-right-width: 1px;
+        }
+    }
 `;
 
 export const StyledButton = styled(Button)`
@@ -181,5 +208,11 @@ export const UploadForm = styled(Form.Item)`
             background: ${proposalWhiteGreen};
             box-shadow: 0 0 0 2px ${appBarBrd};
         }
+    }
+`;
+
+export const StyledFormItem = styled(Form.Item)`
+    textarea.ant-input {
+        font-size: 18px;
     }
 `;

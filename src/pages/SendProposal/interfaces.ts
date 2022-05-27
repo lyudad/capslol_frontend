@@ -8,3 +8,7 @@ export interface IFormValue {
     coverLetter: string;
     freelancerValue: number;
 }
+
+export interface IJob {
+    id: number;
+}

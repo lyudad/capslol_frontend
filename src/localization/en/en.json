@@ -142,10 +142,10 @@
         "title": "Submit Proposal",
         "subTitle": "Terms",
         "jobQuestion": "What is the rate you'd like to bid for this job?",
-        "youRate": "Your profile rate: /hr",
-        "jobOwnerRate": "Client’s budget: /hr",
+        "youRate": "Your profile rate: ",
+        "jobOwnerRate": "Client’s budget:",
         "hourlyRate": "Hourly Rate",
-        "getJobRate": "20% GetJob Service Fee",
+        "getJobRate": "12.5% GetJob Service Fee",
         "gotRate": "You'll receive",
         "letterTitle": "Letter",
         "coverLetterTitle": " Cover Letter",
@@ -181,5 +181,25 @@
             "success": "Password successfully changed!",
             "error": "Something went wrong, please try again later!"
         }
+    },
+
+    "OffersPage": {
+        "accept": "Accept",
+        "decline": "Decline",
+        "goToChat": "Go to chat",
+        "myOffers": "My Offers",
+        "myInvitations": "My Invitations",
+        "myProposals": "My Proposals"
+    },
+
+    "Chat": {
+        "offerYes": "Accept",
+        "offerNo": "Refuse",
+        "sendTime": "1.03 PM",
+        "contactTime": "32 mins ago",
+        "offerBtnText": "Job Offer",
+        "welcome": "Welcome",
+        "welcomeText": "Please select a chat to Start messaging.",
+        "notFound": "Not found any chats"
     }
 }
