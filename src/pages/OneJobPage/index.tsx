@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Paths } from 'router/paths';
 import { useGetJobByIdQuery, useGetUserProfileQuery } from 'store/apis/jobs';
 import avatar from 'assets/avatar.png';
 import { CustomState } from './props';
@@ -21,6 +22,8 @@ import { StyledNav } from '../JobsPage/JobListCard/styles';
 const OneJobPage: React.FC = () => {
     const { t } = useTranslation();
 
+    const navigate = useNavigate();
+
     const location = useLocation();
 
     const state = location.state as CustomState;
@@ -29,7 +32,13 @@ const OneJobPage: React.FC = () => {
 
     const ownerId = jobData?.ownerId.id;
 
+    const jobId = jobData?.id;
+
     const { data: ownerProfile } = useGetUserProfileQuery(ownerId);
+
+    const handleSendProposal = (): void => {
+        navigate(Paths.SEND_PROPOSAL, { state: { jobId } });
+    };
 
     return (
         <Page>
@@ -80,7 +89,9 @@ const OneJobPage: React.FC = () => {
                 </OptionContent>
 
                 <OptionContent>
-                    <StyledNav>{t('JobPage.sendProposal')}</StyledNav>
+                    <StyledNav onClick={handleSendProposal}>
+                        {t('JobPage.sendProposal')}
+                    </StyledNav>
                 </OptionContent>
             </JobCard>
         </Page>

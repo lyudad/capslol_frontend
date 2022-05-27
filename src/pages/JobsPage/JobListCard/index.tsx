@@ -41,6 +41,10 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id } });
     };
+
+    const handleSendProposal = (): void => {
+        navigate(Paths.SEND_PROPOSAL, { state: { id } });
+    };
     return (
         <>
             <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
@@ -75,7 +79,9 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav>{t('JobPage.sendProposal')}</StyledNav>
+            <StyledNav onClick={handleSendProposal}>
+                {t('JobPage.sendProposal')}
+            </StyledNav>
         </>
     );
 };

@@ -29,6 +29,8 @@ const App: React.FC = () => {
                     <Route path="/select-role" element={<RolePage />} />
                     <Route path="/profile" element={<PublicPage />} />
                     <Route path="/test" element={<TestPage />} />
+                    <Route path="/send_proposal/" element={<SendProposal />} />
+                    <Route path="/chat" element={<Chat />} />
                 </Route>
 
                 <Route path="/" element={<HomePage />} />
@@ -39,8 +41,6 @@ const App: React.FC = () => {
                     element={<ForgotPassword />}
                 />
                 <Route path="/reset_password/*" element={<ResetPassword />} />
-                <Route path="/send_proposal/" element={<SendProposal />} />
-                <Route path="/chat" element={<Chat />} />
             </Routes>
         </MainLayout>
     );
