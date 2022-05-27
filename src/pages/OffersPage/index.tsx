@@ -1,74 +1,55 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    Page,
-    Title,
-    TopButtonContainer,
-    StyledNavBtn,
-    NavBtnIsActive,
-} from './styles';
+import { colors } from 'constants/index';
+import { Page, TopButtonContainer, StyledNavBtn } from './styles';
 import MyOffers from './MyOffers';
 
 const OffersPage: React.FC = () => {
-    const [myOffers, setMyOffers] = useState<boolean>(true);
-    const [myInvitations, setMyInvitations] = useState<boolean>(false);
-    const [myProposals, setMyProposals] = useState<boolean>(false);
+    const [isActive, setIsActive] = useState<number>(1);
 
     const { t } = useTranslation();
-
-    const onOffersClick = (): void => {
-        setMyOffers(true);
-        setMyInvitations(false);
-        setMyProposals(false);
-    };
-
-    const onInvitationsClick = (): void => {
-        setMyOffers(false);
-        setMyInvitations(true);
-        setMyProposals(false);
-    };
-
-    const onProposalsClick = (): void => {
-        setMyOffers(false);
-        setMyInvitations(false);
-        setMyProposals(true);
-    };
 
     return (
         <Page>
             <TopButtonContainer>
-                {myOffers ? (
-                    <NavBtnIsActive onClick={onOffersClick} type="submit">
-                        {t('OffersPage.myOffers')}
-                    </NavBtnIsActive>
-                ) : (
-                    <StyledNavBtn onClick={onOffersClick} type="submit">
-                        {t('OffersPage.myOffers')}
-                    </StyledNavBtn>
-                )}
-                {myInvitations ? (
-                    <NavBtnIsActive onClick={onInvitationsClick} type="submit">
-                        {t('OffersPage.myInvitations')}
-                    </NavBtnIsActive>
-                ) : (
-                    <StyledNavBtn onClick={onInvitationsClick} type="submit">
-                        {t('OffersPage.myInvitations')}
-                    </StyledNavBtn>
-                )}
-                {myProposals ? (
-                    <NavBtnIsActive onClick={onProposalsClick} type="submit">
-                        {t('OffersPage.myProposals')}
-                    </NavBtnIsActive>
-                ) : (
-                    <StyledNavBtn onClick={onProposalsClick} type="submit">
-                        {t('OffersPage.myProposals')}
-                    </StyledNavBtn>
-                )}
+                <StyledNavBtn
+                    onClick={() => setIsActive(1)}
+                    style={{
+                        color:
+                            isActive === 1
+                                ? `${colors.brandColor}`
+                                : `${colors.textWhite}`,
+                    }}
+                >
+                    {t('OffersPage.myOffers')}
+                </StyledNavBtn>
+
+                <StyledNavBtn
+                    onClick={() => setIsActive(2)}
+                    style={{
+                        color:
+                            isActive === 2
+                                ? `${colors.brandColor}`
+                                : `${colors.textWhite}`,
+                    }}
+                >
+                    {t('OffersPage.myInvitations')}
+                </StyledNavBtn>
+
+                <StyledNavBtn
+                    onClick={() => setIsActive(3)}
+                    style={{
+                        color:
+                            isActive === 3
+                                ? `${colors.brandColor}`
+                                : `${colors.textWhite}`,
+                    }}
+                >
+                    {t('OffersPage.myProposals')}
+                </StyledNavBtn>
             </TopButtonContainer>
-            {myOffers && <Title>{t('OffersPage.myOffers')}</Title>}
-            {myInvitations && <Title>{t('OffersPage.myInvitations')}</Title>}
-            {myProposals && <Title>{t('OffersPage.myProposals')}</Title>}
-            {myOffers && <MyOffers />}
+
+            {isActive === 1 && <MyOffers />}
         </Page>
     );
 };

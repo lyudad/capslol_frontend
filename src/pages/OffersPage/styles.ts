@@ -26,7 +26,6 @@ export const StyledNavBtn = styled.button`
     border-left: 1px solid ${colors.appBarBrd};
     font-size: 14px;
     font-style: italic;
-    color: ${colors.textWhite};
     background-color: ${colors.appBarBgr};
 `;
 
@@ -68,10 +67,74 @@ export const JobCard = styled.li`
     color: ${colors.textWhite};
 `;
 
-export const FiltersContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    margin-left: 16px;
+export const StyledTitleCardButton = styled.button`
+    padding: 0;
+    margin-bottom: 8px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid ${colors.appBarBrd};
+    cursor: pointer;
+`;
+
+export const OneCard = styled.li`
+    padding: 8px;
     background-color: ${colors.appBarBgr};
+    border-bottom: 1px solid ${colors.appBarBrd};
+`;
+
+export const DateContainer = styled.div`
+    text-align: right;
+    font-size: 10px;
+    color: ${colors.textWhiteGrey};
+`;
+
+export const CardTitle = styled.span`
+    font-size: ${fonts.jobCardTitleSize};
+    font-weight: ${fonts.jobListFontWeight};
+    color: ${colors.brandColor};
+`;
+
+export const Salary = styled.span`
+    margin-left: 8px;
+    color: ${colors.textWhite};
+    font-weight: ${fonts.jobListFontWeight};
+`;
+
+export const Descriptions = styled.p`
+    margin-bottom: 0;
+    color: ${colors.textWhiteGrey};
+`;
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 8px 0 4px 0;
+`;
+
+export const ValueBox = styled.div`
+    padding: 2px;
+`;
+
+export const Field = styled.span`
+    color: ${colors.textWhiteGrey};
+    font-size: 12px;
+`;
+
+export const FieldValue = styled.span`
+    color: ${colors.brandColor};
+    font-weight: ${fonts.jobListFontWeight};
+    font-size: 12px;
+    margin-left: 3px;
+`;
+
+export const StyledCardBtn = styled.button`
+    width: 100px;
+    padding: 4px 8px;
+    margin-right: 8px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    color: ${colors.textWhite};
+    background-color: ${colors.brandColor};
 `;

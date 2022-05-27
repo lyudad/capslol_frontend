@@ -1,18 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import {
     DateContainer,
-    StyledButton,
-    JobTitle,
+    StyledTitleCardButton,
+    CardTitle,
     Salary,
     ButtonContainer,
     Descriptions,
     ValueBox,
     Field,
     FieldValue,
-    StyledNavBtn,
-    OneOfferCard,
-} from './styles';
-import 'antd/dist/antd.min.css';
+    StyledCardBtn,
+    OneCard,
+} from '../styles';
 
 const OfferCard: React.FC = () => {
     const { t } = useTranslation();
@@ -21,13 +20,13 @@ const OfferCard: React.FC = () => {
         // navigate(Paths.JOB_PAGE, { state: { id } });
     };
     return (
-        <OneOfferCard>
+        <OneCard>
             <DateContainer>2022-05-12</DateContainer>
 
-            <StyledButton onClick={onClickJob} type="submit">
-                <JobTitle>Middle React Native Developer</JobTitle>
+            <StyledTitleCardButton onClick={onClickJob} type="submit">
+                <CardTitle>Middle React Native Developer</CardTitle>
                 <Salary>10$</Salary>
-            </StyledButton>
+            </StyledTitleCardButton>
 
             <ValueBox>
                 <Field>{t('JobPage.jobOwner')}</Field>
@@ -50,11 +49,11 @@ const OfferCard: React.FC = () => {
             </ValueBox>
 
             <ButtonContainer>
-                <StyledNavBtn>{t('OffersPage.accept')}</StyledNavBtn>
-                <StyledNavBtn>{t('OffersPage.decline')}</StyledNavBtn>
-                <StyledNavBtn>{t('OffersPage.goToChat')}</StyledNavBtn>
+                <StyledCardBtn>{t('OffersPage.accept')}</StyledCardBtn>
+                <StyledCardBtn>{t('OffersPage.decline')}</StyledCardBtn>
+                <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
             </ButtonContainer>
-        </OneOfferCard>
+        </OneCard>
     );
 };
 

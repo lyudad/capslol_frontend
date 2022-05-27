@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import 'antd/dist/antd.min.css';
 import { useLocation } from 'react-router-dom';
 import { useGetJobByIdQuery, useGetUserProfileQuery } from 'store/apis/jobs';
 import avatar from 'assets/avatar.png';
