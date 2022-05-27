@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { colors } from 'constants/index';
 import { Page, TopButtonContainer, StyledNavBtn } from './styles';
 import MyOffers from './MyOffers';
+import MyInvitation from './MyInvitations';
 
 const OffersPage: React.FC = () => {
     const [isActive, setIsActive] = useState<number>(1);
@@ -50,6 +51,7 @@ const OffersPage: React.FC = () => {
             </TopButtonContainer>
 
             {isActive === 1 && <MyOffers />}
+            {isActive === 2 && <MyInvitation />}
         </Page>
     );
 };
