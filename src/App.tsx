@@ -4,6 +4,7 @@ import PublicPage from 'pages/PublicPage/PublicPage';
 import JobsPage from 'pages/JobsPage';
 import MainLayout from 'components/MainLayout';
 import ForgotPassword from 'pages/ForgotPassword';
+import { Paths } from 'router/paths';
 import ResetPassword from 'pages/ResetPassword';
 import SendProposal from 'pages/SendProposal';
 import ContactInfo from 'pages/ContactInfo';
@@ -22,25 +23,34 @@ const App: React.FC = () => {
         <MainLayout>
             <Routes>
                 <Route element={<Protected />}>
-                    <Route path="/jobs" element={<JobsPage />} />
-                    <Route path="/offers" element={<OffersPage />} />
-                    <Route path="/contact_info" element={<ContactInfo />} />
-                    <Route path="/job" element={<OneJobPage />} />
-                    <Route path="/select-role" element={<RolePage />} />
-                    <Route path="/profile" element={<PublicPage />} />
-                    <Route path="/test" element={<TestPage />} />
-                    <Route path="/send_proposal/" element={<SendProposal />} />
-                    <Route path="/chat" element={<Chat />} />
+                    <Route path={Paths.JOBS} element={<JobsPage />} />
+                    <Route path={Paths.OFFERS} element={<OffersPage />} />
+                    <Route
+                        path={Paths.CONTACT_INFO}
+                        element={<ContactInfo />}
+                    />
+                    <Route path={Paths.JOB} element={<OneJobPage />} />
+                    <Route path={Paths.SELECT_ROLE} element={<RolePage />} />
+                    <Route path={Paths.PROFILE} element={<PublicPage />} />
+                    <Route path={Paths.TEST} element={<TestPage />} />
+                    <Route
+                        path={Paths.SEND_PROPOSAL}
+                        element={<SendProposal />}
+                    />
+                    <Route path={Paths.CHAT} element={<Chat />} />
                 </Route>
 
-                <Route path="/" element={<HomePage />} />
-                <Route path="/sign-up" element={<AuthForm />} />
-                <Route path="/setting/:id" element={<SettingPage />} />
+                <Route path={Paths.HOME} element={<HomePage />} />
+                <Route path={Paths.SIGN_UP} element={<AuthForm />} />
+                <Route path={Paths.SETTING_ID} element={<SettingPage />} />
                 <Route
-                    path="/forgotten_password"
+                    path={Paths.FORGOTTEN_PASSWORD}
                     element={<ForgotPassword />}
                 />
-                <Route path="/reset_password/*" element={<ResetPassword />} />
+                <Route
+                    path={Paths.RESET_PASSWORD}
+                    element={<ResetPassword />}
+                />
             </Routes>
         </MainLayout>
     );
