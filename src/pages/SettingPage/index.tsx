@@ -17,7 +17,6 @@ import {
     message,
 } from 'antd';
 
-import { UserOutlined } from '@ant-design/icons';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +30,7 @@ import {
     Description,
     Sections,
     ButtonSet,
+    Title,
 } from './styles';
 
 const englishEnum = [
@@ -49,8 +49,6 @@ const SettingPage: React.FC = () => {
     const { data: allSkills } = useGetAllSkillsQuery('');
     const [createProfile] = useCreateProfileMutation();
     const { TextArea } = Input;
-    const [firstName, setFirstName] = useState(user?.firstName);
-    const [lastName, setLastName] = useState(user?.lastName);
 
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
@@ -81,16 +79,6 @@ const SettingPage: React.FC = () => {
     );
     const [skillsId, setSkillsId] = useState<number[]>();
 
-    const onChangeFirstName = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setFirstName(event.target.value);
-    };
-    const onChangeLastName = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setLastName(event.target.value);
-    };
     const onNameCompany = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
@@ -194,16 +182,20 @@ const SettingPage: React.FC = () => {
 
         const UpdateProfile: newProfile = {
             id: user?.id,
+            hourRate,
+            availableHours,
+            position,
             skills: skillsId,
             english,
+            other,
         };
 
         try {
             await createProfile(UpdateProfile);
-            navigate(`/profile`);
         } catch (error) {
             message.error(error.status);
         }
+        navigate(`/profile`);
         return notification.success({
             message: 'Changes saved',
         });
@@ -213,20 +205,11 @@ const SettingPage: React.FC = () => {
         <Page>
             <ProfileContainer>
                 <TitleEmpty>
-                    <Input
-                        size="middle"
-                        style={{ marginRight: 10 }}
-                        placeholder={t('PublicProfile.first_name')}
-                        onChange={onChangeFirstName}
-                        value={firstName}
-                        prefix={<UserOutlined />}
-                    />
-                    <Input
-                        size="middle"
-                        placeholder={t('PublicProfile.last_name')}
-                        onChange={onChangeLastName}
-                        value={lastName}
-                    />
+                    <Title>
+                        {user?.firstName
+                            ? `${user?.firstName} ${user?.lastName}`
+                            : t('PublicProfile.user_name')}
+                    </Title>
                 </TitleEmpty>
 
                 <Avatar>
@@ -446,10 +429,11 @@ const SettingPage: React.FC = () => {
                         <TextArea
                             rows={4}
                             style={{ width: 420 }}
+                            showCount
+                            maxLength={500}
                             placeholder={t('PublicProfile.text_type')}
                             value={other}
                             onChange={onOther}
-                            maxLength={500}
                         />
                     </Description>
                 </Sections>

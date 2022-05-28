@@ -38,7 +38,6 @@ const PublicPage: React.FC = () => {
             </Page>
         );
     }
-
     return (
         <Page>
             <ProfileContainer>
@@ -140,7 +139,7 @@ const PublicPage: React.FC = () => {
                             {data?.skills.map((e) => (
                                 <span key={e.id}>| {e.name} </span>
                             ))}{' '}
-                            |
+                            {data?.skills.length === 0 ? undefined : '|'}
                         </span>
                     </Description>
                 </Sections>

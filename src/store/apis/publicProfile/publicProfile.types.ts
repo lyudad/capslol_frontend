@@ -31,8 +31,8 @@ export interface newProfile {
     experiense?: Experiences | undefined;
     educations?: Educations | undefined;
     categories?: Category | undefined;
-    skills: number[] | undefined;
-    english?: string | undefined;
+    skills?: number[] | undefined;
+    english: string | undefined;
     other?: string | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
