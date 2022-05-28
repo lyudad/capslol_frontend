@@ -40,8 +40,8 @@ const ProposalCard: React.FC = () => {
             </ValueBox>
 
             <ValueBox>
-                <Field>status</Field>
-                <FieldValue>Pending</FieldValue>
+                <Field>my hour rate:</Field>
+                <FieldValue>8</FieldValue>
             </ValueBox>
         </OneCard>
     );
