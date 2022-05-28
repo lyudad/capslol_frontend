@@ -14,11 +14,11 @@ export interface IGoogleRequest {
 
 export interface IUser {
     user: UserType;
-    accessToken: string;
+    accessToken?: string;
 }
 
 export type UserType = {
-    id?: number;
+    id: number;
     firstName?: string;
     lastName?: string;
     role?: null;
@@ -45,3 +45,17 @@ export interface Password {
     token: string | undefined;
     password: string;
 }
+
+export enum Role {
+    FREELANCER = 'Freelancer',
+    JOB_OWNER = 'Job Owner',
+    NOSET = 'No set',
+}
+
+export interface setRole {
+    userId: number;
+    roleType: string;
+}
+
+export const FREELANCER = 'Freelancer';
+export const JOB_OWNER = 'Job Owner';
