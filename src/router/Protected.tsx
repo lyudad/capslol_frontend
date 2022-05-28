@@ -4,7 +4,9 @@ import { Paths } from './paths';
 
 const Protected: React.FC = () => {
     const location = useLocation();
-    const isAuthenticated = useAppSelector((state) => state.auth.accessToken);
+    const isAuthenticated = useAppSelector(
+        (state) => state.authReducer.accessToken
+    );
     if (isAuthenticated) {
         return <Outlet />;
     }
