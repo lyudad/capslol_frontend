@@ -190,7 +190,8 @@
         "goToChat": "Go to chat",
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
-        "myProposals": "My Proposals"
+        "myProposals": "My Proposals",
+        "myHourRate": "my hour rate:"
     },
 
     "Chat": {
