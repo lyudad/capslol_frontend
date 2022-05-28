@@ -2,7 +2,7 @@
 import { message } from 'antd';
 
 import { useGetContactsQuery } from 'store/apis/chat';
-import Loader from 'common/Loader/Loader';
+import Spinner from 'components/Spinner';
 import ChatContent from './ChatContent';
 import ChatList from './ChatList';
 import { Wrapper } from './styles';
@@ -32,7 +32,7 @@ const Chat: React.FC = () => {
                 </>
             )}
             <>
-                {isLoading && <Loader />}
+                {isLoading && <Spinner />}
                 {isError && message.error('Not found any contacts')}
             </>
         </Wrapper>

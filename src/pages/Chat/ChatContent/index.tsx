@@ -3,8 +3,8 @@ import { message } from 'antd';
 
 import { useAppSelector } from 'hooks/redux';
 import { useGetMessagesQuery, usePostMessageMutation } from 'store/apis/chat';
-import Loader from 'common/Loader/Loader';
 import { Img } from 'constants/index';
+import Spinner from 'components/Spinner';
 import Avatar from '../ChatList/Avatar';
 import { IChatContentProps } from '../interfaces';
 import ChatItem from './ChatItem';
@@ -101,7 +101,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                         </div>
                     )}
                     <>
-                        {isLoading && <Loader />}
+                        {isLoading && <Spinner />}
                         {msgIsError &&
                             message.error(
                                 'Something went wrong, messages not found'

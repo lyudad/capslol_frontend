@@ -2,7 +2,7 @@
 import { message } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'common/Button/Button';
+import Button from 'components/Button/Button';
 import { colors } from 'constants/index';
 import { useAppSelector } from 'hooks/redux';
 import Avatar from 'pages/Chat/ChatList/Avatar';

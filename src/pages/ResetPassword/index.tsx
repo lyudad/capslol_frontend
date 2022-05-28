@@ -11,7 +11,7 @@ import {
     FormItem,
 } from 'pages/ForgotPassword/styles';
 import { colors } from 'constants/index';
-import ModalWindow from 'common/ModalWindow/ModalWindow';
+import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { Password } from 'store/slices/auth/auth.type';
 import { useResetPasswordMutation } from 'store/apis/auth';
 import { validatePassword } from 'constants/validate';

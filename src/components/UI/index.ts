@@ -61,6 +61,7 @@ export const StyledContent = styled.section`
     background-image: url(./images/bg-image.png);
     background-repeat: no-repeat;
     background-size: contain;
+    min-height: 100vh;
 `;
 
 export const Flex = styled(Form.Item)<FlexType>`

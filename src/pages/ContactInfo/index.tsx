@@ -1,6 +1,4 @@
 ﻿/* eslint-disable consistent-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { useState } from 'react';
 import { Form, message, Row, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -16,14 +14,16 @@ import {
 import { FormPassword } from 'pages/ResetPassword/style';
 import { colors } from 'constants/index';
 import { validatePassword } from 'constants/validate';
-import Button from 'common/Button/Button';
-import ModalWindow from 'common/ModalWindow/ModalWindow';
+import Button from 'components/Button/Button';
+import ModalWindow from 'components/ModalWindow/ModalWindow';
 import {
     useChangePasswordMutation,
     useEditUserValueMutation,
     useGetUserByIdQuery,
 } from 'store/apis/profile';
 import { IPassword } from 'store/apis/profile/profile.types';
+import { Paths } from 'router/paths';
+import Spinner from 'components/Spinner';
 import { IChangePassword, IContactInfo } from './interfaces';
 import {
     Wrapper,
@@ -58,17 +58,16 @@ const ContactInfo: React.FC = () => {
         useChangePasswordMutation();
     const [editUserValue, { isError: isUserError }] =
         useEditUserValueMutation();
-    const { data: singleUser } = useGetUserByIdQuery(state.id);
-    const { data: user } = singleUser;
+    const { data: user, isLoading } = useGetUserByIdQuery(state.id);
 
     const [updateUserFirstName, setUpdateUserFirstName] = useState<
         string | undefined
-    >(user?.firstName);
+    >(user?.data?.firstName);
     const [updateUserLastName, setUpdateUserLastName] = useState<
         string | undefined
-    >(user?.lastName);
+    >(user?.data?.lastName);
 
-    const handleNavigate = (): void => navigate('/profile');
+    const handleNavigate = (): void => navigate(Paths.PROFILE);
 
     const enterLoading = (): void => setLoading(true);
 
@@ -101,11 +100,11 @@ const ContactInfo: React.FC = () => {
 
     const handleEditUserLastName = (): void => setUpdateLastName(true);
 
-    const handleUpdate = async (value: string) => {
+    const handleUpdate = async (value: string): Promise<void | null> => {
         switch (value) {
             case 'firstName':
                 await editUserValue({
-                    id: user?.id,
+                    id: user?.data?.id,
                     firstName: updateUserFirstName,
                 });
                 notification.success({
@@ -115,7 +114,7 @@ const ContactInfo: React.FC = () => {
                 break;
             case 'lastName':
                 await editUserValue({
-                    id: user?.id,
+                    id: user?.data?.id,
                     lastName: updateUserLastName,
                 });
                 notification.success({
@@ -130,156 +129,199 @@ const ContactInfo: React.FC = () => {
 
     return (
         <Wrapper>
-            <TitleGroup mb="50">
-                <Button
-                    onClick={handleNavigate}
-                    mr="20"
-                    color={colors.btnWhite}
-                    bg={colors.btnDarkBlue}
-                >
-                    <LeftOutlined />
-                </Button>
-                <Title fs="35">{t('ContactInfo.title')}</Title>
-            </TitleGroup>
-
-            <Block>
-                <div>
-                    <TitleGroup mb="35">
-                        <StyledAvatar size={64} icon={<UserOutlined />} />
-                        <div>
-                            <Title fs="28">
-                                {`${user?.firstName ? user?.firstName : 'Not'}
-                                ${user?.lastName ? user?.lastName : 'Found'}`}
-                            </Title>
-                            <Circle>
-                                {user?.role ? user?.role : 'Not Found'}
-                            </Circle>
-                        </div>
-                    </TitleGroup>
-                    <Card>
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userFirstName')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">
-                                    {updateFirstName ? (
-                                        <StyledInput
-                                            value={updateUserFirstName}
-                                            onChange={(e) =>
-                                                setUpdateUserFirstName(
-                                                    e.target.value
-                                                )
-                                            }
-                                            type="text"
-                                        />
-                                    ) : (
-                                        <span>{user?.firstName}</span>
-                                    )}
-                                </Title>
-                                <Row>
-                                    {updateFirstName ? (
-                                        <SaveIcon
-                                            onClick={() =>
-                                                handleUpdate('firstName')
-                                            }
-                                        />
-                                    ) : (
-                                        <EditIcon
-                                            onClick={handleEditUserFirstName}
-                                        />
-                                    )}
-                                    {user?.firstName ? (
-                                        <Icon />
-                                    ) : (
-                                        <IconNotFound />
-                                    )}
-                                </Row>
-                            </TitleGroup>
-                        </CardInfo>
-
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userLastName')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">
-                                    {updateLastName ? (
-                                        <StyledInput
-                                            value={updateUserLastName}
-                                            onChange={(e) =>
-                                                setUpdateUserLastName(
-                                                    e.target.value
-                                                )
-                                            }
-                                            type="text"
-                                        />
-                                    ) : (
-                                        <span>{user?.lastName}</span>
-                                    )}
-                                </Title>
-                                <Row>
-                                    {updateLastName ? (
-                                        <SaveIcon
-                                            onClick={() =>
-                                                handleUpdate('lastName')
-                                            }
-                                        />
-                                    ) : (
-                                        <EditIcon
-                                            onClick={handleEditUserLastName}
-                                        />
-                                    )}
-                                    {user?.lastName ? (
-                                        <Icon />
-                                    ) : (
-                                        <IconNotFound />
-                                    )}
-                                </Row>
-                            </TitleGroup>
-                        </CardInfo>
-
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userEmail')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">{user?.email}</Title>
-                                {user?.email ? <Icon /> : <IconNotFound />}
-                            </TitleGroup>
-                        </CardInfo>
-
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userPhone')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">
-                                    {user?.phoneNumber
-                                        ? user?.phoneNumber
-                                        : 'You phone number is empty'}
-                                </Title>
-                                {user?.phoneNumber ? (
-                                    <Icon />
-                                ) : (
-                                    <IconNotFound />
-                                )}
-                            </TitleGroup>
-                        </CardInfo>
-
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userPassword')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">********</Title>
-                                <Button
-                                    onClick={() => openModal()}
-                                    color={colors.btnWhite}
-                                    bg={colors.btnDarkBlue}
-                                >
-                                    {t('ContactInfo.btnChangeText')}
-                                </Button>
-                            </TitleGroup>
-                        </CardInfo>
-                    </Card>
-                </div>
+            {user && (
                 <>
-                    {' '}
-                    {isUserError &&
-                        message.error('Something went wrong, please try again')}
+                    <TitleGroup mb="50">
+                        <Button
+                            onClick={handleNavigate}
+                            mr="20"
+                            color={colors.btnWhite}
+                            bg={colors.btnDarkBlue}
+                        >
+                            <LeftOutlined />
+                        </Button>
+                        <Title fs="35">{t('ContactInfo.title')}</Title>
+                    </TitleGroup>
+
+                    <Block>
+                        <div>
+                            <TitleGroup mb="35">
+                                <StyledAvatar
+                                    size={64}
+                                    icon={<UserOutlined />}
+                                />
+                                <div>
+                                    <Title fs="28">
+                                        {`${
+                                            user?.data?.firstName
+                                                ? user?.data?.firstName
+                                                : 'Not'
+                                        }
+                                ${
+                                    user?.data?.lastName
+                                        ? user?.data?.lastName
+                                        : 'Found'
+                                }`}
+                                    </Title>
+                                    <Circle>
+                                        {user?.data?.role
+                                            ? user?.data?.role
+                                            : 'Not Found'}
+                                    </Circle>
+                                </div>
+                            </TitleGroup>
+                            <Card>
+                                <CardInfo>
+                                    <Label>
+                                        {t('ContactInfo.userFirstName')}
+                                    </Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {updateFirstName ? (
+                                                <StyledInput
+                                                    value={updateUserFirstName}
+                                                    onChange={(e) =>
+                                                        setUpdateUserFirstName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="text"
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {user?.data?.firstName}
+                                                </span>
+                                            )}
+                                        </Title>
+                                        <Row>
+                                            {updateFirstName ? (
+                                                <SaveIcon
+                                                    onClick={() =>
+                                                        handleUpdate(
+                                                            'firstName'
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <EditIcon
+                                                    onClick={
+                                                        handleEditUserFirstName
+                                                    }
+                                                />
+                                            )}
+                                            {user?.data?.firstName ? (
+                                                <Icon />
+                                            ) : (
+                                                <IconNotFound />
+                                            )}
+                                        </Row>
+                                    </TitleGroup>
+                                </CardInfo>
+
+                                <CardInfo>
+                                    <Label>
+                                        {t('ContactInfo.userLastName')}
+                                    </Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {updateLastName ? (
+                                                <StyledInput
+                                                    value={updateUserLastName}
+                                                    onChange={(e) =>
+                                                        setUpdateUserLastName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="text"
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {user?.data?.lastName}
+                                                </span>
+                                            )}
+                                        </Title>
+                                        <Row>
+                                            {updateLastName ? (
+                                                <SaveIcon
+                                                    onClick={() =>
+                                                        handleUpdate('lastName')
+                                                    }
+                                                />
+                                            ) : (
+                                                <EditIcon
+                                                    onClick={
+                                                        handleEditUserLastName
+                                                    }
+                                                />
+                                            )}
+                                            {user?.data?.lastName ? (
+                                                <Icon />
+                                            ) : (
+                                                <IconNotFound />
+                                            )}
+                                        </Row>
+                                    </TitleGroup>
+                                </CardInfo>
+
+                                <CardInfo>
+                                    <Label>{t('ContactInfo.userEmail')}</Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {user?.data?.email}
+                                        </Title>
+                                        {user?.data?.email ? (
+                                            <Icon />
+                                        ) : (
+                                            <IconNotFound />
+                                        )}
+                                    </TitleGroup>
+                                </CardInfo>
+
+                                <CardInfo>
+                                    <Label>{t('ContactInfo.userPhone')}</Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {user?.data?.phoneNumber
+                                                ? user?.data?.phoneNumber
+                                                : 'You phone number is empty'}
+                                        </Title>
+                                        {user?.data?.phoneNumber ? (
+                                            <Icon />
+                                        ) : (
+                                            <IconNotFound />
+                                        )}
+                                    </TitleGroup>
+                                </CardInfo>
+
+                                <CardInfo>
+                                    <Label>
+                                        {t('ContactInfo.userPassword')}
+                                    </Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">********</Title>
+                                        <Button
+                                            onClick={() => openModal()}
+                                            color={colors.btnWhite}
+                                            bg={colors.btnDarkBlue}
+                                        >
+                                            {t('ContactInfo.btnChangeText')}
+                                        </Button>
+                                    </TitleGroup>
+                                </CardInfo>
+                            </Card>
+                        </div>
+                        <>
+                            {' '}
+                            {isUserError &&
+                                message.error(
+                                    'Something went wrong, please try again'
+                                )}
+                        </>
+                    </Block>
                 </>
-            </Block>
+            )}
+
+            <> {isLoading && <Spinner />}</>
 
             <ModalWindow
                 modalIsOpen={modalIsOpen}
@@ -382,14 +424,14 @@ const ContactInfo: React.FC = () => {
 
             <>
                 {' '}
-                {isSuccess &&
-                    notification.success({
-                        message: t('ContactInfo.afterChangePassword.success'),
-                    })}
-                {isError &&
-                    notification.error({
-                        message: t('ContactInfo.afterChangePassword.error'),
-                    })}
+                {isSuccess && (
+                    <Label>
+                        {t('ContactInfo.afterChangePassword.success')}
+                    </Label>
+                )}
+                {isError && (
+                    <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
+                )}
             </>
         </Wrapper>
     );
