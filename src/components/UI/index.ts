@@ -48,7 +48,7 @@ export const StyledContent = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: calc(100vh - 64px);
     padding: 0px 12px;
     background-color: ${colors.homeBgr};
     background-image: url(./images/bg-image.png);

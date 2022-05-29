@@ -10,7 +10,7 @@ import { StyledButton, StyledCard, Title } from './style';
 const RolePage: React.FC = () => {
     const navigate = useNavigate();
     const [setRole] = useLazySetRoleQuery();
-    const userId = useAppSelector((state) => state.authReducer.user?.id);
+    const userId = useAppSelector((state) => state.auth.user?.id);
 
     const clickHandler = async (
         role: Role,
