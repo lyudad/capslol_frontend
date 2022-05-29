@@ -29,7 +29,7 @@ const App: React.FC = () => {
                         path={Paths.CONTACT_INFO}
                         element={<ContactInfo />}
                     />
-                    <Route path={Paths.JOB} element={<OneJobPage />} />
+                    <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
                     <Route path={Paths.SELECT_ROLE} element={<RolePage />} />
                     <Route path={Paths.PROFILE} element={<PublicPage />} />
                     <Route path={Paths.TEST} element={<TestPage />} />
