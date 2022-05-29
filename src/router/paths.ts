@@ -12,7 +12,6 @@ export enum Paths {
     SEND_PROPOSAL = '/send_proposal',
     JOBS = '/jobs',
     OFFERS = '/offers',
-    JOB = '/job',
     CONTACT_INFO = '/contact_info',
     CHAT = '/chat',
     SETTING_ID = '/setting/:id',

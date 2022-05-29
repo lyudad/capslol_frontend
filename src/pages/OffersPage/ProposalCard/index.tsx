@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import Spinner from 'components/Spinner';
 import { useTranslation } from 'react-i18next';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
@@ -38,7 +39,9 @@ const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
                 <Spinner />
             ) : (
                 <>
-                    <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
+                    <DateContainer>
+                        {moment(new Date(createdAt)).format('D MMMM YYYY')}
+                    </DateContainer>
 
                     <StyledTitleCardButton onClick={onClickJob} type="submit">
                         <CardTitle>{jobId.title}</CardTitle>
@@ -58,7 +61,7 @@ const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
 
                     <ValueBox>
                         <Field>{t('OffersPage.myHourRate')}</Field>
-                        <FieldValue>{hourRate}</FieldValue>
+                        <FieldValue>{hourRate}$</FieldValue>
                     </ValueBox>
                 </>
             )}

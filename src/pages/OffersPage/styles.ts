@@ -16,7 +16,7 @@ export const Title = styled.h2`
     color: ${colors.brandColor};
 `;
 
-export const StyledNavBtn = styled.button`
+export const StyledNavBtn = styled.button<{ isActive: boolean }>`
     width: 120px;
     padding: 4px 8px;
     text-align: center;
@@ -27,6 +27,8 @@ export const StyledNavBtn = styled.button`
     font-size: 14px;
     font-style: italic;
     background-color: ${colors.appBarBgr};
+    color: ${({ isActive }) =>
+        isActive ? colors.brandColor : colors.textWhite};
 `;
 
 export const NavBtnIsActive = styled(StyledNavBtn)`

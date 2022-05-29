@@ -38,7 +38,7 @@ const OneJobPage: React.FC = () => {
     const { data: ownerProfile } = useGetUserProfileQuery(ownerId);
 
     const handleSendProposal = (): void => {
-        navigate(Paths.SEND_PROPOSAL, { state: { jobId } });
+        navigate(Paths.SEND_PROPOSAL, { state: { id: jobId } });
     };
 
     return (
