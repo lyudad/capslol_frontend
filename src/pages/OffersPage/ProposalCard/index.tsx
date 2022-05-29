@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import Spinner from 'components/Spinner';
 import { useTranslation } from 'react-i18next';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
 import { IMyProposal } from 'store/apis/proposals/proposal.types';
+import { Paths } from 'router/paths';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -21,12 +23,14 @@ interface IProps {
 const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
     const { t } = useTranslation();
 
+    const navigate = useNavigate();
+
     const { createdAt, jobId, hourRate, coverLetter } = proposalObj;
 
     const { data: job, isLoading } = useGetJobByIdQuery(jobId.id);
 
     const onClickJob = (): void => {
-        // navigate(Paths.JOB_PAGE, { state: { id } });
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
     };
     return (
         <OneCard>

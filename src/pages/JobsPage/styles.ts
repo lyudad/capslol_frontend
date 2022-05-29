@@ -3,6 +3,7 @@ import { colors, fonts } from 'constants/index';
 
 export const Page = styled.div`
     padding: 12px;
+    /* padding-top: 64px; */
     width: 100%;
     min-height: calc(100vh - 64px);
 `;
