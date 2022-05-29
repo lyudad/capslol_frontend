@@ -34,7 +34,7 @@ export const NavigationContainer = styled.nav`
         content: '';
         position: absolute;
         left: 0px;
-        bottom: 0px;
+        bottom: -6px;
         display: block;
         width: 100%;
         height: 2px;
@@ -44,9 +44,10 @@ export const NavigationContainer = styled.nav`
         transform: scaleX(0);
         transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .navLink:hover::after,
-    .navLink:focus::after {
+
+    .navLink:hover::after {
         transform: scaleX(1);
+        transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 `;
 

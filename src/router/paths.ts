@@ -10,4 +10,9 @@ export enum Paths {
     JOB_PAGE = '/job',
     SETTING_PAGE = '/setting',
     SEND_PROPOSAL = '/send_proposal',
+    JOBS = '/jobs',
+    OFFERS = '/offers',
+    CONTACT_INFO = '/contact_info',
+    CHAT = '/chat',
+    SETTING_ID = '/setting/:id',
 }

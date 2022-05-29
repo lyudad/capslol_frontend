@@ -68,11 +68,15 @@ const AppBar: React.FC = () => {
                     <NavLink to="/profile" className="navLink">
                         PROFILE
                     </NavLink>
-                    <NavLink to="/test" className="navLink">
-                        {t('AppBar.test')}
-                    </NavLink>
+
                     <NavLink to="/jobs" className="navLink">
                         {t('AppBar.jobs')}
+                    </NavLink>
+                    <NavLink to="/offers" className="navLink">
+                        {t('AppBar.myOffers')}
+                    </NavLink>
+                    <NavLink to="/test" className="navLink">
+                        {t('AppBar.test')}
                     </NavLink>
                 </div>
 
