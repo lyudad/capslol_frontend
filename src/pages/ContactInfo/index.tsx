@@ -77,6 +77,10 @@ const ContactInfo: React.FC = () => {
 
     const closeModal = (): void => setIsOpen(false);
 
+    const handleEditUserFirstName = (): void => setUpdateFirstName(true);
+
+    const handleEditUserLastName = (): void => setUpdateLastName(true);
+
     const onFinish = async (values: IChangePassword): Promise<void> => {
         enterLoading();
         try {
@@ -96,30 +100,42 @@ const ContactInfo: React.FC = () => {
         }
     };
 
-    const handleEditUserFirstName = (): void => setUpdateFirstName(true);
-
-    const handleEditUserLastName = (): void => setUpdateLastName(true);
+    const handleEdit = async (
+        updateKey: string,
+        updateValue: string | undefined,
+        msg: string
+    ): Promise<void> => {
+        try {
+            await editUserValue({
+                id: user?.data?.id,
+                [updateKey]: updateValue,
+            });
+            notification.success({
+                message: t(`ContactInfo.${msg}`),
+            });
+        } catch (error) {
+            notification.error({
+                message: t(`${error?.data?.message}`),
+            });
+        }
+    };
 
     const handleUpdate = async (value: string): Promise<void | null> => {
         switch (value) {
             case 'firstName':
-                await editUserValue({
-                    id: user?.data?.id,
-                    firstName: updateUserFirstName,
-                });
-                notification.success({
-                    message: t('ContactInfo.changedFirstName'),
-                });
+                await handleEdit(
+                    'firstName',
+                    updateUserFirstName,
+                    'changedFirstName'
+                );
                 setUpdateFirstName(false);
                 break;
             case 'lastName':
-                await editUserValue({
-                    id: user?.data?.id,
-                    lastName: updateUserLastName,
-                });
-                notification.success({
-                    message: t('ContactInfo.changedLastName'),
-                });
+                await handleEdit(
+                    'lastName',
+                    updateUserLastName,
+                    'changedLastName'
+                );
                 setUpdateLastName(false);
                 break;
             default:

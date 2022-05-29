@@ -1,4 +1,6 @@
-﻿import React, { useState } from 'react';
+﻿/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, message, notification, Row } from 'antd';
 import { useLocation } from 'react-router-dom';
@@ -7,6 +9,7 @@ import { colors } from 'constants/index';
 import {
     useGetSingleJobQuery,
     useSendProposalMutation,
+    useGetAllQuery,
 } from 'store/apis/proposals';
 import { useAppSelector } from 'hooks/redux';
 import { useDispatch } from 'react-redux';
@@ -34,6 +37,7 @@ const SendProposal: React.FC = () => {
 
     const { data: job } = useGetSingleJobQuery(state.id);
     const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
+    const { data: proposals } = useGetAllQuery([]);
 
     const { user } = useAppSelector((s) => s.auth);
     const dispatch = useDispatch();
@@ -73,6 +77,13 @@ const SendProposal: React.FC = () => {
         setHourRate(value);
         setGetJob(getJobHourRate);
         setFreelancerValue(((hourRate || 0) - getJob) * 10);
+    };
+
+    const handleFiltered = (data: any) => {
+        const filtered = data?.filter((i: any) => i.jobId.id === state.id)[0]
+            ?.jobId?.id;
+
+        return filtered;
     };
 
     return (
@@ -197,8 +208,8 @@ const SendProposal: React.FC = () => {
                 </ProposalCard>
 
                 <Form.Item>
-                    {isSuccess ? (
-                        <FontTitle fs="16" color={colors.textWhite}>
+                    {handleFiltered(proposals) === state.id ? (
+                        <FontTitle fs="16" color={colors.textGreen}>
                             You have already responded to this project. Try
                             another one!
                         </FontTitle>
