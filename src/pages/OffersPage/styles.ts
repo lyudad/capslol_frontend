@@ -60,13 +60,9 @@ export const ListContainer = styled.div`
 export const List = styled.li`
     list-style: none;
     margin: 0;
-`;
-
-export const JobCard = styled.li`
-    padding: 24px 8px 8px 8px;
-    background-color: ${colors.appBarBgr};
-    border-bottom: 1px solid ${colors.appBarBrd};
-    color: ${colors.textWhite};
+    ul {
+        margin-bottom: 0;
+    }
 `;
 
 export const StyledTitleCardButton = styled.button`
@@ -78,7 +74,7 @@ export const StyledTitleCardButton = styled.button`
     cursor: pointer;
 `;
 
-export const OneCard = styled.li`
+export const OneCard = styled.div`
     padding: 8px;
     background-color: ${colors.appBarBgr};
     border-bottom: 1px solid ${colors.appBarBrd};
