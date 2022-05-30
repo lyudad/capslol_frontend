@@ -40,7 +40,7 @@ const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
             ) : (
                 <>
                     <DateContainer>
-                        {moment(new Date(createdAt)).format('D MMMM YYYY')}
+                        {moment(new Date(createdAt)).format('D MMMM YY')}
                     </DateContainer>
 
                     <StyledTitleCardButton onClick={onClickJob} type="submit">
