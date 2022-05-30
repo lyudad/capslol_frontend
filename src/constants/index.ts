@@ -82,3 +82,5 @@ export const Img = {
     userLogo:
         'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
 };
+
+export const dateFormat = 'D MMMM YYYY';

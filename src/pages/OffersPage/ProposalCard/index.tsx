@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
 import { IMyProposal } from 'store/apis/proposals/proposal.types';
 import { Paths } from 'router/paths';
+import { dateFormat } from 'constants/index';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -40,7 +41,7 @@ const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
             ) : (
                 <>
                     <DateContainer>
-                        {moment(new Date(createdAt)).format('D MMMM YYYY')}
+                        {moment(new Date(createdAt)).format(dateFormat)}
                     </DateContainer>
 
                     <StyledTitleCardButton onClick={onClickJob} type="submit">
