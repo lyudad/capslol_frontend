@@ -11,11 +11,11 @@ export const jobsApi = baseApi.injectEndpoints({
             query: (id) => `jobs/${id}`,
         }),
 
-        getCategories: builder.query<ICategory[], string>({
+        getCategories: builder.query<ICategory[], void>({
             query: () => `categories`,
         }),
 
-        getSkills: builder.query<ISkill[], string>({
+        getSkills: builder.query<ISkill[], void>({
             query: () => `skills`,
         }),
 
