@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
+import moment from 'moment';
+import { dateFormat } from 'constants/index';
 import { IJob } from 'store/apis/jobs/jobs.types';
 import {
     DateContainer,
@@ -47,7 +49,9 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     };
     return (
         <>
-            <DateContainer>{createdAt.substring(0, 10)}</DateContainer>
+            <DateContainer>
+                {moment(new Date(createdAt)).format(dateFormat)}
+            </DateContainer>
             <StyledButton onClick={onClickJob} type="submit">
                 <JobTitle>{title},</JobTitle>
                 <Salary>{price}$</Salary>

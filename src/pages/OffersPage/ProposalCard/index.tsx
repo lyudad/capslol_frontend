@@ -1,4 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import Spinner from 'components/Spinner';
 import { useTranslation } from 'react-i18next';
+import { useGetJobByIdQuery } from 'store/apis/jobs';
+import { IMyProposal } from 'store/apis/proposals/proposal.types';
+import { Paths } from 'router/paths';
+import { dateFormat } from 'constants/index';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -11,38 +18,54 @@ import {
     OneCard,
 } from '../styles';
 
-const ProposalCard: React.FC = () => {
+interface IProps {
+    proposalObj: IMyProposal;
+}
+
+const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
     const { t } = useTranslation();
 
+    const navigate = useNavigate();
+
+    const { createdAt, jobId, hourRate, coverLetter } = proposalObj;
+
+    const { data: job, isLoading } = useGetJobByIdQuery(jobId.id);
+
     const onClickJob = (): void => {
-        // navigate(Paths.JOB_PAGE, { state: { id } });
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
     };
     return (
         <OneCard>
-            <DateContainer>2022-05-12</DateContainer>
+            {isLoading ? (
+                <Spinner />
+            ) : (
+                <>
+                    <DateContainer>
+                        {moment(new Date(createdAt)).format(dateFormat)}
+                    </DateContainer>
 
-            <StyledTitleCardButton onClick={onClickJob} type="submit">
-                <CardTitle>Middle React Native Developer</CardTitle>
-                <Salary>10$</Salary>
-            </StyledTitleCardButton>
+                    <StyledTitleCardButton onClick={onClickJob} type="submit">
+                        <CardTitle>{jobId.title}</CardTitle>
+                        <Salary>{jobId.price}$</Salary>
+                    </StyledTitleCardButton>
 
-            <ValueBox>
-                <Field>{t('JobPage.jobOwner')}</Field>
-                <FieldValue>Qwert Ertyui</FieldValue>
-            </ValueBox>
+                    <ValueBox>
+                        <Field>{t('JobPage.jobOwner')}</Field>
+                        <FieldValue>
+                            {job?.ownerId.firstName} {job?.ownerId.lastName}
+                        </FieldValue>
+                    </ValueBox>
 
-            <ValueBox>
-                <Descriptions>
-                    Our customer is a startup, founded in 2019 to reinvent how
-                    career data is owned and shared across the global labor
-                    market.
-                </Descriptions>
-            </ValueBox>
+                    <ValueBox>
+                        <Descriptions>{coverLetter}</Descriptions>
+                    </ValueBox>
 
-            <ValueBox>
-                <Field>my hour rate:</Field>
-                <FieldValue>8</FieldValue>
-            </ValueBox>
+                    <ValueBox>
+                        <Field>{t('OffersPage.myHourRate')}</Field>
+                        <FieldValue>{hourRate}$</FieldValue>
+                    </ValueBox>
+                </>
+            )}
         </OneCard>
     );
 };
