@@ -1,5 +1,5 @@
 ﻿import { baseApi } from '..';
-import { IProposal, IJob } from './proposal.types';
+import { IProposal, IJob, IMyProposal } from './proposal.types';
 
 export const proposalApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -17,7 +17,19 @@ export const proposalApi = baseApi.injectEndpoints({
                 url: `/jobs/getbyid?job=${value}`,
             }),
         }),
+        getProposalsByFreelancer: builder.query<
+            IMyProposal[],
+            number | undefined
+        >({
+            query: (value: number) => ({
+                url: `/proposals/search?freelancerId=${value}`,
+            }),
+        }),
     }),
 });
 
-export const { useSendProposalMutation, useGetSingleJobQuery } = proposalApi;
+export const {
+    useSendProposalMutation,
+    useGetSingleJobQuery,
+    useGetProposalsByFreelancerQuery,
+} = proposalApi;

@@ -98,3 +98,4 @@ export const englishLevel: string[] = [
     EnglishLevel.INTERMEDIATE,
     EnglishLevel.ADVANCED,
 ];
+export const dateFormat = 'D MMMM YYYY';
