@@ -215,7 +215,7 @@ const CreateJobPage: React.FC = () => {
                         >
                             <Slider
                                 min={1}
-                                max={24}
+                                max={12}
                                 tipFormatter={(hourFormat) =>
                                     hourFormat === 1
                                         ? `${hourFormat} Hour`
