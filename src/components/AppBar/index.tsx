@@ -6,7 +6,6 @@ import { Button, notification } from 'antd';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { useGetOffersQuery } from 'store/apis/chat';
 import avatar from 'assets/avatar.png';
-import { colors } from 'constants/index';
 import {
     Header,
     NavigationContainer,
@@ -17,6 +16,7 @@ import {
     Counter,
     BarAvatarImg,
     LoggedName,
+    LogoutButton,
 } from './styles';
 
 const AppBar: React.FC = () => {
@@ -35,6 +35,11 @@ const AppBar: React.FC = () => {
     const close = (): void => {
         /* eslint-disable no-console */
         console.log('Close');
+    };
+
+    const logOut = (): void => {
+        localStorage.clear();
+        window.location.replace('/');
     };
 
     const openNotification = (type: string): void => {
@@ -113,6 +118,13 @@ const AppBar: React.FC = () => {
                         {offers?.length && <Counter>{offers?.length}</Counter>}
                         <NotificationIcon onClick={handleNotification} />
                         <MessageIcon onClick={() => navigate('/chat')} />
+                        <LogoutButton
+                            type="primary"
+                            size="small"
+                            onClick={logOut}
+                        >
+                            {t('AppBar.logout')}
+                        </LogoutButton>
                     </NotificationFlex>
                 )}
             </NavigationContainer>

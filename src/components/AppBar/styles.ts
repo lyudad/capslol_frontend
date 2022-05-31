@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import styled from 'styled-components';
 import { NotificationOutlined, MessageOutlined } from '@ant-design/icons';
 import { colors, fonts } from 'constants/index';
@@ -119,5 +120,18 @@ export const LoggedName = styled.div`
         font-size: ${fonts.loggedNameSize};
         font-weight: 600;
         color: ${colors.brandColor};
+    }
+`;
+
+export const LogoutButton = styled(Button)`
+    margin-left: 12px;
+    cursor: pointer;
+    color: ${colors.navColor};
+    background-color: ${colors.appBarBgr};
+    border: 1px solid ${colors.brandColor};
+    border-radius: 12px;
+    :hover {
+        background-color: ${colors.appBarBrd};
+        border: 1px solid ${colors.brandColor};
     }
 `;
