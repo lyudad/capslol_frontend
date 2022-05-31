@@ -4,6 +4,10 @@ import {
     useGetAllSkillsQuery,
     useSearchUserQuery,
     useCreateProfileMutation,
+    useCreateExperienceMutation,
+    useGetAllCategoriesQuery,
+    useCreateEducationMutation,
+    useUploadAvatarMutation,
 } from 'store/apis/publicProfile';
 import { useState } from 'react';
 import {
@@ -21,7 +25,12 @@ import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useNavigate } from 'react-router-dom';
 import avatar from 'assets/avatar.png';
-import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
+import {
+    Educations,
+    Experiences,
+    newProfile,
+} from 'store/apis/publicProfile/publicProfile.types';
+
 import {
     ProfileContainer,
     Avatar,
@@ -30,7 +39,6 @@ import {
     Description,
     Sections,
     ButtonSet,
-    Title,
 } from './styles';
 
 const englishEnum = [
@@ -47,7 +55,12 @@ const SettingPage: React.FC = () => {
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
     const { data: allSkills } = useGetAllSkillsQuery('');
+    const { data: allCategories } = useGetAllCategoriesQuery('');
     const [createProfile] = useCreateProfileMutation();
+    const [createExperience] = useCreateExperienceMutation();
+    const [createEducation] = useCreateEducationMutation();
+    const [uploadAvatar] = useUploadAvatarMutation();
+
     const { TextArea } = Input;
 
     const [hourRate, setHourRate] = useState(data?.hourRate);
@@ -78,6 +91,12 @@ const SettingPage: React.FC = () => {
         data?.skills.map((e) => <Option key={e.name}>{e.name}</Option>)
     );
     const [skillsId, setSkillsId] = useState<number[]>();
+    const [categoryId, setCategoryId] = useState<number>();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [previewSource, setPreviewSource] = useState<any>('');
+
+    const [avatarUrl, setAvatarUrl] = useState();
 
     const onNameCompany = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -134,10 +153,46 @@ const SettingPage: React.FC = () => {
 
     const handleChangeCategory = (value: string): void => {
         setCategory(value);
+        const numberId: number[] = [];
+        allCategories?.forEach(({ id, categoryName }) => {
+            if (value.includes(categoryName)) {
+                numberId.push(id);
+            }
+        });
+        setCategoryId(Number(...numberId));
     };
 
     const handleChange = (value: string): void => {
         setEnglish(value);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const previewFile = (file: any): void => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setPreviewSource(reader.result);
+        };
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleUploadImage = async (event: any): Promise<void> => {
+        const file = event.target.files[0];
+
+        previewFile(file);
+
+        const newformData = new FormData();
+        newformData.append('file', file);
+        newformData.append('upload_preset', 'ycmt0cuu');
+
+        try {
+            await uploadAvatar(newformData);
+
+            // setAvatarUrl(response.)
+
+            // console.log(avatarUrl);
+        } catch (error) {
+            message.error(error.message);
+        }
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -184,13 +239,31 @@ const SettingPage: React.FC = () => {
             id: user?.id,
             hourRate,
             availableHours,
+            categories: categoryId,
             position,
             skills: skillsId,
             english,
             other,
         };
 
+        const UpdateEducation: Educations = {
+            id: user?.id,
+            name: educationName,
+            specialization,
+            startAt: startEducation,
+            endAt: endEducation,
+        };
+        const UpdateExperience: Experiences = {
+            id: user?.id,
+            companyName: nameCompany,
+            position: experiensePosition,
+            startAt: startExperiense,
+            endAt: endExperiense,
+        };
+
         try {
+            await createEducation(UpdateEducation);
+            await createExperience(UpdateExperience);
             await createProfile(UpdateProfile);
         } catch (error) {
             message.error(error.status);
@@ -205,22 +278,29 @@ const SettingPage: React.FC = () => {
         <Page>
             <ProfileContainer>
                 <TitleEmpty>
-                    <Title>
-                        {user?.firstName
-                            ? `${user?.firstName} ${user?.lastName}`
-                            : t('PublicProfile.user_name')}
-                    </Title>
+                    {user?.firstName
+                        ? `${user?.firstName} ${user?.lastName}`
+                        : t('PublicProfile.user_name')}
                 </TitleEmpty>
 
                 <Avatar>
-                    <img
-                        src={data?.profileImage || avatar}
-                        alt=""
-                        width={140}
+                    {previewSource ? (
+                        <img src={previewSource} alt="" width={140} />
+                    ) : (
+                        <img
+                            src={data?.profileImage || avatar}
+                            alt=""
+                            width={140}
+                        />
+                    )}
+                    <input
+                        type="file"
+                        name="image"
+                        onChange={handleUploadImage}
                     />
-                    <ButtonSet type="default">
+                    {/* <ButtonSet type="default">
                         {t('PublicProfile.save_changes')}
-                    </ButtonSet>
+                    </ButtonSet> */}
                 </Avatar>
                 {/* HOURE-RATE + AMOUN HOUR */}
                 <Sections>
@@ -306,22 +386,11 @@ const SettingPage: React.FC = () => {
                             onChange={handleChangeCategory}
                             placeholder={t('PublicProfile.choose_category')}
                         >
-                            <Option value="Research and Development">
-                                Research and Development
-                            </Option>
-                            <Option value="Web development">
-                                Web development
-                            </Option>
-                            <Option value="Accounting">Accounting</Option>
-                            <Option value="Business Development">
-                                Business Development
-                            </Option>
-                            <Option value="Human Resources">
-                                Human Resources
-                            </Option>
-                            <Option value="UX/UI design">UX/UI design</Option>
-                            <Option value="Services">Services</Option>
-                            <Option value="Legal">Legal</Option>
+                            {allCategories?.map((e) => (
+                                <Option key={e.categoryName}>
+                                    {e.categoryName}
+                                </Option>
+                            ))}
                         </Select>
                     </Description>
                 </Sections>

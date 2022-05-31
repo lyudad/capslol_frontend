@@ -1,16 +1,16 @@
 ﻿export interface Experiences {
-    id: number;
-    companyName: string;
-    position: string;
-    startAt: string;
-    endAt: string;
+    id: number | undefined;
+    companyName: string | undefined;
+    position: string | undefined;
+    startAt: string | undefined;
+    endAt: string | undefined;
 }
 export interface Educations {
-    id: number;
-    name: string;
-    specialization: string;
-    startAt: string;
-    endAt: string;
+    id: number | undefined;
+    name: string | undefined;
+    specialization: string | undefined;
+    startAt: string | undefined;
+    endAt: string | undefined;
 }
 export interface Category {
     id: number;
@@ -29,8 +29,8 @@ export interface newProfile {
     availableHours?: number | undefined;
     position?: string | undefined;
     experiense?: Experiences | undefined;
-    educations?: Educations | undefined;
-    categories?: Category | undefined;
+    educations?: Educations | number | undefined;
+    categories?: Category | number | undefined;
     skills?: number[] | undefined;
     english: string | undefined;
     other?: string | undefined;
