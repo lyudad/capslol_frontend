@@ -16,6 +16,7 @@ import SettingPage from 'pages/SettingPage';
 import Protected from 'router/Protected';
 import OffersPage from 'pages/OffersPage/index';
 import Chat from 'pages/Chat';
+import CreateJobPage from 'pages/CreateJobPage';
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
@@ -38,6 +39,10 @@ const App: React.FC = () => {
                         element={<SendProposal />}
                     />
                     <Route path={Paths.CHAT} element={<Chat />} />
+                    <Route
+                        path={Paths.CREATE_JOB_PAGE}
+                        element={<CreateJobPage />}
+                    />
                 </Route>
 
                 <Route path={Paths.HOME} element={<HomePage />} />
@@ -51,6 +56,7 @@ const App: React.FC = () => {
                     path={Paths.RESET_PASSWORD}
                     element={<ResetPassword />}
                 />
+                <Route path="*" element={<HomePage />} />
             </Routes>
         </MainLayout>
     );
