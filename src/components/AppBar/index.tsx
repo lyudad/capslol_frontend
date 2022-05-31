@@ -1,9 +1,12 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
+import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { Button, notification } from 'antd';
-
+import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { useGetOffersQuery } from 'store/apis/chat';
+import avatar from 'assets/avatar.png';
+import { colors } from 'constants/index';
 import {
     Header,
     NavigationContainer,
@@ -12,11 +15,20 @@ import {
     MessageIcon,
     NotificationFlex,
     Counter,
+    BarAvatarImg,
+    LoggedName,
 } from './styles';
 
 const AppBar: React.FC = () => {
     const { t } = useTranslation();
+
     const navigate = useNavigate();
+
+    const isAuth = useAppSelector((state) => state.auth.isLoggedIn);
+
+    const user = useAppSelector((state) => state.auth.user);
+
+    const { data: userProfile } = useGetUserProfileQuery(user?.id);
 
     const { data: offers } = useGetOffersQuery();
 
@@ -65,26 +77,44 @@ const AppBar: React.FC = () => {
                     <NavLink to="/" className="navLink">
                         {t('AppBar.home')}
                     </NavLink>
-                    <NavLink to="/profile" className="navLink">
-                        PROFILE
-                    </NavLink>
-
-                    <NavLink to="/jobs" className="navLink">
-                        {t('AppBar.jobs')}
-                    </NavLink>
-                    <NavLink to="/offers" className="navLink">
-                        {t('AppBar.myOffers')}
-                    </NavLink>
-                    <NavLink to="/test" className="navLink">
-                        {t('AppBar.test')}
-                    </NavLink>
+                    {isAuth && (
+                        <>
+                            <NavLink to="/profile" className="navLink">
+                                {t('AppBar.profile')}
+                            </NavLink>
+                            <NavLink to="/jobs" className="navLink">
+                                {t('AppBar.jobs')}
+                            </NavLink>
+                            <NavLink to="/offers" className="navLink">
+                                {t('AppBar.myOffers')}
+                            </NavLink>
+                            <NavLink to="/test" className="navLink">
+                                {t('AppBar.test')}
+                            </NavLink>
+                        </>
+                    )}
                 </div>
 
-                <NotificationFlex>
-                    {offers?.length && <Counter>{offers?.length}</Counter>}
-                    <NotificationIcon onClick={handleNotification} />
-                    <MessageIcon onClick={() => navigate('/chat')} />
-                </NotificationFlex>
+                {isAuth && (
+                    <NotificationFlex>
+                        <LoggedName>
+                            {t('AppBar.welcome')}
+                            <span>
+                                {user?.firstName} {user?.lastName}
+                            </span>
+                        </LoggedName>
+                        <BarAvatarImg>
+                            {userProfile ? (
+                                <img src={userProfile.profileImage} alt="" />
+                            ) : (
+                                <img src={avatar} alt="" />
+                            )}
+                        </BarAvatarImg>
+                        {offers?.length && <Counter>{offers?.length}</Counter>}
+                        <NotificationIcon onClick={handleNotification} />
+                        <MessageIcon onClick={() => navigate('/chat')} />
+                    </NotificationFlex>
+                )}
             </NavigationContainer>
         </Header>
     );

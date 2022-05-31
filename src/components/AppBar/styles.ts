@@ -80,6 +80,8 @@ export const MessageIcon = styled(MessageOutlined)`
 `;
 
 export const NotificationFlex = styled.div`
+    display: flex;
+    align-items: center;
     margin-left: auto;
 `;
 
@@ -98,4 +100,24 @@ export const Counter = styled.div`
     top: 20px;
     right: 54px;
     z-index: 10;
+`;
+export const BarAvatarImg = styled.div`
+    display: block;
+    overflow: hidden;
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+    border-radius: 50%;
+    border: 1px solid ${colors.brandColor};
+    background-color: ${colors.brandColor};
+`;
+
+export const LoggedName = styled.div`
+    color: ${colors.navColor};
+    span {
+        margin: 0 4px;
+        font-size: ${fonts.loggedNameSize};
+        font-weight: 600;
+        color: ${colors.brandColor};
+    }
 `;

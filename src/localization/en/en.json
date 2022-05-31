@@ -6,7 +6,8 @@
         "test": "TEST",
         "profile": "PROFILE",
         "jobs": "JOBS",
-        "myOffers": "MY OFFERS"
+        "myOffers": "MY OFFERS",
+        "welcome": "Welcome,"
     },
     "SignInForm": {},
     "AuthForm": {
