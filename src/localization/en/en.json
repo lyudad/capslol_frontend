@@ -153,7 +153,8 @@
     "timeAvailableLabel": "Time available",
     "setTime": "Please time available",
     "skillsLabel": "Skills",
-    "skillPlaceholder": "Please choose skills"
+    "skillPlaceholder": "Please choose skills",
+    "jobCreated": "Job created"
   },
   "Proposal": {
     "title": "Submit Proposal",

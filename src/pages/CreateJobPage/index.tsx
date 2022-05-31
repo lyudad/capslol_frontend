@@ -1,20 +1,65 @@
-import { Button, Col, Form, Input, Row, Select, Slider } from 'antd';
+import {
+    Button,
+    Col,
+    Form,
+    Input,
+    message,
+    notification,
+    Row,
+    Select,
+    Slider,
+} from 'antd';
 import { colors, englishLevel, projectDuration } from 'constants/index';
+import { useAppSelector } from 'hooks/redux';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetCategoriesQuery, useGetSkillsQuery } from 'store/apis/jobs';
+import {
+    useCreateJobMutation,
+    useGetCategoriesQuery,
+    useGetSkillsQuery,
+} from 'store/apis/jobs';
+import { IJob } from 'store/apis/jobs/jobs.types';
+import { useNavigate } from 'react-router-dom';
+import { Paths } from 'router/paths';
 import { Title, Wrapper } from './style';
 
 const CreateJobPage: React.FC = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const [form] = Form.useForm();
+    const userId = useAppSelector((state) => state.auth.user?.id);
 
     const { data: categories } = useGetCategoriesQuery();
     const { data: skills } = useGetSkillsQuery();
+    const [createJob] = useCreateJobMutation();
 
-    function onFinish(value: string): void {
-        console.log('success', value);
-    }
+    const onFinish = async (
+        value: Omit<IJob, 'id' | 'createdAt'>
+    ): Promise<void> => {
+        try {
+            if (!userId) {
+                throw new Error('user must has userId');
+            }
+            await createJob({
+                ...value,
+                ownerId: userId,
+            }).unwrap();
+
+            notification.open({
+                message: t('JobPage.jobCreated'),
+            });
+
+            navigate(Paths.JOBS);
+        } catch (error) {
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+            throw error;
+        }
+    };
 
     return (
         <Row>
@@ -61,7 +106,7 @@ const CreateJobPage: React.FC = () => {
 
                         <Form.Item
                             label={t('JobPage.categoryLabel')}
-                            name="category"
+                            name="categoryId"
                             rules={[
                                 {
                                     required: true,
@@ -86,7 +131,7 @@ const CreateJobPage: React.FC = () => {
 
                         <Form.Item
                             label={t('JobPage.englisLabel')}
-                            name="english"
+                            name="languageLevel"
                             rules={[
                                 {
                                     required: true,
@@ -111,7 +156,7 @@ const CreateJobPage: React.FC = () => {
 
                         <Form.Item
                             label={t('JobPage.projectDurationLabel')}
-                            name="duration"
+                            name="projectDuration"
                             rules={[
                                 {
                                     required: true,
@@ -159,7 +204,7 @@ const CreateJobPage: React.FC = () => {
                         </Form.Item>
 
                         <Form.Item
-                            name="time"
+                            name="timeAvailable"
                             label={t('JobPage.timeAvailableLabel')}
                             rules={[
                                 {

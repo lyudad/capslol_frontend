@@ -1,5 +1,11 @@
 import { baseApi } from '..';
-import { IJob, ICategory, ISkill, IUserProfile } from './jobs.types';
+import {
+    IJob,
+    ICategory,
+    ISkill,
+    IUserProfile,
+    JobFormType,
+} from './jobs.types';
 
 export const jobsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -22,6 +28,9 @@ export const jobsApi = baseApi.injectEndpoints({
         getUserProfile: builder.query<IUserProfile, number | undefined>({
             query: (userId) => `profiles/getByUserId/${userId}`,
         }),
+        createJob: builder.mutation<IJob, JobFormType>({
+            query: (body) => ({ url: '/jobs', method: 'POST', body }),
+        }),
     }),
 });
 
@@ -33,4 +42,5 @@ export const {
     useLazyGetJobsQuery,
     useGetUserProfileQuery,
     useLazyGetUserProfileQuery,
+    useCreateJobMutation,
 } = jobsApi;
