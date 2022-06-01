@@ -94,7 +94,7 @@ const SettingPage: React.FC = () => {
     const [categoryId, setCategoryId] = useState<number>();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [previewSource, setPreviewSource] = useState<any>('');
+    const [previewSource, setPreviewSource] = useState<any>();
 
     const [avatarUrl, setAvatarUrl] = useState();
 
@@ -185,11 +185,10 @@ const SettingPage: React.FC = () => {
         newformData.append('upload_preset', 'ycmt0cuu');
 
         try {
-            await uploadAvatar(newformData);
-
-            // setAvatarUrl(response.)
-
-            // console.log(avatarUrl);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await uploadAvatar(newformData).then((res: any) =>
+                setAvatarUrl(res.data.url)
+            );
         } catch (error) {
             message.error(error.message);
         }
@@ -237,6 +236,7 @@ const SettingPage: React.FC = () => {
 
         const UpdateProfile: newProfile = {
             id: user?.id,
+            profileImage: avatarUrl,
             hourRate,
             availableHours,
             categories: categoryId,
@@ -298,11 +298,7 @@ const SettingPage: React.FC = () => {
                         name="image"
                         onChange={handleUploadImage}
                     />
-                    {/* <ButtonSet type="default">
-                        {t('PublicProfile.save_changes')}
-                    </ButtonSet> */}
                 </Avatar>
-                {/* HOURE-RATE + AMOUN HOUR */}
                 <Sections>
                     <Description>
                         <span style={{ color: colors.brandColor }}>*</span>{' '}
@@ -335,7 +331,6 @@ const SettingPage: React.FC = () => {
                         {' h'}
                     </Description>
                 </Sections>
-                {/* EDUCATION */}
                 <Sections>
                     {t('PublicProfile.education')}
                     <Description>
@@ -373,7 +368,6 @@ const SettingPage: React.FC = () => {
                         </Space>
                     </Description>
                 </Sections>
-                {/* CATEGORY */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}
@@ -394,7 +388,6 @@ const SettingPage: React.FC = () => {
                         </Select>
                     </Description>
                 </Sections>
-                {/* POSITION */}
                 <Sections>
                     {t('PublicProfile.position')}:{' '}
                     <Description>
@@ -406,7 +399,6 @@ const SettingPage: React.FC = () => {
                         />
                     </Description>
                 </Sections>
-                {/* EXPERIENCE */}
                 <Sections>
                     {t('PublicProfile.experience')}
                     <Description>
@@ -444,7 +436,6 @@ const SettingPage: React.FC = () => {
                         </Space>
                     </Description>
                 </Sections>
-                {/* SKILLS */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}
@@ -466,7 +457,6 @@ const SettingPage: React.FC = () => {
                         </Select>
                     </Description>
                 </Sections>
-                {/* ENGLISH */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}
@@ -491,7 +481,6 @@ const SettingPage: React.FC = () => {
                         </span>
                     </Description>
                 </Sections>
-                {/* OTHER */}
                 <Sections>
                     {t('PublicProfile.add_information')}:{' '}
                     <Description>
