@@ -29,6 +29,7 @@ import {
     Educations,
     Experiences,
     newProfile,
+    Skills,
 } from 'store/apis/publicProfile/publicProfile.types';
 import { Moment } from 'moment';
 
@@ -55,6 +56,7 @@ const SettingPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
+
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { data: allCategories } = useGetAllCategoriesQuery('');
     const [createProfile] = useCreateProfileMutation();
@@ -64,6 +66,7 @@ const SettingPage: React.FC = () => {
 
     const { TextArea } = Input;
 
+    const [skills, setSkills] = useState<Skills[] | undefined>(data?.skills);
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
     const [educationName, setEducationName] = useState(data?.educations.name);
@@ -88,9 +91,7 @@ const SettingPage: React.FC = () => {
     );
     const [other, setOther] = useState(data?.other);
     const [english, setEnglish] = useState(data?.english);
-    const [skills, setSkills] = useState(
-        data?.skills.map((e) => <Option key={e.name}>{e.name}</Option>)
-    );
+
     const [skillsId, setSkillsId] = useState<number[]>();
     const [categoryId, setCategoryId] = useState<number>();
 
@@ -180,20 +181,17 @@ const SettingPage: React.FC = () => {
     const handleUploadImage = async (
         event: React.ChangeEvent
     ): Promise<void> => {
-        const target = event.target as HTMLInputElement;
-        const file = (target.files as FileList)[0];
-
-        previewFile(file);
-
-        const newformData = new FormData();
-        newformData.append('file', file);
-        newformData.append('upload_preset', 'ycmt0cuu');
-
         try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            await uploadAvatar(newformData).then((res: any) =>
-                setAvatarUrl(res.data.url)
-            );
+            const target = event.target as HTMLInputElement;
+            const file = (target.files as FileList)[0];
+
+            previewFile(file);
+
+            const newformData = new FormData();
+            newformData.append('file', file);
+            newformData.append('upload_preset', 'ycmt0cuu');
+            const response = await uploadAvatar(newformData).unwrap();
+            setAvatarUrl(response.data.url);
         } catch (error) {
             message.error(error.message);
         }
@@ -453,11 +451,12 @@ const SettingPage: React.FC = () => {
                             allowClear
                             style={{ width: '65%' }}
                             placeholder="Please select"
-                            defaultValue={skills}
                             onChange={handleChangeTag}
                         >
-                            {allSkills?.map((e) => (
-                                <Option key={e.name}>{e.name}</Option>
+                            {allSkills?.map((skill) => (
+                                <Option value={skill.name} key={skill.id}>
+                                    {skill.name}
+                                </Option>
                             ))}
                         </Select>
                     </Description>
