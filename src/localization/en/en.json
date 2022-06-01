@@ -111,13 +111,12 @@
     },
     "JobPage": {
         "jobPageTitle": "Jobs on GetJOB!",
-        "jobOwner": "job owner:",
-        "skills": "skills:",
-        "category": "category:",
-        "category#1": "category#1",
-        "category#2": "category#2",
-        "salary": "hourly:",
-        "timeAvailable": "time available:",
+        "jobOwner": "job owner: ",
+        "skills": "skills: ",
+        "category": "category: ",
+        "salary": "hourly: ",
+        "timeAvailable": "time available: ",
+        "projectDuration": "project duration: ",
         "english": "english:",
         "sendProposal": "Send proposal",
         "englishLevel": "English level",
@@ -154,8 +153,7 @@
         "setTime": "Please time available",
         "skillsLabel": "Skills",
         "skillPlaceholder": "Please choose skills",
-        "jobCreated": "Job created",
-        "projectDuration": "project duration"
+        "jobCreated": "Job created"
     },
     "Proposal": {
         "title": "Submit Proposal",
@@ -175,6 +173,15 @@
         },
         "errorLetter": "You must write a cover letter",
         "errorRate": "You must write your hourly rate"
+    },
+    "OffersPage": {
+        "accept": "Accept",
+        "decline": "Decline",
+        "goToChat": "Go to chat",
+        "myOffers": "My Offers",
+        "myInvitations": "My Invitations",
+        "myProposals": "My Proposals",
+        "myHourRate": "my hour rate:"
     },
     "ContactInfo": {
         "title": "My Account",
@@ -313,15 +320,7 @@
                     "error": "Something went wrong, please try again later!"
                 }
             },
-            "OffersPage": {
-                "accept": "Accept",
-                "decline": "Decline",
-                "goToChat": "Go to chat",
-                "myOffers": "My Offers",
-                "myInvitations": "My Invitations",
-                "myProposals": "My Proposals",
-                "myHourRate": "my hour rate:"
-            },
+
             "Chat": {
                 "offerYes": "Accept",
                 "offerNo": "Refuse",
@@ -332,14 +331,6 @@
                 "welcomeText": "Please select a chat to Start messaging.",
                 "notFound": "Not found any chats"
             }
-        },
-        "OffersPage": {
-            "accept": "Accept",
-            "decline": "Decline",
-            "goToChat": "Go to chat",
-            "myOffers": "My Offers",
-            "myInvitations": "My Invitations",
-            "myProposals": "My Proposals"
         },
         "Chat": {
             "offerYes": "Accept",

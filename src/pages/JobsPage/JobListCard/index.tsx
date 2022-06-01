@@ -70,12 +70,6 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>{projectDuration}</FieldValue>
                 </ValueBox>
                 <ValueBox>
-                    <Field>{t('JobPage.skills')}</Field>
-                    <FieldValue>
-                        {skills.map((item) => item.name).join(', ')}
-                    </FieldValue>
-                </ValueBox>
-                <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
                     <FieldValue>{categoryId.categoryName}</FieldValue>
                 </ValueBox>
@@ -86,6 +80,12 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 <ValueBox>
                     <Field>{t('JobPage.english')}</Field>
                     <FieldValue>{languageLevel}</FieldValue>
+                </ValueBox>
+                <ValueBox>
+                    <Field>{t('JobPage.skills')}</Field>
+                    <FieldValue>
+                        {skills.map((item) => item.name).join(', ')}
+                    </FieldValue>
                 </ValueBox>
             </OwnerContainer>
             <StyledNav onClick={handleSendProposal}>
