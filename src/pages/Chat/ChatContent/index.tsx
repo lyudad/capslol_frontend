@@ -1,12 +1,22 @@
-﻿import React, { useState } from 'react';
+﻿/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-var */
+/* eslint-disable no-useless-return */
+import React, { useState, useEffect } from 'react';
 import { message } from 'antd';
+import io, { Socket } from 'socket.io-client';
 
 import { useAppSelector } from 'hooks/redux';
 import { useGetMessagesQuery, usePostMessageMutation } from 'store/apis/chat';
 import { Img } from 'constants/index';
 import Spinner from 'components/Spinner';
+import axios from 'axios';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 import Avatar from '../ChatList/Avatar';
-import { IChatContentProps } from '../interfaces';
+import { IChatContentProps, IChatUser } from '../interfaces';
 import ChatItem from './ChatItem';
 import {
     ChatBody,
@@ -24,32 +34,32 @@ import {
     Wrapper,
 } from './styles';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+var socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+var selectedChatCompare: IChatUser;
+
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [messageText, setMessageText] = useState<string>('');
     const { user } = useAppSelector((s) => s.auth);
-
-    const {
-        data: messages,
-        isLoading,
-        isError: msgIsError,
-    } = useGetMessagesQuery();
-    const [postMessage, { isError }] = usePostMessageMutation();
+    const [socketConnected, setSocketConnected] = useState(false);
+    const [typing, setTyping] = useState(false);
+    const [istyping, setIsTyping] = useState(false);
+    const [messages, setMessages] = useState([] as any);
+    const [notification, setNotification] = useState([] as any);
+    const [joined, setJoined] = useState(false);
 
     const handleMessage = async (): Promise<void> => {
         try {
             const newMessage = {
-                sender: {
-                    pic: Img.userLogo,
-                    id: user?.id || 1,
-                    name: `${user?.firstName} ${user?.lastName}`,
-                },
+                senderId: user?.id,
                 content: messageText,
-                chat: currentChat.id,
+                roomId: currentChat.id,
             };
-            await postMessage(newMessage);
-            setMessageText('');
-        } catch (e) {
-            message.error(e?.data?.message);
+            socket.emit('msgToServer', newMessage, () => {
+                setMessageText('');
+            });
+        } catch (error) {
+            message.error(error?.message);
         }
     };
 
@@ -57,6 +67,49 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         const newValue = e.currentTarget.value;
         setMessageText(newValue);
     };
+
+    const handleJoined = () => {
+        // socket.emit('join_room', currentChat.id, () => {
+        //     setJoined(true);
+        // });
+    };
+
+    const handleTyping = () => {
+        // socket.emit('typing', { isTyping: true }, () => {
+        //     setJoined(true);
+        // });
+    };
+
+    const fetchMessages = async (): Promise<void> => {
+        if (!currentChat) return;
+
+        try {
+            const { data } = await axios.get(
+                `http://localhost:3000/messages/getByChatId?chat=${currentChat.id}`
+            );
+            // setMessages(data);
+            // socket.emit('join_room', currentChat.id);
+        } catch (error) {
+            message.error(`${error?.message}`);
+        }
+    };
+
+    useEffect(() => {
+        // socket = io('http://localhost:3000');
+        // socket.on('connected', () => setSocketConnected(true));
+        // socket.on('typing', () => setIsTyping(true));
+        // socket.on('stop typing', () => setIsTyping(false));
+        selectedChatCompare = currentChat;
+    }, []);
+
+    useEffect(() => {
+        // socket.emit(`findAllMessage`, {}, (response: any) => {
+        //     setMessages(response);
+        // });
+        // socket.on(`msgToClient`, (response: any) => {
+        //     setMessages([...messages, response]);
+        // });
+    });
 
     return (
         <Wrapper>
@@ -86,27 +139,28 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     {messages && (
                         <div>
                             {messages
-                                .filter(
-                                    (contact) => contact.chat === currentChat.id
-                                )
-                                .map((msg, index) => {
+                                // .filter(
+                                //     (contact: any) =>
+                                //         contact.chat === currentChat.id
+                                // )
+                                .map((msg: any, index: number) => {
                                     return (
                                         <ChatItem
                                             animationDelay={index + 2}
-                                            key={msg.id}
+                                            key={msg?.id}
                                             msg={msg}
                                         />
                                     );
                                 })}
                         </div>
                     )}
-                    <>
-                        {isLoading && <Spinner />}
-                        {msgIsError &&
-                            message.error(
-                                'Something went wrong, messages not found'
-                            )}
-                    </>
+                    {/* <>
+                      {isLoading && <Spinner />}
+                      {msgIsError &&
+                          message.error(
+                              'Something went wrong, messages not found'
+                          )}
+                  </> */}
                 </ChatBody>
                 <ChatFooter>
                     <SendNewMessage>
@@ -120,7 +174,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>
                     </SendNewMessage>
-                    <> {isError && message.error('Message not send')}</>
+                    {/* <> {isError && message.error('Message not send')}</> */}
                 </ChatFooter>
             </MainChat>
         </Wrapper>

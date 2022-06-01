@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from 'react';
 import { message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -20,15 +21,15 @@ import {
     StyledRow,
     NotFoundTitle,
 } from './styles';
-import { IChatListProps, TChatArgument } from '../interfaces';
+import { TChatArgument } from '../interfaces';
 
-const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
+const ChatList: React.FC<any> = ({ onChangeChat, contacts }) => {
     const [currentSelected, setCurrentSelected] = useState<number>();
     const { t } = useTranslation();
     const [search, setSearch] = useState<string>('');
 
-    const [postMessage] = usePostMessageMutation();
-    const [postContact] = usePostContactsMutation();
+    // const [postMessage] = usePostMessageMutation();
+    // const [postContact] = usePostContactsMutation();
 
     const changeChat = (id: number, chat: TChatArgument): void => {
         setCurrentSelected(id);
@@ -57,9 +58,9 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
                 isOnline: false,
             };
 
-            await postMessage(newMessage);
+            // await postMessage(newMessage);
 
-            await postContact(newContact);
+            // await postContact(newContact);
         } catch (e) {
             message.error(e?.data?.message);
         }
@@ -79,21 +80,21 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
                     placeholder="Search"
                 />
             </SearchWrap>
-            <Row justify="center">
+            {/* <Row justify="center">
                 <button type="button" onClick={handleNotification}>
                     {t('Chat.offerBtnText')}
                 </button>
-            </Row>
+            </Row> */}
             <ChatLists>
-                {contacts
+                {(contacts || [])
                     .filter(
-                        (contact) =>
+                        (contact: any) =>
                             contact.name
                                 ?.toLowerCase()
                                 .includes(search?.toLowerCase()) ||
                             search?.trim() === ''
                     )
-                    .map((contact, index: number) => {
+                    .map((contact: any, index: number) => {
                         return (
                             <ChatListItem
                                 key={contact.id}
@@ -117,12 +118,19 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
 
                                 <div>
                                     <StyledRow>
-                                        <ChatUser>{contact.name}</ChatUser>
+                                        <ChatUser>
+                                            {
+                                                contact?.proposalId
+                                                    ?.freelancerId?.firstName
+                                            }
+                                        </ChatUser>
                                         <ChatUserTime>
                                             {t('Chat.contactTime')}
                                         </ChatUserTime>
                                     </StyledRow>
-                                    <ChatProject>{contact.project}</ChatProject>
+                                    <ChatProject>
+                                        {contact?.proposalId?.jobId?.title}
+                                    </ChatProject>
                                 </div>
                             </ChatListItem>
                         );
@@ -131,7 +139,7 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
                 <>
                     {' '}
                     {!contacts?.filter(
-                        (contact) =>
+                        (contact: any) =>
                             contact.name
                                 ?.toLowerCase()
                                 .includes(search?.toLowerCase()) ||

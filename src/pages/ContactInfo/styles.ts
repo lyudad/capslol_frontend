@@ -93,7 +93,7 @@ export const Circle = styled.div`
     text-align: center;
     font-weight: bold;
     padding: 3px;
-    width: 60%;
+    width: 130px;
 `;
 
 export const StyledInput = styled.input`
@@ -109,6 +109,6 @@ export const StyledInput = styled.input`
         outline: 0;
         box-shadow: ${colors.textGreen} 0px 0px 8px 2px,
             ${colors.textGreen} 0px 0px 0px 1px;
-        border: none;
+        border: 1px solid transparent;
     }
 `;

@@ -34,10 +34,10 @@ export interface IMessages {
     chat: number;
     isOffer?: boolean;
 }
-export interface IChatListProps {
-    onChangeChat: (value: TChatArgument) => void;
-    contacts: IChatUser[];
-}
+// export interface IChatListProps {
+//     onChangeChat: (value: TChatArgument) => void;
+//     contacts?: IChatUser[] | undefined;
+// }
 export interface IAvatarProps {
     image: string;
     alt: string;

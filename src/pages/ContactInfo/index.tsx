@@ -44,13 +44,16 @@ import {
 
 const ContactInfo: React.FC = () => {
     const location = useLocation();
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
+
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [updateFirstName, setUpdateFirstName] = useState<boolean>(false);
     const [updateLastName, setUpdateLastName] = useState<boolean>(false);
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const [form] = Form.useForm();
+    const [updateUserFirstName, setUpdateUserFirstName] = useState<string>();
+    const [updateUserLastName, setUpdateUserLastName] = useState<string>();
 
     const state = location.state as IContactInfo;
 
@@ -59,13 +62,6 @@ const ContactInfo: React.FC = () => {
     const [editUserValue, { isError: isUserError }] =
         useEditUserValueMutation();
     const { data: user, isLoading } = useGetUserByIdQuery(state.id);
-
-    const [updateUserFirstName, setUpdateUserFirstName] = useState<
-        string | undefined
-    >(user?.data?.firstName);
-    const [updateUserLastName, setUpdateUserLastName] = useState<
-        string | undefined
-    >(user?.data?.lastName);
 
     const handleNavigate = (): void => navigate(Paths.PROFILE);
 
@@ -110,6 +106,7 @@ const ContactInfo: React.FC = () => {
                 id: user?.data?.id,
                 [updateKey]: updateValue,
             });
+
             notification.success({
                 message: t(`ContactInfo.${msg}`),
             });
@@ -173,11 +170,11 @@ const ContactInfo: React.FC = () => {
                                                 ? user?.data?.firstName
                                                 : 'Not'
                                         }
-                                ${
-                                    user?.data?.lastName
-                                        ? user?.data?.lastName
-                                        : 'Found'
-                                }`}
+                                        ${
+                                            user?.data?.lastName
+                                                ? user?.data?.lastName
+                                                : 'Found'
+                                        }`}
                                     </Title>
                                     <Circle>
                                         {user?.data?.role
@@ -195,6 +192,9 @@ const ContactInfo: React.FC = () => {
                                         <Title fs="16">
                                             {updateFirstName ? (
                                                 <StyledInput
+                                                    defaultValue={
+                                                        user?.data?.firstName
+                                                    }
                                                     value={updateUserFirstName}
                                                     onChange={(e) =>
                                                         setUpdateUserFirstName(
@@ -242,6 +242,9 @@ const ContactInfo: React.FC = () => {
                                         <Title fs="16">
                                             {updateLastName ? (
                                                 <StyledInput
+                                                    defaultValue={
+                                                        user?.data?.lastName
+                                                    }
                                                     value={updateUserLastName}
                                                     onChange={(e) =>
                                                         setUpdateUserLastName(

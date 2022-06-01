@@ -47,12 +47,12 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
     return (
         <ChatItemCard
             style={{ animationDelay: `0.${animationDelay}s` }}
-            className={`${msg.sender.id === (user?.id || 1) ? '' : 'other'}`}
+            // className={`${msg.sender.id === (user?.id || 1) ? '' : 'other'}`}
         >
             <ChatItemContent className="chat__item__content">
-                <ChatMsg>{msg.content}</ChatMsg>
+                <ChatMsg>{msg?.content}</ChatMsg>
 
-                {msg.isOffer && (
+                {msg?.isOffer && (
                     <ButtonGroup>
                         <Button
                             bg={colors.textGreen}
@@ -79,8 +79,8 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
 
             <Avatar
                 isOnline="active"
-                image={msg.sender.pic}
-                alt={msg.sender.name}
+                image={msg?.sender?.pic}
+                alt={msg?.sender?.name}
             />
         </ChatItemCard>
     );

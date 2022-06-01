@@ -14,6 +14,7 @@ import {
 import { useAppSelector } from 'hooks/redux';
 import { useDispatch } from 'react-redux';
 import { setIsSent } from 'store/slices/proposals/proposals.slice';
+import axios from 'axios';
 import {
     Block,
     Font,
@@ -67,6 +68,12 @@ const SendProposal: React.FC = () => {
             setGetJob(0);
             setFreelancerValue(0);
             onReset();
+            const data = axios.post('http://localhost:3000/chat-contacts', {
+                proposalId: 1,
+                isActive: false,
+            });
+
+            console.log(data);
         } catch (error) {
             message.error(`${error.data.message}`);
         }
