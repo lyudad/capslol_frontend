@@ -1,6 +1,6 @@
 ﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from '..';
-import { IProposal, IJob } from './proposal.types';
+import { IProposal, IJob, IMyProposal } from './proposal.types';
 
 const apiProposalsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Proposal'] });
 
@@ -27,8 +27,20 @@ export const proposalApi = apiProposalsTag.injectEndpoints({
             }),
             providesTags: ['Proposal'],
         }),
+        getProposalsByFreelancer: builder.query<
+            IMyProposal[],
+            number | undefined
+        >({
+            query: (value: number) => ({
+                url: `/proposals/search?freelancerId=${value}`,
+            }),
+        }),
     }),
 });
 
-export const { useSendProposalMutation, useGetSingleJobQuery, useGetAllQuery } =
-    proposalApi;
+export const {
+    useSendProposalMutation,
+    useGetSingleJobQuery,
+    useGetProposalsByFreelancerQuery,
+    useGetAllQuery,
+} = proposalApi;

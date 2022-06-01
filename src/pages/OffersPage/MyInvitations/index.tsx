@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
 import InvitationCard from '../InvitationCard';
 
-const MyInvitation: React.FC = () => {
+const MyInvitations: React.FC = () => {
     const { t } = useTranslation();
 
     return (
@@ -24,4 +24,4 @@ const MyInvitation: React.FC = () => {
     );
 };
 
-export default MyInvitation;
+export default MyInvitations;

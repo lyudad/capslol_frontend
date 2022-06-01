@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { colors } from 'constants/index';
 import { Page, TopButtonContainer, StyledNavBtn } from './styles';
 import MyOffers from './MyOffers';
-import MyInvitation from './MyInvitations';
+import MyInvitations from './MyInvitations';
+import MyProposals from './MyProposals';
 
 const OffersPage: React.FC = () => {
     const [isActive, setIsActive] = useState<number>(1);
@@ -14,44 +14,30 @@ const OffersPage: React.FC = () => {
         <Page>
             <TopButtonContainer>
                 <StyledNavBtn
+                    isActive={isActive === 1}
                     onClick={() => setIsActive(1)}
-                    style={{
-                        color:
-                            isActive === 1
-                                ? `${colors.brandColor}`
-                                : `${colors.textWhite}`,
-                    }}
                 >
                     {t('OffersPage.myOffers')}
                 </StyledNavBtn>
 
                 <StyledNavBtn
                     onClick={() => setIsActive(2)}
-                    style={{
-                        color:
-                            isActive === 2
-                                ? `${colors.brandColor}`
-                                : `${colors.textWhite}`,
-                    }}
+                    isActive={isActive === 2}
                 >
                     {t('OffersPage.myInvitations')}
                 </StyledNavBtn>
 
                 <StyledNavBtn
+                    isActive={isActive === 3}
                     onClick={() => setIsActive(3)}
-                    style={{
-                        color:
-                            isActive === 3
-                                ? `${colors.brandColor}`
-                                : `${colors.textWhite}`,
-                    }}
                 >
                     {t('OffersPage.myProposals')}
                 </StyledNavBtn>
             </TopButtonContainer>
 
             {isActive === 1 && <MyOffers />}
-            {isActive === 2 && <MyInvitation />}
+            {isActive === 2 && <MyInvitations />}
+            {isActive === 3 && <MyProposals />}
         </Page>
     );
 };

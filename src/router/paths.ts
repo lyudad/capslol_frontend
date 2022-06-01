@@ -8,6 +8,12 @@ export enum Paths {
     FORGOTTEN_PASSWORD = '/forgotten_password',
     RESET_PASSWORD = '/reset_password/*',
     JOB_PAGE = '/job',
+    SETTING_PAGE = '/setting',
     SEND_PROPOSAL = '/send_proposal',
     CONTACT_INFO = '/contact_info',
+    JOBS = '/jobs',
+    OFFERS = '/offers',
+    CHAT = '/chat',
+    SETTING_ID = '/setting/:id',
+    CREATE_JOB_PAGE = '/createJob',
 }

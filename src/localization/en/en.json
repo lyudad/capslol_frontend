@@ -5,7 +5,8 @@
         "home": "HOME",
         "test": "TEST",
         "profile": "PROFILE",
-        "jobs": "JOBS"
+        "jobs": "JOBS",
+        "myOffers": "MY OFFERS"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -135,9 +136,26 @@
         "hour": "hour",
         "submit": "Submit",
         "requirements": "Requirements for the candidate:",
-        "noName": "No Name"
+        "noName": "No Name",
+        "titleName": "Title",
+        "titleInput": "Please input title!",
+        "descriptionName": "Description",
+        "descriptionInput": "Please input description!",
+        "categoryLabel": "Category",
+        "categoryPlaceholder": "Choose category",
+        "englisLabel": "English",
+        "englishPlaceholder": "Select your level",
+        "projectDurationLabel": "Project duration",
+        "projectDurationPlaceholder": "Select your project duration",
+        "priceLabel": "Price",
+        "setPrice": "Please set price",
+        "currentPrice": "current price: ",
+        "timeAvailableLabel": "Time available",
+        "setTime": "Please time available",
+        "skillsLabel": "Skills",
+        "skillPlaceholder": "Please choose skills",
+        "jobCreated": "Job created"
     },
-
     "Proposal": {
         "title": "Submit Proposal",
         "subTitle": "Terms",
@@ -179,29 +197,166 @@
         "btnText": "Save Password",
         "afterChangePassword": {
             "success": "Password successfully changed!",
-            "error": "Something went wrong, please try again later!"
+            "error": "Something went wrong, please try again later!",
+            "ForgotPage": {
+                "title": "Forgot Password",
+                "email": {
+                    "item": "Email",
+                    "error": "Please input your Email!!"
+                },
+                "btnText": "Submit",
+                "linkText": "Back to Login?"
+            },
+            "ResetPage": {
+                "title": "Reset Password",
+                "passwordTitle": {
+                    "item": "Password:",
+                    "placeholder": "Your password",
+                    "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+                },
+                "conPasswordTitle": {
+                    "item": "Confirm Password:",
+                    "placeholder": "Confirm your password",
+                    "error": "Password must be same"
+                },
+                "error": "Passwords do not match, please try again",
+                "btnText": "Save Password",
+                "linkText": "Back to Login?",
+                "loginText": "Successfully done. Now please Login",
+                "passwordError": "Something went error, please try again!"
+            },
+            "VerifyEmail": {
+                "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
+                "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
+                "linkToLogin": "Login?",
+                "linkToPasswordPage": "Forgot Password?"
+            },
+            "HomePage": {
+                "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
+                "hello": "Hello",
+                "welcomeTo": ", welcome to our service.",
+                "youCanView": "You can view yours",
+                "orView": "or view",
+                "offers": "offers"
+            },
+            "JobPage": {
+                "jobPageTitle": "Jobs on GetJOB!",
+                "jobOwner": "job owner:",
+                "skills": "skills:",
+                "category": "category:",
+                "category#1": "category#1",
+                "category#2": "category#2",
+                "salary": "hourly:",
+                "timeAvailable": "time available:",
+                "english": "english:",
+                "sendProposal": "Send proposal",
+                "englishLevel": "English level",
+                "filters": "Filters",
+                "search": "Search",
+                "none": "None",
+                "preIntermediate": "Pre-intermediate",
+                "intermediate": "Intermediate",
+                "upperIntermediate": "Upper Intermediate",
+                "fluent": "Fluent",
+                "Skills": "Skills",
+                "Category": "Category",
+                "price": "Hourly",
+                "TimeAvailable": "Time available",
+                "perDay": "per day",
+                "hour": "hour",
+                "submit": "Submit",
+                "requirements": "Requirements for the candidate:",
+                "noName": "No Name"
+            },
+            "Proposal": {
+                "title": "Submit Proposal",
+                "subTitle": "Terms",
+                "jobQuestion": "What is the rate you'd like to bid for this job?",
+                "youRate": "Your profile rate: ",
+                "jobOwnerRate": "Client’s budget:",
+                "hourlyRate": "Hourly Rate",
+                "getJobRate": "12.5% GetJob Service Fee",
+                "gotRate": "You'll receive",
+                "letterTitle": "Letter",
+                "coverLetterTitle": " Cover Letter",
+                "submitBtnText": "Submit",
+                "error": {
+                    "number": "Value should contain just number",
+                    "length": "Value should be less than 4 character"
+                },
+                "errorLetter": "You must write a cover letter",
+                "errorRate": "You must write your hourly rate"
+            },
+            "ContactInfo": {
+                "title": "My Account",
+                "userRole": "Not Set",
+                "userFirstName": "First Name",
+                "userLastName": "Last Name",
+                "userPhone": "Phone",
+                "userEmail": "Email",
+                "userPassword": "Password",
+                "btnChangeText": "Change",
+                "passwordTitle": {
+                    "item": "New Password:",
+                    "placeholder": "Your new password",
+                    "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+                },
+                "conPasswordTitle": {
+                    "item": "Confirm New Password:",
+                    "placeholder": "Confirm your new password",
+                    "error": "Password must be same"
+                },
+                "btnText": "Save Password",
+                "afterChangePassword": {
+                    "success": "Password successfully changed!",
+                    "error": "Something went wrong, please try again later!"
+                },
+                "changedFirstName": "Your first name successfully changed!",
+                "changedLastName": "Your last name successfully changed!"
+            },
+
+            "OffersPage": {
+                "success": "Password successfully changed!",
+                "error": "Something went wrong, please try again later!"
+            }
         },
-        "changedFirstName": "Your first name successfully changed!",
-        "changedLastName": "Your last name successfully changed!"
-    },
+        "OffersPage": {
+            "accept": "Accept",
+            "decline": "Decline",
+            "goToChat": "Go to chat",
+            "myOffers": "My Offers",
+            "myInvitations": "My Invitations",
+            "myProposals": "My Proposals",
+            "myHourRate": "my hour rate:"
+        },
+        "Chat": {
+            "offerYes": "Accept",
+            "offerNo": "Refuse",
+            "sendTime": "1.03 PM",
+            "contactTime": "32 mins ago",
+            "offerBtnText": "Job Offer",
+            "welcome": "Welcome",
+            "welcomeText": "Please select a chat to Start messaging.",
+            "notFound": "Not found any chats"
+        },
 
-    "OffersPage": {
-        "accept": "Accept",
-        "decline": "Decline",
-        "goToChat": "Go to chat",
-        "myOffers": "My Offers",
-        "myInvitations": "My Invitations",
-        "myProposals": "My Proposals"
-    },
-
-    "Chat": {
-        "offerYes": "Accept",
-        "offerNo": "Refuse",
-        "sendTime": "1.03 PM",
-        "contactTime": "32 mins ago",
-        "offerBtnText": "Job Offer",
-        "welcome": "Welcome",
-        "welcomeText": "Please select a chat to Start messaging.",
-        "notFound": "Not found any chats"
+        "OffersPage": {
+            "accept": "Accept",
+            "decline": "Decline",
+            "goToChat": "Go to chat",
+            "myOffers": "My Offers",
+            "myInvitations": "My Invitations",
+            "myProposals": "My Proposals"
+        },
+        "Chat": {
+            "offerYes": "Accept",
+            "offerNo": "Refuse",
+            "sendTime": "1.03 PM",
+            "contactTime": "32 mins ago",
+            "offerBtnText": "Job Offer",
+            "welcome": "Welcome",
+            "welcomeText": "Please select a chat to Start messaging.",
+            "notFound": "Not found any chats"
+        }
     }
 }

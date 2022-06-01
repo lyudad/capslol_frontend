@@ -11,11 +11,6 @@ export const StyledButton = styled(Button)`
     border: none;
     font-weight: ${fonts.signUpButtonsFontWeight};
     background: ${colors.brandColor} !important;
-    color: ${colors.signUpFormColor};
-    &[disabled] {
-        background: ${colors.brandColor} !important;
-        color: ${colors.signUpFormColor} !important;
-    }
 `;
 
 export const StyledParagraph = styled(Paragraph)<TextType>`
@@ -40,9 +35,6 @@ export const StyledForm = styled(Form)`
 `;
 
 export const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
     width: 340px;
     padding: 20px;
     margin-left: auto;
@@ -54,8 +46,9 @@ export const Wrapper = styled.div`
 
 export const StyledContent = styled.section`
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 64px);
     padding: 0px 12px;
     background-color: ${colors.homeBgr};
     background-image: url(./images/bg-image.png);
