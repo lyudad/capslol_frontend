@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "compilerOptions": {
         "baseUrl": "src",
         "target": "es5",
@@ -19,33 +18,5 @@
         "jsx": "react-jsx",
         "useUnknownInCatchVariables": false
     },
-    "include": ["src", "src/components/Button/.tsx"]
-=======
-  "compilerOptions": {
-    "baseUrl": "src",
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "useUnknownInCatchVariables": false
-  },
-  "include": [
-    "src"
-  ]
->>>>>>> develop
+    "include": ["src"]
 }
