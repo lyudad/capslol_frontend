@@ -5,4 +5,5 @@ export interface IQueryFilters {
     maxSalary: number | undefined;
     searchValue: string | undefined;
     timeAvailable?: number;
+    projectDuration: string | undefined;
 }

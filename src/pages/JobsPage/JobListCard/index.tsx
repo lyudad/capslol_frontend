@@ -38,6 +38,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
         skills,
         languageLevel,
         ownerId,
+        projectDuration,
     } = jobObj;
 
     const onClickJob = (): void => {
@@ -63,6 +64,10 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <FieldValue>
                         {`${ownerId.firstName} ${ownerId.lastName}`}
                     </FieldValue>
+                </ValueBox>
+                <ValueBox>
+                    <Field>{t('JobPage.projectDuration')}</Field>
+                    <FieldValue>{projectDuration}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.skills')}</Field>
