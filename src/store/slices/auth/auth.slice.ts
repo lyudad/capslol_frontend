@@ -28,9 +28,14 @@ const authSlice = createSlice({
             state.accessToken = data.accessToken;
             state.isLoggedIn = true;
         },
+        logOut: (state: UsersState) => {
+            state.user = null;
+            state.accessToken = '';
+            state.isLoggedIn = false;
+        },
     },
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
