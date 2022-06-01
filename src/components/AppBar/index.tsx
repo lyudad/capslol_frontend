@@ -3,8 +3,11 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { Button, notification } from 'antd';
+import { logOut } from 'store/slices/auth/auth.slice';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
+import { Paths } from 'router/paths';
 import { useGetOffersQuery } from 'store/apis/chat';
+import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
 import {
     Header,
@@ -24,6 +27,8 @@ const AppBar: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const isAuth = useAppSelector((state) => state.auth.isLoggedIn);
 
     const user = useAppSelector((state) => state.auth.user);
@@ -37,9 +42,9 @@ const AppBar: React.FC = () => {
         console.log('Close');
     };
 
-    const logOut = (): void => {
-        localStorage.clear();
-        window.location.replace('/');
+    const logout = (): void => {
+        dispatch(logOut());
+        navigate(Paths.HOME);
     };
 
     const openNotification = (type: string): void => {
@@ -121,7 +126,7 @@ const AppBar: React.FC = () => {
                         <LogoutButton
                             type="primary"
                             size="small"
-                            onClick={logOut}
+                            onClick={logout}
                         >
                             {t('AppBar.logout')}
                         </LogoutButton>
