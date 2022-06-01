@@ -30,6 +30,7 @@ import {
     Experiences,
     newProfile,
 } from 'store/apis/publicProfile/publicProfile.types';
+import { Moment } from 'moment';
 
 import {
     ProfileContainer,
@@ -93,8 +94,7 @@ const SettingPage: React.FC = () => {
     const [skillsId, setSkillsId] = useState<number[]>();
     const [categoryId, setCategoryId] = useState<number>();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [previewSource, setPreviewSource] = useState<any>();
+    const [previewSource, setPreviewSource] = useState<string>('');
 
     const [avatarUrl, setAvatarUrl] = useState();
 
@@ -103,8 +103,7 @@ const SettingPage: React.FC = () => {
     ): void => {
         setNameCompany(event.target.value);
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onOther = (event: any): void => {
+    const onOther = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         setOther(event.target.value);
     };
 
@@ -133,21 +132,25 @@ const SettingPage: React.FC = () => {
         setSpecialization(event.target.value);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onStartEducation = (date: any, dateString: string): void => {
+    const onStartEducation = (
+        date: Moment | null,
+        dateString: string
+    ): void => {
         setStartEducation(dateString);
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onEndEducation = (date: any, dateString: string): void => {
+
+    const onEndEducation = (date: Moment | null, dateString: string): void => {
         setEndEducation(dateString);
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onStartExperiense = (date: any, dateString: string): void => {
+
+    const onStartExperiense = (
+        date: Moment | null,
+        dateString: string
+    ): void => {
         setStartExperiense(dateString);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onEndExperiense = (date: any, dateString: string): void => {
+    const onEndExperiense = (date: Moment | null, dateString: string): void => {
         setEndExperiense(dateString);
     };
 
@@ -166,17 +169,19 @@ const SettingPage: React.FC = () => {
         setEnglish(value);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const previewFile = (file: any): void => {
+    const previewFile = (file: Blob): void => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setPreviewSource(reader.result);
+            setPreviewSource(reader.result as string);
         };
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleUploadImage = async (event: any): Promise<void> => {
-        const file = event.target.files[0];
+
+    const handleUploadImage = async (
+        event: React.ChangeEvent
+    ): Promise<void> => {
+        const target = event.target as HTMLInputElement;
+        const file = (target.files as FileList)[0];
 
         previewFile(file);
 
