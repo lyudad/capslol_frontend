@@ -45,3 +45,7 @@ export interface IUserProfile {
     categories: ICategory;
     skills: ISkill[];
 }
+
+export type JobFormType = Omit<IJob, 'id' | 'createdAt' | 'ownerId'> & {
+    ownerId: number;
+};

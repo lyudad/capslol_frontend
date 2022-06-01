@@ -3,7 +3,7 @@ import { IResponse, UserType } from './auth.type';
 
 interface UsersState {
     user: UserType | null;
-    accessToken: string;
+    accessToken: string | null | undefined;
     loading: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string;
     isLoggedIn: boolean;

@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from 'antd';
 import { colors, fonts } from 'constants/index';
 
 export const Page = styled.div`
@@ -36,6 +36,27 @@ export const StyledButton = styled.button`
     border: none;
     border-bottom: 1px solid ${colors.appBarBrd};
     cursor: pointer;
+`;
+
+export const CustomButton = styled(Button)`
+    border: none;
+    padding: 5px 10px;
+    background: ${colors.brandColor};
+    border-color: ${colors.brandColor};
+    cursor: pointer;
+    color: ${colors.textWhite};
+
+    &.ant-btn:active {
+    color: ${colors.brandColor}
+    border-color: ${colors.brandColor};
+    background: #fff;
+    }
+
+    &.ant-btn:focus, &.ant-btn:hover {
+    color: ${colors.brandColor};
+    border-color: ${colors.brandColor};
+    background: #fff;
+    }
 `;
 
 export const JobCard = styled.li`
@@ -91,8 +112,10 @@ export const FieldValue = styled.span`
     margin-left: 3px;
 `;
 
-export const StyledNav = styled(NavLink)`
+export const StyledNav = styled.button`
     padding: 4px 8px;
+    border: none;
+    cursor: pointer;
     color: ${colors.textWhite};
     background-color: ${colors.brandColor};
 `;

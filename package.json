@@ -5,6 +5,7 @@
     "scripts": {
         "start": "react-scripts start",
         "start-3005": "PORT=3005 react-scripts start",
+        "start:server": "json-server --watch db.json --port 3000",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
@@ -28,6 +29,7 @@
         "axios": "^0.27.2",
         "i18next": "^21.6.16",
         "json-server": "^0.17.0",
+        "moment": "^2.29.3",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-google-login": "^5.2.2",

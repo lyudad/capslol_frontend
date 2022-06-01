@@ -148,7 +148,6 @@ const ContactInfo: React.FC = () => {
                                     onClick={() => openModal()}
                                     color={colors.btnWhite}
                                     bg={colors.btnDarkBlue}
-                                    disabled={isSuccess || isError}
                                 >
                                     {t('ContactInfo.btnChangeText')}
                                 </Button>

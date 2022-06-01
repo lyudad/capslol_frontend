@@ -3,6 +3,7 @@ import {
     IAuthRequest,
     IResponse,
     Password,
+    setRole,
 } from 'store/slices/auth/auth.type';
 import { baseApi } from '..';
 
@@ -25,11 +26,12 @@ export const authApi = baseApi.injectEndpoints({
                 },
             }),
         }),
-        selectRole: builder.query<IResponse, number>({
-            query: (roleType) => ({
-                url: 'auth/selectRole',
+        setRole: builder.query<IResponse, setRole>({
+            query: (params) => ({
+                url: 'auth/setRole',
                 params: {
-                    role: roleType,
+                    role: params.roleType,
+                    userId: params.userId,
                 },
             }),
         }),
@@ -72,7 +74,7 @@ export const {
     useLazySignUpUseGoogleQuery,
     useLazySignInUseGoogleQuery,
     useLoginMutation,
-    useLazySelectRoleQuery,
+    useLazySetRoleQuery,
     useResetPasswordMutation,
     useConfirmEmailMutation,
 } = authApi;
