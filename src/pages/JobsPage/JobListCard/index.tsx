@@ -38,6 +38,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
         skills,
         languageLevel,
         ownerId,
+        projectDuration,
     } = jobObj;
 
     const onClickJob = (): void => {
@@ -65,10 +66,8 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     </FieldValue>
                 </ValueBox>
                 <ValueBox>
-                    <Field>{t('JobPage.skills')}</Field>
-                    <FieldValue>
-                        {skills.map((item) => item.name).join(', ')}
-                    </FieldValue>
+                    <Field>{t('JobPage.projectDuration')}</Field>
+                    <FieldValue>{projectDuration}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
@@ -81,6 +80,12 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 <ValueBox>
                     <Field>{t('JobPage.english')}</Field>
                     <FieldValue>{languageLevel}</FieldValue>
+                </ValueBox>
+                <ValueBox>
+                    <Field>{t('JobPage.skills')}</Field>
+                    <FieldValue>
+                        {skills.map((item) => item.name).join(', ')}
+                    </FieldValue>
                 </ValueBox>
             </OwnerContainer>
             <StyledNav onClick={handleSendProposal}>
