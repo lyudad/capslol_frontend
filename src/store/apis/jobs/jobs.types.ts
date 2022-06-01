@@ -30,6 +30,7 @@ export interface IJob {
     skills: ISkill[];
     languageLevel: string;
     ownerId: IOwner;
+    projectDuration: string;
 }
 
 export interface IUserProfile {
@@ -45,3 +46,7 @@ export interface IUserProfile {
     categories: ICategory;
     skills: ISkill[];
 }
+
+export type JobFormType = Omit<IJob, 'id' | 'createdAt' | 'ownerId'> & {
+    ownerId: number;
+};

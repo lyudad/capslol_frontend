@@ -15,4 +15,5 @@ export enum Paths {
     CONTACT_INFO = '/contact_info',
     CHAT = '/chat',
     SETTING_ID = '/setting/:id',
+    CREATE_JOB_PAGE = '/createJob',
 }

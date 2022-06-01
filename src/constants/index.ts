@@ -1,3 +1,5 @@
+import { EnglishLevel, ProjectDuration } from 'types/common.types';
+
 interface Colors {
     [key: string]: string;
 }
@@ -84,4 +86,17 @@ export const Img = {
         'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
 };
 
+export const projectDuration: string[] = [
+    ProjectDuration.MORE_SIX_MONTHS,
+    ProjectDuration.SIX_MONTHS,
+    ProjectDuration.UNTIL_SIX_MONTHS,
+];
+
+export const englishLevel: string[] = [
+    EnglishLevel.NOENGLISH,
+    EnglishLevel.BEGINNER,
+    EnglishLevel.PREINTERMEDIATE,
+    EnglishLevel.INTERMEDIATE,
+    EnglishLevel.ADVANCED,
+];
 export const dateFormat = 'D MMMM YYYY';
