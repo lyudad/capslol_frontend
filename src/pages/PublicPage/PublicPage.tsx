@@ -15,6 +15,8 @@ import {
     Page,
     ButtonSet,
     TitleEmpty,
+    SectionsUl,
+    Line,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -38,6 +40,7 @@ const PublicPage: React.FC = () => {
             </Page>
         );
     }
+
     return (
         <Page>
             <ProfileContainer>
@@ -76,20 +79,22 @@ const PublicPage: React.FC = () => {
                     <Description>
                         {t('PublicProfile.name_of_courses')}:{' '}
                         <span style={{ color: colors.brandColor }}>
-                            {data?.educations.name}
+                            {data?.educations ? data?.educations.name : '-'}
                         </span>
                     </Description>
                     <Description>
                         {t('PublicProfile.specialization')}:{' '}
                         <span style={{ color: colors.brandColor }}>
-                            {data?.educations.specialization}
+                            {data?.educations
+                                ? data?.educations.specialization
+                                : '-'}
                         </span>
                     </Description>
                     <Description>
                         {t('PublicProfile.period')}:{' '}
                         <span style={{ color: colors.brandColor }}>
-                            {data?.educations.startAt} -{' '}
-                            {data?.educations.endAt}
+                            {data?.educations ? data?.educations.startAt : ''} -{' '}
+                            {data?.educations ? data?.educations.endAt : '-'}
                         </span>
                     </Description>
                 </Sections>
@@ -111,26 +116,31 @@ const PublicPage: React.FC = () => {
                     </Description>
                 </Sections>
                 <Sections>
-                    {t('PublicProfile.experience')}
-                    <Description>
-                        {t('PublicProfile.company_name')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.experiense.companyName}
-                        </span>
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.position')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.experiense.position}
-                        </span>
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.period')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.experiense.startAt} -{' '}
-                            {data?.experiense.endAt}
-                        </span>
-                    </Description>
+                    {t('PublicProfile.experience')}:
+                    {data?.experiense.map((e) => (
+                        <SectionsUl key={e.id}>
+                            <Line />
+                            <Description>
+                                {t('PublicProfile.company_name')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.companyName}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.position')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.position}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.period')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.startAt} - {e.endAt}
+                                </span>
+                            </Description>
+                            <Line />
+                        </SectionsUl>
+                    ))}
                 </Sections>
                 <Sections>
                     {t('PublicProfile.skills')}:{' '}

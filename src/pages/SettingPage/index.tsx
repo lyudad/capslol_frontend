@@ -56,6 +56,7 @@ const SettingPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
+    console.log(data);
 
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { data: allCategories } = useGetAllCategoriesQuery('');
@@ -66,29 +67,34 @@ const SettingPage: React.FC = () => {
 
     const { TextArea } = Input;
 
-    const [skills, setSkills] = useState<Skills[] | undefined>(data?.skills);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [skills, setSkills] = useState<any>(data?.skills);
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
-    const [educationName, setEducationName] = useState(data?.educations.name);
+    const [educationName, setEducationName] = useState(
+        data?.educations ? data?.educations.name : ''
+    );
     const [specialization, setSpecialization] = useState(
-        data?.educations.specialization
+        data?.educations ? data?.educations.specialization : ''
     );
     const [startEducation, setStartEducation] = useState(
-        data?.educations.startAt
+        data?.educations ? data?.educations.startAt : '-'
     );
-    const [startExperiense, setStartExperiense] = useState(
-        data?.experiense.startAt
+    const [endEducation, setEndEducation] = useState(
+        data?.educations ? data?.educations.endAt : '-'
     );
-    const [endEducation, setEndEducation] = useState(data?.educations.endAt);
-    const [endExperiense, setEndExperiense] = useState(data?.experiense.endAt);
+    // const [nameCompany, setNameCompany] = useState(
+    //     data?.experiense.companyName
+    // );
+    // const [experiensePosition, setExperiensePosition] = useState(
+    //     data?.experiense.position
+    // );
+    // const [startExperiense, setStartExperiense] = useState(
+    //     data?.experiense.startAt
+    // );
+    // const [endExperiense, setEndExperiense] = useState(data?.experiense.endAt);
     const [category, setCategory] = useState(data?.categories.categoryName);
     const [position, setPosition] = useState(data?.position);
-    const [nameCompany, setNameCompany] = useState(
-        data?.experiense.companyName
-    );
-    const [experiensePosition, setExperiensePosition] = useState(
-        data?.experiense.position
-    );
     const [other, setOther] = useState(data?.other);
     const [english, setEnglish] = useState(data?.english);
 
@@ -99,20 +105,20 @@ const SettingPage: React.FC = () => {
 
     const [avatarUrl, setAvatarUrl] = useState();
 
-    const onNameCompany = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setNameCompany(event.target.value);
-    };
+    // const onNameCompany = (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ): void => {
+    //     setNameCompany(event.target.value);
+    // };
     const onOther = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         setOther(event.target.value);
     };
 
-    const onExpiriensePosition = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setExperiensePosition(event.target.value);
-    };
+    // const onExpiriensePosition = (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ): void => {
+    //     setExperiensePosition(event.target.value);
+    // };
     const onPosition = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setPosition(event.target.value);
     };
@@ -144,16 +150,16 @@ const SettingPage: React.FC = () => {
         setEndEducation(dateString);
     };
 
-    const onStartExperiense = (
-        date: Moment | null,
-        dateString: string
-    ): void => {
-        setStartExperiense(dateString);
-    };
+    // const onStartExperiense = (
+    //     date: Moment | null,
+    //     dateString: string
+    // ): void => {
+    //     setStartExperiense(dateString);
+    // };
 
-    const onEndExperiense = (date: Moment | null, dateString: string): void => {
-        setEndExperiense(dateString);
-    };
+    // const onEndExperiense = (date: Moment | null, dateString: string): void => {
+    //     setEndExperiense(dateString);
+    // };
 
     const handleChangeCategory = (value: string): void => {
         setCategory(value);
@@ -191,14 +197,14 @@ const SettingPage: React.FC = () => {
             newformData.append('file', file);
             newformData.append('upload_preset', 'ycmt0cuu');
             const response = await uploadAvatar(newformData).unwrap();
-            setAvatarUrl(response.data.url);
+
+            setAvatarUrl(response.url);
         } catch (error) {
             message.error(error.message);
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleChangeTag = (value: any): void => {
+    const handleChangeTag = (value: string[]): void => {
         setSkills(value);
 
         const res: number[] = [];
@@ -245,6 +251,7 @@ const SettingPage: React.FC = () => {
             categories: categoryId,
             position,
             skills: skillsId,
+            experiense: [1, 2],
             english,
             other,
         };
@@ -256,17 +263,17 @@ const SettingPage: React.FC = () => {
             startAt: startEducation,
             endAt: endEducation,
         };
-        const UpdateExperience: Experiences = {
-            id: user?.id,
-            companyName: nameCompany,
-            position: experiensePosition,
-            startAt: startExperiense,
-            endAt: endExperiense,
-        };
+        // const UpdateExperience: Experiences = {
+        //     id: user?.id,
+        //     companyName: nameCompany,
+        //     position: experiensePosition,
+        //     startAt: startExperiense,
+        //     endAt: endExperiense,
+        // };
 
         try {
             await createEducation(UpdateEducation);
-            await createExperience(UpdateExperience);
+            // await createExperience(UpdateExperience);
             await createProfile(UpdateProfile);
         } catch (error) {
             message.error(error.status);
@@ -408,33 +415,33 @@ const SettingPage: React.FC = () => {
                         {t('PublicProfile.company_name')}:{' '}
                         <Input
                             style={{ width: 200 }}
-                            placeholder={t('PublicProfile.company_name')}
-                            value={nameCompany}
-                            onChange={onNameCompany}
+                            // placeholder={t('PublicProfile.company_name')}
+                            // value={nameCompany}
+                            // onChange={onNameCompany}
                         />
                     </Description>
                     <Description>
                         {t('PublicProfile.position')}:{' '}
                         <Input
                             style={{ width: 200 }}
-                            value={experiensePosition}
-                            onChange={onExpiriensePosition}
-                            placeholder={t('PublicProfile.position')}
+                            // value={experiensePosition}
+                            // onChange={onExpiriensePosition}
+                            // placeholder={t('PublicProfile.position')}
                         />
                     </Description>
                     <Description>
                         {t('PublicProfile.period')}: start{' '}
                         <Space direction="vertical">
                             <DatePicker
-                                placeholder={startExperiense}
-                                onChange={onStartExperiense}
+                            // placeholder={startExperiense}
+                            // onChange={onStartExperiense}
                             />
                         </Space>{' '}
                         end{' '}
                         <Space direction="vertical">
                             <DatePicker
-                                placeholder={endExperiense}
-                                onChange={onEndExperiense}
+                            // placeholder={endExperiense}
+                            // onChange={onEndExperiense}
                             />
                         </Space>
                     </Description>
@@ -451,6 +458,10 @@ const SettingPage: React.FC = () => {
                             allowClear
                             style={{ width: '65%' }}
                             placeholder="Please select"
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            defaultValue={skills?.map((skill: any) => (
+                                <Option key={skill.name}>{skill.name}</Option>
+                            ))}
                             onChange={handleChangeTag}
                         >
                             {allSkills?.map((skill) => (
