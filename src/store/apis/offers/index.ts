@@ -1,4 +1,4 @@
-﻿import { baseApi } from '..';
+﻿import { baseApi } from 'store/apis/index';
 import { IMyOffer } from './offers.types';
 
 export const proposalApi = baseApi.injectEndpoints({
