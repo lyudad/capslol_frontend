@@ -183,7 +183,9 @@
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
         "myProposals": "My Proposals",
-        "myHourRate": "my hour rate:"
+        "myHourRate": "my hour rate:",
+        "status": "status",
+        "ownerHourRate": "job owner hour rate"
     },
     "ContactInfo": {
         "title": "My Account",
