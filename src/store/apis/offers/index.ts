@@ -1,14 +1,25 @@
 ﻿import { baseApi } from 'store/apis/index';
-import { IMyOffer } from './offers.types';
+import { IMyOffer, IChangeStatus } from './offers.types';
 
-export const proposalApi = baseApi.injectEndpoints({
+const apiOffersTag = baseApi.enhanceEndpoints({ addTagTypes: ['Offer'] });
+
+export const offersApi = apiOffersTag.injectEndpoints({
     endpoints: (builder) => ({
         getOffersByFreelancer: builder.query<IMyOffer[], number | undefined>({
             query: (value: number) => ({
                 url: `/offer/getOffers?freelancerId=${value}`,
             }),
+            providesTags: ['Offer'],
+        }),
+        changeStatus: builder.mutation<IMyOffer, number | IChangeStatus>({
+            query: (body: IChangeStatus) => ({
+                url: `/offer/changeStatus`,
+                method: 'PUT',
+                body,
+            }),
         }),
     }),
 });
 
-export const { useGetOffersByFreelancerQuery } = proposalApi;
+export const { useGetOffersByFreelancerQuery, useChangeStatusMutation } =
+    offersApi;

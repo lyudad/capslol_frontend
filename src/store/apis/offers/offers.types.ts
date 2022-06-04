@@ -29,3 +29,13 @@ export interface IMyOffer {
     freelancerId: IUser;
     jobId: IJob;
 }
+
+export enum Status {
+    DECLINED = 'Declined',
+    ACCEPTED = 'Accepted',
+    PENDING = 'Pending',
+}
+export interface IChangeStatus {
+    id: number | undefined;
+    status: Status;
+}

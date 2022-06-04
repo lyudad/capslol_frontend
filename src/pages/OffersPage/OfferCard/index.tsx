@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
+import { message } from 'antd';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { useChangeStatusMutation } from 'store/apis/offers';
 import { Paths } from 'router/paths';
-import { IMyOffer } from 'store/apis/offers/offers.types';
+import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import { dateFormat } from 'constants/index';
 import {
     DateContainer,
@@ -17,6 +19,7 @@ import {
     FieldValue,
     StyledCardBtn,
     OneCard,
+    StatusValue,
 } from '../styles';
 
 interface IProps {
@@ -30,11 +33,31 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     const navigate = useNavigate();
 
-    const { createdAt, jobId, ownerId, hourRate, status } = offerObj;
+    const [changeStatus] = useChangeStatusMutation();
+
+    const { id, createdAt, jobId, ownerId, hourRate, status } = offerObj;
 
     useEffect(() => {
         setOfferStatus(status);
     }, [status]);
+
+    const onClickBtn = async (value: Status): Promise<void> => {
+        try {
+            const response = await changeStatus({
+                id,
+                status: value,
+            }).unwrap();
+
+            setOfferStatus(response.status);
+        } catch (error) {
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+        }
+    };
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
@@ -73,11 +96,25 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
             <ButtonContainer>
                 <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
-                {offerStatus === 'Pending' && (
+                {offerStatus === Status.PENDING && (
                     <>
-                        <StyledCardBtn>{t('OffersPage.accept')}</StyledCardBtn>
-                        <StyledCardBtn>{t('OffersPage.decline')}</StyledCardBtn>
+                        <StyledCardBtn
+                            onClick={() => onClickBtn(Status.ACCEPTED)}
+                        >
+                            {t('OffersPage.accept')}
+                        </StyledCardBtn>
+                        <StyledCardBtn
+                            onClick={() => onClickBtn(Status.DECLINED)}
+                        >
+                            {t('OffersPage.decline')}
+                        </StyledCardBtn>
                     </>
+                )}
+                {offerStatus === Status.ACCEPTED && (
+                    <StatusValue>You accepted this offer</StatusValue>
+                )}
+                {offerStatus === Status.DECLINED && (
+                    <StatusValue>You rejected this offer</StatusValue>
                 )}
             </ButtonContainer>
         </OneCard>
