@@ -37,16 +37,18 @@ export const Title = styled.h1`
     margin-left: 15px;
     color: ${colors.navColor};
 `;
-export const Line = styled.h1`
+export const Line = styled.div`
     width: 93%;
     border-bottom: 0.5px solid rgba(76, 175, 80, 0.3);
+    margin-bottom: -5px;
+    margin-top: 12px;
 `;
 export const Sections = styled.h3`
     margin-top: 8px;
     margin-left: 25px;
     color: ${colors.navColor};
 `;
-export const SectionsUl = styled.h3`
+export const SectionsUl = styled.div`
     margin-top: 8px;
     margin-left: 25px;
     font-size: large;
@@ -78,6 +80,7 @@ export const ButtonSet = styled(Button)`
         border: 1px solid #4caf50;
         color: ${colors.brandColor};
     }
+
     :focus {
         background: ${colors.brandColor};
         border: 1px solid ${colors.brandColor};

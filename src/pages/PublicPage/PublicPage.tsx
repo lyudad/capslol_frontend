@@ -53,7 +53,7 @@ const PublicPage: React.FC = () => {
                     <img
                         src={data?.profileImage || avatar}
                         alt=""
-                        width={140}
+                        width={180}
                     />
                 </Avatar>
                 <Sections>
