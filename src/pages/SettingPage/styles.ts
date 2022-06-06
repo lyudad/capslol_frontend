@@ -49,6 +49,15 @@ export const Sections = styled.div`
     margin-left: 25px;
     color: ${colors.navColor};
 `;
+export const SectionsExperience = styled.div`
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    padding-top: -15px;
+    margin-top: 0px;
+    margin-left: 25px;
+    color: ${colors.navColor};
+`;
 
 export const Description = styled.span`
     font-size: 18px;
@@ -80,6 +89,24 @@ export const ButtonSet = styled(Button)`
     }
     :focus {
         background: ${colors.brandColor};
+        border: 1px solid ${colors.brandColor};
+        color: ${colors.black};
+    }
+`;
+export const ButtonDel = styled(Button)`
+    display: flex;
+    background: none;
+    border: none;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    justify-content: center;
+    :hover {
+        background: ${colors.brandColor};
+        color: ${colors.black};
+    }
+    :focus {
+        background: none;
         border: 1px solid ${colors.brandColor};
         color: ${colors.black};
     }

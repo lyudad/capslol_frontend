@@ -18,7 +18,7 @@ const AppBar: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const { data: offers } = useGetOffersQuery();
+    // const { data: offers } = useGetOffersQuery();
 
     const close = (): void => {
         /* eslint-disable no-console */
@@ -45,11 +45,11 @@ const AppBar: React.FC = () => {
         });
     };
 
-    const handleNotification = (): void => {
-        offers?.map((offer) => {
-            return openNotification(offer.messageType);
-        });
-    };
+    // const handleNotification = (): void => {
+    //     offers?.map((offer) => {
+    //         return openNotification(offer.messageType);
+    //     });
+    // };
     return (
         <Header>
             <NavigationContainer>
@@ -81,8 +81,8 @@ const AppBar: React.FC = () => {
                 </div>
 
                 <NotificationFlex>
-                    {offers?.length && <Counter>{offers?.length}</Counter>}
-                    <NotificationIcon onClick={handleNotification} />
+                    {/* {offers?.length && <Counter>{offers?.length}</Counter>} */}
+                    {/* <NotificationIcon onClick={handleNotification} /> */}
                     <MessageIcon onClick={() => navigate('/chat')} />
                 </NotificationFlex>
             </NavigationContainer>

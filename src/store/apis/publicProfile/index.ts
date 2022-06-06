@@ -44,6 +44,14 @@ export const publicProfileApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Profile'],
         }),
+        updateProfile: builder.mutation<newProfile, newProfile | undefined>({
+            query: (value) => ({
+                url: 'profiles/',
+                method: 'PATCH',
+                body: value,
+            }),
+            invalidatesTags: ['Profile'],
+        }),
         createEducation: builder.mutation<Educations, Educations | undefined>({
             query: (value) => ({
                 url: 'educations/',
@@ -63,6 +71,13 @@ export const publicProfileApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Profile'],
         }),
+        deleteExperience: builder.mutation<{ id: number }, number | undefined>({
+            query: (id) => ({
+                url: `experiences/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Profile'],
+        }),
         getAllCategories: builder.query<Category[], string>({
             query: () => ({
                 url: `categories`,
@@ -72,6 +87,12 @@ export const publicProfileApi = baseApi.injectEndpoints({
             query: () => ({
                 url: `skills`,
             }),
+        }),
+        getAllExperience: builder.query<Experiences[], string>({
+            query: () => ({
+                url: `experiences`,
+            }),
+            providesTags: ['Profile'],
         }),
     }),
 });
@@ -84,4 +105,7 @@ export const {
     useCreateExperienceMutation,
     useGetAllCategoriesQuery,
     useCreateEducationMutation,
+    useGetAllExperienceQuery,
+    useUpdateProfileMutation,
+    useDeleteExperienceMutation,
 } = publicProfileApi;

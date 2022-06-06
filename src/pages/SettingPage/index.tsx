@@ -8,8 +8,11 @@ import {
     useGetAllCategoriesQuery,
     useCreateEducationMutation,
     useUploadAvatarMutation,
+    useGetAllExperienceQuery,
+    useUpdateProfileMutation,
+    useDeleteExperienceMutation,
 } from 'store/apis/publicProfile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     InputNumber,
     Input,
@@ -33,6 +36,7 @@ import {
 } from 'store/apis/publicProfile/publicProfile.types';
 import { Moment } from 'moment';
 
+import { Line } from 'pages/PublicPage/styles';
 import {
     ProfileContainer,
     Avatar,
@@ -41,6 +45,8 @@ import {
     Description,
     Sections,
     ButtonSet,
+    SectionsExperience,
+    ButtonDel,
 } from './styles';
 
 const englishEnum = [
@@ -56,15 +62,16 @@ const SettingPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
-    console.log(data);
 
+    const { data: allExperience } = useGetAllExperienceQuery('');
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { data: allCategories } = useGetAllCategoriesQuery('');
     const [createProfile] = useCreateProfileMutation();
+    const [updateProfile] = useUpdateProfileMutation();
     const [createExperience] = useCreateExperienceMutation();
+    const [deleteExperience] = useDeleteExperienceMutation();
     const [createEducation] = useCreateEducationMutation();
     const [uploadAvatar] = useUploadAvatarMutation();
-
     const { TextArea } = Input;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,50 +85,57 @@ const SettingPage: React.FC = () => {
         data?.educations ? data?.educations.specialization : ''
     );
     const [startEducation, setStartEducation] = useState(
-        data?.educations ? data?.educations.startAt : '-'
+        data?.educations ? data?.educations.startAt : 'Start Period'
     );
     const [endEducation, setEndEducation] = useState(
-        data?.educations ? data?.educations.endAt : '-'
+        data?.educations ? data?.educations.endAt : 'End Period'
     );
-    // const [nameCompany, setNameCompany] = useState(
-    //     data?.experiense.companyName
-    // );
-    // const [experiensePosition, setExperiensePosition] = useState(
-    //     data?.experiense.position
-    // );
-    // const [startExperiense, setStartExperiense] = useState(
-    //     data?.experiense.startAt
-    // );
-    // const [endExperiense, setEndExperiense] = useState(data?.experiense.endAt);
+    const [nameCompany, setNameCompany] = useState('');
+    const [experiensePosition, setExperiensePosition] = useState('');
+    const [startExperiense, setStartExperiense] = useState('');
+    const [endExperiense, setEndExperiense] = useState('');
     const [category, setCategory] = useState(data?.categories.categoryName);
     const [position, setPosition] = useState(data?.position);
     const [other, setOther] = useState(data?.other);
     const [english, setEnglish] = useState(data?.english);
-
     const [skillsId, setSkillsId] = useState<number[]>();
     const [categoryId, setCategoryId] = useState<number>();
-
+    const [experienceId, setExperienceId] = useState<number[]>();
     const [previewSource, setPreviewSource] = useState<string>('');
-
     const [avatarUrl, setAvatarUrl] = useState();
+    const [newExpId, setNewExpId] = useState<number>();
 
-    // const onNameCompany = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ): void => {
-    //     setNameCompany(event.target.value);
-    // };
     const onOther = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         setOther(event.target.value);
     };
+    const onNameCompany = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        const id = Number(event.currentTarget.id);
+        setNewExpId(id);
+        setNameCompany(event.target.value);
+    };
 
-    // const onExpiriensePosition = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ): void => {
-    //     setExperiensePosition(event.target.value);
-    // };
+    const onExpiriensePosition = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setExperiensePosition(event.target.value);
+    };
     const onPosition = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setPosition(event.target.value);
     };
+
+    const onStartExperiense = (
+        date: Moment | null,
+        dateString: string
+    ): void => {
+        setStartExperiense(dateString);
+    };
+
+    const onEndExperiense = (date: Moment | null, dateString: string): void => {
+        setEndExperiense(dateString);
+    };
+
     const onChangeHuorRate = (value: number): void => {
         setHourRate(value);
     };
@@ -149,17 +163,6 @@ const SettingPage: React.FC = () => {
     const onEndEducation = (date: Moment | null, dateString: string): void => {
         setEndEducation(dateString);
     };
-
-    // const onStartExperiense = (
-    //     date: Moment | null,
-    //     dateString: string
-    // ): void => {
-    //     setStartExperiense(dateString);
-    // };
-
-    // const onEndExperiense = (date: Moment | null, dateString: string): void => {
-    //     setEndExperiense(dateString);
-    // };
 
     const handleChangeCategory = (value: string): void => {
         setCategory(value);
@@ -216,6 +219,42 @@ const SettingPage: React.FC = () => {
         setSkillsId(res);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onDeleteExperience = async (e: any): Promise<void> => {
+        try {
+            const id = Number(e.currentTarget.id);
+            await deleteExperience(id);
+        } catch (error) {
+            message.error(error.status);
+        }
+        notification.success({
+            message: 'Success delete 🧺',
+        });
+    };
+
+    const onAddExperience = async (): Promise<void> => {
+        try {
+            await createExperience(undefined);
+
+            const res: number[] = [];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            allExperience?.forEach(({ id }: any) => {
+                res.push(id);
+            });
+
+            const UpdateProfile: newProfile = {
+                id: user?.id,
+                userId: Number(user?.id),
+                experiense: res,
+            };
+            await updateProfile(UpdateProfile);
+        } catch (error) {
+            message.error(error.status);
+        }
+        notification.success({
+            message: 'Success Add',
+        });
+    };
     const onSaveChanges = async (): Promise<void> => {
         if (!hourRate) {
             return notification.warning({
@@ -242,16 +281,22 @@ const SettingPage: React.FC = () => {
                 message: 'Please choose your English level',
             });
         }
+        // if (!newExpId) {
+        //     return notification.warning({
+        //         message: 'Empty Experience Form',
+        //     });
+        // }
 
         const UpdateProfile: newProfile = {
             id: user?.id,
+            educations: user?.id,
             profileImage: avatarUrl,
             hourRate,
             availableHours,
             categories: categoryId,
             position,
             skills: skillsId,
-            experiense: [1, 2],
+            experiense: experienceId,
             english,
             other,
         };
@@ -263,21 +308,21 @@ const SettingPage: React.FC = () => {
             startAt: startEducation,
             endAt: endEducation,
         };
-        // const UpdateExperience: Experiences = {
-        //     id: user?.id,
-        //     companyName: nameCompany,
-        //     position: experiensePosition,
-        //     startAt: startExperiense,
-        //     endAt: endExperiense,
-        // };
 
         try {
             await createEducation(UpdateEducation);
-            // await createExperience(UpdateExperience);
             await createProfile(UpdateProfile);
         } catch (error) {
             message.error(error.status);
         }
+        const UpdateExperience: Experiences = {
+            id: newExpId,
+            companyName: nameCompany,
+            position: experiensePosition,
+            startAt: startExperiense,
+            endAt: endExperiense,
+        };
+        await createExperience(UpdateExperience);
         navigate(`/profile`);
         return notification.success({
             message: 'Changes saved',
@@ -304,6 +349,7 @@ const SettingPage: React.FC = () => {
                         />
                     )}
                     <input
+                        style={{ marginTop: 10, width: 114 }}
                         type="file"
                         name="image"
                         onChange={handleUploadImage}
@@ -411,40 +457,80 @@ const SettingPage: React.FC = () => {
                 </Sections>
                 <Sections>
                     {t('PublicProfile.experience')}
-                    <Description>
-                        {t('PublicProfile.company_name')}:{' '}
-                        <Input
-                            style={{ width: 200 }}
-                            // placeholder={t('PublicProfile.company_name')}
-                            // value={nameCompany}
-                            // onChange={onNameCompany}
-                        />
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.position')}:{' '}
-                        <Input
-                            style={{ width: 200 }}
-                            // value={experiensePosition}
-                            // onChange={onExpiriensePosition}
-                            // placeholder={t('PublicProfile.position')}
-                        />
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.period')}: start{' '}
-                        <Space direction="vertical">
-                            <DatePicker
-                            // placeholder={startExperiense}
-                            // onChange={onStartExperiense}
-                            />
-                        </Space>{' '}
-                        end{' '}
-                        <Space direction="vertical">
-                            <DatePicker
-                            // placeholder={endExperiense}
-                            // onChange={onEndExperiense}
-                            />
-                        </Space>
-                    </Description>
+                    {data?.experiense.map((e) => (
+                        <SectionsExperience key={e.id}>
+                            <Line />
+                            <Description>
+                                <Row justify="end">
+                                    <ButtonDel
+                                        style={{
+                                            marginBottom: -33,
+                                            marginTop: 0,
+                                            marginRight: '7%',
+                                            width: 33,
+                                            borderRadius: 30,
+                                        }}
+                                        onClick={onDeleteExperience}
+                                        type="default"
+                                        id={String(e.id)}
+                                    >
+                                        ❌
+                                    </ButtonDel>
+                                </Row>
+                                {t('PublicProfile.company_name')}:{' '}
+                                <Input
+                                    style={{
+                                        width: 159,
+                                        marginTop: 0,
+                                    }}
+                                    placeholder={t(
+                                        'PublicProfile.company_name'
+                                    )}
+                                    id={String(e.id)}
+                                    value={e.companyName || nameCompany}
+                                    onChange={onNameCompany}
+                                />
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.position')}:{' '}
+                                <Input
+                                    style={{ width: 241 }}
+                                    value={e.position || experiensePosition}
+                                    onChange={onExpiriensePosition}
+                                    placeholder={t('PublicProfile.position')}
+                                />
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.period')}: start{' '}
+                                <Space direction="vertical">
+                                    <DatePicker
+                                        onChange={onStartExperiense}
+                                        placeholder={
+                                            e.startAt || startExperiense
+                                        }
+                                    />
+                                </Space>{' '}
+                                end{' '}
+                                <Space direction="vertical">
+                                    <DatePicker
+                                        onChange={onEndExperiense}
+                                        placeholder={e.endAt || endExperiense}
+                                    />
+                                </Space>
+                            </Description>
+                            <Line />
+                        </SectionsExperience>
+                    ))}
+
+                    <Row justify="center">
+                        <ButtonSet
+                            onClick={onAddExperience}
+                            style={{ marginTop: 20 }}
+                            type="default"
+                        >
+                            ➕
+                        </ButtonSet>
+                    </Row>
                 </Sections>
                 <Sections>
                     <span>
