@@ -1,5 +1,4 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import { baseApi } from '..';
+﻿import { baseApi } from '..';
 import { IProposal, IJob, IMyProposal } from './proposal.types';
 
 const apiProposalsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Proposal'] });
@@ -21,7 +20,7 @@ export const proposalApi = apiProposalsTag.injectEndpoints({
                 url: `/jobs/${value}`,
             }),
         }),
-        getAll: builder.query<any, any>({
+        getAll: builder.query<IMyProposal, void>({
             query: () => ({
                 url: `/proposals`,
             }),
@@ -34,6 +33,7 @@ export const proposalApi = apiProposalsTag.injectEndpoints({
             query: (value: number) => ({
                 url: `/proposals/search?freelancerId=${value}`,
             }),
+            providesTags: ['Proposal'],
         }),
     }),
 });

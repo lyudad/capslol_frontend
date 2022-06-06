@@ -118,4 +118,10 @@ export const StyledNav = styled.button`
     cursor: pointer;
     color: ${colors.textWhite};
     background-color: ${colors.brandColor};
+    &:disabled {
+        color: ${colors.textWhite};
+        background: ${colors.passwordBg};
+        cursor: no-drop;
+        font-style: italic;
+    }
 `;

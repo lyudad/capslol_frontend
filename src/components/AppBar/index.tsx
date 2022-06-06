@@ -1,55 +1,19 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button, notification } from 'antd';
 
-import { useGetOffersQuery } from 'store/apis/chat';
 import {
     Header,
     NavigationContainer,
     Logo,
-    NotificationIcon,
     MessageIcon,
     NotificationFlex,
-    Counter,
 } from './styles';
 
 const AppBar: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const { data: offers } = useGetOffersQuery();
-
-    const close = (): void => {
-        /* eslint-disable no-console */
-        console.log('Close');
-    };
-
-    const openNotification = (type: string): void => {
-        const key = `open${Date.now()}`;
-        const btn = (
-            <Button
-                type="primary"
-                size="small"
-                onClick={() => notification.close(key)}
-            >
-                Confirm
-            </Button>
-        );
-        notification.open({
-            message: 'You have new notification',
-            description: type,
-            btn,
-            key,
-            onClose: close,
-        });
-    };
-
-    const handleNotification = (): void => {
-        offers?.map((offer) => {
-            return openNotification(offer.messageType);
-        });
-    };
     return (
         <Header>
             <NavigationContainer>
@@ -81,8 +45,6 @@ const AppBar: React.FC = () => {
                 </div>
 
                 <NotificationFlex>
-                    {offers?.length && <Counter>{offers?.length}</Counter>}
-                    <NotificationIcon onClick={handleNotification} />
                     <MessageIcon onClick={() => navigate('/chat')} />
                 </NotificationFlex>
             </NavigationContainer>

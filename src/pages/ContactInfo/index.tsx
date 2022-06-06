@@ -52,8 +52,10 @@ const ContactInfo: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [updateFirstName, setUpdateFirstName] = useState<boolean>(false);
     const [updateLastName, setUpdateLastName] = useState<boolean>(false);
+    const [userPhoneNumber, setUserPhoneNumber] = useState<boolean>(false);
     const [updateUserFirstName, setUpdateUserFirstName] = useState<string>();
     const [updateUserLastName, setUpdateUserLastName] = useState<string>();
+    const [phoneNumber, setPhoneNumber] = useState<string>();
 
     const state = location.state as IContactInfo;
 
@@ -76,6 +78,8 @@ const ContactInfo: React.FC = () => {
     const handleEditUserFirstName = (): void => setUpdateFirstName(true);
 
     const handleEditUserLastName = (): void => setUpdateLastName(true);
+
+    const AddUserUserPhoneNumber = (): void => setUserPhoneNumber(true);
 
     const onFinish = async (values: IChangePassword): Promise<void> => {
         enterLoading();
@@ -117,7 +121,7 @@ const ContactInfo: React.FC = () => {
         }
     };
 
-    const handleUpdate = async (value: string): Promise<void | null> => {
+    const handleUpdate = async (value: string): Promise<void | boolean> => {
         switch (value) {
             case 'firstName':
                 await handleEdit(
@@ -135,8 +139,12 @@ const ContactInfo: React.FC = () => {
                 );
                 setUpdateLastName(false);
                 break;
+            case 'phoneNumber':
+                await handleEdit('phoneNumber', phoneNumber, 'addPhoneNumber');
+                setUserPhoneNumber(false);
+                break;
             default:
-                return null;
+                return false;
         }
     };
 
@@ -300,15 +308,51 @@ const ContactInfo: React.FC = () => {
                                     <Label>{t('ContactInfo.userPhone')}</Label>
                                     <TitleGroup justify="space-between">
                                         <Title fs="16">
-                                            {user?.data?.phoneNumber
-                                                ? user?.data?.phoneNumber
-                                                : 'You phone number is empty'}
+                                            {userPhoneNumber ? (
+                                                <StyledInput
+                                                    defaultValue={
+                                                        user?.data
+                                                            ?.phoneNumber || ''
+                                                    }
+                                                    value={phoneNumber}
+                                                    onChange={(e) =>
+                                                        setPhoneNumber(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="text"
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {user?.data?.phoneNumber
+                                                        ? user?.data
+                                                              ?.phoneNumber
+                                                        : 'You phone number is empty'}
+                                                </span>
+                                            )}
                                         </Title>
-                                        {user?.data?.phoneNumber ? (
-                                            <Icon />
-                                        ) : (
-                                            <IconNotFound />
-                                        )}
+                                        <Row>
+                                            {userPhoneNumber ? (
+                                                <SaveIcon
+                                                    onClick={() =>
+                                                        handleUpdate(
+                                                            'phoneNumber'
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <EditIcon
+                                                    onClick={
+                                                        AddUserUserPhoneNumber
+                                                    }
+                                                />
+                                            )}
+                                            {user?.data?.phoneNumber ? (
+                                                <Icon />
+                                            ) : (
+                                                <IconNotFound />
+                                            )}
+                                        </Row>
                                     </TitleGroup>
                                 </CardInfo>
 
@@ -339,8 +383,6 @@ const ContactInfo: React.FC = () => {
                     </Block>
                 </>
             )}
-
-            <> {isLoading && <Spinner />}</>
 
             <ModalWindow
                 modalIsOpen={modalIsOpen}
@@ -451,6 +493,7 @@ const ContactInfo: React.FC = () => {
                 {isError && (
                     <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
                 )}
+                {isLoading && <Spinner />}
             </>
         </Wrapper>
     );

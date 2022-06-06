@@ -1,51 +1,44 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { message } from 'antd';
+﻿import React, { useState } from 'react';
+import { notification } from 'antd';
 
-import { useGetContactsQuery } from 'store/apis/chat';
 import Spinner from 'components/Spinner';
-import axios from 'axios';
+import { useAppSelector } from 'hooks/redux';
+import { useGetChatContactsQuery } from 'store/apis/chat';
+import { IChatMember } from 'store/apis/chat/chat.types';
 import ChatContent from './ChatContent';
 import ChatList from './ChatList';
 import { Wrapper } from './styles';
 import Welcome from './Welcome';
-import { TChatArgument } from './interfaces';
-// import { contacts } from './ChatList/data';
+import { IChatMemberArg, TChatArgument } from './interfaces';
 
 const Chat: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
         undefined
     );
+    const { user } = useAppSelector((s) => s.auth);
 
-    const [contacts, setContacts] = useState();
-    // const { data: contacts, isLoading, isError } = useGetContactsQuery();
+    const { data: chatMembers, isLoading, isError } = useGetChatContactsQuery();
 
     const handleChat = (chat: TChatArgument): void => {
         setCurrentChat(chat);
     };
 
-    const fetchContacts = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get(
-                'http://localhost:3000/chat-contacts'
-            );
-            setContacts(data);
-        } catch (error) {
-            message.error(`${error?.data?.message}`);
-        }
+    const getRightMembers = (data: IChatMemberArg): IChatMemberArg => {
+        const filtered = data?.filter(
+            (i: IChatMember) =>
+                i?.proposalId?.freelancerId?.id === user?.id ||
+                i?.proposalId?.jobId?.ownerId?.id === user?.id
+        );
+        return filtered;
     };
 
-    useEffect(() => {
-        fetchContacts();
-        console.log(contacts);
-    }, []);
+    const userMembers = getRightMembers(chatMembers);
 
     return (
         <Wrapper>
-            {contacts && (
+            {chatMembers && (
                 <>
-                    <ChatList onChangeChat={handleChat} contacts={contacts} />
+                    <ChatList onChangeChat={handleChat} members={userMembers} />
                     {currentChat === undefined ? (
                         <Welcome />
                     ) : (
@@ -54,8 +47,14 @@ const Chat: React.FC = () => {
                 </>
             )}
             <>
-                {/* {isLoading && <Spinner />} */}
-                {/* {isError && message.error('Not found any contacts')} */}
+                {' '}
+                {isLoading && <Spinner />}{' '}
+                {isError &&
+                    notification.error({
+                        message: 'Error!',
+                        description:
+                            'There are no contacts, something went wrong, please try again!',
+                    })}
             </>
         </Wrapper>
     );

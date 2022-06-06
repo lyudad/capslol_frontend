@@ -1,20 +1,16 @@
-﻿/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, message, notification, Row } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { colors } from 'constants/index';
 import {
-    useGetSingleJobQuery,
     useSendProposalMutation,
-    useGetAllQuery,
+    useGetProposalsByFreelancerQuery,
 } from 'store/apis/proposals';
 import { useAppSelector } from 'hooks/redux';
-import { useDispatch } from 'react-redux';
-import { setIsSent } from 'store/slices/proposals/proposals.slice';
-import axios from 'axios';
+import { useGetJobByIdQuery } from 'store/apis/jobs';
+import { Paths } from 'router/paths';
 import {
     Block,
     Font,
@@ -29,22 +25,22 @@ import {
     FormItem,
     StyledFormItem,
 } from './styles';
-import { IFormValue, IJob } from './interfaces';
+import { IFormValue, IJobId, TFilterArg, TFilterReturn } from './interfaces';
 
 const SendProposal: React.FC = () => {
     const location = useLocation();
-
-    const state = location.state as IJob;
-
-    const { data: job } = useGetSingleJobQuery(state.id);
-    const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
-    const { data: proposals } = useGetAllQuery([]);
-
     const { user } = useAppSelector((s) => s.auth);
-    const dispatch = useDispatch();
-
     const { t } = useTranslation();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
+
+    const state = location.state as IJobId;
+
+    const { data: job } = useGetJobByIdQuery(state.id);
+    const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
+    const { data: freelancerProposals } = useGetProposalsByFreelancerQuery(
+        user?.id
+    );
 
     const [freelancerValue, setFreelancerValue] = useState<number>();
     const [hourRate, setHourRate] = useState<number | undefined>(job?.price);
@@ -53,6 +49,17 @@ const SendProposal: React.FC = () => {
     const [getJob, setGetJob] = useState<number>(getJobHourRate);
 
     const onReset = (): void => form.resetFields();
+
+    const handleFiltered = (data: TFilterArg): TFilterReturn => {
+        const filtered = data?.filter((i) => i.jobId.id === state.id)[0]?.jobId
+            ?.id;
+
+        return filtered;
+    };
+
+    const navigateToProjectDetails = (): void => {
+        navigate(Paths.JOB_PAGE, { state: { id: state.id } });
+    };
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
@@ -63,19 +70,13 @@ const SendProposal: React.FC = () => {
                 hourRate: freelancerValue,
             };
             await postProposal(newProposal);
-            await dispatch(setIsSent(newProposal));
             setHourRate(0);
             setGetJob(0);
             setFreelancerValue(0);
             onReset();
-            const data = axios.post('http://localhost:3000/chat-contacts', {
-                proposalId: 1,
-                isActive: false,
-            });
-
-            console.log(data);
+            navigateToProjectDetails();
         } catch (error) {
-            message.error(`${error.data.message}`);
+            message.error(`${error?.message}`);
         }
         onReset();
     };
@@ -86,11 +87,17 @@ const SendProposal: React.FC = () => {
         setFreelancerValue(((hourRate || 0) - getJob) * 10);
     };
 
-    const handleFiltered = (data: any) => {
-        const filtered = data?.filter((i: any) => i.jobId.id === state.id)[0]
-            ?.jobId?.id;
+    type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
-        return filtered;
+    const openNotificationWithIcon = (
+        type: NotificationType,
+        msg: string,
+        desc: string
+    ): void => {
+        notification[type]({
+            message: msg,
+            description: desc,
+        });
     };
 
     return (
@@ -215,10 +222,9 @@ const SendProposal: React.FC = () => {
                 </ProposalCard>
 
                 <Form.Item>
-                    {handleFiltered(proposals) === state.id ? (
+                    {handleFiltered(freelancerProposals) === state.id ? (
                         <FontTitle fs="16" color={colors.textGreen}>
-                            You have already responded to this project. Try
-                            another one!
+                            {t('Proposal.proposalSentTitle')}
                         </FontTitle>
                     ) : (
                         <StyledButton
@@ -234,16 +240,17 @@ const SendProposal: React.FC = () => {
             <>
                 {' '}
                 {isSuccess &&
-                    notification.success({
-                        message: 'Success',
-                        description: 'You proposals successfully send!',
-                    })}
+                    openNotificationWithIcon(
+                        'success',
+                        'Success',
+                        'You successfully sent proposal!'
+                    )}
                 {isError &&
-                    notification.error({
-                        message: 'Error',
-                        description:
-                            'You have already responded to this project. Try another one!',
-                    })}
+                    openNotificationWithIcon(
+                        'error',
+                        'Error',
+                        'You have already responded to this project. Try another one!'
+                    )}
             </>
         </Wrapper>
     );

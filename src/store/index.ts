@@ -14,7 +14,6 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { baseApi } from './apis';
 import authReducer from './slices/auth/auth.slice';
 import jobsReducer from './slices/jobs/jobs.slice';
-import proposalsReducer from './slices/proposals/proposals.slice';
 
 const persistConfig = {
     key: 'auth',
@@ -27,7 +26,6 @@ export const store = configureStore({
     reducer: {
         auth: persistedReducer,
         jobsReducer,
-        proposals: proposalsReducer,
         [baseApi.reducerPath]: baseApi.reducer,
     },
 

@@ -1,5 +1,4 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import { baseApi } from '..';
+﻿import { baseApi } from '..';
 import { IPassword, IUserValue, IUser } from './profile.types';
 
 const apiProfileTag = baseApi.enhanceEndpoints({ addTagTypes: ['User'] });
@@ -26,7 +25,7 @@ export const profileApi = apiProfileTag.injectEndpoints({
             },
             invalidatesTags: ['User'],
         }),
-        getUserById: builder.query<any, number>({
+        getUserById: builder.query<IUser, number | undefined>({
             query: (value) => ({
                 url: `auth/getUser/${value}`,
             }),

@@ -14,7 +14,7 @@ export const jobsApi = baseApi.injectEndpoints({
         }),
 
         getJobById: builder.query<IJob, number | undefined>({
-            query: (id) => `jobs/${id}`,
+            query: (id) => `jobs/getJob?jobId=${id}`,
         }),
 
         getCategories: builder.query<ICategory[], void>({

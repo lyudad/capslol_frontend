@@ -1,28 +1,23 @@
-﻿/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-var */
-/* eslint-disable no-useless-return */
-import React, { useState, useEffect } from 'react';
+﻿/* eslint-disable no-unused-expressions */
+import React, { useState, useEffect, useContext } from 'react';
 import { message } from 'antd';
-import io, { Socket } from 'socket.io-client';
 
 import { useAppSelector } from 'hooks/redux';
-import { useGetMessagesQuery, usePostMessageMutation } from 'store/apis/chat';
-import { Img } from 'constants/index';
-import Spinner from 'components/Spinner';
+import { colors } from 'constants/index';
 import axios from 'axios';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { DefaultEventsMap } from '@socket.io/component-emitter';
+import ModalWindow from 'components/ModalWindow/ModalWindow';
+import { AppContext } from 'context';
+import { useGetUserByIdQuery } from 'store/apis/profile';
+import { useTranslation } from 'react-i18next';
 import Avatar from '../ChatList/Avatar';
-import { IChatContentProps, IChatUser } from '../interfaces';
+import { IChatContentProps, IMessages, Role } from '../interfaces';
 import ChatItem from './ChatItem';
 import {
     ChatBody,
     ChatFooter,
     ChatHeader,
     CurrentChatUser,
+    HourlyRateInput,
     MainChat,
     Project,
     ProjectOwner,
@@ -34,25 +29,27 @@ import {
     Wrapper,
 } from './styles';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-var socket: Socket<DefaultEventsMap, DefaultEventsMap>;
-var selectedChatCompare: IChatUser;
-
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [messageText, setMessageText] = useState<string>('');
+    const [messages, setMessages] = useState([] as IMessages[]);
+    const [arrivalMessage, setArrivalMessage] = useState({} as IMessages);
+    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+
+    const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
-    const [socketConnected, setSocketConnected] = useState(false);
-    const [typing, setTyping] = useState(false);
-    const [istyping, setIsTyping] = useState(false);
-    const [messages, setMessages] = useState([] as any);
-    const [notification, setNotification] = useState([] as any);
-    const [joined, setJoined] = useState(false);
+    const { t } = useTranslation();
+
+    const { data } = useGetUserByIdQuery(user?.id);
+
+    const openModal = (): void => setIsOpen(true);
+
+    const closeModal = (): void => setIsOpen(false);
 
     const handleMessage = async (): Promise<void> => {
         try {
             const newMessage = {
-                senderId: user?.id,
                 content: messageText,
+                senderId: user?.id,
                 roomId: currentChat.id,
             };
             socket.emit('msgToServer', newMessage, () => {
@@ -68,48 +65,29 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         setMessageText(newValue);
     };
 
-    const handleJoined = () => {
-        // socket.emit('join_room', currentChat.id, () => {
-        //     setJoined(true);
-        // });
-    };
-
-    const handleTyping = () => {
-        // socket.emit('typing', { isTyping: true }, () => {
-        //     setJoined(true);
-        // });
-    };
-
     const fetchMessages = async (): Promise<void> => {
-        if (!currentChat) return;
-
-        try {
-            const { data } = await axios.get(
-                `http://localhost:3000/messages/getByChatId?chat=${currentChat.id}`
-            );
-            // setMessages(data);
-            // socket.emit('join_room', currentChat.id);
-        } catch (error) {
-            message.error(`${error?.message}`);
-        }
+        const { data: m } = await axios.get(
+            `${process.env.REACT_APP_SERVER_URL}/messages?room=${currentChat.id}`
+        );
+        setMessages(m);
     };
 
     useEffect(() => {
-        // socket = io('http://localhost:3000');
-        // socket.on('connected', () => setSocketConnected(true));
-        // socket.on('typing', () => setIsTyping(true));
-        // socket.on('stop typing', () => setIsTyping(false));
-        selectedChatCompare = currentChat;
-    }, []);
+        fetchMessages();
+
+        socket.on(`msgToClient`, (response: IMessages) => {
+            setArrivalMessage(response);
+        });
+    }, [currentChat]);
 
     useEffect(() => {
-        // socket.emit(`findAllMessage`, {}, (response: any) => {
-        //     setMessages(response);
-        // });
-        // socket.on(`msgToClient`, (response: any) => {
-        //     setMessages([...messages, response]);
-        // });
-    });
+        arrivalMessage &&
+            setMessages((prev: IMessages[]) => [...prev, arrivalMessage]);
+    }, [arrivalMessage]);
+
+    const freelancer = currentChat?.proposalId?.freelancerId;
+    const jobOwner = currentChat?.proposalId?.jobId?.ownerId;
+    const job = currentChat?.proposalId?.jobId;
 
     return (
         <Wrapper>
@@ -118,49 +96,48 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     <div>
                         <CurrentChatUser>
                             <Avatar
-                                isOnline="active"
-                                image={currentChat.image}
-                                alt={currentChat.name}
+                                id={
+                                    freelancer?.id === user?.id
+                                        ? jobOwner?.id
+                                        : freelancer?.id
+                                }
                             />
                             <div>
-                                <ProjectOwner>{currentChat.name}</ProjectOwner>
-                                <Project>{currentChat.project}</Project>
+                                <ProjectOwner>
+                                    {freelancer?.id === user?.id
+                                        ? `${jobOwner?.firstName} ${jobOwner?.lastName}`
+                                        : `${freelancer?.firstName} ${freelancer?.lastName}`}
+                                </ProjectOwner>
+                                <Project>{job?.title}</Project>
                             </div>
                         </CurrentChatUser>
                     </div>
 
                     <div>
-                        <SettingsBtn>
-                            <span>...</span>
-                        </SettingsBtn>
+                        {(data?.data?.role || undefined) === Role.jobOwner && (
+                            <SettingsBtn onClick={openModal}>
+                                {t('Chat.jobOffer')}
+                            </SettingsBtn>
+                        )}
                     </div>
                 </ChatHeader>
                 <ChatBody>
-                    {messages && (
-                        <div>
-                            {messages
-                                // .filter(
-                                //     (contact: any) =>
-                                //         contact.chat === currentChat.id
-                                // )
-                                .map((msg: any, index: number) => {
-                                    return (
-                                        <ChatItem
-                                            animationDelay={index + 2}
-                                            key={msg?.id}
-                                            msg={msg}
-                                        />
-                                    );
-                                })}
-                        </div>
-                    )}
-                    {/* <>
-                      {isLoading && <Spinner />}
-                      {msgIsError &&
-                          message.error(
-                              'Something went wrong, messages not found'
-                          )}
-                  </> */}
+                    <div>
+                        {messages
+                            .filter(
+                                (contact) =>
+                                    contact?.roomId?.id === currentChat.id
+                            )
+                            .map((msg, index: number) => {
+                                return (
+                                    <ChatItem
+                                        animationDelay={index + 2}
+                                        key={msg?.id}
+                                        msg={msg}
+                                    />
+                                );
+                            })}
+                    </div>
                 </ChatBody>
                 <ChatFooter>
                     <SendNewMessage>
@@ -174,9 +151,17 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>
                     </SendNewMessage>
-                    {/* <> {isError && message.error('Message not send')}</> */}
                 </ChatFooter>
             </MainChat>
+
+            <ModalWindow
+                modalIsOpen={modalIsOpen}
+                closeModal={() => closeModal()}
+                bg={colors.btnWhite}
+                modalBg={colors.bgBlack}
+            >
+                <HourlyRateInput placeholder="Change hour rate.." />
+            </ModalWindow>
         </Wrapper>
     );
 };
