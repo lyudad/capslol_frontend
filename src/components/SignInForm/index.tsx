@@ -51,7 +51,7 @@ const SignInForm: React.FC = () => {
                 return;
             }
 
-            navigate(Paths.PROFILE);
+            navigate(Paths.JOBS);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -59,6 +59,7 @@ const SignInForm: React.FC = () => {
             if ('error' in error) {
                 message.error(error.status);
             }
+            throw error;
         }
     };
 
@@ -83,7 +84,7 @@ const SignInForm: React.FC = () => {
                     return;
                 }
 
-                navigate(Paths.PROFILE);
+                navigate(Paths.JOBS);
             }
         } catch (error) {
             if ('data' in error) {
@@ -92,6 +93,7 @@ const SignInForm: React.FC = () => {
             if ('error' in error) {
                 message.error(error.status);
             }
+            throw error;
         }
     };
 
