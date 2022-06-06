@@ -6,7 +6,9 @@
         "test": "TEST",
         "profile": "PROFILE",
         "jobs": "JOBS",
-        "myOffers": "MY OFFERS"
+        "myOffers": "MY OFFERS",
+        "welcome": "Welcome,",
+        "logout": "logout"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -111,13 +113,12 @@
     },
     "JobPage": {
         "jobPageTitle": "Jobs on GetJOB!",
-        "jobOwner": "job owner:",
-        "skills": "skills:",
-        "category": "category:",
-        "category#1": "category#1",
-        "category#2": "category#2",
-        "salary": "hourly:",
-        "timeAvailable": "time available:",
+        "jobOwner": "job owner: ",
+        "skills": "skills: ",
+        "category": "category: ",
+        "salary": "hourly: ",
+        "timeAvailable": "time available: ",
+        "projectDuration": "project duration: ",
         "english": "english:",
         "sendProposal": "Send proposal",
         "englishLevel": "English level",
@@ -154,8 +155,7 @@
         "setTime": "Please time available",
         "skillsLabel": "Skills",
         "skillPlaceholder": "Please choose skills",
-        "jobCreated": "Job created",
-        "alreadySent": "Proposal Already Sent"
+        "jobCreated": "Job created"
     },
     "Proposal": {
         "title": "Submit Proposal",
@@ -176,6 +176,17 @@
         "errorLetter": "You must write a cover letter",
         "errorRate": "You must write your hourly rate",
         "proposalSentTitle": "You have already responded to this project. Try another one!"
+    },
+    "OffersPage": {
+        "accept": "Accept",
+        "decline": "Decline",
+        "goToChat": "Go to chat",
+        "myOffers": "My Offers",
+        "myInvitations": "My Invitations",
+        "myProposals": "My Proposals",
+        "myHourRate": "my hour rate:",
+        "status": "status",
+        "ownerHourRate": "job owner hour rate"
     },
     "ContactInfo": {
         "title": "My Account",
@@ -206,16 +217,6 @@
         "addPhoneNumber": "Your successfully add phone number!"
     },
 
-    "OffersPage": {
-        "accept": "Accept",
-        "decline": "Decline",
-        "goToChat": "Go to chat",
-        "myOffers": "My Offers",
-        "myInvitations": "My Invitations",
-        "myProposals": "My Proposals",
-        "myHourRate": "my hour rate:"
-    },
-
     "Chat": {
         "offerYes": "Accept",
         "offerNo": "Refuse",
@@ -225,6 +226,7 @@
         "welcome": "Welcome",
         "welcomeText": "Please select a chat to Start messaging.",
         "notFound": "Not found any chats",
-        "jobOffer": "  New Job Offer"
+        "jobOffer": "  New Job Offer",
+        "error": "Something went wrong, please try again later!"
     }
 }

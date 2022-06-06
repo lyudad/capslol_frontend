@@ -41,11 +41,6 @@ const InvitationCard: React.FC = () => {
                 </Descriptions>
             </ValueBox>
 
-            <ValueBox>
-                <Field>status</Field>
-                <FieldValue>Pending</FieldValue>
-            </ValueBox>
-
             <ButtonContainer>
                 <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
             </ButtonContainer>

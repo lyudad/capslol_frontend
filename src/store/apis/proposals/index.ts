@@ -1,4 +1,4 @@
-﻿import { baseApi } from '..';
+﻿import { baseApi } from 'store/apis/index';
 import { IProposal, IJob, IMyProposal } from './proposal.types';
 
 const apiProposalsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Proposal'] });

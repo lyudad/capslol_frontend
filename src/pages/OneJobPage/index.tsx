@@ -77,6 +77,11 @@ const OneJobPage: React.FC = () => {
                     <Description>{jobData?.description}</Description>
 
                     <OptionContent>
+                        <Field>{t('JobPage.projectDuration')} </Field>
+                        <Value>{jobData?.projectDuration}</Value>
+                    </OptionContent>
+
+                    <OptionContent>
                         <Field>{t('JobPage.salary')} </Field>
                         <Value>{jobData?.price}$</Value>
                     </OptionContent>

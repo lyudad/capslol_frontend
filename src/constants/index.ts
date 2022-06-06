@@ -60,6 +60,7 @@ export const fonts: Fonts = {
     logoFontFamily: 'Dodger',
     logoFontWeight: '800',
     logoFontSize: '28px',
+    loggedNameSize: '16px',
     primeLogoFontSize: '24px',
     logoLineHeight: '1.1',
     navFontSize: '14px',
