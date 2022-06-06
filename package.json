@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "start-3005": "PORT=3005 react-scripts start",
     "start:server": "json-server --watch db.json --port 3000",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint",
