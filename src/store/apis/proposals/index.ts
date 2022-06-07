@@ -1,7 +1,9 @@
-﻿import { baseApi } from '..';
+﻿import { baseApi } from 'store/apis/index';
 import { IProposal, IJob, IMyProposal } from './proposal.types';
 
-export const proposalApi = baseApi.injectEndpoints({
+const apiProposalsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Proposal'] });
+
+export const proposalApi = apiProposalsTag.injectEndpoints({
     endpoints: (builder) => ({
         sendProposal: builder.mutation<IProposal, IProposal>({
             query(value) {
@@ -11,6 +13,7 @@ export const proposalApi = baseApi.injectEndpoints({
                     body: value,
                 };
             },
+            invalidatesTags: ['Proposal'],
         }),
         getSingleJob: builder.query<IJob, number | undefined>({
             query: (value: number) => ({
@@ -24,6 +27,7 @@ export const proposalApi = baseApi.injectEndpoints({
             query: (value: number) => ({
                 url: `/proposals/search?freelancerId=${value}`,
             }),
+            providesTags: ['Proposal'],
         }),
     }),
 });

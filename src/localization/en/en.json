@@ -6,7 +6,9 @@
         "test": "TEST",
         "profile": "PROFILE",
         "jobs": "JOBS",
-        "myOffers": "MY OFFERS"
+        "myOffers": "MY OFFERS",
+        "welcome": "Welcome,",
+        "logout": "logout"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -47,6 +49,8 @@
     },
     "PublicProfile": {
         "user_name": "User Name",
+        "first_name": "First Name",
+        "last_name": "Last Name",
         "hour_rate": "Hour rate",
         "amount_hours": "The available amount of hours:",
         "education": "Education:",
@@ -54,6 +58,7 @@
         "specialization": "Specialization",
         "period": "Period of Time",
         "category": "Category",
+        "choose_category": "Сhoose a category",
         "development": "Development",
         "settings": "Settings",
         "position": "Position",
@@ -68,6 +73,7 @@
         "save_changes": "Save canges",
         "education_name": "Name of Education"
     },
+
     "ForgotPage": {
         "title": "Forgot Password",
         "email": {
@@ -111,13 +117,12 @@
     },
     "JobPage": {
         "jobPageTitle": "Jobs on GetJOB!",
-        "jobOwner": "job owner:",
-        "skills": "skills:",
-        "category": "category:",
-        "category#1": "category#1",
-        "category#2": "category#2",
-        "salary": "hourly:",
-        "timeAvailable": "time available:",
+        "jobOwner": "job owner: ",
+        "skills": "skills: ",
+        "category": "category: ",
+        "salary": "hourly: ",
+        "timeAvailable": "time available: ",
+        "projectDuration": "project duration: ",
         "english": "english:",
         "sendProposal": "Send proposal",
         "englishLevel": "English level",
@@ -175,6 +180,17 @@
         "errorLetter": "You must write a cover letter",
         "errorRate": "You must write your hourly rate"
     },
+    "OffersPage": {
+        "accept": "Accept",
+        "decline": "Decline",
+        "goToChat": "Go to chat",
+        "myOffers": "My Offers",
+        "myInvitations": "My Invitations",
+        "myProposals": "My Proposals",
+        "myHourRate": "my hour rate:",
+        "status": "status",
+        "ownerHourRate": "job owner hour rate"
+    },
     "ContactInfo": {
         "title": "My Account",
         "userRole": "Not Set",
@@ -189,31 +205,10 @@
             "placeholder": "Your new password",
             "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
         },
-        "PublicProfile": {
-            "user_name": "User Name",
-            "first_name": "First Name",
-            "last_name": "Last Name",
-            "hour_rate": "Hour rate",
-            "amount_hours": "The available amount of hours:",
-            "education": "Education:",
-            "name_of_courses": "Name of courses",
-            "specialization": "Specialization",
-            "period": "Period of Time",
-            "category": "Category",
-            "choose_category": "Сhoose a category",
-            "development": "Development",
-            "settings": "Settings",
-            "position": "Position",
-            "experience": "Experience",
-            "company_name": "Name of company",
-            "skills": "Skills",
-            "languages": "English",
-            "add_information": "Other additional information",
-            "text_type": "(Text type)",
-            "tag_type": "(tag type [ ])",
-            "contact_info": "Contact Info",
-            "save_changes": "Save canges",
-            "education_name": "Name of Education"
+        "conPasswordTitle": {
+            "item": "Confirm New Password:",
+            "placeholder": "Confirm your new password",
+            "error": "Password must be same"
         },
         "btnText": "Save Password",
         "afterChangePassword": {

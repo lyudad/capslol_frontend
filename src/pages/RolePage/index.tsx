@@ -52,51 +52,53 @@ const RolePage: React.FC = () => {
         }
     };
     return (
-        <>
-            <Row justify="center">
-                <Col span={24}>
-                    <Title level={2}>Choose role</Title>
-                </Col>
-            </Row>
-            <Row gutter={16} justify="center">
-                <Col>
-                    <StyledCard>
-                        <Avatar
-                            size={200}
-                            src="https://joeschmoe.io/api/v1/jai"
-                        />
+        <Row>
+            <Col span={24}>
+                <Title level={2}>Choose role</Title>
+            </Col>
+            <Col span={24}>
+                <Row justify="space-evenly">
+                    <Col>
+                        <StyledCard>
+                            <Avatar
+                                size={200}
+                                src="https://joeschmoe.io/api/v1/jai"
+                            />
 
-                        <Divider />
-                        <Typography.Paragraph>
-                            I looking for talent
-                        </Typography.Paragraph>
-                    </StyledCard>
-                    <StyledButton
-                        onClick={() => clickHandler(Role.JOB_OWNER, userId)}
-                    >
-                        Job owner
-                    </StyledButton>
-                </Col>
+                            <Divider />
+                            <Typography.Paragraph>
+                                I looking for talent
+                            </Typography.Paragraph>
+                        </StyledCard>
+                        <StyledButton
+                            onClick={() => clickHandler(Role.JOB_OWNER, userId)}
+                        >
+                            Job owner
+                        </StyledButton>
+                    </Col>
 
-                <Col>
-                    <StyledCard>
-                        <Avatar
-                            size={200}
-                            src="https://joeschmoe.io/api/v1/julie"
-                        />
-                        <Divider />
-                        <Typography.Paragraph>
-                            I looking for job
-                        </Typography.Paragraph>
-                    </StyledCard>
-                    <StyledButton
-                        onClick={() => clickHandler(Role.FREELANCER, userId)}
-                    >
-                        Freelancer
-                    </StyledButton>
-                </Col>
-            </Row>
-        </>
+                    <Col>
+                        <StyledCard>
+                            <Avatar
+                                size={200}
+                                src="https://joeschmoe.io/api/v1/julie"
+                            />
+                            <Divider />
+                            <Typography.Paragraph>
+                                I looking for job
+                            </Typography.Paragraph>
+                        </StyledCard>
+                        <StyledButton
+                            onClick={() =>
+                                clickHandler(Role.FREELANCER, userId)
+                            }
+                        >
+                            Freelancer
+                        </StyledButton>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     );
 };
 

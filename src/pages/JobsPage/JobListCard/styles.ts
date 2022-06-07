@@ -47,15 +47,16 @@ export const CustomButton = styled(Button)`
     color: ${colors.textWhite};
 
     &.ant-btn:active {
-    color: ${colors.brandColor}
-    border-color: ${colors.brandColor};
-    background: #fff;
+        color: ${colors.brandColor};
+        border-color: ${colors.brandColor};
+        background: ${colors.textWhite};
     }
 
-    &.ant-btn:focus, &.ant-btn:hover {
-    color: ${colors.brandColor};
-    border-color: ${colors.brandColor};
-    background: #fff;
+    &.ant-btn:focus,
+    &.ant-btn:hover {
+        color: ${colors.brandColor};
+        border-color: ${colors.brandColor};
+        background: ${colors.textWhite};
     }
 `;
 
@@ -90,10 +91,12 @@ export const Descriptions = styled.p`
 
 export const OwnerContainer = styled.div`
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
+    max-height: 78px;
+    margin: 0 0 4px 12px;
 `;
 
 export const ValueBox = styled.div`

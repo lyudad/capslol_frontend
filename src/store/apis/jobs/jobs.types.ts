@@ -30,6 +30,7 @@ export interface IJob {
     skills: ISkill[];
     languageLevel: string;
     ownerId: IOwner;
+    projectDuration: string;
 }
 
 export interface IUserProfile {

@@ -136,3 +136,11 @@ export const StyledCardBtn = styled.button`
     color: ${colors.textWhite};
     background-color: ${colors.brandColor};
 `;
+
+export const StatusValue = styled.span`
+    color: ${colors.brandColor};
+    font-weight: ${fonts.jobListFontWeight};
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 8px;
+`;

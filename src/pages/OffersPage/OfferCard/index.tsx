@@ -1,4 +1,12 @@
 import { useTranslation } from 'react-i18next';
+import { message } from 'antd';
+import { useEffect, useState } from 'react';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+import { useChangeStatusMutation } from 'store/apis/offers';
+import { Paths } from 'router/paths';
+import { IMyOffer, Status } from 'store/apis/offers/offers.types';
+import { dateFormat } from 'constants/index';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -11,47 +19,103 @@ import {
     FieldValue,
     StyledCardBtn,
     OneCard,
+    StatusValue,
 } from '../styles';
 
-const OfferCard: React.FC = () => {
+interface IProps {
+    offerObj: IMyOffer;
+}
+
+const OfferCard: React.FC<IProps> = ({ offerObj }) => {
+    const [offerStatus, setOfferStatus] = useState<string>();
+
     const { t } = useTranslation();
 
+    const navigate = useNavigate();
+
+    const [changeStatus] = useChangeStatusMutation();
+
+    const { id, createdAt, jobId, ownerId, hourRate, status } = offerObj;
+
+    useEffect(() => {
+        setOfferStatus(status);
+    }, [status]);
+
+    const onClickBtn = async (value: Status): Promise<void> => {
+        try {
+            const response = await changeStatus({
+                id,
+                status: value,
+            }).unwrap();
+
+            setOfferStatus(response.status);
+        } catch (error) {
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+        }
+    };
+
     const onClickJob = (): void => {
-        // navigate(Paths.JOB_PAGE, { state: { id } });
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
     };
     return (
         <OneCard>
-            <DateContainer>2022-05-12</DateContainer>
+            <DateContainer>
+                {moment(new Date(createdAt)).format(dateFormat)}
+            </DateContainer>
 
             <StyledTitleCardButton onClick={onClickJob} type="submit">
-                <CardTitle>Middle React Native Developer</CardTitle>
-                <Salary>10$</Salary>
+                <CardTitle>{jobId.title}</CardTitle>
+                <Salary>{jobId.price}$</Salary>
             </StyledTitleCardButton>
 
             <ValueBox>
                 <Field>{t('JobPage.jobOwner')}</Field>
-                <FieldValue>Qwert Ertyui</FieldValue>
+                <FieldValue>
+                    {ownerId.firstName} {ownerId.lastName}
+                </FieldValue>
             </ValueBox>
 
             <ValueBox>
-                <Descriptions>
-                    Our customer is a startup, founded in 2019 to reinvent how
-                    career data is owned and shared across the global labor
-                    market. Their vision is to build a future where individuals
-                    can take total control over their career identity. They are
-                    truly embracing Web 3.0 without the dirty side.
-                </Descriptions>
+                <Descriptions>{jobId.description}</Descriptions>
             </ValueBox>
 
             <ValueBox>
-                <Field>status</Field>
-                <FieldValue>Pending</FieldValue>
+                <Field>{t('OffersPage.ownerHourRate')}</Field>
+                <FieldValue>{hourRate}$</FieldValue>
+            </ValueBox>
+
+            <ValueBox>
+                <Field>{t('OffersPage.status')}</Field>
+                <FieldValue>{offerStatus}</FieldValue>
             </ValueBox>
 
             <ButtonContainer>
-                <StyledCardBtn>{t('OffersPage.accept')}</StyledCardBtn>
-                <StyledCardBtn>{t('OffersPage.decline')}</StyledCardBtn>
                 <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
+                {offerStatus === Status.PENDING && (
+                    <>
+                        <StyledCardBtn
+                            onClick={() => onClickBtn(Status.ACCEPTED)}
+                        >
+                            {t('OffersPage.accept')}
+                        </StyledCardBtn>
+                        <StyledCardBtn
+                            onClick={() => onClickBtn(Status.DECLINED)}
+                        >
+                            {t('OffersPage.decline')}
+                        </StyledCardBtn>
+                    </>
+                )}
+                {offerStatus === Status.ACCEPTED && (
+                    <StatusValue>You accepted this offer</StatusValue>
+                )}
+                {offerStatus === Status.DECLINED && (
+                    <StatusValue>You rejected this offer</StatusValue>
+                )}
             </ButtonContainer>
         </OneCard>
     );
