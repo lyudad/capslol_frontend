@@ -63,6 +63,13 @@ export const publicProfileApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Profile'],
         }),
+        deleteEducation: builder.mutation<{ id: number }, number | undefined>({
+            query: (id) => ({
+                url: `educations/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Profile'],
+        }),
         deleteExperience: builder.mutation<{ id: number }, number | undefined>({
             query: (id) => ({
                 url: `experiences/${id}`,
@@ -86,6 +93,12 @@ export const publicProfileApi = baseApi.injectEndpoints({
             }),
             providesTags: ['Profile'],
         }),
+        getAllEducations: builder.query<Educations[], string>({
+            query: () => ({
+                url: `educations`,
+            }),
+            providesTags: ['Profile'],
+        }),
     }),
 });
 
@@ -99,4 +112,6 @@ export const {
     useCreateEducationMutation,
     useGetAllExperienceQuery,
     useDeleteExperienceMutation,
+    useGetAllEducationsQuery,
+    useDeleteEducationMutation,
 } = publicProfileApi;

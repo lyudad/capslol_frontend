@@ -10,6 +10,8 @@ import {
     useUploadAvatarMutation,
     useGetAllExperienceQuery,
     useDeleteExperienceMutation,
+    useGetAllEducationsQuery,
+    useDeleteEducationMutation,
 } from 'store/apis/publicProfile';
 import { useState } from 'react';
 import {
@@ -62,11 +64,13 @@ const SettingPage: React.FC = () => {
     const { data } = useSearchUserQuery(user?.id);
 
     const { data: allExperience } = useGetAllExperienceQuery('');
+    const { data: allEducations } = useGetAllEducationsQuery('');
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { data: allCategories } = useGetAllCategoriesQuery('');
     const [createProfile] = useCreateProfileMutation();
     const [createExperience] = useCreateExperienceMutation();
     const [deleteExperience] = useDeleteExperienceMutation();
+    const [deleteEducation] = useDeleteEducationMutation();
     const [createEducation] = useCreateEducationMutation();
     const [uploadAvatar] = useUploadAvatarMutation();
     const { TextArea } = Input;
@@ -74,18 +78,13 @@ const SettingPage: React.FC = () => {
     const [skills, setSkills] = useState<any>(data?.skills);
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
-    // const [educationName, setEducationName] = useState(
-    //     data?.educations ? data?.educations.name : ''
-    // );
-    // const [specialization, setSpecialization] = useState(
-    //     data?.educations ? data?.educations.specialization : ''
-    // );
-    // const [startEducation, setStartEducation] = useState(
-    //     data?.educations ? data?.educations.startAt : 'Start Period'
-    // );
-    // const [endEducation, setEndEducation] = useState(
-    //     data?.educations ? data?.educations.endAt : 'End Period'
-    // );
+
+    const [educationName, setEducationName] = useState('');
+    const [specialization, setSpecialization] = useState('');
+
+    const [startEducation, setStartEducation] = useState('');
+    const [endEducation, setEndEducation] = useState('select date');
+
     const [nameCompany, setNameCompany] = useState('');
     const [experiensePosition, setExperiensePosition] = useState('');
     const [startExperiense, setStartExperiense] = useState('');
@@ -99,6 +98,8 @@ const SettingPage: React.FC = () => {
     const [previewSource, setPreviewSource] = useState<string>('');
     const [avatarUrl, setAvatarUrl] = useState();
     const [changeToggle, setChangeToggle] = useState<boolean>(false);
+    const [changeToggleEducation, setChangeToggleEducation] =
+        useState<boolean>(false);
 
     const onOther = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         setOther(event.target.value);
@@ -145,27 +146,40 @@ const SettingPage: React.FC = () => {
     const onChangeAvailableHours = (value: number): void => {
         setAvailableHours(value);
     };
-    // const onEducationName = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ): void => {
-    //     setEducationName(event.target.value);
-    // };
-    // const onSpecialization = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ): void => {
-    //     setSpecialization(event.target.value);
-    // };
 
-    // const onStartEducation = (
-    //     date: Moment | null,
-    //     dateString: string
-    // ): void => {
-    //     setStartEducation(dateString);
-    // };
+    const onEducationName = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setEducationName(event.target.value);
+    };
 
-    // const onEndEducation = (date: Moment | null, dateString: string): void => {
-    //     setEndEducation(dateString);
-    // };
+    const onSpecialization = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setSpecialization(event.target.value);
+    };
+
+    const onStartEducation = (
+        date: Moment | null,
+        dateString: string
+    ): void => {
+        setStartEducation(dateString);
+    };
+
+    const onEndEducation = async (
+        date: Moment | null,
+        dateString: string
+    ): Promise<void> => {
+        const UpdateEducation: Educations = {
+            name: educationName,
+            specialization,
+            startAt: startEducation,
+            endAt: dateString,
+        };
+
+        await createEducation(UpdateEducation);
+        setEndEducation(dateString);
+    };
 
     const handleChangeCategory = (value: string): void => {
         setCategory(value);
@@ -234,6 +248,29 @@ const SettingPage: React.FC = () => {
         });
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onDeleteEducation = async (e: any): Promise<void> => {
+        try {
+            await deleteEducation(Number(e.currentTarget.id));
+        } catch (error) {
+            message.error(error.status);
+        }
+        notification.success({
+            message: 'Success delete 🧺',
+        });
+    };
+
+    const onAddEducation = (): void => {
+        if (changeToggleEducation === true) {
+            setChangeToggleEducation(false);
+            setEndEducation('Select date');
+        }
+        if (changeToggleEducation === false) {
+            setChangeToggleEducation(true);
+            setEndEducation('');
+        }
+    };
+
     const onAddExperience = (): void => {
         if (changeToggle === true) {
             setChangeToggle(false);
@@ -244,6 +281,7 @@ const SettingPage: React.FC = () => {
             setEndExperiense('');
         }
     };
+
     const onSaveChanges = async (): Promise<void> => {
         if (!hourRate) {
             return notification.warning({
@@ -275,18 +313,29 @@ const SettingPage: React.FC = () => {
                 message: 'Please fill in all fields of new Experience section',
             });
         }
+        if (!endEducation) {
+            return notification.warning({
+                message: 'Please fill in all fields of new Education section',
+            });
+        }
 
-        const res: number[] = [];
+        const arrayEducations: number[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        allEducations?.forEach(({ id }: any) => {
+            arrayEducations.push(id);
+        });
+
+        const arrayExperiense: number[] = [];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         allExperience?.forEach(({ id }: any) => {
-            res.push(id);
+            arrayExperiense.push(id);
         });
 
         const UpdateProfile: newProfile = {
             id: user?.id,
             userId: Number(user?.id),
-            experiense: res,
-            educations: user?.id,
+            experiense: arrayExperiense,
+            educations: arrayEducations,
             profileImage: avatarUrl,
             hourRate,
             availableHours,
@@ -296,17 +345,7 @@ const SettingPage: React.FC = () => {
             english,
             other,
         };
-
-        // const UpdateEducation: Educations = {
-        //     id: user?.id,
-        //     name: educationName,
-        //     specialization,
-        //     startAt: startEducation,
-        //     endAt: endEducation,
-        // };
-
         try {
-            // await createEducation(UpdateEducation);
             await createProfile(UpdateProfile);
         } catch (error) {
             message.error(error.status);
@@ -375,43 +414,106 @@ const SettingPage: React.FC = () => {
                         {' h'}
                     </Description>
                 </Sections>
-                {/* <Sections>
+                <Sections>
                     {t('PublicProfile.education')}
-                    <Description>
-                        {t('PublicProfile.name_of_courses')}:{' '}
-                        <Input
-                            style={{ width: 200 }}
-                            value={educationName}
-                            onChange={onEducationName}
-                            placeholder={t('PublicProfile.education_name')}
-                        />
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.specialization')}:{' '}
-                        <Input
-                            style={{ width: 200 }}
-                            value={specialization}
-                            onChange={onSpecialization}
-                            placeholder={t('PublicProfile.specialization')}
-                        />
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.period')}: start{' '}
-                        <Space direction="vertical">
-                            <DatePicker
-                                placeholder={startEducation}
-                                onChange={onStartEducation}
-                            />
-                        </Space>{' '}
-                        end{' '}
-                        <Space direction="vertical">
-                            <DatePicker
-                                placeholder={endEducation}
-                                onChange={onEndEducation}
-                            />
-                        </Space>
-                    </Description>
-                </Sections> */}
+                    {data?.educations.map((e) => (
+                        <SectionsExperience key={e.id}>
+                            <Line />
+                            <Description>
+                                <Row justify="end">
+                                    <ButtonDel
+                                        style={{
+                                            marginBottom: -33,
+                                            marginTop: 0,
+                                            marginRight: '7%',
+                                            width: 33,
+                                            borderRadius: 30,
+                                        }}
+                                        onClick={onDeleteEducation}
+                                        type="default"
+                                        id={String(e.id)}
+                                    >
+                                        ❌
+                                    </ButtonDel>
+                                </Row>
+                                {t('PublicProfile.name_of_courses')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.name}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.specialization')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.specialization}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.period')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.startAt} - {e.endAt}
+                                </span>
+                            </Description>
+
+                            <Line />
+                        </SectionsExperience>
+                    ))}
+                    {changeToggleEducation && (
+                        <>
+                            <Line />
+                            <Description>
+                                {t('PublicProfile.name_of_courses')}:{' '}
+                                <Input
+                                    style={{
+                                        width: 159,
+                                        marginTop: 0,
+                                    }}
+                                    placeholder={t(
+                                        'PublicProfile.name_of_courses'
+                                    )}
+                                    value={educationName}
+                                    onChange={onEducationName}
+                                />
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.specialization')}:{' '}
+                                <Input
+                                    style={{ width: 241 }}
+                                    value={specialization}
+                                    onChange={onSpecialization}
+                                    placeholder={t(
+                                        'PublicProfile.specialization'
+                                    )}
+                                />
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.period')}: start{' '}
+                                <Space direction="vertical">
+                                    <DatePicker
+                                        onChange={onStartEducation}
+                                        placeholder="Select Date"
+                                    />
+                                </Space>{' '}
+                                end{' '}
+                                <Space direction="vertical">
+                                    <DatePicker
+                                        onChange={onEndEducation}
+                                        placeholder="Select Date"
+                                    />
+                                </Space>
+                            </Description>
+                            <Line />
+                        </>
+                    )}
+                    <Row justify="center">
+                        <ButtonSet
+                            onClick={onAddEducation}
+                            style={{ marginTop: 20 }}
+                            type="default"
+                        >
+                            {changeToggleEducation ? '⛔' : '➕'}
+                        </ButtonSet>
+                    </Row>
+                </Sections>
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}
