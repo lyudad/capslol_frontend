@@ -6,6 +6,10 @@ export interface IChatMember {
     proposalId: IProposal;
 }
 
+export interface IChatContact {
+    isActive: boolean;
+    proposalId: number | undefined;
+}
 export interface IProposal {
     id: number;
     coverLetter: string;

@@ -70,9 +70,6 @@ const AppBar: React.FC = () => {
                     )}
                 </div>
 
-                <NotificationFlex>
-                    <MessageIcon onClick={() => navigate(Paths.CHAT)} />
-                </NotificationFlex>
                 {isAuth && (
                     <NotificationFlex>
                         <LoggedName>
@@ -88,6 +85,8 @@ const AppBar: React.FC = () => {
                                 <img src={avatar} alt="" />
                             )}
                         </BarAvatarImg>
+                        <MessageIcon onClick={() => navigate(Paths.CHAT)} />
+
                         <LogoutButton
                             type="primary"
                             size="small"

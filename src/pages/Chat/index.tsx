@@ -5,6 +5,7 @@ import Spinner from 'components/Spinner';
 import { useAppSelector } from 'hooks/redux';
 import { useGetChatContactsQuery } from 'store/apis/chat';
 import { IChatMember } from 'store/apis/chat/chat.types';
+import { useTranslation } from 'react-i18next';
 import ChatContent from './ChatContent';
 import ChatList from './ChatList';
 import { Wrapper } from './styles';
@@ -16,6 +17,7 @@ const Chat: React.FC = () => {
         undefined
     );
     const { user } = useAppSelector((s) => s.auth);
+    const { t } = useTranslation();
 
     const { data: chatMembers, isLoading, isError } = useGetChatContactsQuery();
 
@@ -52,8 +54,7 @@ const Chat: React.FC = () => {
                 {isError &&
                     notification.error({
                         message: 'Error!',
-                        description:
-                            'There are no contacts, something went wrong, please try again!',
+                        description: `${t('Chat.membersError')}`,
                     })}
             </>
         </Wrapper>

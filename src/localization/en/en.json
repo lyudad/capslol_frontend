@@ -155,7 +155,8 @@
         "setTime": "Please time available",
         "skillsLabel": "Skills",
         "skillPlaceholder": "Please choose skills",
-        "jobCreated": "Job created"
+        "jobCreated": "Job created",
+        "alreadySent": "Proposal already sent"
     },
     "Proposal": {
         "title": "Submit Proposal",
@@ -175,7 +176,8 @@
         },
         "errorLetter": "You must write a cover letter",
         "errorRate": "You must write your hourly rate",
-        "proposalSentTitle": "You have already responded to this project. Try another one!"
+        "proposalSentTitle": "You have already responded to this project. Try another one!",
+        "sentSuccess": "You successfully sent Proposal!"
     },
     "OffersPage": {
         "accept": "Accept",
@@ -227,6 +229,9 @@
         "welcomeText": "Please select a chat to Start messaging.",
         "notFound": "Not found any chats",
         "jobOffer": "  New Job Offer",
-        "error": "Something went wrong, please try again later!"
+        "error": "Something went wrong, please try again later!",
+        "sendMsgPlaceholder": "Write a message...",
+        "offerSentPlaceholder": "Change hour rate...",
+        "membersError": "There are no contacts, something went wrong, please try again!"
     }
 }

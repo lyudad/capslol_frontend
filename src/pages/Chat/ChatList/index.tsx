@@ -24,8 +24,8 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, members }) => {
         onChangeChat(chat);
     };
 
-    const onChange = (e: React.FormEvent<HTMLInputElement>): void => {
-        const newValue = e.currentTarget.value;
+    const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
+        const newValue = event.currentTarget.value;
         setSearch(newValue);
     };
 

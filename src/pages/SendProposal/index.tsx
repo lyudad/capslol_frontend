@@ -11,6 +11,8 @@ import {
 import { useAppSelector } from 'hooks/redux';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
+import ModalWindow from 'components/ModalWindow/ModalWindow';
+import { usePostChatContactMutation } from 'store/apis/chat';
 import {
     Block,
     Font,
@@ -25,7 +27,13 @@ import {
     FormItem,
     StyledFormItem,
 } from './styles';
-import { IFormValue, IJobId, TFilterArg, TFilterReturn } from './interfaces';
+import {
+    IFormValue,
+    IJobId,
+    TFilterArg,
+    TFilterReturn,
+    NotificationType,
+} from './interfaces';
 
 const SendProposal: React.FC = () => {
     const location = useLocation();
@@ -41,8 +49,10 @@ const SendProposal: React.FC = () => {
     const { data: freelancerProposals } = useGetProposalsByFreelancerQuery(
         user?.id
     );
+    const [postChatContact] = usePostChatContactMutation();
 
     const [freelancerValue, setFreelancerValue] = useState<number>();
+    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const [hourRate, setHourRate] = useState<number | undefined>(job?.price);
     const getJobHourRate = +(((hourRate || 0) / 100) * 12.5);
 
@@ -50,15 +60,34 @@ const SendProposal: React.FC = () => {
 
     const onReset = (): void => form.resetFields();
 
+    const openModal = (): void => setIsOpen(true);
+
     const handleFiltered = (data: TFilterArg): TFilterReturn => {
-        const filtered = data?.filter((i) => i.jobId.id === state.id)[0]?.jobId
-            ?.id;
+        const filtered = data?.filter((i) => i?.jobId?.id === state?.id)[0]?.id;
 
         return filtered;
     };
 
     const navigateToProjectDetails = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: state.id } });
+    };
+
+    const proposalId = handleFiltered(freelancerProposals);
+
+    const closeModal = async (): Promise<void> => {
+        try {
+            setIsOpen(false);
+
+            const newChatContact = {
+                proposalId,
+                isActive: false,
+            };
+
+            await postChatContact(newChatContact);
+            navigateToProjectDetails();
+        } catch (error) {
+            message.error(`${error?.message}`);
+        }
     };
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
@@ -74,7 +103,7 @@ const SendProposal: React.FC = () => {
             setGetJob(0);
             setFreelancerValue(0);
             onReset();
-            navigateToProjectDetails();
+            openModal();
         } catch (error) {
             message.error(`${error?.message}`);
         }
@@ -86,8 +115,6 @@ const SendProposal: React.FC = () => {
         setGetJob(getJobHourRate);
         setFreelancerValue(((hourRate || 0) - getJob) * 10);
     };
-
-    type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
     const openNotificationWithIcon = (
         type: NotificationType,
@@ -134,18 +161,6 @@ const SendProposal: React.FC = () => {
                                 label=""
                                 name="jobOwnerValue"
                                 rules={[
-                                    {
-                                        pattern: /^(?:\d*)$/,
-                                        message: `${t(
-                                            'Proposal.error.number'
-                                        )}`,
-                                    },
-                                    {
-                                        pattern: /^[\d]{0,50}$/,
-                                        message: `${t(
-                                            'Proposal.error.length'
-                                        )}`,
-                                    },
                                     {
                                         required: true,
                                         message: `${t('Proposal.errorRate')}`,
@@ -222,29 +237,29 @@ const SendProposal: React.FC = () => {
                 </ProposalCard>
 
                 <Form.Item>
-                    {handleFiltered(freelancerProposals) === state.id ? (
-                        <FontTitle fs="16" color={colors.textGreen}>
-                            {t('Proposal.proposalSentTitle')}
-                        </FontTitle>
-                    ) : (
-                        <StyledButton
-                            htmlType="submit"
-                            className="login-form-button"
-                        >
-                            {t('Proposal.submitBtnText')}
-                        </StyledButton>
-                    )}
+                    <StyledButton
+                        htmlType="submit"
+                        className="login-form-button"
+                    >
+                        {t('Proposal.submitBtnText')}
+                    </StyledButton>
                 </Form.Item>
             </Form>
 
             <>
                 {' '}
-                {isSuccess &&
-                    openNotificationWithIcon(
-                        'success',
-                        'Success',
-                        'You successfully sent proposal!'
-                    )}
+                {isSuccess && (
+                    <ModalWindow
+                        modalIsOpen={modalIsOpen}
+                        closeModal={() => closeModal()}
+                        bg={colors.btnWhite}
+                        modalBg={colors.bgBlack}
+                    >
+                        <FontTitle color={colors.black} fs="18">
+                            {t('Proposal.sentSuccess')}
+                        </FontTitle>
+                    </ModalWindow>
+                )}
                 {isError &&
                     openNotificationWithIcon(
                         'error',

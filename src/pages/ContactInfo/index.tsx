@@ -1,30 +1,19 @@
 ﻿/* eslint-disable consistent-return */
 import React, { useState } from 'react';
-import { Form, message, Row, notification } from 'antd';
+import { message, Row, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { LeftOutlined, UserOutlined } from '@ant-design/icons';
 
-import {
-    FormButton,
-    FormItem,
-    PwrButton,
-    StyledForm,
-} from 'pages/ForgotPassword/styles';
-import { FormPassword } from 'pages/ResetPassword/style';
 import { colors } from 'constants/index';
-import { validatePassword } from 'constants/validate';
 import Button from 'components/Button/Button';
-import ModalWindow from 'components/ModalWindow/ModalWindow';
 import {
-    useChangePasswordMutation,
     useEditUserValueMutation,
     useGetUserByIdQuery,
 } from 'store/apis/profile';
-import { IPassword } from 'store/apis/profile/profile.types';
 import { Paths } from 'router/paths';
 import Spinner from 'components/Spinner';
-import { IChangePassword, IContactInfo } from './interfaces';
+import { IContactInfo } from './interfaces';
 import {
     Wrapper,
     TitleGroup,
@@ -41,15 +30,14 @@ import {
     StyledInput,
     SaveIcon,
 } from './styles';
+import ContactInfoModal from './ContactInfoModal';
 
 const ContactInfo: React.FC = () => {
     const location = useLocation();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [form] = Form.useForm();
 
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     const [updateFirstName, setUpdateFirstName] = useState<boolean>(false);
     const [updateLastName, setUpdateLastName] = useState<boolean>(false);
     const [userPhoneNumber, setUserPhoneNumber] = useState<boolean>(false);
@@ -59,17 +47,12 @@ const ContactInfo: React.FC = () => {
 
     const state = location.state as IContactInfo;
 
-    const [changePassword, { isError, isSuccess }] =
-        useChangePasswordMutation();
     const [editUserValue, { isError: isUserError }] =
         useEditUserValueMutation();
-    const { data: user, isLoading } = useGetUserByIdQuery(state.id);
+    const { data: member, isLoading } = useGetUserByIdQuery(state.id);
+    const user = member?.data;
 
     const handleNavigate = (): void => navigate(Paths.PROFILE);
-
-    const enterLoading = (): void => setLoading(true);
-
-    const onReset = (): void => form.resetFields();
 
     const openModal = (): void => setIsOpen(true);
 
@@ -81,25 +64,6 @@ const ContactInfo: React.FC = () => {
 
     const AddUserUserPhoneNumber = (): void => setUserPhoneNumber(true);
 
-    const onFinish = async (values: IChangePassword): Promise<void> => {
-        enterLoading();
-        try {
-            if (values.newPassword === values.confirmPassword) {
-                const value: IPassword = {
-                    id: state?.id,
-                    password: values.confirmPassword,
-                };
-                await changePassword(value).unwrap();
-            } else {
-                message.error('Password do not match, please try again');
-                onReset();
-                setLoading(false);
-            }
-        } catch (error) {
-            message.error(error.data.message);
-        }
-    };
-
     const handleEdit = async (
         updateKey: string,
         updateValue: string | undefined,
@@ -107,7 +71,7 @@ const ContactInfo: React.FC = () => {
     ): Promise<void> => {
         try {
             await editUserValue({
-                id: user?.data?.id,
+                id: user?.id,
                 [updateKey]: updateValue,
             });
 
@@ -174,20 +138,18 @@ const ContactInfo: React.FC = () => {
                                 <div>
                                     <Title fs="28">
                                         {`${
-                                            user?.data?.firstName
-                                                ? user?.data?.firstName
+                                            user?.firstName
+                                                ? user?.firstName
                                                 : 'Not'
                                         }
                                         ${
-                                            user?.data?.lastName
-                                                ? user?.data?.lastName
+                                            user?.lastName
+                                                ? user?.lastName
                                                 : 'Found'
                                         }`}
                                     </Title>
                                     <Circle>
-                                        {user?.data?.role
-                                            ? user?.data?.role
-                                            : 'Not Found'}
+                                        {user?.role ? user?.role : 'Not Found'}
                                     </Circle>
                                 </div>
                             </TitleGroup>
@@ -201,7 +163,7 @@ const ContactInfo: React.FC = () => {
                                             {updateFirstName ? (
                                                 <StyledInput
                                                     defaultValue={
-                                                        user?.data?.firstName
+                                                        user?.firstName
                                                     }
                                                     value={updateUserFirstName}
                                                     onChange={(e) =>
@@ -212,9 +174,7 @@ const ContactInfo: React.FC = () => {
                                                     type="text"
                                                 />
                                             ) : (
-                                                <span>
-                                                    {user?.data?.firstName}
-                                                </span>
+                                                <span>{user?.firstName}</span>
                                             )}
                                         </Title>
                                         <Row>
@@ -233,7 +193,7 @@ const ContactInfo: React.FC = () => {
                                                     }
                                                 />
                                             )}
-                                            {user?.data?.firstName ? (
+                                            {user?.firstName ? (
                                                 <Icon />
                                             ) : (
                                                 <IconNotFound />
@@ -251,7 +211,7 @@ const ContactInfo: React.FC = () => {
                                             {updateLastName ? (
                                                 <StyledInput
                                                     defaultValue={
-                                                        user?.data?.lastName
+                                                        user?.lastName
                                                     }
                                                     value={updateUserLastName}
                                                     onChange={(e) =>
@@ -262,9 +222,7 @@ const ContactInfo: React.FC = () => {
                                                     type="text"
                                                 />
                                             ) : (
-                                                <span>
-                                                    {user?.data?.lastName}
-                                                </span>
+                                                <span>{user?.lastName}</span>
                                             )}
                                         </Title>
                                         <Row>
@@ -281,7 +239,7 @@ const ContactInfo: React.FC = () => {
                                                     }
                                                 />
                                             )}
-                                            {user?.data?.lastName ? (
+                                            {user?.lastName ? (
                                                 <Icon />
                                             ) : (
                                                 <IconNotFound />
@@ -293,10 +251,8 @@ const ContactInfo: React.FC = () => {
                                 <CardInfo>
                                     <Label>{t('ContactInfo.userEmail')}</Label>
                                     <TitleGroup justify="space-between">
-                                        <Title fs="16">
-                                            {user?.data?.email}
-                                        </Title>
-                                        {user?.data?.email ? (
+                                        <Title fs="16">{user?.email}</Title>
+                                        {user?.email ? (
                                             <Icon />
                                         ) : (
                                             <IconNotFound />
@@ -311,8 +267,7 @@ const ContactInfo: React.FC = () => {
                                             {userPhoneNumber ? (
                                                 <StyledInput
                                                     defaultValue={
-                                                        user?.data
-                                                            ?.phoneNumber || ''
+                                                        user?.phoneNumber || ''
                                                     }
                                                     value={phoneNumber}
                                                     onChange={(e) =>
@@ -324,9 +279,8 @@ const ContactInfo: React.FC = () => {
                                                 />
                                             ) : (
                                                 <span>
-                                                    {user?.data?.phoneNumber
-                                                        ? user?.data
-                                                              ?.phoneNumber
+                                                    {user?.phoneNumber
+                                                        ? user?.phoneNumber
                                                         : 'You phone number is empty'}
                                                 </span>
                                             )}
@@ -347,7 +301,7 @@ const ContactInfo: React.FC = () => {
                                                     }
                                                 />
                                             )}
-                                            {user?.data?.phoneNumber ? (
+                                            {user?.phoneNumber ? (
                                                 <Icon />
                                             ) : (
                                                 <IconNotFound />
@@ -384,117 +338,13 @@ const ContactInfo: React.FC = () => {
                 </>
             )}
 
-            <ModalWindow
+            <ContactInfoModal
+                state={state}
                 modalIsOpen={modalIsOpen}
-                closeModal={() => closeModal()}
-                bg={colors.passwordBg}
-                modalBg={colors.passwordModalBg}
-            >
-                {isSuccess || isError || (
-                    <StyledForm
-                        name="normal_login"
-                        className="form"
-                        form={form}
-                        initialValues={{ remember: true }}
-                        onFinish={(values) =>
-                            onFinish(values as IChangePassword)
-                        }
-                    >
-                        <FormItem
-                            label={t('ContactInfo.passwordTitle.item')}
-                            name="newPassword"
-                            hasFeedback
-                            rules={[
-                                {
-                                    required: true,
-                                    message: `${t(
-                                        'ContactInfo.passwordTitle.error'
-                                    )}`,
-                                },
-                            ]}
-                        >
-                            <FormPassword
-                                placeholder={t(
-                                    'ContactInfo.passwordTitle.placeholder'
-                                )}
-                            />
-                        </FormItem>
+                closeModal={closeModal}
+            />
 
-                        <FormItem
-                            label={t('ContactInfo.conPasswordTitle.item')}
-                            name="confirmPassword"
-                            hasFeedback
-                            dependencies={['newPassword']}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: `${t(
-                                        'ContactInfo.conPasswordTitle.error'
-                                    )}`,
-                                },
-                                ({ getFieldValue }) => ({
-                                    validator(_, value) {
-                                        if (!value) {
-                                            return Promise.reject(
-                                                new Error(
-                                                    t(
-                                                        'ContactInfo.conPasswordTitle.error'
-                                                    )
-                                                )
-                                            );
-                                        }
-
-                                        const rightPassword =
-                                            getFieldValue('newPassword').match(
-                                                validatePassword
-                                            );
-                                        if (!rightPassword) {
-                                            return Promise.reject(
-                                                new Error(
-                                                    t(
-                                                        'ContactInfo.conPasswordTitle.error'
-                                                    )
-                                                )
-                                            );
-                                        }
-                                        return Promise.resolve();
-                                    },
-                                }),
-                            ]}
-                        >
-                            <FormPassword
-                                placeholder={t(
-                                    'ContactInfo.conPasswordTitle.placeholder'
-                                )}
-                            />
-                        </FormItem>
-
-                        <FormButton>
-                            <PwrButton
-                                type="primary"
-                                htmlType="submit"
-                                className="login-form-button"
-                                loading={loading}
-                            >
-                                {t('ContactInfo.btnText')}
-                            </PwrButton>
-                        </FormButton>
-                    </StyledForm>
-                )}
-            </ModalWindow>
-
-            <>
-                {' '}
-                {isSuccess && (
-                    <Label>
-                        {t('ContactInfo.afterChangePassword.success')}
-                    </Label>
-                )}
-                {isError && (
-                    <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
-                )}
-                {isLoading && <Spinner />}
-            </>
+            <> {isLoading && <Spinner />}</>
         </Wrapper>
     );
 };

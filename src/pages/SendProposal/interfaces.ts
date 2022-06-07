@@ -18,3 +18,5 @@ export interface IJobId {
 export type TFilterArg = IMyProposal[] | undefined;
 
 export type TFilterReturn = number | undefined;
+
+export type NotificationType = 'success' | 'info' | 'warning' | 'error';

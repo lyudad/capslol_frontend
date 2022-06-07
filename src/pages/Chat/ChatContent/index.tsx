@@ -1,6 +1,6 @@
 ﻿/* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react';
-import { message } from 'antd';
+import { message, notification } from 'antd';
 
 import { useAppSelector } from 'hooks/redux';
 import { colors } from 'constants/index';
@@ -60,16 +60,23 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         }
     };
 
-    const handleOnChange = (e: React.FormEvent<HTMLInputElement>): void => {
-        const newValue = e.currentTarget.value;
+    const handleOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
+        const newValue = event.currentTarget.value;
         setMessageText(newValue);
     };
 
     const fetchMessages = async (): Promise<void> => {
-        const { data: m } = await axios.get(
-            `${process.env.REACT_APP_SERVER_URL}/messages?room=${currentChat.id}`
-        );
-        setMessages(m);
+        try {
+            const { data: m } = await axios.get(
+                `${process.env.REACT_APP_SERVER_URL}/messages?room=${currentChat.id}`
+            );
+            setMessages(m);
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: `${error?.message}`,
+            });
+        }
     };
 
     useEffect(() => {
@@ -125,15 +132,15 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     <div>
                         {messages
                             .filter(
-                                (contact) =>
-                                    contact?.roomId?.id === currentChat.id
+                                (member) =>
+                                    member?.roomId?.id === currentChat.id
                             )
-                            .map((msg, index: number) => {
+                            .map((memberMessage, index: number) => {
                                 return (
                                     <ChatItem
                                         animationDelay={index + 2}
-                                        key={msg?.id}
-                                        msg={msg}
+                                        key={memberMessage?.id}
+                                        msg={memberMessage}
                                     />
                                 );
                             })}
@@ -144,7 +151,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                         <SendNewMessageInput
                             value={messageText}
                             type="text"
-                            placeholder="Write a message..."
+                            placeholder={`${t('Chat.sendMsgPlaceholder')}`}
                             onChange={handleOnChange}
                         />
                         <SendNewMessageBtn onClick={handleMessage}>
@@ -160,7 +167,9 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 bg={colors.btnWhite}
                 modalBg={colors.bgBlack}
             >
-                <HourlyRateInput placeholder="Change hour rate.." />
+                <HourlyRateInput
+                    placeholder={`${t('Chat.offerSentPlaceholder')}`}
+                />
             </ModalWindow>
         </Wrapper>
     );

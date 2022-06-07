@@ -1,12 +1,12 @@
 ﻿import { IMessages } from 'pages/Chat/interfaces';
 import { baseApi } from '..';
-import { IChatMember } from './chat.types';
+import { IChatContact, IChatMember } from './chat.types';
 
 const apiChatTag = baseApi.enhanceEndpoints({ addTagTypes: ['Users'] });
 
 export const chatApi = apiChatTag.injectEndpoints({
     endpoints: (builder) => ({
-        postChatContact: builder.mutation<IChatMember, IChatMember>({
+        postChatContact: builder.mutation<IChatContact, IChatContact>({
             query(value) {
                 return {
                     url: '/chat-contacts',
