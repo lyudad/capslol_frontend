@@ -76,27 +76,30 @@ const PublicPage: React.FC = () => {
                 </Sections>
                 <Sections>
                     {t('PublicProfile.education')}
-                    <Description>
-                        {t('PublicProfile.name_of_courses')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.educations ? data?.educations.name : '-'}
-                        </span>
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.specialization')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.educations
-                                ? data?.educations.specialization
-                                : '-'}
-                        </span>
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.period')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.educations ? data?.educations.startAt : ''} -{' '}
-                            {data?.educations ? data?.educations.endAt : '-'}
-                        </span>
-                    </Description>
+                    {data?.educations.map((e) => (
+                        <SectionsUl key={e.id}>
+                            <Line />
+                            <Description>
+                                {t('PublicProfile.name_of_courses')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.name}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.specialization')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.specialization}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.period')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.startAt} - {e.endAt}
+                                </span>
+                            </Description>
+                            <Line />
+                        </SectionsUl>
+                    ))}
                 </Sections>
                 <Sections>
                     {t('PublicProfile.category')}:

@@ -74,18 +74,18 @@ const SettingPage: React.FC = () => {
     const [skills, setSkills] = useState<any>(data?.skills);
     const [hourRate, setHourRate] = useState(data?.hourRate);
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
-    const [educationName, setEducationName] = useState(
-        data?.educations ? data?.educations.name : ''
-    );
-    const [specialization, setSpecialization] = useState(
-        data?.educations ? data?.educations.specialization : ''
-    );
-    const [startEducation, setStartEducation] = useState(
-        data?.educations ? data?.educations.startAt : 'Start Period'
-    );
-    const [endEducation, setEndEducation] = useState(
-        data?.educations ? data?.educations.endAt : 'End Period'
-    );
+    // const [educationName, setEducationName] = useState(
+    //     data?.educations ? data?.educations.name : ''
+    // );
+    // const [specialization, setSpecialization] = useState(
+    //     data?.educations ? data?.educations.specialization : ''
+    // );
+    // const [startEducation, setStartEducation] = useState(
+    //     data?.educations ? data?.educations.startAt : 'Start Period'
+    // );
+    // const [endEducation, setEndEducation] = useState(
+    //     data?.educations ? data?.educations.endAt : 'End Period'
+    // );
     const [nameCompany, setNameCompany] = useState('');
     const [experiensePosition, setExperiensePosition] = useState('');
     const [startExperiense, setStartExperiense] = useState('');
@@ -145,27 +145,27 @@ const SettingPage: React.FC = () => {
     const onChangeAvailableHours = (value: number): void => {
         setAvailableHours(value);
     };
-    const onEducationName = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setEducationName(event.target.value);
-    };
-    const onSpecialization = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setSpecialization(event.target.value);
-    };
+    // const onEducationName = (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ): void => {
+    //     setEducationName(event.target.value);
+    // };
+    // const onSpecialization = (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ): void => {
+    //     setSpecialization(event.target.value);
+    // };
 
-    const onStartEducation = (
-        date: Moment | null,
-        dateString: string
-    ): void => {
-        setStartEducation(dateString);
-    };
+    // const onStartEducation = (
+    //     date: Moment | null,
+    //     dateString: string
+    // ): void => {
+    //     setStartEducation(dateString);
+    // };
 
-    const onEndEducation = (date: Moment | null, dateString: string): void => {
-        setEndEducation(dateString);
-    };
+    // const onEndEducation = (date: Moment | null, dateString: string): void => {
+    //     setEndEducation(dateString);
+    // };
 
     const handleChangeCategory = (value: string): void => {
         setCategory(value);
@@ -297,16 +297,16 @@ const SettingPage: React.FC = () => {
             other,
         };
 
-        const UpdateEducation: Educations = {
-            id: user?.id,
-            name: educationName,
-            specialization,
-            startAt: startEducation,
-            endAt: endEducation,
-        };
+        // const UpdateEducation: Educations = {
+        //     id: user?.id,
+        //     name: educationName,
+        //     specialization,
+        //     startAt: startEducation,
+        //     endAt: endEducation,
+        // };
 
         try {
-            await createEducation(UpdateEducation);
+            // await createEducation(UpdateEducation);
             await createProfile(UpdateProfile);
         } catch (error) {
             message.error(error.status);
@@ -375,7 +375,7 @@ const SettingPage: React.FC = () => {
                         {' h'}
                     </Description>
                 </Sections>
-                <Sections>
+                {/* <Sections>
                     {t('PublicProfile.education')}
                     <Description>
                         {t('PublicProfile.name_of_courses')}:{' '}
@@ -411,7 +411,7 @@ const SettingPage: React.FC = () => {
                             />
                         </Space>
                     </Description>
-                </Sections>
+                </Sections> */}
                 <Sections>
                     <span>
                         <span style={{ color: colors.brandColor }}>* </span>{' '}

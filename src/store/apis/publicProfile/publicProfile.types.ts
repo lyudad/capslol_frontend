@@ -46,7 +46,7 @@ export interface Profile {
     availableHours: number;
     position: string;
     experiense: Experiences[];
-    educations: Educations;
+    educations: Educations[];
     categories: Category;
     skills: Skills[];
     english: string;
