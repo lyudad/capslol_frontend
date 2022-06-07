@@ -14,6 +14,7 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { baseApi } from './apis';
 import authReducer from './slices/auth/auth.slice';
 import jobsReducer from './slices/jobs/jobs.slice';
+import { cloudinaryApi } from './apis/publicProfile';
 
 const persistConfig = {
     key: 'auth',
@@ -27,6 +28,7 @@ export const store = configureStore({
         auth: persistedReducer,
         jobsReducer,
         [baseApi.reducerPath]: baseApi.reducer,
+        [cloudinaryApi.reducerPath]: cloudinaryApi.reducer,
     },
 
     middleware: (getDefaultMiddleware) =>
@@ -41,7 +43,7 @@ export const store = configureStore({
                     REGISTER,
                 ],
             },
-        }).concat([baseApi.middleware]),
+        }).concat([baseApi.middleware, cloudinaryApi.middleware]),
 
     devTools: process.env.NODE_ENV !== 'production',
 });

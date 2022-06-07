@@ -25,15 +25,14 @@ export const ProfileContainer = styled.section`
 `;
 
 export const TitleEmpty = styled.h1`
-    /* display: flex; */
-    width: 200px;
+    display: flex;
+    width: 250px;
     font-size: x-large;
     margin-left: auto;
     margin-right: auto;
     margin-top: 14px;
     margin-bottom: 20px;
-    /* text-align: center; */
-    /* justify-items: center; */
+
     color: ${colors.navColor};
 `;
 export const Title = styled.h1`
@@ -47,6 +46,15 @@ export const Sections = styled.div`
     flex-direction: column;
     font-size: 20px;
     margin-top: 8px;
+    margin-left: 25px;
+    color: ${colors.navColor};
+`;
+export const SectionsExperience = styled.div`
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    padding-top: -15px;
+    margin-top: 0px;
     margin-left: 25px;
     color: ${colors.navColor};
 `;
@@ -81,6 +89,24 @@ export const ButtonSet = styled(Button)`
     }
     :focus {
         background: ${colors.brandColor};
+        border: 1px solid ${colors.brandColor};
+        color: ${colors.black};
+    }
+`;
+export const ButtonDel = styled(Button)`
+    display: flex;
+    background: none;
+    border: none;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    justify-content: center;
+    :hover {
+        background: ${colors.brandColor};
+        color: ${colors.black};
+    }
+    :focus {
+        background: none;
         border: 1px solid ${colors.brandColor};
         color: ${colors.black};
     }

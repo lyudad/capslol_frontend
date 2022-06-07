@@ -9,7 +9,7 @@ import {
     useLazyGetJobsQuery,
     useLazyGetUserProfileQuery,
 } from 'store/apis/jobs';
-import { Select, Form, Button, Input, Slider } from 'antd';
+import { Select, Form, Button, Input } from 'antd';
 import { colors, langLevel } from 'constants/index';
 import Spinner from 'components/Spinner';
 import { IQueryFilters } from './props';

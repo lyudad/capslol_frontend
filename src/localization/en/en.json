@@ -49,6 +49,8 @@
     },
     "PublicProfile": {
         "user_name": "User Name",
+        "first_name": "First Name",
+        "last_name": "Last Name",
         "hour_rate": "Hour rate",
         "amount_hours": "The available amount of hours:",
         "education": "Education:",
@@ -56,6 +58,7 @@
         "specialization": "Specialization",
         "period": "Period of Time",
         "category": "Category",
+        "choose_category": "Сhoose a category",
         "development": "Development",
         "settings": "Settings",
         "position": "Position",
@@ -70,6 +73,7 @@
         "save_changes": "Save canges",
         "education_name": "Name of Education"
     },
+
     "ForgotPage": {
         "title": "Forgot Password",
         "email": {
