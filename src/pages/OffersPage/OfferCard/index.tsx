@@ -20,6 +20,7 @@ import {
     StyledCardBtn,
     OneCard,
     StatusValue,
+    FieldStatusValue,
 } from '../styles';
 
 interface IProps {
@@ -27,7 +28,7 @@ interface IProps {
 }
 
 const OfferCard: React.FC<IProps> = ({ offerObj }) => {
-    const [offerStatus, setOfferStatus] = useState<string>();
+    const [offerStatus, setOfferStatus] = useState<string>(Status.PENDING);
 
     const { t } = useTranslation();
 
@@ -91,7 +92,9 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
             <ValueBox>
                 <Field>{t('OffersPage.status')}</Field>
-                <FieldValue>{offerStatus}</FieldValue>
+                <FieldStatusValue ofStatus={offerStatus}>
+                    {offerStatus}
+                </FieldStatusValue>
             </ValueBox>
 
             <ButtonContainer>
