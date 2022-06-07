@@ -15,6 +15,8 @@ import {
     Page,
     ButtonSet,
     TitleEmpty,
+    SectionsUl,
+    Line,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -51,7 +53,7 @@ const PublicPage: React.FC = () => {
                     <img
                         src={data?.profileImage || avatar}
                         alt=""
-                        width={140}
+                        width={180}
                     />
                 </Avatar>
                 <Sections>
@@ -75,22 +77,24 @@ const PublicPage: React.FC = () => {
                 <Sections>
                     {t('PublicProfile.education')}
                     <Description>
-                        {t('PublicProfile.name_of_courses')}{' '}
+                        {t('PublicProfile.name_of_courses')}:{' '}
                         <span style={{ color: colors.brandColor }}>
-                            {data?.educations.name}
+                            {data?.educations ? data?.educations.name : '-'}
                         </span>
                     </Description>
                     <Description>
                         {t('PublicProfile.specialization')}:{' '}
                         <span style={{ color: colors.brandColor }}>
-                            {data?.educations.specialization}
+                            {data?.educations
+                                ? data?.educations.specialization
+                                : '-'}
                         </span>
                     </Description>
                     <Description>
                         {t('PublicProfile.period')}:{' '}
                         <span style={{ color: colors.brandColor }}>
-                            {data?.educations.startAt} -{' '}
-                            {data?.educations.endAt}
+                            {data?.educations ? data?.educations.startAt : ''} -{' '}
+                            {data?.educations ? data?.educations.endAt : '-'}
                         </span>
                     </Description>
                 </Sections>
@@ -99,8 +103,7 @@ const PublicPage: React.FC = () => {
                     <Description>
                         <span style={{ color: colors.brandColor }}>
                             {' '}
-                            {data?.categories.categoryName ||
-                                t('PublicProfile.development')}{' '}
+                            {data?.categories.categoryName || ''}{' '}
                         </span>
                     </Description>
                 </Sections>
@@ -113,33 +116,41 @@ const PublicPage: React.FC = () => {
                     </Description>
                 </Sections>
                 <Sections>
-                    {t('PublicProfile.experience')}
-                    <Description>
-                        {t('PublicProfile.company_name')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.experiense.companyName}
-                        </span>
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.position')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.experiense.position}
-                        </span>
-                    </Description>
-                    <Description>
-                        {t('PublicProfile.period')}:{' '}
-                        <span style={{ color: colors.brandColor }}>
-                            {data?.experiense.startAt} -{' '}
-                            {data?.experiense.endAt}
-                        </span>
-                    </Description>
+                    {t('PublicProfile.experience')}:
+                    {data?.experiense.map((e) => (
+                        <SectionsUl key={e.id}>
+                            <Line />
+                            <Description>
+                                {t('PublicProfile.company_name')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.companyName}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.position')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.position}
+                                </span>
+                            </Description>
+                            <Description>
+                                {t('PublicProfile.period')}:{' '}
+                                <span style={{ color: colors.brandColor }}>
+                                    {e.startAt} - {e.endAt}
+                                </span>
+                            </Description>
+                            <Line />
+                        </SectionsUl>
+                    ))}
                 </Sections>
                 <Sections>
                     {t('PublicProfile.skills')}:{' '}
                     <Description>
-                        {/* <span style={{ color: colors.brandColor }}>
-                            {data?.skills.id}
-                        </span> */}
+                        <span style={{ color: colors.brandColor }}>
+                            {data?.skills.map((e) => (
+                                <span key={e.id}>| {e.name} </span>
+                            ))}{' '}
+                            {data?.skills.length === 0 ? undefined : '|'}
+                        </span>
                     </Description>
                 </Sections>
                 <Sections>
@@ -163,7 +174,7 @@ const PublicPage: React.FC = () => {
                 </Sections>
                 <Row justify="end">
                     <ButtonSet
-                        onClick={() => navigate(`/contact_info/${user?.id}`)}
+                        onClick={() => navigate(`/contact_info/`)}
                         type="default"
                     >
                         {t('PublicProfile.contact_info')}
