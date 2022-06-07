@@ -6,9 +6,9 @@
     endAt: string | undefined;
 }
 export interface Educations {
-    id: number | undefined;
-    name: string | undefined;
-    specialization: string | undefined;
+    id?: number | undefined;
+    name?: string | undefined;
+    specialization?: string | undefined;
     startAt: string | undefined;
     endAt: string | undefined;
 }
@@ -30,7 +30,7 @@ export interface newProfile {
     availableHours?: number | undefined;
     position?: string | undefined;
     experiense: Experiences | number[] | undefined;
-    educations?: Educations | number | undefined;
+    educations?: Educations | number[] | undefined;
     categories?: Category | number | undefined;
     skills?: number[] | undefined;
     english?: string | undefined;
@@ -46,7 +46,7 @@ export interface Profile {
     availableHours: number;
     position: string;
     experiense: Experiences[];
-    educations: Educations;
+    educations: Educations[];
     categories: Category;
     skills: Skills[];
     english: string;
