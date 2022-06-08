@@ -100,3 +100,8 @@ export const englishLevel: string[] = [
     EnglishLevel.ADVANCED,
 ];
 export const dateFormat = 'D MMMM YYYY';
+
+export const userRole = {
+    freelancer: 'Freelancer',
+    owner: 'Job Owner',
+};

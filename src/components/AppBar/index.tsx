@@ -6,6 +6,7 @@ import { Button, notification } from 'antd';
 import { logOut } from 'store/slices/auth/auth.slice';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
+import { userRole } from 'constants/index';
 import { useGetOffersQuery } from 'store/apis/chat';
 import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
@@ -30,6 +31,8 @@ const AppBar: React.FC = () => {
     const dispatch = useDispatch();
 
     const isAuth = useAppSelector((state) => state.auth.isLoggedIn);
+
+    const role = useAppSelector((state) => state.auth.user?.role);
 
     const user = useAppSelector((state) => state.auth.user);
 
@@ -92,12 +95,17 @@ const AppBar: React.FC = () => {
                             <NavLink to="/profile" className="navLink">
                                 {t('AppBar.profile')}
                             </NavLink>
-                            <NavLink to="/jobs" className="navLink">
-                                {t('AppBar.jobs')}
-                            </NavLink>
-                            <NavLink to="/offers" className="navLink">
-                                {t('AppBar.myOffers')}
-                            </NavLink>
+                            {role === userRole.freelancer && (
+                                <>
+                                    <NavLink to="/jobs" className="navLink">
+                                        {t('AppBar.jobs')}
+                                    </NavLink>
+                                    <NavLink to="/offers" className="navLink">
+                                        {t('AppBar.myOffers')}
+                                    </NavLink>
+                                </>
+                            )}
+
                             <NavLink to="/test" className="navLink">
                                 {t('AppBar.test')}
                             </NavLink>
