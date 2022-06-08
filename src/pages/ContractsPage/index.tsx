@@ -3,7 +3,7 @@ import { useAppSelector } from 'hooks/redux';
 import Spinner from 'components/Spinner';
 import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
 import { ListContainer, ListWrapper, List, Title, Page } from './styles';
-import OfferCard from './OfferCard/index';
+import ContractCard from './ContractCard/index';
 
 const ContactsPage: React.FC = () => {
     const { t } = useTranslation();
@@ -14,7 +14,7 @@ const ContactsPage: React.FC = () => {
 
     return (
         <Page>
-            <Title>{t('OffersPage.myOffers')}</Title>
+            <Title>{t('ContractsPage.myContracts')}</Title>
             <ListWrapper>
                 {isLoading ? (
                     <Spinner />
@@ -25,7 +25,7 @@ const ContactsPage: React.FC = () => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
-                                        <OfferCard offerObj={item} />
+                                        <ContractCard offerObj={item} />
                                     </ul>
                                 );
                             })}
