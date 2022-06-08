@@ -4,6 +4,7 @@ import { RootState } from 'store';
 
 export const baseApi = createApi({
     reducerPath: 'baseApi',
+    tagTypes: ['Profile'],
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.REACT_APP_SERVER_URL,
         prepareHeaders: (headers, { getState }) => {
