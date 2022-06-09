@@ -1,4 +1,8 @@
 {
+    "TalentPage": {
+        "send_interview": "Send invite to interview",
+        "talents": "Talents on GetJOB!"
+    },
     "AppBar": {
         "get": "Get",
         "job": "JOB!",
@@ -8,7 +12,8 @@
         "jobs": "JOBS",
         "myOffers": "MY OFFERS",
         "welcome": "Welcome,",
-        "logout": "logout"
+        "logout": "logout",
+        "Talents": "TALENTS"
     },
     "SignInForm": {},
     "AuthForm": {
