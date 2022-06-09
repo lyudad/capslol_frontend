@@ -21,7 +21,7 @@ export type UserType = {
     id: number;
     firstName?: string;
     lastName?: string;
-    role?: null;
+    role?: string | null;
     email?: string;
     phoneNumber?: null;
     createdAt?: string;

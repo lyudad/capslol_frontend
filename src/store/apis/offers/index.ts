@@ -17,6 +17,7 @@ export const offersApi = apiOffersTag.injectEndpoints({
                 method: 'PUT',
                 body,
             }),
+            invalidatesTags: ['Offer'],
         }),
     }),
 });

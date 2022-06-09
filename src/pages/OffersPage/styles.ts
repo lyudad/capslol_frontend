@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { colors, fonts } from 'constants/index';
+import { Status } from 'store/apis/offers/offers.types';
 
 export const Page = styled.div`
     padding: 12px;
@@ -124,6 +125,21 @@ export const FieldValue = styled.span`
     font-weight: ${fonts.jobListFontWeight};
     font-size: 12px;
     margin-left: 3px;
+`;
+
+export const FieldStatusValue = styled.span<{ ofStatus: string }>`
+    font-weight: ${fonts.jobListFontWeight};
+    font-size: 12px;
+    margin-left: 3px;
+    color: ${({ ofStatus }) => {
+        if (ofStatus === Status.PENDING) {
+            return colors.testReusableColor;
+        }
+        if (ofStatus === Status.DECLINED) {
+            return colors.textWhiteRed;
+        }
+        return colors.brandColor;
+    }};
 `;
 
 export const StyledCardBtn = styled.button`
