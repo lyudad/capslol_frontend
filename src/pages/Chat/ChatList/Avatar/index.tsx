@@ -1,14 +1,18 @@
 ﻿import React from 'react';
 import { IAvatarProps } from 'pages/Chat/interfaces';
+import avatar from 'assets/avatar.png';
+import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { AvatarImg, Image, Online, Wrapper } from './styles';
 
-const Avatar: React.FC<IAvatarProps> = ({ image, alt, isOnline }) => {
+const Avatar: React.FC<IAvatarProps> = ({ id }) => {
+    const { data } = useGetUserProfileQuery(id);
+
     return (
         <Wrapper>
             <AvatarImg>
-                <Image src={image} alt={alt} />
+                <Image src={data?.profileImage || avatar} alt="" />
             </AvatarImg>
-            <Online className={`${isOnline}`} />
+            <Online className="" />
         </Wrapper>
     );
 };

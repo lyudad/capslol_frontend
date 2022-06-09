@@ -1,24 +1,19 @@
-﻿import React, { useState } from 'react';
-import { Form, message } from 'antd';
+﻿/* eslint-disable consistent-return */
+import React, { useState } from 'react';
+import { message, Row, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { LeftOutlined, UserOutlined } from '@ant-design/icons';
 
-import {
-    FormButton,
-    FormItem,
-    PwrButton,
-    StyledForm,
-} from 'pages/ForgotPassword/styles';
-import { FormPassword } from 'pages/ResetPassword/style';
 import { colors } from 'constants/index';
-import { validatePassword } from 'constants/validate';
-import Button from 'common/Button/Button';
-import ModalWindow from 'common/ModalWindow/ModalWindow';
-import { useChangePasswordMutation } from 'store/apis/profile';
-import { IPassword } from 'store/apis/profile/profile.types';
-import { useAppSelector } from 'hooks/redux';
-import { IChangePassword } from './interfaces';
+import Button from 'components/Button/Button';
+import {
+    useEditUserValueMutation,
+    useGetUserByIdQuery,
+} from 'store/apis/profile';
+import { Paths } from 'router/paths';
+import Spinner from 'components/Spinner';
+import { IContactInfo } from './interfaces';
 import {
     Wrapper,
     TitleGroup,
@@ -31,241 +26,325 @@ import {
     Icon,
     Circle,
     IconNotFound,
+    EditIcon,
+    StyledInput,
+    SaveIcon,
 } from './styles';
+import ContactInfoModal from './ContactInfoModal';
 
 const ContactInfo: React.FC = () => {
-    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
+    const location = useLocation();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [form] = Form.useForm();
 
-    const [changePassword, { isError, isSuccess }] =
-        useChangePasswordMutation();
-    const { user } = useAppSelector((s) => s.auth);
+    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+    const [updateFirstName, setUpdateFirstName] = useState<boolean>(false);
+    const [updateLastName, setUpdateLastName] = useState<boolean>(false);
+    const [userPhoneNumber, setUserPhoneNumber] = useState<boolean>(false);
+    const [updateUserFirstName, setUpdateUserFirstName] = useState<string>();
+    const [updateUserLastName, setUpdateUserLastName] = useState<string>();
+    const [phoneNumber, setPhoneNumber] = useState<string>();
 
-    const handleNavigate = (): void => navigate('/profile');
+    const state = location.state as IContactInfo;
 
-    const enterLoading = (): void => setLoading(true);
+    const [editUserValue, { isError: isUserError }] =
+        useEditUserValueMutation();
+    const { data: member, isLoading } = useGetUserByIdQuery(state.id);
+    const user = member?.data;
 
-    const onReset = (): void => form.resetFields();
+    const handleNavigate = (): void => navigate(Paths.PROFILE);
 
     const openModal = (): void => setIsOpen(true);
 
     const closeModal = (): void => setIsOpen(false);
 
-    const onFinish = async (values: IChangePassword): Promise<void> => {
-        enterLoading();
+    const handleEditUserFirstName = (): void => setUpdateFirstName(true);
+
+    const handleEditUserLastName = (): void => setUpdateLastName(true);
+
+    const AddUserUserPhoneNumber = (): void => setUserPhoneNumber(true);
+
+    const handleEdit = async (
+        updateKey: string,
+        updateValue: string | undefined,
+        msg: string
+    ): Promise<void> => {
         try {
-            if (values.newPassword === values.confirmPassword) {
-                const value: IPassword = {
-                    id: user?.id,
-                    password: values.confirmPassword,
-                };
-                await changePassword(value).unwrap();
-            } else {
-                message.error('Password do not match, please try again');
-                onReset();
-                setLoading(false);
-            }
+            await editUserValue({
+                id: user?.id,
+                [updateKey]: updateValue,
+            });
+
+            notification.success({
+                message: t(`ContactInfo.${msg}`),
+            });
         } catch (error) {
-            message.error(error.data.message);
+            notification.error({
+                message: t(`${error?.data?.message}`),
+            });
+        }
+    };
+
+    const handleUpdate = async (value: string): Promise<void | boolean> => {
+        switch (value) {
+            case 'firstName':
+                await handleEdit(
+                    'firstName',
+                    updateUserFirstName,
+                    'changedFirstName'
+                );
+                setUpdateFirstName(false);
+                break;
+            case 'lastName':
+                await handleEdit(
+                    'lastName',
+                    updateUserLastName,
+                    'changedLastName'
+                );
+                setUpdateLastName(false);
+                break;
+            case 'phoneNumber':
+                await handleEdit('phoneNumber', phoneNumber, 'addPhoneNumber');
+                setUserPhoneNumber(false);
+                break;
+            default:
+                return false;
         }
     };
 
     return (
         <Wrapper>
-            <TitleGroup mb="50">
-                <Button
-                    onClick={handleNavigate}
-                    mr="20"
-                    color={colors.btnWhite}
-                    bg={colors.btnDarkBlue}
-                >
-                    <LeftOutlined />
-                </Button>
-                <Title fs="35">{t('ContactInfo.title')}</Title>
-            </TitleGroup>
-
-            <Block>
-                <div>
-                    <TitleGroup mb="35">
-                        <StyledAvatar size={64} icon={<UserOutlined />} />
-                        <div>
-                            <Title fs="28">
-                                {`${user?.firstName ? user?.firstName : 'Not'}
-                                ${user?.lastName ? user?.lastName : 'Found'}`}
-                            </Title>
-                            <Circle>
-                                {user?.role ? user?.role : 'Not Found'}
-                            </Circle>
-                        </div>
+            {user && (
+                <>
+                    <TitleGroup mb="50">
+                        <Button
+                            onClick={handleNavigate}
+                            mr="20"
+                            color={colors.btnWhite}
+                            bg={colors.btnDarkBlue}
+                        >
+                            <LeftOutlined />
+                        </Button>
+                        <Title fs="35">{t('ContactInfo.title')}</Title>
                     </TitleGroup>
-                    <Card>
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userFirstName')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">{user?.firstName}</Title>
-                                {user?.firstName ? <Icon /> : <IconNotFound />}
-                            </TitleGroup>
-                        </CardInfo>
 
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userLastName')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">{user?.lastName}</Title>
-                                {user?.lastName ? <Icon /> : <IconNotFound />}
+                    <Block>
+                        <div>
+                            <TitleGroup mb="35">
+                                <StyledAvatar
+                                    size={64}
+                                    icon={<UserOutlined />}
+                                />
+                                <div>
+                                    <Title fs="28">
+                                        {`${
+                                            user?.firstName
+                                                ? user?.firstName
+                                                : 'Not'
+                                        }
+                                        ${
+                                            user?.lastName
+                                                ? user?.lastName
+                                                : 'Found'
+                                        }`}
+                                    </Title>
+                                    <Circle>
+                                        {user?.role ? user?.role : 'Not Found'}
+                                    </Circle>
+                                </div>
                             </TitleGroup>
-                        </CardInfo>
+                            <Card>
+                                <CardInfo>
+                                    <Label>
+                                        {t('ContactInfo.userFirstName')}
+                                    </Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {updateFirstName ? (
+                                                <StyledInput
+                                                    defaultValue={
+                                                        user?.firstName
+                                                    }
+                                                    value={updateUserFirstName}
+                                                    onChange={(e) =>
+                                                        setUpdateUserFirstName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="text"
+                                                />
+                                            ) : (
+                                                <span>{user?.firstName}</span>
+                                            )}
+                                        </Title>
+                                        <Row>
+                                            {updateFirstName ? (
+                                                <SaveIcon
+                                                    onClick={() =>
+                                                        handleUpdate(
+                                                            'firstName'
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <EditIcon
+                                                    onClick={
+                                                        handleEditUserFirstName
+                                                    }
+                                                />
+                                            )}
+                                            {user?.firstName ? (
+                                                <Icon />
+                                            ) : (
+                                                <IconNotFound />
+                                            )}
+                                        </Row>
+                                    </TitleGroup>
+                                </CardInfo>
 
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userEmail')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">{user?.email}</Title>
-                                {user?.email ? <Icon /> : <IconNotFound />}
-                            </TitleGroup>
-                        </CardInfo>
+                                <CardInfo>
+                                    <Label>
+                                        {t('ContactInfo.userLastName')}
+                                    </Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {updateLastName ? (
+                                                <StyledInput
+                                                    defaultValue={
+                                                        user?.lastName
+                                                    }
+                                                    value={updateUserLastName}
+                                                    onChange={(e) =>
+                                                        setUpdateUserLastName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="text"
+                                                />
+                                            ) : (
+                                                <span>{user?.lastName}</span>
+                                            )}
+                                        </Title>
+                                        <Row>
+                                            {updateLastName ? (
+                                                <SaveIcon
+                                                    onClick={() =>
+                                                        handleUpdate('lastName')
+                                                    }
+                                                />
+                                            ) : (
+                                                <EditIcon
+                                                    onClick={
+                                                        handleEditUserLastName
+                                                    }
+                                                />
+                                            )}
+                                            {user?.lastName ? (
+                                                <Icon />
+                                            ) : (
+                                                <IconNotFound />
+                                            )}
+                                        </Row>
+                                    </TitleGroup>
+                                </CardInfo>
 
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userPhone')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">
-                                    {user?.phoneNumber
-                                        ? user?.phoneNumber
-                                        : 'You phone number is empty'}
-                                </Title>
-                                {user?.phoneNumber ? (
-                                    <Icon />
-                                ) : (
-                                    <IconNotFound />
+                                <CardInfo>
+                                    <Label>{t('ContactInfo.userEmail')}</Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">{user?.email}</Title>
+                                        {user?.email ? (
+                                            <Icon />
+                                        ) : (
+                                            <IconNotFound />
+                                        )}
+                                    </TitleGroup>
+                                </CardInfo>
+
+                                <CardInfo>
+                                    <Label>{t('ContactInfo.userPhone')}</Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">
+                                            {userPhoneNumber ? (
+                                                <StyledInput
+                                                    defaultValue={
+                                                        user?.phoneNumber || ''
+                                                    }
+                                                    value={phoneNumber}
+                                                    onChange={(e) =>
+                                                        setPhoneNumber(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="text"
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {user?.phoneNumber
+                                                        ? user?.phoneNumber
+                                                        : 'You phone number is empty'}
+                                                </span>
+                                            )}
+                                        </Title>
+                                        <Row>
+                                            {userPhoneNumber ? (
+                                                <SaveIcon
+                                                    onClick={() =>
+                                                        handleUpdate(
+                                                            'phoneNumber'
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <EditIcon
+                                                    onClick={
+                                                        AddUserUserPhoneNumber
+                                                    }
+                                                />
+                                            )}
+                                            {user?.phoneNumber ? (
+                                                <Icon />
+                                            ) : (
+                                                <IconNotFound />
+                                            )}
+                                        </Row>
+                                    </TitleGroup>
+                                </CardInfo>
+
+                                <CardInfo>
+                                    <Label>
+                                        {t('ContactInfo.userPassword')}
+                                    </Label>
+                                    <TitleGroup justify="space-between">
+                                        <Title fs="16">********</Title>
+                                        <Button
+                                            onClick={() => openModal()}
+                                            color={colors.btnWhite}
+                                            bg={colors.btnDarkBlue}
+                                        >
+                                            {t('ContactInfo.btnChangeText')}
+                                        </Button>
+                                    </TitleGroup>
+                                </CardInfo>
+                            </Card>
+                        </div>
+                        <>
+                            {' '}
+                            {isUserError &&
+                                message.error(
+                                    'Something went wrong, please try again'
                                 )}
-                            </TitleGroup>
-                        </CardInfo>
+                        </>
+                    </Block>
+                </>
+            )}
 
-                        <CardInfo>
-                            <Label>{t('ContactInfo.userPassword')}</Label>
-                            <TitleGroup justify="space-between">
-                                <Title fs="16">********</Title>
-                                <Button
-                                    onClick={() => openModal()}
-                                    color={colors.btnWhite}
-                                    bg={colors.btnDarkBlue}
-                                >
-                                    {t('ContactInfo.btnChangeText')}
-                                </Button>
-                            </TitleGroup>
-                        </CardInfo>
-                    </Card>
-                </div>
-            </Block>
-
-            <ModalWindow
+            <ContactInfoModal
+                state={state}
                 modalIsOpen={modalIsOpen}
-                closeModal={() => closeModal()}
-                bg={colors.passwordBg}
-                modalBg={colors.passwordModalBg}
-            >
-                {isSuccess || isError || (
-                    <StyledForm
-                        name="normal_login"
-                        className="form"
-                        form={form}
-                        initialValues={{ remember: true }}
-                        onFinish={(values) =>
-                            onFinish(values as IChangePassword)
-                        }
-                    >
-                        <FormItem
-                            label={t('ContactInfo.passwordTitle.item')}
-                            name="newPassword"
-                            hasFeedback
-                            rules={[
-                                {
-                                    required: true,
-                                    message: `${t(
-                                        'ContactInfo.passwordTitle.error'
-                                    )}`,
-                                },
-                            ]}
-                        >
-                            <FormPassword
-                                placeholder={t(
-                                    'ContactInfo.passwordTitle.placeholder'
-                                )}
-                            />
-                        </FormItem>
+                closeModal={closeModal}
+            />
 
-                        <FormItem
-                            label={t('ContactInfo.conPasswordTitle.item')}
-                            name="confirmPassword"
-                            hasFeedback
-                            dependencies={['newPassword']}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: `${t(
-                                        'ContactInfo.conPasswordTitle.error'
-                                    )}`,
-                                },
-                                ({ getFieldValue }) => ({
-                                    validator(_, value) {
-                                        if (!value) {
-                                            return Promise.reject(
-                                                new Error(
-                                                    t(
-                                                        'ContactInfo.conPasswordTitle.error'
-                                                    )
-                                                )
-                                            );
-                                        }
-
-                                        const rightPassword =
-                                            getFieldValue('newPassword').match(
-                                                validatePassword
-                                            );
-                                        if (!rightPassword) {
-                                            return Promise.reject(
-                                                new Error(
-                                                    t(
-                                                        'ContactInfo.conPasswordTitle.error'
-                                                    )
-                                                )
-                                            );
-                                        }
-                                        return Promise.resolve();
-                                    },
-                                }),
-                            ]}
-                        >
-                            <FormPassword
-                                placeholder={t(
-                                    'ContactInfo.conPasswordTitle.placeholder'
-                                )}
-                            />
-                        </FormItem>
-
-                        <FormButton>
-                            <PwrButton
-                                type="primary"
-                                htmlType="submit"
-                                className="login-form-button"
-                                loading={loading}
-                            >
-                                {t('ContactInfo.btnText')}
-                            </PwrButton>
-                        </FormButton>
-                    </StyledForm>
-                )}
-
-                {isSuccess && (
-                    <Label>
-                        {t('ContactInfo.afterChangePassword.success')}
-                    </Label>
-                )}
-                {isError && (
-                    <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
-                )}
-            </ModalWindow>
+            <> {isLoading && <Spinner />}</>
         </Wrapper>
     );
 };

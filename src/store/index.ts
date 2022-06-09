@@ -19,7 +19,7 @@ import { cloudinaryApi } from './apis/publicProfile';
 const persistConfig = {
     key: 'auth',
     storage,
-    whitelist: ['accessToken', 'user', 'isLoggedIn'],
+    whitelist: ['accessToken', 'user', 'isLoggedIn', 'proposals'],
 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
 
