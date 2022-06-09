@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import Spinner from 'components/Spinner';
 import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { ListContainer, ListWrapper, List, Title, Page } from './styles';
 import ContractCard from './ContractCard/index';
 
@@ -16,9 +16,7 @@ const ContactsPage: React.FC = () => {
         <Page>
             <Title>{t('ContractsPage.myContracts')}</Title>
             <ListWrapper>
-                {isLoading ? (
-                    <Spinner />
-                ) : (
+                <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
                             {offersData?.map((item) => {
@@ -31,7 +29,7 @@ const ContactsPage: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                )}
+                </SpinnerWrapper>
             </ListWrapper>
         </Page>
     );
