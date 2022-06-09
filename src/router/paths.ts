@@ -17,4 +17,5 @@ export enum Paths {
     SETTING_ID = '/setting/:id',
     CREATE_JOB_PAGE = '/createJob',
     MY_CONTRACTS = '/my-contracts',
+    OWNER_JOBS = '/owner-jobs',
 }

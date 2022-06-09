@@ -14,10 +14,11 @@ import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
 import SettingPage from 'pages/SettingPage';
 import Protected from 'router/Protected';
-import OffersPage from 'pages/OffersPage/index';
+import OffersPage from 'pages/OffersPage';
 import Chat from 'pages/Chat';
 import CreateJobPage from 'pages/CreateJobPage';
 import ContactsPage from 'pages/ContractsPage';
+import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
@@ -27,6 +28,10 @@ const App: React.FC = () => {
                 <Route element={<Protected />}>
                     <Route path={Paths.JOBS} element={<JobsPage />} />
                     <Route path={Paths.OFFERS} element={<OffersPage />} />
+                    <Route
+                        path={Paths.OWNER_JOBS}
+                        element={<OwnerJobsPage />}
+                    />
                     <Route
                         path={Paths.MY_CONTRACTS}
                         element={<ContactsPage />}

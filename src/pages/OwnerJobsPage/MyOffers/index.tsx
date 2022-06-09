@@ -2,11 +2,10 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import Spinner from 'components/Spinner';
 import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
-import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
-import { ListContainer, ListWrapper, List, Title, Page } from './styles';
-import ContractCard from './ContractCard/index';
+import { ListContainer, ListWrapper, List, Title } from '../styles';
+import OfferCard from '../OfferCard/index';
 
-const ContactsPage: React.FC = () => {
+const MyOffers: React.FC = () => {
     const { t } = useTranslation();
 
     const myId = useAppSelector((state) => state.auth.user?.id);
@@ -14,26 +13,28 @@ const ContactsPage: React.FC = () => {
     const { data: offersData, isLoading } = useGetOffersByFreelancerQuery(myId);
 
     return (
-        <Page>
-            <Title>{t('ContractsPage.myContracts')}</Title>
+        <>
+            <Title>{t('OffersPage.myOffers')}</Title>
             <ListWrapper>
-                <SpinnerWrapper isLoading={isLoading}>
+                {isLoading ? (
+                    <Spinner />
+                ) : (
                     <ListContainer>
                         <List>
                             {offersData?.map((item) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
-                                        <ContractCard offerObj={item} />
+                                        <OfferCard offerObj={item} />
                                     </ul>
                                 );
                             })}
                         </List>
                     </ListContainer>
-                </SpinnerWrapper>
+                )}
             </ListWrapper>
-        </Page>
+        </>
     );
 };
 
-export default ContactsPage;
+export default MyOffers;

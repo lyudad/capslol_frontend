@@ -9,7 +9,8 @@
         "myOffers": "MY OFFERS",
         "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
-        "logout": "logout"
+        "logout": "logout",
+        "ownerJobs": "OWNER JOBS"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -200,6 +201,10 @@
         "startDate": "start date: ",
         "endDate": "end date: ",
         "endContract": "End Contract"
+    },
+    "OwnerJobsPage": {
+        "relevant": "Relevant",
+        "archival": "Archival"
     },
     "ContactInfo": {
         "title": "My Account",
