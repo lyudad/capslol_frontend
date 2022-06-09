@@ -57,9 +57,12 @@ const AppBar: React.FC = () => {
                     </NavLink>
                     {isAuth && (
                         <>
-                            <NavLink to="/profile" className="navLink">
-                                {t('AppBar.profile')}
-                            </NavLink>
+                            {role === userRole.owner && (
+                                <NavLink to="/talents" className="navLink">
+                                    {t('AppBar.Talents')}
+                                </NavLink>
+                            )}
+
                             {role === userRole.freelancer && (
                                 <>
                                     <NavLink to="/jobs" className="navLink">
@@ -67,6 +70,9 @@ const AppBar: React.FC = () => {
                                     </NavLink>
                                     <NavLink to="/offers" className="navLink">
                                         {t('AppBar.myOffers')}
+                                    </NavLink>
+                                    <NavLink to="/profile" className="navLink">
+                                        {t('AppBar.profile')}
                                     </NavLink>
                                 </>
                             )}
