@@ -10,7 +10,7 @@ const Avatar: React.FC<IAvatarProps> = ({ id }) => {
     return (
         <Wrapper>
             <AvatarImg>
-                <Image src={data?.profileImage || avatar} alt={data?.english} />
+                <Image src={data?.profileImage || avatar} alt="" />
             </AvatarImg>
             <Online className="" />
         </Wrapper>

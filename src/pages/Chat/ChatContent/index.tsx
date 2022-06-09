@@ -85,6 +85,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         socket.on(`msgToClient`, (response: IMessages) => {
             setArrivalMessage(response);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentChat]);
 
     useEffect(() => {
