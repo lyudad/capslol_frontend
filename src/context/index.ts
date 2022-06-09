@@ -3,5 +3,5 @@ import React from 'react';
 import { IProps } from './types';
 
 const SOCKET_URL = process.env.REACT_APP_SERVER_URL || '';
-export const socket = io(SOCKET_URL);
-export const AppContext = React.createContext<IProps>({ socket });
+export const appSocket = io(SOCKET_URL);
+export const AppContext = React.createContext<IProps>({ socket: appSocket });

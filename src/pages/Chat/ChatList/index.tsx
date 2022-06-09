@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react';
+﻿/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
 
 import { useAppSelector } from 'hooks/redux';
 import Avatar from './Avatar';
@@ -16,7 +17,7 @@ import { IChatListProps, TChatArgument } from '../interfaces';
 
 const ChatList: React.FC<IChatListProps> = ({ onChangeChat, members }) => {
     const { user } = useAppSelector((s) => s.auth);
-    const [, setSearch] = useState<string>('');
+    const [search, setSearch] = useState<string>('');
     const [currentSelected, setCurrentSelected] = useState<number>();
 
     const changeChat = (id: number, chat: TChatArgument): void => {
@@ -34,7 +35,7 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, members }) => {
             <SearchWrap>
                 <Input
                     type="text"
-                    onChange={(e) => onChange(e)}
+                    onChange={(event) => onChange(event)}
                     placeholder="Search"
                 />
             </SearchWrap>

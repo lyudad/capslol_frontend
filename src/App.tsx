@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
 import JobsPage from 'pages/JobsPage';
@@ -18,16 +17,14 @@ import Protected from 'router/Protected';
 import OffersPage from 'pages/OffersPage/index';
 import Chat from 'pages/Chat';
 import CreateJobPage from 'pages/CreateJobPage';
-import { AppContext, socket } from 'context';
+import { AppContext, appSocket } from 'context';
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
+    const socket = useMemo(() => ({ socket: appSocket }), []);
+
     return (
-        <AppContext.Provider
-            value={{
-                socket,
-            }}
-        >
+        <AppContext.Provider value={socket}>
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>
