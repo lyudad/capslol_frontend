@@ -1,6 +1,11 @@
 ﻿import { Avatar } from 'antd';
 import styled from 'styled-components';
-import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+    CheckCircleOutlined,
+    CloseOutlined,
+    EditOutlined,
+    SaveOutlined,
+} from '@ant-design/icons';
 import { colors } from 'constants/index';
 import { IProps } from './interfaces';
 
@@ -53,11 +58,27 @@ export const StyledAvatar = styled(Avatar)`
 export const Icon = styled(CheckCircleOutlined)`
     color: ${colors.textGreen};
     font-size: 20px;
+    cursor: pointer;
 `;
 
 export const IconNotFound = styled(CloseOutlined)`
     color: ${colors.textWhiteRed};
     font-size: 20px;
+    cursor: pointer;
+`;
+
+export const EditIcon = styled(EditOutlined)`
+    color: ${colors.testReusableColor};
+    font-size: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+`;
+
+export const SaveIcon = styled(SaveOutlined)`
+    color: ${colors.proposalGreen};
+    font-size: 20px;
+    padding-right: 20px;
+    cursor: pointer;
 `;
 
 export const Circle = styled.div`
@@ -72,5 +93,22 @@ export const Circle = styled.div`
     text-align: center;
     font-weight: bold;
     padding: 3px;
-    width: 60%;
+    width: 130px;
+`;
+
+export const StyledInput = styled.input`
+    color: ${colors.black};
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 0 5px;
+    &:hover {
+        border: 1px solid ${colors.textGreen};
+    }
+    &:focus,
+    &:active {
+        outline: 0;
+        box-shadow: ${colors.textGreen} 0px 0px 8px 2px,
+            ${colors.textGreen} 0px 0px 0px 1px;
+        border: 1px solid transparent;
+    }
 `;

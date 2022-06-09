@@ -1,72 +1,32 @@
-﻿import React, { useState } from 'react';
-import { message, Row } from 'antd';
-import { useTranslation } from 'react-i18next';
+﻿/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
 
-import {
-    usePostMessageMutation,
-    usePostContactsMutation,
-} from 'store/apis/chat';
-import { Img } from 'constants/index';
+import { useAppSelector } from 'hooks/redux';
 import Avatar from './Avatar';
 import {
     ChatListItem,
     ChatLists,
     ChatProject,
     ChatUser,
-    ChatUserTime,
     Input,
     SearchWrap,
     Wrapper,
     StyledRow,
-    NotFoundTitle,
 } from './styles';
 import { IChatListProps, TChatArgument } from '../interfaces';
 
-const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
-    const [currentSelected, setCurrentSelected] = useState<number>();
-    const { t } = useTranslation();
+const ChatList: React.FC<IChatListProps> = ({ onChangeChat, members }) => {
+    const { user } = useAppSelector((s) => s.auth);
     const [search, setSearch] = useState<string>('');
-
-    const [postMessage] = usePostMessageMutation();
-    const [postContact] = usePostContactsMutation();
+    const [currentSelected, setCurrentSelected] = useState<number>();
 
     const changeChat = (id: number, chat: TChatArgument): void => {
         setCurrentSelected(id);
         onChangeChat(chat);
     };
 
-    const handleNotification = async (): Promise<void> => {
-        try {
-            const newMessage = {
-                sender: {
-                    pic: Img.userLogo,
-                    id: Date.now(),
-                    name: 'Jonanhton',
-                },
-                content: 'We are interested you',
-                chat: Date.now(),
-                isOffer: true,
-            };
-
-            const newContact = {
-                image: Img.userLogo,
-                id: Date.now(),
-                name: 'Jonanhton',
-                project: 'Create UI Chat',
-                active: false,
-                isOnline: false,
-            };
-
-            await postMessage(newMessage);
-
-            await postContact(newContact);
-        } catch (e) {
-            message.error(e?.data?.message);
-        }
-    };
-
-    const onChange = (e: React.FormEvent<HTMLInputElement>): void => {
-        const newValue = e.currentTarget.value;
+    const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
+        const newValue = event.currentTarget.value;
         setSearch(newValue);
     };
 
@@ -75,71 +35,45 @@ const ChatList: React.FC<IChatListProps> = ({ onChangeChat, contacts }) => {
             <SearchWrap>
                 <Input
                     type="text"
-                    onChange={(e) => onChange(e)}
+                    onChange={(event) => onChange(event)}
                     placeholder="Search"
                 />
             </SearchWrap>
-            <Row justify="center">
-                <button type="button" onClick={handleNotification}>
-                    {t('Chat.offerBtnText')}
-                </button>
-            </Row>
             <ChatLists>
-                {contacts
-                    .filter(
-                        (contact) =>
-                            contact.name
-                                ?.toLowerCase()
-                                .includes(search?.toLowerCase()) ||
-                            search?.trim() === ''
-                    )
-                    .map((contact, index: number) => {
-                        return (
-                            <ChatListItem
-                                key={contact.id}
-                                style={{ animationDelay: `0.${index + 1}s` }}
-                                className={`${
-                                    contact.id === currentSelected
-                                        ? 'active'
-                                        : ''
-                                } `}
-                                onClick={() => changeChat(contact.id, contact)}
-                            >
-                                <Avatar
-                                    image={
-                                        contact.image
-                                            ? contact.image
-                                            : 'http://placehold.it/80x80'
-                                    }
-                                    isOnline={contact.isOnline}
-                                    alt={contact.name}
-                                />
+                {(members || []).map((member, index: number) => {
+                    const freelancer = member?.proposalId?.freelancerId;
+                    const jobOwner = member?.proposalId?.jobId?.ownerId;
+                    const job = member?.proposalId?.jobId;
+                    return (
+                        <ChatListItem
+                            key={member.id}
+                            style={{ animationDelay: `0.${index + 1}s` }}
+                            className={`${
+                                member.id === currentSelected ? 'active' : ''
+                            } `}
+                            onClick={() => changeChat(member.id, member)}
+                        >
+                            <Avatar
+                                id={
+                                    freelancer?.id === user?.id
+                                        ? jobOwner?.id
+                                        : freelancer?.id
+                                }
+                            />
 
-                                <div>
-                                    <StyledRow>
-                                        <ChatUser>{contact.name}</ChatUser>
-                                        <ChatUserTime>
-                                            {t('Chat.contactTime')}
-                                        </ChatUserTime>
-                                    </StyledRow>
-                                    <ChatProject>{contact.project}</ChatProject>
-                                </div>
-                            </ChatListItem>
-                        );
-                    })}
-
-                <>
-                    {' '}
-                    {!contacts?.filter(
-                        (contact) =>
-                            contact.name
-                                ?.toLowerCase()
-                                .includes(search?.toLowerCase()) ||
-                            search?.trim() === ''
-                    ).length && (
-                        <NotFoundTitle>{t('Chat.notFound')}</NotFoundTitle>
-                    )}
-                </>
+                            <div>
+                                <StyledRow>
+                                    <ChatUser>
+                                        {freelancer?.id === user?.id
+                                            ? `${jobOwner?.firstName} ${jobOwner?.lastName}`
+                                            : `${freelancer?.firstName} ${freelancer?.lastName}`}
+                                    </ChatUser>
+                                </StyledRow>
+                                <ChatProject>{job?.title}</ChatProject>
+                            </div>
+                        </ChatListItem>
+                    );
+                })}
             </ChatLists>
         </Wrapper>
     );

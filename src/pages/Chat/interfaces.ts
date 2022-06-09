@@ -1,61 +1,42 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface IChatUser {
-    active: boolean | undefined;
-    id: number;
-    image: string;
-    isOnline: boolean | undefined;
-    name: string;
-    project: string;
-}
+﻿import { IChatMember, IProposal } from 'store/apis/chat/chat.types';
+import { IOwner } from 'store/apis/jobs/jobs.types';
 
-export interface IChatOffer {
-    sender: {
-        name: string;
-        id: number;
-        project: string;
-    };
-    to: {
-        name: string;
-        id: number;
-    };
-    message: string;
-    messageType: string;
-    id?: number | undefined;
-}
-
-export interface IMessages {
-    id?: undefined;
-    sender: {
-        pic: string;
-        id: number;
-        name: string;
-    };
-    content: string;
-    chat: number;
-    isOffer?: boolean;
-}
-export interface IChatListProps {
-    onChangeChat: (value: TChatArgument) => void;
-    contacts: IChatUser[];
-}
 export interface IAvatarProps {
-    image: string;
-    alt: string;
-    isOnline?: string | boolean;
+    id: number;
 }
 
 export interface IChatItemProps {
     animationDelay: number;
-    msg: any;
+    msg: IMessages;
+}
+
+export type TChatArgument = IRoom | undefined;
+
+export interface IChatListProps {
+    onChangeChat: (value: TChatArgument) => void;
+    members: IChatMember[] | undefined;
+}
+
+export type IChatMemberArg = IChatMember[] | undefined;
+
+export enum Role {
+    jobOwner = 'Job Owner',
+}
+
+export interface IMessages {
+    id: number;
+    content: string;
+    createdAt: string;
+    senderId: IOwner;
+    roomId: IRoom;
+}
+
+export interface IRoom {
+    id: number;
+    isActive: boolean;
+    proposalId: IProposal;
 }
 
 export interface IChatContentProps {
-    currentChat: IChatUser;
-}
-
-export type TChatArgument = IChatUser | undefined;
-
-export interface IOfferAccept {
-    id: number;
-    chat: number;
+    currentChat: IRoom;
 }

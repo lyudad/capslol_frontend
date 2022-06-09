@@ -1,9 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
+import { useAppSelector } from 'hooks/redux';
 import { Paths } from 'router/paths';
 import moment from 'moment';
 import { dateFormat } from 'constants/index';
 import { IJob } from 'store/apis/jobs/jobs.types';
+import { TFilterArg, TFilterReturn } from 'pages/SendProposal/interfaces';
 import {
     DateContainer,
     StyledButton,
@@ -24,6 +27,10 @@ interface IProps {
 
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const { t } = useTranslation();
+    const { user } = useAppSelector((s) => s.auth);
+    const { data: freelancerProposals } = useGetProposalsByFreelancerQuery(
+        user?.id
+    );
 
     const navigate = useNavigate();
 
@@ -48,6 +55,13 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const handleSendProposal = (): void => {
         navigate(Paths.SEND_PROPOSAL, { state: { id } });
     };
+
+    const handleFiltered = (data: TFilterArg): TFilterReturn => {
+        const filtered = data?.filter((i) => i.jobId.id === id)[0]?.jobId?.id;
+
+        return filtered;
+    };
+
     return (
         <>
             <DateContainer>
@@ -88,9 +102,14 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     </FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav onClick={handleSendProposal}>
-                {t('JobPage.sendProposal')}
-            </StyledNav>
+
+            {handleFiltered(freelancerProposals) === id ? (
+                <StyledNav disabled>{t('JobPage.alreadySent')}</StyledNav>
+            ) : (
+                <StyledNav onClick={handleSendProposal}>
+                    {t('JobPage.sendProposal')}
+                </StyledNav>
+            )}
         </>
     );
 };
