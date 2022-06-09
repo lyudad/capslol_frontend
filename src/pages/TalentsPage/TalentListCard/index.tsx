@@ -4,6 +4,7 @@ import { Paths } from 'router/paths';
 import { IJob } from 'store/apis/jobs/jobs.types';
 import { notification } from 'antd';
 import avatar from 'assets/avatar.png';
+import { Slicer } from 'utilities/utilities';
 import {
     StyledButton,
     JobTitle,
@@ -36,10 +37,6 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
             message: 'Тут будет отправка ивайтов :)',
         });
     };
-    let sliced: string = description.slice(0, 300);
-    if (sliced.length < description.length) {
-        sliced += '...';
-    }
 
     return (
         <>
@@ -49,7 +46,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
                     {title}
                 </JobTitle>
             </StyledButton>
-            <Descriptions>{sliced}</Descriptions>
+            <Descriptions>{Slicer(description)}</Descriptions>
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
