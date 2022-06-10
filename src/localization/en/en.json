@@ -11,6 +11,7 @@
         "profile": "PROFILE",
         "jobs": "JOBS",
         "myOffers": "MY OFFERS",
+        "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
         "logout": "logout",
         "Talents": "TALENTS"
@@ -195,9 +196,18 @@
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
         "myProposals": "My Proposals",
-        "myHourRate": "my hour rate:",
-        "status": "status",
-        "ownerHourRate": "job owner hour rate"
+        "myHourRate": "my hour rate: ",
+        "status": "status: ",
+        "ownerHourRate": "job owner hour rate: "
+    },
+    "ContractsPage": {
+        "myContracts": "My Contracts",
+        "jobOwner": "job owner: ",
+        "freelancer": "freelancer: ",
+        "status": "status: ",
+        "startDate": "start date: ",
+        "endDate": "end date: ",
+        "endContract": "End Contract"
     },
     "ContactInfo": {
         "title": "My Account",
