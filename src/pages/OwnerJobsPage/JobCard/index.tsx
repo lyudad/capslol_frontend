@@ -21,9 +21,10 @@ import { OneCard } from '../styles';
 
 interface IProps {
     jobObj: IJob;
+    isArchived: boolean;
 }
 
-const JobCard: React.FC<IProps> = ({ jobObj }) => {
+const JobCard: React.FC<IProps> = ({ isArchived, jobObj }) => {
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -46,8 +47,8 @@ const JobCard: React.FC<IProps> = ({ jobObj }) => {
         navigate(Paths.JOB_PAGE, { state: { id } });
     };
 
-    const handleSendProposal = (): void => {
-        navigate(Paths.SEND_PROPOSAL, { state: { id } });
+    const handleChangeStatus = (): void => {
+        // navigate(Paths.SEND_PROPOSAL, { state: { id } });
     };
     return (
         <OneCard>
@@ -89,9 +90,15 @@ const JobCard: React.FC<IProps> = ({ jobObj }) => {
                     </FieldValue>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav onClick={handleSendProposal}>
-                {t('JobPage.sendProposal')}
-            </StyledNav>
+            {isArchived ? (
+                <StyledNav onClick={handleChangeStatus}>
+                    {t('OwnerJobsPage.fromArchive')}
+                </StyledNav>
+            ) : (
+                <StyledNav onClick={handleChangeStatus}>
+                    {t('OwnerJobsPage.inArchive')}
+                </StyledNav>
+            )}
         </OneCard>
     );
 };

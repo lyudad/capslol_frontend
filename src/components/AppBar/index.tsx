@@ -84,10 +84,17 @@ const AppBar: React.FC = () => {
                                     </NavLink>
                                 </>
                             )}
+                            {role === userRole.owner && (
+                                <NavLink
+                                    to={Paths.OWNER_JOBS}
+                                    className="navLink"
+                                >
+                                    {t('AppBar.ownerJobs')}
+                                </NavLink>
+                            )}
                             <NavLink to={Paths.OWNER_JOBS} className="navLink">
                                 {t('AppBar.ownerJobs')}
                             </NavLink>
-
                             <NavLink to={Paths.TEST} className="navLink">
                                 {t('AppBar.test')}
                             </NavLink>

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { useGetJobsQuery } from 'store/apis/jobs';
+import { useAppSelector } from 'hooks/redux';
+import { useGetJobsByOwnerQuery } from 'store/apis/jobs';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import JobCard from 'pages/OwnerJobsPage/JobCard/index';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
@@ -11,7 +12,9 @@ interface IProps {
 const OwnerJobs: React.FC<IProps> = ({ archived }) => {
     const { t } = useTranslation();
 
-    const { data: jobs, isLoading } = useGetJobsQuery('');
+    const userId = useAppSelector((state) => state.auth.user?.id);
+
+    const { data: jobs, isLoading } = useGetJobsByOwnerQuery(userId);
 
     return (
         <>
@@ -29,7 +32,10 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
-                                        <JobCard jobObj={item} />
+                                        <JobCard
+                                            isArchived={archived}
+                                            jobObj={item}
+                                        />
                                     </ul>
                                 );
                             })}

@@ -14,7 +14,7 @@
         "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
         "logout": "logout",
-        "ownerJobs": "OWNER JOBS",
+        "ownerJobs": "OWN JOBS",
         "Talents": "TALENTS"
     },
     "SignInForm": {},
@@ -214,7 +214,9 @@
         "relevant": "Relevant",
         "archival": "Archival",
         "myRelJobs": " My Relevant Jobs",
-        "myArchivalJobs": "My Archival Jobs"
+        "myArchivalJobs": "My Archival Jobs",
+        "inArchive": "In Archive",
+        "fromArchive": "From Archive"
     },
     "ContactInfo": {
         "title": "My Account",
