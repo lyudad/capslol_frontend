@@ -14,9 +14,12 @@ import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
 import SettingPage from 'pages/SettingPage';
 import Protected from 'router/Protected';
-import OffersPage from 'pages/OffersPage/index';
+import OffersPage from 'pages/OffersPage';
 import Chat from 'pages/Chat';
 import CreateJobPage from 'pages/CreateJobPage';
+import ContactsPage from 'pages/ContractsPage';
+import OwnerJobsPage from 'pages/OwnerJobsPage';
+import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
 import TestPage from './pages/testPage';
 
@@ -29,7 +32,16 @@ const App: React.FC = () => {
                 <Routes>
                     <Route element={<Protected />}>
                         <Route path={Paths.JOBS} element={<JobsPage />} />
+                        <Route path={Paths.TALENT} element={<TalentsPage />} />
                         <Route path={Paths.OFFERS} element={<OffersPage />} />
+                        <Route
+                            path={Paths.OWNER_JOBS}
+                            element={<OwnerJobsPage />}
+                        />
+                        <Route
+                            path={Paths.MY_CONTRACTS}
+                            element={<ContactsPage />}
+                        />
                         <Route
                             path={Paths.CONTACT_INFO}
                             element={<ContactInfo />}

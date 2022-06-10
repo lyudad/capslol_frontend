@@ -1,4 +1,8 @@
 {
+    "TalentPage": {
+        "send_interview": "Send invite to interview",
+        "talents": "Talents on GetJOB!"
+    },
     "AppBar": {
         "get": "Get",
         "job": "JOB!",
@@ -7,8 +11,11 @@
         "profile": "PROFILE",
         "jobs": "JOBS",
         "myOffers": "MY OFFERS",
+        "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
-        "logout": "logout"
+        "logout": "logout",
+        "ownerJobs": "OWN JOBS",
+        "Talents": "TALENTS"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -190,9 +197,26 @@
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
         "myProposals": "My Proposals",
-        "myHourRate": "my hour rate:",
-        "status": "status",
-        "ownerHourRate": "job owner hour rate"
+        "myHourRate": "my hour rate: ",
+        "status": "status: ",
+        "ownerHourRate": "job owner hour rate: "
+    },
+    "ContractsPage": {
+        "myContracts": "My Contracts",
+        "jobOwner": "job owner: ",
+        "freelancer": "freelancer: ",
+        "status": "status: ",
+        "startDate": "start date: ",
+        "endDate": "end date: ",
+        "endContract": "End Contract"
+    },
+    "OwnerJobsPage": {
+        "relevant": "Relevant",
+        "archival": "Archival",
+        "myRelJobs": " My Relevant Jobs",
+        "myArchivalJobs": "My Archival Jobs",
+        "inArchive": "In Archive",
+        "fromArchive": "From Archive"
     },
     "ContactInfo": {
         "title": "My Account",

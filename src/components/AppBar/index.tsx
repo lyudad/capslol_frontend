@@ -44,7 +44,7 @@ const AppBar: React.FC = () => {
         <Header>
             <NavigationContainer>
                 <Logo>
-                    <NavLink to="/" className="logoLink">
+                    <NavLink to={Paths.HOME} className="logoLink">
                         <>
                             {t('AppBar.get')}
                             <span>{t('AppBar.job')}</span>
@@ -52,26 +52,47 @@ const AppBar: React.FC = () => {
                     </NavLink>
                 </Logo>
                 <div>
-                    <NavLink to="/" className="navLink">
+                    <NavLink to={Paths.HOME} className="navLink">
                         {t('AppBar.home')}
                     </NavLink>
                     {isAuth && (
                         <>
-                            <NavLink to="/profile" className="navLink">
-                                {t('AppBar.profile')}
+                            <NavLink to={Paths.JOBS} className="navLink">
+                                {t('AppBar.jobs')}
                             </NavLink>
-                            {role === userRole.freelancer && (
+                            {role === userRole.owner && (
                                 <>
-                                    <NavLink to="/jobs" className="navLink">
-                                        {t('AppBar.jobs')}
+                                    <NavLink to="/talents" className="navLink">
+                                        {t('AppBar.Talents')}
                                     </NavLink>
-                                    <NavLink to="/offers" className="navLink">
-                                        {t('AppBar.myOffers')}
+                                    <NavLink
+                                        to={Paths.OWNER_JOBS}
+                                        className="navLink"
+                                    >
+                                        {t('AppBar.ownerJobs')}
                                     </NavLink>
                                 </>
                             )}
-
-                            <NavLink to="/test" className="navLink">
+                            {role === userRole.freelancer && (
+                                <>
+                                    <NavLink
+                                        to={Paths.OFFERS}
+                                        className="navLink"
+                                    >
+                                        {t('AppBar.myOffers')}
+                                    </NavLink>
+                                    <NavLink
+                                        to={Paths.MY_CONTRACTS}
+                                        className="navLink"
+                                    >
+                                        {t('AppBar.myContracts')}
+                                    </NavLink>
+                                    <NavLink to="/profile" className="navLink">
+                                        {t('AppBar.profile')}
+                                    </NavLink>
+                                </>
+                            )}
+                            <NavLink to={Paths.TEST} className="navLink">
                                 {t('AppBar.test')}
                             </NavLink>
                         </>

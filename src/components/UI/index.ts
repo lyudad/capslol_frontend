@@ -53,8 +53,8 @@ export const StyledContent = styled.section`
     background-color: ${colors.homeBgr};
     background-image: url(./images/bg-image.png);
     background-repeat: no-repeat;
-    background-size: contain;
-    min-height: 100vh;
+    background-size: cover;
+    background-attachment: fixed;
 `;
 
 export const Flex = styled(Form.Item)<FlexType>`
