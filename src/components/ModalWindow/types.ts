@@ -1,4 +1,4 @@
-﻿import { TReactNode } from 'common/Button/props';
+﻿import { TReactNode } from 'components/Button/props';
 import { CSSProperties } from 'react';
 
 export interface IProps {

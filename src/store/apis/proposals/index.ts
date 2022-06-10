@@ -17,8 +17,14 @@ export const proposalApi = apiProposalsTag.injectEndpoints({
         }),
         getSingleJob: builder.query<IJob, number | undefined>({
             query: (value: number) => ({
-                url: `/jobs/getbyid?job=${value}`,
+                url: `/jobs/${value}`,
             }),
+        }),
+        getAll: builder.query<IMyProposal, void>({
+            query: () => ({
+                url: `/proposals`,
+            }),
+            providesTags: ['Proposal'],
         }),
         getProposalsByFreelancer: builder.query<
             IMyProposal[],
@@ -36,4 +42,5 @@ export const {
     useSendProposalMutation,
     useGetSingleJobQuery,
     useGetProposalsByFreelancerQuery,
+    useGetAllQuery,
 } = proposalApi;
