@@ -12,11 +12,11 @@ export enum Paths {
     SEND_PROPOSAL = '/send_proposal',
     CONTACT_INFO = '/contact_info',
     JOBS = '/jobs',
+    OWNER_JOBS = '/owner-jobs',
     OFFERS = '/offers',
     CHAT = '/chat',
     SETTING_ID = '/setting/:id',
     CREATE_JOB_PAGE = '/createJob',
     MY_CONTRACTS = '/my-contracts',
-    OWNER_JOBS = '/owner-jobs',
     TALENT = '/talents',
 }
