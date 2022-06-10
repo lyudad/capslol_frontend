@@ -57,19 +57,24 @@ const AppBar: React.FC = () => {
                     </NavLink>
                     {isAuth && (
                         <>
+                            <NavLink to={Paths.JOBS} className="navLink">
+                                {t('AppBar.jobs')}
+                            </NavLink>
                             {role === userRole.owner && (
-                                <NavLink to="/talents" className="navLink">
-                                    {t('AppBar.Talents')}
-                                </NavLink>
+                                <>
+                                    <NavLink to="/talents" className="navLink">
+                                        {t('AppBar.Talents')}
+                                    </NavLink>
+                                    <NavLink
+                                        to={Paths.OWNER_JOBS}
+                                        className="navLink"
+                                    >
+                                        {t('AppBar.ownerJobs')}
+                                    </NavLink>
+                                </>
                             )}
                             {role === userRole.freelancer && (
                                 <>
-                                    <NavLink
-                                        to={Paths.JOBS}
-                                        className="navLink"
-                                    >
-                                        {t('AppBar.jobs')}
-                                    </NavLink>
                                     <NavLink
                                         to={Paths.OFFERS}
                                         className="navLink"
@@ -87,7 +92,6 @@ const AppBar: React.FC = () => {
                                     </NavLink>
                                 </>
                             )}
-
                             <NavLink to={Paths.TEST} className="navLink">
                                 {t('AppBar.test')}
                             </NavLink>
