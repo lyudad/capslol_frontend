@@ -34,7 +34,6 @@ export const StyledButton = styled.button`
     margin-bottom: 8px;
     background: none;
     border: none;
-    border-bottom: 1px solid ${colors.appBarBrd};
     cursor: pointer;
 `;
 
@@ -72,11 +71,18 @@ export const DateContainer = styled.div`
     font-size: 10px;
 `;
 
+export const Avatar = styled.div`
+    display: block;
+    overflow: hidden;
+    margin-right: 10px;
+    border-radius: 20%;
+`;
 export const JobTitle = styled.span`
     display: flex;
     font-size: ${fonts.jobCardTitleSize};
     font-weight: ${fonts.jobListFontWeight};
     color: ${colors.brandColor};
+    padding-top: 8px;
     align-items: center;
     justify-content: center;
     justify-items: center;
@@ -99,12 +105,19 @@ export const OwnerContainer = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     flex-wrap: wrap;
-    max-height: 78px;
-    margin: 0 0 4px 12px;
+    margin: 0 0 38px 12px;
 `;
 
+export const FieldSkills = styled.span`
+    color: ${colors.brandColor};
+    font-weight: ${fonts.jobListFontWeight};
+    font-size: 12px;
+    margin-left: 3px;
+    padding: 2px;
+`;
 export const ValueBox = styled.div`
     padding: 2px;
+    display: inline;
 `;
 
 export const Field = styled.span`
@@ -123,6 +136,13 @@ export const StyledNav = styled.button`
     padding: 4px 8px;
     border: none;
     cursor: pointer;
-    color: ${colors.textWhite};
+    color: ${colors.black};
     background-color: ${colors.brandColor};
+    position: absolute;
+    bottom: 0;
+    font-weight: 500;
+    margin-bottom: 8px;
+    @media (max-width: 768px) {
+        margin-left: 70px;
+    }
 `;

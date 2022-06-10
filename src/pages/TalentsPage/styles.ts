@@ -34,9 +34,9 @@ export const ListContainer = styled.div`
 
 export const TalentsList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 10fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     grid-auto-flow: dense;
-    grid-column-gap: 10px;
+    grid-column-gap: 12px;
     grid-row-gap: 10px;
     padding-left: 16px;
     list-style: none;
@@ -48,10 +48,19 @@ export const TalentsList = styled.ul`
 `;
 
 export const TalentCard = styled.li`
+    position: relative;
     padding: 0px 8px 8px 8px;
     background-color: ${colors.appBarBgr};
     border-bottom: 1px solid ${colors.appBarBrd};
     color: ${colors.textWhite};
+
+    :hover {
+        box-shadow: inset 0 0 4px 2px ${colors.brandColor};
+        transition: all 0.3s ease;
+        -webkit-transform: scale(1.04);
+        -ms-transform: scale(1.04);
+        transform: scale(1.04);
+    }
 `;
 
 export const FiltersContainer = styled.div`
