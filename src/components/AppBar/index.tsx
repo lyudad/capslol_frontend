@@ -61,9 +61,17 @@ const AppBar: React.FC = () => {
                                 {t('AppBar.jobs')}
                             </NavLink>
                             {role === userRole.owner && (
-                                <NavLink to="/talents" className="navLink">
-                                    {t('AppBar.Talents')}
-                                </NavLink>
+                                <>
+                                    <NavLink to="/talents" className="navLink">
+                                        {t('AppBar.Talents')}
+                                    </NavLink>
+                                    <NavLink
+                                        to={Paths.OWNER_JOBS}
+                                        className="navLink"
+                                    >
+                                        {t('AppBar.ownerJobs')}
+                                    </NavLink>
+                                </>
                             )}
                             {role === userRole.freelancer && (
                                 <>
@@ -84,17 +92,6 @@ const AppBar: React.FC = () => {
                                     </NavLink>
                                 </>
                             )}
-                            {role === userRole.owner && (
-                                <NavLink
-                                    to={Paths.OWNER_JOBS}
-                                    className="navLink"
-                                >
-                                    {t('AppBar.ownerJobs')}
-                                </NavLink>
-                            )}
-                            <NavLink to={Paths.OWNER_JOBS} className="navLink">
-                                {t('AppBar.ownerJobs')}
-                            </NavLink>
                             <NavLink to={Paths.TEST} className="navLink">
                                 {t('AppBar.test')}
                             </NavLink>
