@@ -3,6 +3,39 @@ import { colors } from 'constants/index';
 
 export const ChatMsg = styled.div`
     user-select: none;
+
+    .Declined {
+        color: ${colors.decline};
+    }
+
+    .Pending {
+        color: ${colors.pending};
+    }
+
+    .Accepted {
+        color: ${colors.accept};
+    }
+
+    .title {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+
+        span {
+            opacity: 1.4;
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+
+    .Freelancer {
+        display: block;
+    }
+
+    .JobOwner {
+        display: block;
+    }
 `;
 
 export const ChatTime = styled.span`

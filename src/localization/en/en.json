@@ -236,6 +236,11 @@
         "error": "Something went wrong, please try again later!",
         "sendMsgPlaceholder": "Write a message...",
         "offerSentPlaceholder": "Change hour rate...",
-        "membersError": "There are no contacts, something went wrong, please try again!"
+        "membersError": "There are no contacts, something went wrong, please try again!",
+        "offer": "Send Offer",
+        "title": "<p className='title'>Title: <span>",
+        "dsc": "<p className='title'>Project details: <span>",
+        "rate": "<p className='title'>Hour rate: <span>",
+        "link": "You can see all offers in <a href='/offers'>My Offer Page</a>"
     }
 }

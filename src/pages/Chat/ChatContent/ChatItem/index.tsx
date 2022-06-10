@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import parse from 'html-react-parser';
 
 import { useAppSelector } from 'hooks/redux';
 import Avatar from 'pages/Chat/ChatList/Avatar';
@@ -31,7 +32,7 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
             className={`${msg?.senderId?.id === user?.id ? '' : 'other'}`}
         >
             <ChatItemContent className="chat__item__content">
-                <ChatMsg>{msg?.content}</ChatMsg>
+                <ChatMsg>{parse(msg?.content)}</ChatMsg>
                 <ChatMeta>
                     <ChatTime>{sentTime(msg?.createdAt)}</ChatTime>
                 </ChatMeta>

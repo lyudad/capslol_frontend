@@ -1,14 +1,14 @@
 ﻿/* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react';
 import { message, notification } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from 'hooks/redux';
 import { colors } from 'constants/index';
 import axios from 'axios';
-import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
-import { useTranslation } from 'react-i18next';
+import { useCreateOfferMutation } from 'store/apis/offers';
 import Avatar from '../ChatList/Avatar';
 import { IChatContentProps, IMessages, Role } from '../interfaces';
 import ChatItem from './ChatItem';
@@ -17,7 +17,6 @@ import {
     ChatFooter,
     ChatHeader,
     CurrentChatUser,
-    HourlyRateInput,
     MainChat,
     Project,
     ProjectOwner,
@@ -28,6 +27,7 @@ import {
     SettingsBtn,
     Wrapper,
 } from './styles';
+import ChatWindow from './ChatWindow';
 
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [messageText, setMessageText] = useState<string>('');
@@ -40,6 +40,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const { t } = useTranslation();
 
     const { data } = useGetUserByIdQuery(user?.id);
+    const [createOffer, { data: offer }] = useCreateOfferMutation();
 
     const openModal = (): void => setIsOpen(true);
 
@@ -48,7 +49,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const handleMessage = async (): Promise<void> => {
         try {
             const newMessage = {
-                content: messageText,
+                content: `<div>${messageText}</div>`,
                 senderId: user?.id,
                 roomId: currentChat.id,
             };
@@ -97,6 +98,49 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const jobOwner = currentChat?.proposalId?.jobId?.ownerId;
     const job = currentChat?.proposalId?.jobId;
 
+    const [hourRate, setHourRate] = useState<number>(job?.price);
+
+    const handleOffer = async (): Promise<void> => {
+        try {
+            const newOffer = {
+                ownerId: jobOwner?.id,
+                freelancerId: freelancer?.id,
+                jobId: job?.id,
+                status: 'Declined',
+                hourRate,
+            };
+            await createOffer(newOffer).unwrap();
+            const newMessage = {
+                content: `<div className=${offer?.status}>${t('Chat.title')}${
+                    job?.title
+                }<span></p>
+                ${t('Chat.dsc')}${job?.description}<span></p>${t(
+                    'Chat.rate'
+                )}${hourRate}<span></p>
+                <p className=${
+                    data?.data?.role === Role.jobOwner
+                        ? 'Freelancer'
+                        : 'JobOwner'
+                }>
+                ${t('Chat.link')}</p></div>`,
+                senderId: user?.id,
+                roomId: currentChat.id,
+            };
+
+            socket.emit('msgToServer', newMessage);
+            closeModal();
+        } catch (error) {
+            message.error(error?.message);
+        }
+    };
+
+    const handleHourRateChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        const newValue = event.target.value;
+        setHourRate(+newValue);
+    };
+
     return (
         <Wrapper>
             <MainChat>
@@ -123,7 +167,11 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
                     <div>
                         {(data?.data?.role || undefined) === Role.jobOwner && (
-                            <SettingsBtn onClick={openModal}>
+                            <SettingsBtn
+                                onClick={openModal}
+                                bg={colors.proposalGreen}
+                                color={colors.textWhite}
+                            >
                                 {t('Chat.jobOffer')}
                             </SettingsBtn>
                         )}
@@ -162,16 +210,14 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 </ChatFooter>
             </MainChat>
 
-            <ModalWindow
+            <ChatWindow
                 modalIsOpen={modalIsOpen}
-                closeModal={() => closeModal()}
-                bg={colors.btnWhite}
-                modalBg={colors.bgBlack}
-            >
-                <HourlyRateInput
-                    placeholder={`${t('Chat.offerSentPlaceholder')}`}
-                />
-            </ModalWindow>
+                handleOffer={handleOffer}
+                closeModal={closeModal}
+                handleHourRateChange={handleHourRateChange}
+                price={job?.price}
+                hourRate={hourRate}
+            />
         </Wrapper>
     );
 };
