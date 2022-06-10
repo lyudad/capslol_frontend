@@ -13,38 +13,55 @@ export const Title = styled.h1`
     color: ${colors.brandColor};
 `;
 
-export const JobsContainer = styled.div`
+export const TalentsContainer = styled.div`
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
     padding-top: 16px;
     border-top: 1px solid ${colors.appBarBrd};
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 export const ListContainer = styled.div`
-    width: 60vw;
-    border-right: 1px solid ${colors.appBarBrd};
+    border-left: 1px solid ${colors.appBarBrd};
+    @media (max-width: 768px) {
+        border-left: none;
+    }
 `;
 
-export const JobsList = styled.ul`
-    padding-right: 12px;
+export const TalentsList = styled.ul`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 10fr));
+    grid-auto-flow: dense;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    padding-left: 16px;
     list-style: none;
-    padding-left: 0;
     margin: 0;
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 10fr));
+        width: 330px;
+    }
 `;
 
-export const JobCard = styled.li`
-    padding: 24px 8px 8px 8px;
+export const TalentCard = styled.li`
+    padding: 0px 8px 8px 8px;
     background-color: ${colors.appBarBgr};
     border-bottom: 1px solid ${colors.appBarBrd};
     color: ${colors.textWhite};
 `;
 
 export const FiltersContainer = styled.div`
+    @media (max-width: 768px) {
+        margin-right: 0px;
+    }
     display: flex;
     flex-direction: column;
+
     padding: 15px;
-    margin-left: 16px;
+    margin-right: 16px;
     background-color: ${colors.appBarBgr};
 `;

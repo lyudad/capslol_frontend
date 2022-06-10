@@ -2,22 +2,19 @@ import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
-import { Button, notification } from 'antd';
+
 import { logOut } from 'store/slices/auth/auth.slice';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
-import { useGetOffersQuery } from 'store/apis/chat';
 import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
 import {
     Header,
     NavigationContainer,
     Logo,
-    NotificationIcon,
     MessageIcon,
     NotificationFlex,
-    Counter,
     BarAvatarImg,
     LoggedName,
     LogoutButton,
@@ -38,43 +35,11 @@ const AppBar: React.FC = () => {
 
     const { data: userProfile } = useGetUserProfileQuery(user?.id);
 
-    const { data: offers } = useGetOffersQuery();
-
-    const close = (): void => {
-        /* eslint-disable no-console */
-        console.log('Close');
-    };
-
     const logout = (): void => {
         dispatch(logOut());
         navigate(Paths.HOME);
     };
 
-    const openNotification = (type: string): void => {
-        const key = `open${Date.now()}`;
-        const btn = (
-            <Button
-                type="primary"
-                size="small"
-                onClick={() => notification.close(key)}
-            >
-                Confirm
-            </Button>
-        );
-        notification.open({
-            message: 'You have new notification',
-            description: type,
-            btn,
-            key,
-            onClose: close,
-        });
-    };
-
-    const handleNotification = (): void => {
-        offers?.map((offer) => {
-            return openNotification(offer.messageType);
-        });
-    };
     return (
         <Header>
             <NavigationContainer>
@@ -92,12 +57,14 @@ const AppBar: React.FC = () => {
                     </NavLink>
                     {isAuth && (
                         <>
-                            <NavLink to={Paths.PROFILE} className="navLink">
-                                {t('AppBar.profile')}
-                            </NavLink>
                             <NavLink to={Paths.JOBS} className="navLink">
                                 {t('AppBar.jobs')}
                             </NavLink>
+                            {role === userRole.owner && (
+                                <NavLink to="/talents" className="navLink">
+                                    {t('AppBar.Talents')}
+                                </NavLink>
+                            )}
                             {role === userRole.freelancer && (
                                 <>
                                     <NavLink
@@ -111,6 +78,9 @@ const AppBar: React.FC = () => {
                                         className="navLink"
                                     >
                                         {t('AppBar.myContracts')}
+                                    </NavLink>
+                                    <NavLink to="/profile" className="navLink">
+                                        {t('AppBar.profile')}
                                     </NavLink>
                                 </>
                             )}
@@ -140,9 +110,8 @@ const AppBar: React.FC = () => {
                                 <img src={avatar} alt="" />
                             )}
                         </BarAvatarImg>
-                        {offers?.length && <Counter>{offers?.length}</Counter>}
-                        <NotificationIcon onClick={handleNotification} />
-                        <MessageIcon onClick={() => navigate('/chat')} />
+                        <MessageIcon onClick={() => navigate(Paths.CHAT)} />
+
                         <LogoutButton
                             type="primary"
                             size="small"

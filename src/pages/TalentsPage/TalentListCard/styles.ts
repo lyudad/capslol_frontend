@@ -73,9 +73,13 @@ export const DateContainer = styled.div`
 `;
 
 export const JobTitle = styled.span`
+    display: flex;
     font-size: ${fonts.jobCardTitleSize};
     font-weight: ${fonts.jobListFontWeight};
     color: ${colors.brandColor};
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
 `;
 
 export const Salary = styled.span`
@@ -121,10 +125,4 @@ export const StyledNav = styled.button`
     cursor: pointer;
     color: ${colors.textWhite};
     background-color: ${colors.brandColor};
-    &:disabled {
-        color: ${colors.textWhite};
-        background: ${colors.passwordBg};
-        cursor: no-drop;
-        font-style: italic;
-    }
 `;

@@ -1,84 +1,37 @@
-﻿import { IChatOffer, IChatUser, IMessages } from 'pages/Chat/interfaces';
+﻿import { IMessages } from 'pages/Chat/interfaces';
 import { baseApi } from '..';
+import { IChatContact, IChatMember } from './chat.types';
 
-const apiWithTag = baseApi.enhanceEndpoints({
-    addTagTypes: ['Contact', 'Offer', 'Message'],
-});
+const apiChatTag = baseApi.enhanceEndpoints({ addTagTypes: ['Users'] });
 
-export const chatApi = apiWithTag.injectEndpoints({
+export const chatApi = apiChatTag.injectEndpoints({
     endpoints: (builder) => ({
-        getContacts: builder.query<IChatUser[], void>({
-            query: () => '/contacts',
-            providesTags: ['Contact'],
+        postChatContact: builder.mutation<IChatContact, IChatContact>({
+            query(value) {
+                return {
+                    url: '/chat-contacts',
+                    method: 'POST',
+                    body: value,
+                };
+            },
+            invalidatesTags: ['Users'],
         }),
-        getOffers: builder.query<IChatOffer[], void>({
-            query: () => '/offers',
-            providesTags: ['Offer'],
-        }),
-        getSingleOffer: builder.query<IChatOffer, number>({
-            query: (id: number) => `/offers/${id}`,
-        }),
-        getMessages: builder.query<IMessages[], void>({
-            query: () => '/messages',
-            providesTags: ['Message'],
-        }),
-        postMessage: builder.mutation<IMessages, IMessages>({
-            query: (message) => ({
-                url: '/messages',
-                method: 'POST',
-                body: message,
+        getChatContacts: builder.query<IChatMember[], void>({
+            query: () => ({
+                url: '/chat-contacts',
             }),
-            invalidatesTags: ['Message'],
+            providesTags: ['Users'],
         }),
-        postOffer: builder.mutation<IChatOffer, IChatOffer>({
-            query: (offer) => ({
-                url: '/offers',
-                method: 'POST',
-                body: offer,
+        getMessages: builder.query<IMessages, number>({
+            query: (value) => ({
+                url: `/messages?room=${value}`,
             }),
-            invalidatesTags: ['Offer'],
-        }),
-        postContacts: builder.mutation<IChatUser, IChatUser>({
-            query: (contacts) => ({
-                url: '/contacts',
-                method: 'POST',
-                body: contacts,
-            }),
-            invalidatesTags: ['Contact'],
-        }),
-        deleteOfferById: builder.mutation<IChatOffer, number>({
-            query: (id: number) => ({
-                url: `/offers/${id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['Offer'],
-        }),
-        deleteMessageById: builder.mutation<IMessages, number>({
-            query: (id: number) => ({
-                url: `/messages/${id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['Message'],
-        }),
-        deleteContactById: builder.mutation<IChatUser, number>({
-            query: (id: number) => ({
-                url: `/contacts/${id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['Contact'],
         }),
     }),
 });
 
 export const {
-    useGetContactsQuery,
+    usePostChatContactMutation,
+    useGetChatContactsQuery,
     useGetMessagesQuery,
-    useGetOffersQuery,
-    usePostMessageMutation,
-    usePostOfferMutation,
-    useGetSingleOfferQuery,
-    usePostContactsMutation,
-    useDeleteOfferByIdMutation,
-    useDeleteContactByIdMutation,
-    useDeleteMessageByIdMutation,
 } = chatApi;

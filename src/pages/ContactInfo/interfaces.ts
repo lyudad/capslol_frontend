@@ -7,6 +7,9 @@
 
 export interface IChangePassword {
     newPassword: string;
-
     confirmPassword: string;
+}
+
+export interface IContactInfo {
+    id: number;
 }
