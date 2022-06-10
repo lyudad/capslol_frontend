@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import Spinner from 'components/Spinner';
 import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { ListContainer, ListWrapper, List, Title, Page } from './styles';

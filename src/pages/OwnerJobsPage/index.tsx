@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Page, TopButtonContainer, StyledNavBtn } from './styles';
-import MyOffers from './MyOffers';
-import MyInvitations from './MyInvitations';
+import OwnerJobs from './OwnerJobs';
 
 const OwnerJobsPage: React.FC = () => {
     const [isActive, setIsActive] = useState<number>(1);
@@ -25,17 +24,10 @@ const OwnerJobsPage: React.FC = () => {
                 >
                     {t('OwnerJobsPage.archival')}
                 </StyledNavBtn>
-
-                {/* <StyledNavBtn
-                    isActive={isActive === 3}
-                    onClick={() => setIsActive(3)}
-                >
-                    {t('OffersPage.myProposals')}
-                </StyledNavBtn> */}
             </TopButtonContainer>
 
-            {isActive === 1 && <MyOffers />}
-            {isActive === 2 && <MyInvitations />}
+            {isActive === 1 && <OwnerJobs archived={false} />}
+            {isActive === 2 && <OwnerJobs archived />}
         </Page>
     );
 };

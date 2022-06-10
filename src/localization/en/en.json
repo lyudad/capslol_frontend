@@ -204,7 +204,9 @@
     },
     "OwnerJobsPage": {
         "relevant": "Relevant",
-        "archival": "Archival"
+        "archival": "Archival",
+        "myRelJobs": " My Relevant Jobs",
+        "myArchivalJobs": "My Archival Jobs"
     },
     "ContactInfo": {
         "title": "My Account",
