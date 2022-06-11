@@ -10,6 +10,9 @@ export const Header = styled.header`
     z-index: 1000;
     width: 100%;
     padding: 2px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border-bottom: 1px solid ${colors.appBarBrd};
     background-color: ${colors.appBarBgr};
 `;
@@ -17,6 +20,9 @@ export const Header = styled.header`
 export const NavigationContainer = styled.nav`
     display: flex;
     align-items: center;
+    div {
+        display: flex;
+    }
     .navLink {
         position: relative;
         padding: 0;
@@ -53,9 +59,10 @@ export const NavigationContainer = styled.nav`
 `;
 
 export const Logo = styled.div`
+    display: flex;
+    align-items: center;
     .logoLink {
         margin-right: 24px;
-        /* font-family: ${fonts.logoFontFamily}; */
         font-weight: ${fonts.logoFontWeight};
         font-size: ${fonts.primeLogoFontSize};
         font-style: italic;
