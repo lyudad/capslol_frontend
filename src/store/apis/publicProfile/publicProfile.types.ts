@@ -29,7 +29,7 @@ export interface newProfile {
     hourRate?: number | undefined;
     availableHours?: number | undefined;
     position?: string | undefined;
-    experiense: Experiences | number[] | undefined;
+    experiense?: Experiences | number[] | undefined;
     educations?: Educations | number[] | undefined;
     categories?: Category | number | undefined;
     skills?: number[] | undefined;

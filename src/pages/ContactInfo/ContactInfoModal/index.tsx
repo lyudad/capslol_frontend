@@ -15,11 +15,10 @@ import {
     StyledForm,
 } from 'pages/ForgotPassword/styles';
 import { FormPassword } from 'pages/ResetPassword/style';
-import { IChangePassword } from '../interfaces';
+import { IChangePassword, IModalProps } from '../interfaces';
 import { Label } from '../styles';
-import { IProps } from './props';
 
-const ContactInfoModal: React.FC<IProps> = ({
+const ContactInfoModal: React.FC<IModalProps> = ({
     state,
     modalIsOpen,
     closeModal,
@@ -40,7 +39,7 @@ const ContactInfoModal: React.FC<IProps> = ({
         try {
             if (values.newPassword === values.confirmPassword) {
                 const value: IPassword = {
-                    id: state?.id,
+                    id: state,
                     password: values.confirmPassword,
                 };
                 await changePassword(value).unwrap();

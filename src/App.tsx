@@ -21,6 +21,7 @@ import ContactsPage from 'pages/ContractsPage';
 import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
+import MyContacts from 'pages/MyContacts(JobOwner)';
 import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
@@ -61,6 +62,10 @@ const App: React.FC = () => {
                         <Route
                             path={Paths.CREATE_JOB_PAGE}
                             element={<CreateJobPage />}
+                        />
+                        <Route
+                            path={Paths.MY_CONTACTS}
+                            element={<MyContacts />}
                         />
                     </Route>
 
