@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { useChangeStatusMutation } from 'store/apis/offers';
+import { useCreateContractMutation } from 'store/apis/contracts';
 import { Paths } from 'router/paths';
 import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import { dateFormat } from 'constants/index';
@@ -36,7 +37,10 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     const [changeStatus] = useChangeStatusMutation();
 
-    const { id, createdAt, jobId, ownerId, hourRate, status } = offerObj;
+    const [createContract] = useCreateContractMutation();
+
+    const { id, createdAt, jobId, ownerId, hourRate, status, freelancerId } =
+        offerObj;
 
     useEffect(() => {
         setOfferStatus(status);
@@ -44,6 +48,14 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     const onClickBtn = async (value: Status): Promise<void> => {
         try {
+            if (value === Status.ACCEPTED) {
+                await createContract({
+                    ownerId: ownerId.id,
+                    freelancerId: freelancerId.id,
+                    jobId: jobId.id,
+                    offerId: id,
+                }).unwrap();
+            }
             const response = await changeStatus({
                 id,
                 status: value,
@@ -114,7 +126,9 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                     </>
                 )}
                 {offerStatus === Status.ACCEPTED && (
-                    <StatusValue>You accepted this offer</StatusValue>
+                    <StatusValue>
+                        You accepted this offer. Contract created
+                    </StatusValue>
                 )}
                 {offerStatus === Status.DECLINED && (
                     <StatusValue>You rejected this offer</StatusValue>
