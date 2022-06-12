@@ -9,12 +9,15 @@ export const contractsApi = apiContractsTag.injectEndpoints({
             query: (body) => ({ url: '/contract', method: 'POST', body }),
             invalidatesTags: ['Contract'],
         }),
-        // getOffersByFreelancer: builder.query<IMyOffer[], number | undefined>({
-        //     query: (value: number) => ({
-        //         url: `/offer/getOffers?freelancerId=${value}`,
-        //     }),
-        //     providesTags: ['Offer'],
-        // }),
+        getContractsByFreelancer: builder.query<
+            IContract[],
+            number | undefined
+        >({
+            query: (value: number) => ({
+                url: `/contract/search?freelancerId=${value}`,
+            }),
+            providesTags: ['Contract'],
+        }),
         // changeStatus: builder.mutation<IMyOffer, number | IChangeStatus>({
         //     query: (body: IChangeStatus) => ({
         //         url: `/offer/changeStatus`,
@@ -26,4 +29,5 @@ export const contractsApi = apiContractsTag.injectEndpoints({
     }),
 });
 
-export const { useCreateContractMutation } = contractsApi;
+export const { useCreateContractMutation, useGetContractsByFreelancerQuery } =
+    contractsApi;

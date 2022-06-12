@@ -1,13 +1,3 @@
-// export interface ISkill {
-//     id: number;
-//     name: string;
-// }
-
-// export interface ICategory {
-//     id: number;
-//     categoryName: string;
-// }
-
 export interface IUser {
     createdAt: string;
     email: string;
@@ -26,10 +16,7 @@ export interface IJob {
     price: number;
     timeAvailable: number;
     createdAt: string;
-    // categoryId: ICategory;
-    // skills: ISkill[];
     languageLevel: string;
-    // ownerId: IUser;
     projectDuration: string;
 }
 
@@ -39,25 +26,6 @@ export interface IOffer {
     status: string;
     createdAt: string;
 }
-
-// export interface IUserProfile {
-//     id: number;
-//     profileImage: string | undefined;
-//     availableHours: number | undefined;
-//     position: string | undefined;
-//     english: string | undefined;
-//     other: string | undefined;
-//     createdAt: string | undefined;
-//     updatedAt: string | undefined;
-//     hourRate: number | undefined;
-//     categories: ICategory;
-//     skills: ISkill[];
-// }
-
-// export type JobFormType = Omit<IJob, 'id' | 'createdAt' | 'ownerId'> & {
-//     ownerId: number;
-// };
-
 export interface IContract {
     id: number;
     status: string;

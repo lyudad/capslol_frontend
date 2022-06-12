@@ -3,7 +3,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
-import { IMyOffer } from 'store/apis/offers/offers.types';
+import { IContract } from 'store/apis/contracts/contracts.types';
 import { dateFormat } from 'constants/index';
 import {
     StyledTitleCardButton,
@@ -25,10 +25,10 @@ import {
 } from '../styles';
 
 interface IProps {
-    offerObj: IMyOffer;
+    contractObj: IContract;
 }
 
-const ContractCard: React.FC<IProps> = ({ offerObj }) => {
+const ContractCard: React.FC<IProps> = ({ contractObj }) => {
     const [contractStatus, setContractStatus] = useState<string>('IS STARTED');
     const [confirmStatus, setConfirmStatus] = useState<boolean>(false);
 
@@ -36,7 +36,8 @@ const ContractCard: React.FC<IProps> = ({ offerObj }) => {
 
     const navigate = useNavigate();
 
-    const { createdAt, jobId, ownerId, hourRate, freelancerId } = offerObj;
+    const { createdAt, jobId, ownerId, offerId, freelancerId, closedAt } =
+        contractObj;
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
@@ -72,7 +73,7 @@ const ContractCard: React.FC<IProps> = ({ offerObj }) => {
 
             <ValueBox>
                 <Field>{t('OffersPage.ownerHourRate')}</Field>
-                <FieldValue>${hourRate}/h</FieldValue>
+                <FieldValue>${offerId?.hourRate}/h</FieldValue>
             </ValueBox>
 
             <ValueBox>
@@ -99,7 +100,7 @@ const ContractCard: React.FC<IProps> = ({ offerObj }) => {
             )}
 
             {contractStatus === 'IS ENDED' && (
-                <StatusValue>CONTRACT IS ENDED</StatusValue>
+                <StatusValue>{t('ContractsPage.contractIsEnded')}</StatusValue>
             )}
 
             <ButtonContainer>
@@ -114,8 +115,8 @@ const ContractCard: React.FC<IProps> = ({ offerObj }) => {
             </ButtonContainer>
             <ConfirmContainer confStatus={confirmStatus}>
                 <Confirm>
-                    <p>Are you sure?</p>
-                    <p>Do you really want to end the contract?</p>
+                    <p>{t('ContractsPage.areYouSure')}</p>
+                    <p>{t('ContractsPage.doYouWant')}</p>
                     <div>
                         <StyledConfirmBtn
                             type="primary"

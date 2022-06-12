@@ -43,7 +43,8 @@ const Filters: React.FC = () => {
 
     const [getJobs, { isLoading }] = useLazyGetJobsQuery();
 
-    const [getUserProfile] = useLazyGetUserProfileQuery();
+    const [getUserProfile, { isLoading: isProfileLoading }] =
+        useLazyGetUserProfileQuery();
 
     const { data: categoryData } = useGetCategoriesQuery();
 
@@ -227,7 +228,7 @@ const Filters: React.FC = () => {
 
     return (
         <>
-            {isLoading && <Spinner />}
+            {(isProfileLoading || isLoading) && <Spinner />}
             <Title>{t('JobPage.filters')}</Title>
             <Form
                 form={form}

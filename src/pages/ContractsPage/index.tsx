@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
+import { useGetContractsByFreelancerQuery } from 'store/apis/contracts';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { ListContainer, ListWrapper, List, Title, Page } from './styles';
 import ContractCard from './ContractCard/index';
@@ -10,7 +10,8 @@ const ContactsPage: React.FC = () => {
 
     const myId = useAppSelector((state) => state.auth.user?.id);
 
-    const { data: offersData, isLoading } = useGetOffersByFreelancerQuery(myId);
+    const { data: contractsData, isLoading } =
+        useGetContractsByFreelancerQuery(myId);
 
     return (
         <Page>
@@ -19,11 +20,11 @@ const ContactsPage: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {offersData?.map((item) => {
+                            {contractsData?.map((item) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
-                                        <ContractCard offerObj={item} />
+                                        <ContractCard contractObj={item} />
                                     </ul>
                                 );
                             })}
