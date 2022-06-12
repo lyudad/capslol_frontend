@@ -1,5 +1,5 @@
 ﻿import styled from 'styled-components';
-import { SendOutlined, PlusOutlined } from '@ant-design/icons';
+import { SendOutlined, PlusOutlined, SmileOutlined } from '@ant-design/icons';
 import { colors } from 'constants/index';
 import { IProps } from '../interfaces';
 
@@ -87,6 +87,7 @@ export const SendNewMessage = styled.div`
     background-color: ${colors.chatNewMsg};
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
     border-radius: 8px;
 `;
@@ -107,6 +108,10 @@ export const SendNewMessageBtn = styled.button`
     transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
     &:hover {
         transform: scale(1.2);
+    }
+    &:disabled {
+        cursor: no-drop;
+        background-color: ${colors.textWhiteRed};
     }
 `;
 
@@ -140,5 +145,14 @@ export const HourlyRateInput = styled.input`
     &:focus,
     &:active {
         outline: 0;
+    }
+`;
+
+export const EmojiIcon = styled(SmileOutlined)`
+    font-size: 25px;
+    color: ${colors.chatNewMsgBtn};
+    transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
+    &:hover {
+        transform: scale(1.1);
     }
 `;

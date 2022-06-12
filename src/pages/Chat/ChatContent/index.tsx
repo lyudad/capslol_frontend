@@ -1,5 +1,5 @@
 ﻿/* eslint-disable no-unused-expressions */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, createRef } from 'react';
 import { message, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -10,7 +10,7 @@ import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useCreateOfferMutation } from 'store/apis/offers';
 import Avatar from '../ChatList/Avatar';
-import { IChatContentProps, IMessages, Role } from '../interfaces';
+import { IChatContentProps, IMessages, Role, TEmoji, TEvent } from '../interfaces';
 import ChatItem from './ChatItem';
 import {
     ChatBody,
@@ -26,14 +26,19 @@ import {
     SendNewMessageInput,
     SettingsBtn,
     Wrapper,
+    EmojiIcon,
 } from './styles';
 import ChatWindow from './ChatWindow';
+import Emoji from './Emoji';
 
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [messageText, setMessageText] = useState<string>('');
+    const [showEmojis, setShowEmojis] = useState<boolean>(false);
     const [messages, setMessages] = useState([] as IMessages[]);
     const [arrivalMessage, setArrivalMessage] = useState({} as IMessages);
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+    const inputRef = createRef<HTMLInputElement>();
+    const [emoji, setEmoji] = useState();
 
     const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
@@ -141,6 +146,20 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         setHourRate(+newValue);
     };
 
+    const handleShowEmojis = (): void => {
+        inputRef?.current?.focus();
+        setShowEmojis(!showEmojis);
+    };
+
+    const handleEmojiClick = (event: TEvent, emojiObject: TEmoji): void => {
+        inputRef?.current?.focus();
+        setEmoji(emojiObject.emoji);
+    };
+
+    useEffect(() => {
+        emoji && setMessageText((prev) => prev + emoji);
+    }, [emoji]);
+
     return (
         <Wrapper>
             <MainChat>
@@ -166,15 +185,16 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     </div>
 
                     <div>
-                        {(data?.data?.role || undefined) === Role.jobOwner && (
-                            <SettingsBtn
-                                onClick={openModal}
-                                bg={colors.proposalGreen}
-                                color={colors.textWhite}
-                            >
-                                {t('Chat.jobOffer')}
-                            </SettingsBtn>
-                        )}
+                        {(data?.data?.role || undefined) === Role.jobOwner &&
+                            job?.id !== offer?.jobId?.id && (
+                                <SettingsBtn
+                                    onClick={openModal}
+                                    bg={colors.proposalGreen}
+                                    color={colors.textWhite}
+                                >
+                                    {t('Chat.jobOffer')}
+                                </SettingsBtn>
+                            )}
                     </div>
                 </ChatHeader>
                 <ChatBody>
@@ -194,16 +214,23 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                                 );
                             })}
                     </div>
+                    {showEmojis && <Emoji onEmojiClick={handleEmojiClick} />}
                 </ChatBody>
                 <ChatFooter>
                     <SendNewMessage>
+                        <EmojiIcon onClick={handleShowEmojis} />
+
                         <SendNewMessageInput
+                            ref={inputRef}
                             value={messageText}
                             type="text"
                             placeholder={`${t('Chat.sendMsgPlaceholder')}`}
                             onChange={handleOnChange}
                         />
-                        <SendNewMessageBtn onClick={handleMessage}>
+                        <SendNewMessageBtn
+                            onClick={handleMessage}
+                            disabled={messages.length < 1}
+                        >
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>
                     </SendNewMessage>

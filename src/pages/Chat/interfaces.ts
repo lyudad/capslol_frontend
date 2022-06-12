@@ -1,4 +1,5 @@
-﻿import { IChatMember, IProposal } from 'store/apis/chat/chat.types';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IChatMember, IProposal } from 'store/apis/chat/chat.types';
 import { IOwner } from 'store/apis/jobs/jobs.types';
 
 export interface IAvatarProps {
@@ -54,3 +55,7 @@ export interface IChatWindow {
     handleHourRateChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
     handleOffer: () => void;
 }
+
+export type TEmoji = any;
+
+export type TEvent = any;
