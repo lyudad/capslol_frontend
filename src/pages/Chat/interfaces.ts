@@ -59,3 +59,7 @@ export interface IChatWindow {
 export type TEmoji = any;
 
 export type TEvent = any;
+
+export interface IEmojiProps {
+    onEmojiClick: (event: TEvent, emojiObject: TEmoji) => void;
+}

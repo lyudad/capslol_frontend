@@ -9,8 +9,15 @@ import axios from 'axios';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useCreateOfferMutation } from 'store/apis/offers';
+import { CustomHook } from 'hooks/custom.hooks';
 import Avatar from '../ChatList/Avatar';
-import { IChatContentProps, IMessages, Role, TEmoji, TEvent } from '../interfaces';
+import {
+    IChatContentProps,
+    IMessages,
+    Role,
+    TEmoji,
+    TEvent,
+} from '../interfaces';
 import ChatItem from './ChatItem';
 import {
     ChatBody,
@@ -114,6 +121,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 status: 'Declined',
                 hourRate,
             };
+            console.log(newOffer);
             await createOffer(newOffer).unwrap();
             const newMessage = {
                 content: `<div className=${offer?.status}>${t('Chat.title')}${
@@ -156,9 +164,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         setEmoji(emojiObject.emoji);
     };
 
-    useEffect(() => {
-        emoji && setMessageText((prev) => prev + emoji);
-    }, [emoji]);
+    CustomHook({ setMessageText, emoji });
 
     return (
         <Wrapper>
