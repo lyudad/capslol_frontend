@@ -25,21 +25,25 @@ export interface IOffer {
     hourRate: number;
     status: string;
     createdAt: string;
+    jobId: IJob;
+    ownerId: IUser;
+    freelancerId: IUser;
 }
+
+export interface ICreateContract {
+    id?: number;
+    ownerId?: number;
+    freelancerId?: number;
+    jobId?: number;
+    offerId?: number;
+    closedAt?: string | null;
+    status?: string;
+}
+
 export interface IContract {
     id: number;
     status: string;
     createdAt: string;
     closedAt: string | null;
-    ownerId: IUser;
-    freelancerId: IUser;
-    jobId: IJob;
     offerId: IOffer;
-}
-
-export interface ICreateContract {
-    ownerId?: number;
-    freelancerId?: number;
-    jobId?: number;
-    offerId?: number;
 }

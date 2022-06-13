@@ -4,7 +4,6 @@ import { colors, fonts } from 'constants/index';
 export const Page = styled.div`
     padding: 12px;
     width: 100%;
-    min-height: calc(100vh - 64px);
 `;
 
 export const Title = styled.h1`
@@ -24,11 +23,11 @@ export const JobsContainer = styled.div`
 
 export const ListContainer = styled.div`
     width: 60vw;
-    border-right: 1px solid ${colors.appBarBrd};
+    min-width: 330px;
+    margin: 0 8px;
 `;
 
 export const JobsList = styled.ul`
-    padding-right: 12px;
     list-style: none;
     padding-left: 0;
     margin: 0;
@@ -45,6 +44,6 @@ export const FiltersContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 15px;
-    margin-left: 16px;
+    margin: 0 8px 12px 8px;
     background-color: ${colors.appBarBgr};
 `;

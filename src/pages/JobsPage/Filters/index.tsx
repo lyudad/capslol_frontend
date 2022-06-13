@@ -306,7 +306,11 @@ const Filters: React.FC = () => {
                         <span>current: {maxSalary && `${maxSalary}`}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>
-                        <StyledSlider step={5} onChange={onChangeSalary} />
+                        <StyledSlider
+                            step={1}
+                            max={50}
+                            onChange={onChangeSalary}
+                        />
                     </Form.Item>
                 </StyledFilter>
 

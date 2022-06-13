@@ -18,16 +18,20 @@ export const contractsApi = apiContractsTag.injectEndpoints({
             }),
             providesTags: ['Contract'],
         }),
-        // changeStatus: builder.mutation<IMyOffer, number | IChangeStatus>({
-        //     query: (body: IChangeStatus) => ({
-        //         url: `/offer/changeStatus`,
-        //         method: 'PUT',
-        //         body,
-        //     }),
-        //     invalidatesTags: ['Offer'],
-        // }),
+        changeContractStatus: builder.mutation<IContract, ICreateContract>({
+            query: (body: ICreateContract) => ({
+                url: `/contract/changeStatus`,
+                method: 'PUT',
+                body,
+            }),
+            invalidatesTags: ['Contract'],
+        }),
     }),
 });
 
-export const { useCreateContractMutation, useGetContractsByFreelancerQuery } =
-    contractsApi;
+export const {
+    useCreateContractMutation,
+    useGetContractsByFreelancerQuery,
+    useChangeContractStatusMutation,
+    useLazyGetContractsByFreelancerQuery,
+} = contractsApi;

@@ -21,6 +21,9 @@ const JobsPage: React.FC = () => {
         <Page>
             <Title>{t('JobPage.jobPageTitle')}</Title>
             <JobsContainer>
+                <FiltersContainer>
+                    <Filters />
+                </FiltersContainer>
                 <ListContainer>
                     {jobsData && (
                         <JobsList>
@@ -35,9 +38,6 @@ const JobsPage: React.FC = () => {
                         </JobsList>
                     )}
                 </ListContainer>
-                <FiltersContainer>
-                    <Filters />
-                </FiltersContainer>
             </JobsContainer>
         </Page>
     );
