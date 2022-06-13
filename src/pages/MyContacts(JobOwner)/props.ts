@@ -1,4 +1,4 @@
-﻿import { Profile } from 'store/apis/publicProfile/publicProfile.types';
+﻿import { Dispatch, SetStateAction } from 'react';
 import { UserType } from 'store/slices/auth/auth.type';
 
 export interface IAboutProps {
@@ -7,8 +7,11 @@ export interface IAboutProps {
 }
 
 export interface IChangePhotoProps {
-    previewSource: string;
-    data: Profile;
-    handleUploadImage: (event: React.ChangeEvent) => Promise<void>;
-    user: UserType;
+    user: UserType | undefined;
+}
+
+export interface IFileUploadProps {
+    previewFile: (file: Blob) => void;
+    setAvatarUrl: Dispatch<SetStateAction<undefined>>;
+    handleChangePhoto: () => Promise<void>;
 }
