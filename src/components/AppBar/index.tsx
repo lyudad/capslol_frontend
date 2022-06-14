@@ -94,11 +94,7 @@ const AppBar: React.FC = () => {
                         </span>
                     </LoggedName>
                     <BarAvatarImg>
-                        {userProfile ? (
-                            <img src={userProfile.profileImage} alt="" />
-                        ) : (
-                            <img src={avatar} alt="" />
-                        )}
+                        <img src={userProfile?.profileImage || avatar} alt="" />
                     </BarAvatarImg>
                     <MessageIcon onClick={() => navigate(Paths.CHAT)} />
 
