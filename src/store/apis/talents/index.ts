@@ -1,3 +1,4 @@
+import { talentProfile } from 'pages/TalentsPage/TalentListCard/props';
 import { baseApi } from '..';
 
 export const talentsApi = baseApi.injectEndpoints({
@@ -8,6 +9,10 @@ export const talentsApi = baseApi.injectEndpoints({
             }),
             providesTags: ['Profile'],
         }),
+        getTalentsByQueries: builder.query<talentProfile[], string>({
+            query: (value) => `profiles${value}`,
+        }),
     }),
 });
-export const { useSearchTalentsQuery } = talentsApi;
+export const { useSearchTalentsQuery, useLazyGetTalentsByQueriesQuery } =
+    talentsApi;

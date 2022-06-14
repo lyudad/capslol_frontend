@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useSearchTalentsQuery } from 'store/apis/talents';
+import { useAppSelector } from 'hooks/redux';
 import TalentListCard from './TalentListCard';
 import Filters from './Filters';
 import {
@@ -15,7 +15,8 @@ import { talentProfile } from './TalentListCard/props';
 
 const TalentsPage: React.FC = () => {
     const { t } = useTranslation();
-    const { data } = useSearchTalentsQuery('/');
+
+    const data = useAppSelector((state) => state.talentsReducer.talents);
 
     return (
         <Page>

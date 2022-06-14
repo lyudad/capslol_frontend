@@ -143,6 +143,6 @@ export const StyledNav = styled.button`
     font-weight: 500;
     margin-bottom: 8px;
     @media (max-width: 768px) {
-        margin-left: 70px;
+        margin-left: 90px;
     }
 `;

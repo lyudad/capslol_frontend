@@ -8,9 +8,14 @@ export const Page = styled.div`
 `;
 
 export const Title = styled.h1`
+    position: relative;
+    z-index: 9;
     font-weight: ${fonts.jobListFontWeight};
     font-size: ${fonts.jobListTitleSize};
     color: ${colors.brandColor};
+    @media (max-width: 768px) {
+        text-align: center;
+    }
 `;
 
 export const TalentsContainer = styled.div`
@@ -27,8 +32,11 @@ export const TalentsContainer = styled.div`
 
 export const ListContainer = styled.div`
     border-left: 1px solid ${colors.appBarBrd};
+    margin-left: 330px;
     @media (max-width: 768px) {
         border-left: none;
+        margin-left: 10px;
+        margin-top: 10px;
     }
 `;
 
@@ -41,9 +49,11 @@ export const TalentsList = styled.ul`
     padding-left: 16px;
     list-style: none;
     margin: 0;
+    /* margin-left: 300px; */
     @media (max-width: 768px) {
         grid-template-columns: repeat(auto-fit, minmax(300px, 10fr));
         width: 330px;
+        padding-left: 16px;
     }
 `;
 
@@ -66,11 +76,18 @@ export const TalentCard = styled.li`
 export const FiltersContainer = styled.div`
     @media (max-width: 768px) {
         margin-right: 0px;
+        position: inherit;
+        left: none;
     }
     display: flex;
     flex-direction: column;
+    position: fixed;
 
-    padding: 15px;
+    left: 0;
+    top: 14%;
+    padding-left: 5px;
+    padding-right: 15px;
     margin-right: 16px;
+    margin-left: 20px;
     background-color: ${colors.appBarBgr};
 `;
