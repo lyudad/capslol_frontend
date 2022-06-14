@@ -53,6 +53,7 @@ export interface Profile {
     skills: Skills[];
     english: string;
     other: string;
+    user: UserType | undefined;
     createdAt: Date;
     updatedAt: Date;
 }

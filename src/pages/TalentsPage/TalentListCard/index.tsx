@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Paths } from 'router/paths';
+
 import { notification } from 'antd';
 import avatar from 'assets/avatar.png';
 import { Slicer } from 'utilities/utilities';
@@ -31,7 +31,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
     const { id, user, other, profileImage, categories, skills } = jobObj;
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id } });
+        navigate(`/profile/${id}`, { state: id });
     };
 
     const handleSendProposal = (): void => {
