@@ -4,6 +4,8 @@ import { Paths } from 'router/paths';
 import moment from 'moment';
 import { dateFormat } from 'constants/index';
 import { IJob } from 'store/apis/jobs/jobs.types';
+import { useArchiveToggleMutation } from 'store/apis/jobs';
+import { HideWrapper } from 'components/HideWrapper/styles';
 import {
     DateContainer,
     StyledButton,
@@ -21,10 +23,10 @@ import { OneCard } from '../styles';
 
 interface IProps {
     jobObj: IJob;
-    isArchived: boolean;
+    isArchive: boolean;
 }
 
-const JobCard: React.FC<IProps> = ({ isArchived, jobObj }) => {
+const JobCard: React.FC<IProps> = ({ isArchive, jobObj }) => {
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -41,65 +43,71 @@ const JobCard: React.FC<IProps> = ({ isArchived, jobObj }) => {
         languageLevel,
         ownerId,
         projectDuration,
+        isArchived,
     } = jobObj;
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id } });
     };
 
-    const handleChangeStatus = (): void => {
-        // navigate(Paths.SEND_PROPOSAL, { state: { id } });
+    const [archiveToggle] = useArchiveToggleMutation();
+
+    const onClick = async (): Promise<void> => {
+        const arch = await archiveToggle(id);
     };
+
     return (
-        <OneCard>
-            <DateContainer>
-                {moment(new Date(createdAt)).format(dateFormat)}
-            </DateContainer>
-            <StyledButton onClick={onClickJob} type="submit">
-                <JobTitle>{title},</JobTitle>
-                <Salary>{price}$</Salary>
-            </StyledButton>
-            <Descriptions>{description}</Descriptions>
-            <OwnerContainer>
-                <ValueBox>
-                    <Field>{t('JobPage.jobOwner')}</Field>
-                    <FieldValue>
-                        {`${ownerId.firstName} ${ownerId.lastName}`}
-                    </FieldValue>
-                </ValueBox>
-                <ValueBox>
-                    <Field>{t('JobPage.projectDuration')}</Field>
-                    <FieldValue>{projectDuration}</FieldValue>
-                </ValueBox>
-                <ValueBox>
-                    <Field>{t('JobPage.category')}</Field>
-                    <FieldValue>{categoryId.categoryName}</FieldValue>
-                </ValueBox>
-                <ValueBox>
-                    <Field>{t('JobPage.timeAvailable')}</Field>
-                    <FieldValue>{timeAvailable}</FieldValue>
-                </ValueBox>
-                <ValueBox>
-                    <Field>{t('JobPage.english')}</Field>
-                    <FieldValue>{languageLevel}</FieldValue>
-                </ValueBox>
-                <ValueBox>
-                    <Field>{t('JobPage.skills')}</Field>
-                    <FieldValue>
-                        {skills.map((item) => item.name).join(', ')}
-                    </FieldValue>
-                </ValueBox>
-            </OwnerContainer>
-            {isArchived ? (
-                <StyledNav onClick={handleChangeStatus}>
-                    {t('OwnerJobsPage.fromArchive')}
-                </StyledNav>
-            ) : (
-                <StyledNav onClick={handleChangeStatus}>
-                    {t('OwnerJobsPage.inArchive')}
-                </StyledNav>
-            )}
-        </OneCard>
+        <HideWrapper showWhen={isArchive === isArchived}>
+            <OneCard>
+                <DateContainer>
+                    {moment(new Date(createdAt)).format(dateFormat)}
+                </DateContainer>
+                <StyledButton onClick={onClickJob} type="submit">
+                    <JobTitle>{title},</JobTitle>
+                    <Salary>{price}$</Salary>
+                </StyledButton>
+                <Descriptions>{description}</Descriptions>
+                <OwnerContainer>
+                    <ValueBox>
+                        <Field>{t('JobPage.jobOwner')}</Field>
+                        <FieldValue>
+                            {`${ownerId.firstName} ${ownerId.lastName}`}
+                        </FieldValue>
+                    </ValueBox>
+                    <ValueBox>
+                        <Field>{t('JobPage.projectDuration')}</Field>
+                        <FieldValue>{projectDuration}</FieldValue>
+                    </ValueBox>
+                    <ValueBox>
+                        <Field>{t('JobPage.category')}</Field>
+                        <FieldValue>{categoryId.categoryName}</FieldValue>
+                    </ValueBox>
+                    <ValueBox>
+                        <Field>{t('JobPage.timeAvailable')}</Field>
+                        <FieldValue>{timeAvailable}</FieldValue>
+                    </ValueBox>
+                    <ValueBox>
+                        <Field>{t('JobPage.english')}</Field>
+                        <FieldValue>{languageLevel}</FieldValue>
+                    </ValueBox>
+                    <ValueBox>
+                        <Field>{t('JobPage.skills')}</Field>
+                        <FieldValue>
+                            {skills.map((item) => item.name).join(', ')}
+                        </FieldValue>
+                    </ValueBox>
+                </OwnerContainer>
+                {isArchived ? (
+                    <StyledNav onClick={() => archiveToggle(id)}>
+                        {t('OwnerJobsPage.fromArchive')}
+                    </StyledNav>
+                ) : (
+                    <StyledNav onClick={() => archiveToggle(id)}>
+                        {t('OwnerJobsPage.inArchive')}
+                    </StyledNav>
+                )}
+            </OneCard>
+        </HideWrapper>
     );
 };
 
