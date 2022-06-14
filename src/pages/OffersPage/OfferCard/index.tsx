@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { message } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { useChangeStatusMutation } from 'store/apis/offers';
 import { Paths } from 'router/paths';
 import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import { dateFormat } from 'constants/index';
+import { AppContext } from 'context';
+import { useGetChatContactsByJobIdQuery } from 'store/apis/chat';
+import { IChatMember } from 'store/apis/chat/chat.types';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -36,10 +39,54 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     const [changeStatus] = useChangeStatusMutation();
 
-    const { id, createdAt, jobId, ownerId, hourRate, status } = offerObj;
+    const { id, createdAt, jobId, ownerId, hourRate, status, freelancerId } =
+        offerObj;
+
+    const { data: chatContacts } = useGetChatContactsByJobIdQuery(jobId?.id);
+    const { socket } = useContext(AppContext);
+
+    const filteredChatContacts = (data: IChatMember[]): IChatMember => {
+        const filtered = data?.filter(
+            (i) => i?.proposalId?.freelancerId?.id === freelancerId?.id
+        )[0];
+
+        return filtered;
+    };
+
+    const freelancerChatContact = filteredChatContacts(chatContacts);
+
+    const sentAcceptMessage = (): void => {
+        try {
+            const newMessage = {
+                content: `<div className=${offerStatus}>
+                <p className='title'>${t('Chat.title')}<span>${
+                    jobId?.title
+                }<span></p>
+                <p className='title'>${t('Chat.dsc')}<span>${
+                    jobId?.description
+                }<span></p>
+                <p>${t('Chat.contractSigned')}<span className="Date">
+                ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
+                </div>`,
+                senderId: ownerId?.id,
+                roomId: freelancerChatContact?.id,
+            };
+
+            socket.emit('msgToServer', newMessage);
+        } catch (error) {
+            message.error(error?.message);
+        }
+    };
+
+    const handleAccept = (): void => {
+        if (offerStatus === Status.ACCEPTED) {
+            sentAcceptMessage();
+        }
+    };
 
     useEffect(() => {
         setOfferStatus(status);
+        handleAccept();
     }, [status]);
 
     const onClickBtn = async (value: Status): Promise<void> => {
@@ -63,6 +110,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
     };
+
     return (
         <OneCard>
             <DateContainer>

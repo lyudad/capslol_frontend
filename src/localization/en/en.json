@@ -262,9 +262,11 @@
         "offerSentPlaceholder": "Change hour rate...",
         "membersError": "There are no contacts, something went wrong, please try again!",
         "offer": "Send Offer",
-        "title": "<p className='title'>Title: <span>",
-        "dsc": "<p className='title'>Project details: <span>",
-        "rate": "<p className='title'>Hour rate: <span>",
-        "link": "You can see all offers in <a href='/offers'>My Offer Page</a>"
+        "offerTitle": "New Offer:",
+        "title": "Title: ",
+        "dsc": "Project details: ",
+        "rate": "Hour rate: ",
+        "link": "You can see all offers in <a href='/offers'>My Offer Page</a>",
+        "contractSigned": "Contract signed on"
     }
 }

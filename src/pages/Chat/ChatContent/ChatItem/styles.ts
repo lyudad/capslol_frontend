@@ -29,12 +29,23 @@ export const ChatMsg = styled.div`
         }
     }
 
+    .offer {
+        font-size: 17px;
+        margin-bottom: 8px;
+        text-align: center;
+        color: ${colors.pending};
+    }
+
     .Freelancer {
         display: block;
     }
 
     .JobOwner {
         display: block;
+    }
+
+    .Date {
+        color: ${colors.textWhiteRed};
     }
 `;
 

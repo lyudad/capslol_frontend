@@ -1,4 +1,5 @@
-﻿import { IMessages } from 'pages/Chat/interfaces';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IMessages } from 'pages/Chat/interfaces';
 import { baseApi } from '..';
 import { IChatContact, IChatMember } from './chat.types';
 
@@ -6,7 +7,7 @@ const apiChatTag = baseApi.enhanceEndpoints({ addTagTypes: ['Users'] });
 
 export const chatApi = apiChatTag.injectEndpoints({
     endpoints: (builder) => ({
-        postChatContact: builder.mutation<IChatContact, IChatContact>({
+        postChatContact: builder.mutation<IChatMember, IChatContact>({
             query(value) {
                 return {
                     url: '/chat-contacts',
@@ -27,6 +28,11 @@ export const chatApi = apiChatTag.injectEndpoints({
                 url: `/messages?room=${value}`,
             }),
         }),
+        getChatContactsByJobId: builder.query<any, any>({
+            query: (value) => ({
+                url: `/chat-contacts/getById?jobId=${value}`,
+            }),
+        }),
     }),
 });
 
@@ -34,4 +40,5 @@ export const {
     usePostChatContactMutation,
     useGetChatContactsQuery,
     useGetMessagesQuery,
+    useGetChatContactsByJobIdQuery,
 } = chatApi;

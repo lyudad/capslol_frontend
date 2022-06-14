@@ -10,6 +10,7 @@ import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useCreateOfferMutation } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
+import { IMyOffer } from 'store/apis/offers/offers.types';
 import Avatar from '../ChatList/Avatar';
 import {
     IChatContentProps,
@@ -46,13 +47,14 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const inputRef = createRef<HTMLInputElement>();
     const [emoji, setEmoji] = useState();
+    const [offer, setOffer] = useState({} as IMyOffer);
 
     const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
 
     const { data } = useGetUserByIdQuery(user?.id);
-    const [createOffer, { data: offer }] = useCreateOfferMutation();
+    const [createOffer] = useCreateOfferMutation();
 
     const openModal = (): void => setIsOpen(true);
 
@@ -118,24 +120,24 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 ownerId: jobOwner?.id,
                 freelancerId: freelancer?.id,
                 jobId: job?.id,
-                status: 'Declined',
+                status: 'Pending',
                 hourRate,
             };
-            console.log(newOffer);
-            await createOffer(newOffer).unwrap();
+            const dataOffer = await createOffer(newOffer).unwrap();
+            setOffer(dataOffer);
             const newMessage = {
-                content: `<div className=${offer?.status}>${t('Chat.title')}${
+                content: `<div className=${dataOffer?.status}>
+                <h3 className='offer'>${t('Chat.offerTitle')}</h3>
+                <p className='title'>${t('Chat.title')}<span>${
                     job?.title
                 }<span></p>
-                ${t('Chat.dsc')}${job?.description}<span></p>${t(
+                <p className='title'>${t('Chat.dsc')}<span>${
+                    job?.description
+                }<span></p>
+                <p className='title'>${t(
                     'Chat.rate'
-                )}${hourRate}<span></p>
-                <p className=${
-                    data?.data?.role === Role.jobOwner
-                        ? 'Freelancer'
-                        : 'JobOwner'
-                }>
-                ${t('Chat.link')}</p></div>`,
+                )}<span>${hourRate}<span></p>
+                <p>${t('Chat.link')}</p></div>`,
                 senderId: user?.id,
                 roomId: currentChat.id,
             };
@@ -235,7 +237,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                         />
                         <SendNewMessageBtn
                             onClick={handleMessage}
-                            disabled={messages.length < 1}
+                            disabled={messages.length < 3}
                         >
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>
