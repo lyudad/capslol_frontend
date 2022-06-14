@@ -73,12 +73,10 @@ export const fonts: Fonts = {
 };
 
 export const langLevel: string[] = [
-    'No English',
     'Beginner',
     'Pre-Intermediate',
     'Intermediate',
     'Advanced',
-    'No set',
 ];
 
 export const Img = {
@@ -104,4 +102,9 @@ export const dateFormat = 'D MMMM YYYY';
 export const userRole = {
     freelancer: 'Freelancer',
     owner: 'Job Owner',
+};
+
+export const statusOfContract = {
+    OPENED: 'opened',
+    CLOSED: 'closed',
 };

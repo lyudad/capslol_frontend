@@ -1,8 +1,9 @@
 import { Layout } from 'antd';
-import { Content, Header } from 'antd/lib/layout/layout';
+import { Content } from 'antd/lib/layout/layout';
 import AppBar from 'components/AppBar';
 import { StyledContent } from 'components/UI';
 import * as React from 'react';
+import { StyledHeader } from './styles';
 
 interface IMainLayoutProps {
     children: React.ReactNode | React.ReactNode[];
@@ -13,9 +14,9 @@ const MainLayout: React.FunctionComponent<IMainLayoutProps> = ({
 }) => {
     return (
         <Layout>
-            <Header>
+            <StyledHeader>
                 <AppBar />
-            </Header>
+            </StyledHeader>
             <Content>
                 <StyledContent>{children}</StyledContent>
             </Content>

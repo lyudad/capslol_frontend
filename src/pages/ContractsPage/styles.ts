@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Button } from 'antd';
-import { colors, fonts } from 'constants/index';
+import { colors, fonts, statusOfContract } from 'constants/index';
 
 export const Page = styled.div`
     position: relative;
@@ -112,7 +112,7 @@ export const FieldStatusValue = styled.span<{ contrStatus: string }>`
     font-size: 12px;
     margin-left: 3px;
     color: ${({ contrStatus }) => {
-        return contrStatus === 'IS STARTED'
+        return contrStatus === statusOfContract.OPENED
             ? colors.brandColor
             : colors.textWhiteRed;
     }};

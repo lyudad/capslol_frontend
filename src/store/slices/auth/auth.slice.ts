@@ -33,9 +33,15 @@ const authSlice = createSlice({
             state.accessToken = '';
             state.isLoggedIn = false;
         },
+        setUserRole: (
+            state: UsersState,
+            { payload: { data } }: PayloadAction<IResponse>
+        ) => {
+            state.user = data.user;
+        },
     },
 });
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, logOut, setUserRole } = authSlice.actions;
 
 export default authSlice.reducer;
