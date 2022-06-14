@@ -199,7 +199,9 @@
         "myProposals": "My Proposals",
         "myHourRate": "my hour rate: ",
         "status": "status: ",
-        "ownerHourRate": "job owner hour rate: "
+        "ownerHourRate": "job owner hour rate: ",
+        "youAccepted": "You accepted this offer. Contract created.",
+        "youRejected": "You rejected this offer"
     },
     "ContractsPage": {
         "myContracts": "My Contracts",
@@ -208,7 +210,10 @@
         "status": "status: ",
         "startDate": "start date: ",
         "endDate": "end date: ",
-        "endContract": "End Contract"
+        "endContract": "End Contract",
+        "contractIsEnded": "CONTRACT IS ENDED",
+        "areYouSure": "Are you sure?",
+        "doYouWant": "Do you really want to end the contract?"
     },
     "OwnerJobsPage": {
         "relevant": "Relevant",

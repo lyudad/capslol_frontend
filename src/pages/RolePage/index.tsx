@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Col, Divider, message, Row, Typography } from 'antd';
+import { setUserRole } from 'store/slices/auth/auth.slice';
 import { useLazySetRoleQuery } from 'store/apis/auth';
-import { useAppSelector } from 'hooks/redux';
+import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { Role } from 'store/slices/auth/auth.type';
 import { Paths } from 'router/paths';
 import { StyledButton, StyledCard, Title } from './style';
@@ -11,6 +12,7 @@ const RolePage: React.FC = () => {
     const navigate = useNavigate();
     const [setRole] = useLazySetRoleQuery();
     const userId = useAppSelector((state) => state.auth.user?.id);
+    const dispatch = useAppDispatch();
 
     const clickHandler = async (
         role: Role,
@@ -29,6 +31,8 @@ const RolePage: React.FC = () => {
                 roleType: role,
             }).unwrap();
 
+            dispatch(setUserRole(payload));
+
             const { user } = payload.data;
 
             if (!user.role) {
@@ -36,11 +40,12 @@ const RolePage: React.FC = () => {
             }
 
             if (user.role === Role.JOB_OWNER) {
-                navigate(Paths.SETTING_PAGE);
+                navigate(`/setting/${user?.id}`);
             }
 
             if (user.role === Role.FREELANCER) {
-                navigate(Paths.SETTING_PAGE);
+                navigate(`/setting/${user?.id}`);
+                return;
             }
         } catch (error) {
             if ('data' in error) {

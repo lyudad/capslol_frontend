@@ -43,7 +43,8 @@ const Filters: React.FC = () => {
 
     const [getJobs, { isLoading }] = useLazyGetJobsQuery();
 
-    const [getUserProfile] = useLazyGetUserProfileQuery();
+    const [getUserProfile, { isLoading: isProfileLoading }] =
+        useLazyGetUserProfileQuery();
 
     const { data: categoryData } = useGetCategoriesQuery();
 
@@ -227,7 +228,7 @@ const Filters: React.FC = () => {
 
     return (
         <>
-            {isLoading && <Spinner />}
+            {(isProfileLoading || isLoading) && <Spinner />}
             <Title>{t('JobPage.filters')}</Title>
             <Form
                 form={form}
@@ -305,7 +306,11 @@ const Filters: React.FC = () => {
                         <span>current: {maxSalary && `${maxSalary}`}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>
-                        <StyledSlider step={5} onChange={onChangeSalary} />
+                        <StyledSlider
+                            step={1}
+                            max={50}
+                            onChange={onChangeSalary}
+                        />
                     </Form.Item>
                 </StyledFilter>
 
