@@ -49,6 +49,7 @@ export const Label = styled.h5`
     opacity: 0.8;
     font-size: 16px;
     margin-bottom: 5px;
+    padding: ${(props: IProps) => props.pd};
 `;
 
 export const StyledAvatar = styled(Avatar)`

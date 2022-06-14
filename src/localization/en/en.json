@@ -235,7 +235,7 @@
         "conPasswordTitle": {
             "item": "Confirm New Password:",
             "placeholder": "Confirm your new password",
-            "error": "Password must be same"
+            "error": "The password must be same!"
         },
         "btnText": "Save Password",
         "afterChangePassword": {

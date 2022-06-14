@@ -37,17 +37,13 @@ const ContactInfoModal: React.FC<IModalProps> = ({
     const onFinish = async (values: IChangePassword): Promise<void> => {
         enterLoading();
         try {
-            if (values.newPassword === values.confirmPassword) {
-                const value: IPassword = {
-                    id: state,
-                    password: values.confirmPassword,
-                };
-                await changePassword(value).unwrap();
-            } else {
-                message.error('Password do not match, please try again');
-                onReset();
-                setLoading(false);
-            }
+            const value: IPassword = {
+                id: state,
+                password: values.confirmPassword,
+            };
+            await changePassword(value).unwrap();
+            onReset();
+            setLoading(false);
         } catch (error) {
             message.error(error.data.message);
         }
@@ -58,7 +54,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
             modalIsOpen={modalIsOpen}
             closeModal={() => closeModal()}
             bg={colors.passwordBg}
-            modalBg={colors.passwordModalBg}
+            modalBg={colors.bgBlack}
         >
             {isSuccess || isError || (
                 <StyledForm
@@ -70,7 +66,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                 >
                     <FormItem
                         label={t('ContactInfo.passwordTitle.item')}
-                        name="newPassword"
+                        name="password"
                         hasFeedback
                         rules={[
                             {
@@ -79,6 +75,34 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                                     'ContactInfo.passwordTitle.error'
                                 )}`,
                             },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value) {
+                                        return Promise.reject(
+                                            new Error(
+                                                t(
+                                                    'ContactInfo.passwordTitle.error'
+                                                )
+                                            )
+                                        );
+                                    }
+
+                                    const matched =
+                                        getFieldValue('password').match(
+                                            validatePassword
+                                        );
+                                    if (!matched) {
+                                        return Promise.reject(
+                                            new Error(
+                                                t(
+                                                    'ContactInfo.passwordTitle.error'
+                                                )
+                                            )
+                                        );
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),
                         ]}
                     >
                         <FormPassword
@@ -92,7 +116,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                         label={t('ContactInfo.conPasswordTitle.item')}
                         name="confirmPassword"
                         hasFeedback
-                        dependencies={['newPassword']}
+                        dependencies={['password']}
                         rules={[
                             {
                                 required: true,
@@ -102,30 +126,19 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                             },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
-                                    if (!value) {
-                                        return Promise.reject(
-                                            new Error(
-                                                t(
-                                                    'ContactInfo.conPasswordTitle.error'
-                                                )
-                                            )
-                                        );
+                                    if (
+                                        !value ||
+                                        getFieldValue('password') === value
+                                    ) {
+                                        return Promise.resolve();
                                     }
-
-                                    const rightPassword =
-                                        getFieldValue('newPassword').match(
-                                            validatePassword
-                                        );
-                                    if (!rightPassword) {
-                                        return Promise.reject(
-                                            new Error(
-                                                t(
-                                                    'ContactInfo.conPasswordTitle.error'
-                                                )
+                                    return Promise.reject(
+                                        new Error(
+                                            t(
+                                                'ContactInfo.conPasswordTitle.error'
                                             )
-                                        );
-                                    }
-                                    return Promise.resolve();
+                                        )
+                                    );
                                 },
                             }),
                         ]}
@@ -153,12 +166,14 @@ const ContactInfoModal: React.FC<IModalProps> = ({
             <>
                 {' '}
                 {isSuccess && (
-                    <Label>
+                    <Label pd="5px 0 5px 0">
                         {t('ContactInfo.afterChangePassword.success')}
                     </Label>
                 )}
                 {isError && (
-                    <Label>{t('ContactInfo.afterChangePassword.error')}</Label>
+                    <Label pd="5px 0 5px 0">
+                        {t('ContactInfo.afterChangePassword.error')}
+                    </Label>
                 )}
             </>
         </ModalWindow>

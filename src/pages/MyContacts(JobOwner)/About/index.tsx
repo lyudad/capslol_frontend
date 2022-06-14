@@ -18,7 +18,9 @@ const AboutCard: React.FC<IAboutProps> = ({ member, label }) => {
         <CardInfo>
             <Label>{t(`ContactInfo.${label}`)}</Label>
             <TitleGroup justify="space-between">
-                <Title fs="16">{member || 'Not Found'}</Title>
+                <Title fs="16">
+                    {member || `${t(`ContactInfo.${label}`)} not found`}
+                </Title>
                 {member ? <Icon /> : <IconNotFound />}
             </TitleGroup>
         </CardInfo>

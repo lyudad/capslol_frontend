@@ -25,7 +25,9 @@ export const cloudinaryApi = createApi({
     }),
 });
 
-export const publicProfileApi = baseApi.injectEndpoints({
+const apiProfileTag = baseApi.enhanceEndpoints({ addTagTypes: ['Profile'] });
+
+export const publicProfileApi = apiProfileTag.injectEndpoints({
     endpoints: (builder) => ({
         searchUser: builder.query<Profile, number | undefined>({
             query: (profileType) => ({
