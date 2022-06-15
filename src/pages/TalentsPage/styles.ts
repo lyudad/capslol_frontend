@@ -19,12 +19,12 @@ export const Title = styled.h1`
 `;
 
 export const TalentsContainer = styled.div`
-    display: flex;
-    justify-content: center;
     align-items: flex-start;
     padding-top: 16px;
     border-top: 1px solid ${colors.appBarBrd};
     @media (max-width: 768px) {
+        display: flex;
+        justify-content: center;
         flex-direction: column;
         align-items: center;
     }
@@ -42,7 +42,7 @@ export const ListContainer = styled.div`
 
 export const TalentsList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 2fr));
     grid-auto-flow: dense;
     grid-column-gap: 12px;
     grid-row-gap: 10px;
