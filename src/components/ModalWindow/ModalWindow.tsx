@@ -37,6 +37,7 @@ const ModalWindow: React.FC<IProps> = ({
             contentLabel="Example Modal"
             style={customStyles}
             className="Modal"
+            appElement={document.getElementById('root') as HTMLElement}
             overlayClassName="Overlay"
         >
             <Parent>

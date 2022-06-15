@@ -47,13 +47,16 @@ export const colors: Colors = {
     hslaCircleRed: 'hsla(339, 100%, 55%, 1)',
     hslaCircleBlue: 'hsla(197, 100%, 64%, 1) ',
     chatTime: '#d1f5d3',
-    chatContent: '#0c9463',
+    chatContent: '#1A3C40',
     chatHeader: 'rgba(76, 175, 80, 0.3)',
     chatScrollTrack: 'rgba(33, 122, 34, 0.3)',
     chatNewMsg: '#243d25',
     chatNewMsgBtn: '#239d60',
     chatSearch: '#e6e5ea',
     chatUserTime: '#ceccd3',
+    decline: '#ff8c8c',
+    accept: '#65c18c',
+    pending: '#1363df',
 };
 
 export const fonts: Fonts = {
