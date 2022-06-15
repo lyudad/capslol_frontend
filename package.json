@@ -1,104 +1,106 @@
 {
-  "name": "get-job",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "start": "react-scripts start",
-    "start-3005": "PORT=3005 react-scripts start",
-    "start:server": "json-server --watch db.json --port 3000",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "eslint": "eslint",
-    "lint": "eslint \"{src,test}/**/*.{js,ts,jsx,tsx}\" --fix",
-    "husky:init": "husky install",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
-  },
-  "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^16.11.27",
-    "@types/react-dom": "^18.0.1",
-    "@types/react-redux": "^7.1.24",
-    "@types/styled-components": "^5.1.25",
-    "antd": "^4.20.1",
-    "antd-img-crop": "^4.2.3",
-    "axios": "^0.27.2",
-    "i18next": "^21.6.16",
-    "json-server": "^0.17.0",
-    "moment": "^2.29.3",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-google-login": "^5.2.2",
-    "react-i18next": "^11.16.7",
-    "react-modal": "^3.15.1",
-    "react-redux": "^8.0.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "redux-persist": "^6.0.0",
-    "socket.io-client": "^4.5.1",
-    "styled-components": "^5.3.5",
-    "typescript": "^4.6.3",
-    "web-vitals": "^2.1.4"
-  },
-  "devDependencies": {
-    "@storybook/addon-actions": "^6.5.8",
-    "@storybook/addon-essentials": "^6.5.8",
-    "@storybook/addon-interactions": "^6.5.8",
-    "@storybook/addon-links": "^6.5.8",
-    "@storybook/builder-webpack5": "^6.5.8",
-    "@storybook/manager-webpack5": "^6.5.8",
-    "@storybook/node-logger": "^6.5.8",
-    "@storybook/preset-create-react-app": "^4.1.2",
-    "@storybook/react": "^6.5.8",
-    "@storybook/testing-library": "^0.0.12",
-    "@types/react": "^18.0.8",
-    "@types/react-modal": "^3.13.1",
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.20.0",
-    "babel-plugin-named-exports-order": "^0.0.2",
-    "eslint": "^8.13.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "^2.7.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.5.0",
-    "husky": "^7.0.4",
-    "lint-staged": "^12.4.1",
-    "prettier": "^2.6.2",
-    "prop-types": "^15.8.1",
-    "webpack": "^5.73.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "eslintConfig": {
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
+    "name": "get-job",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "react-scripts start",
+        "start-3005": "PORT=3005 react-scripts start",
+        "start:server": "json-server --watch db.json --port 3000",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "eslint": "eslint",
+        "lint": "eslint \"{src,test}/**/*.{js,ts,jsx,tsx}\" --fix",
+        "husky:init": "husky install",
+        "storybook": "start-storybook -p 6006 -s public",
+        "build-storybook": "build-storybook -s public"
+    },
+    "dependencies": {
+        "@ant-design/icons": "^4.7.0",
+        "@reduxjs/toolkit": "^1.8.1",
+        "@testing-library/jest-dom": "^5.16.4",
+        "@testing-library/react": "^13.1.1",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/jest": "^27.4.1",
+        "@types/node": "^16.11.27",
+        "@types/react-dom": "^18.0.1",
+        "@types/react-redux": "^7.1.24",
+        "@types/styled-components": "^5.1.25",
+        "antd": "^4.20.1",
+        "antd-img-crop": "^4.2.3",
+        "axios": "^0.27.2",
+        "emoji-picker-react": "^3.5.1",
+        "html-react-parser": "^1.4.14",
+        "i18next": "^21.6.16",
+        "json-server": "^0.17.0",
+        "moment": "^2.29.3",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-google-login": "^5.2.2",
+        "react-i18next": "^11.16.7",
+        "react-modal": "^3.15.1",
+        "react-redux": "^8.0.0",
+        "react-router-dom": "^6.3.0",
+        "react-scripts": "5.0.1",
+        "redux-persist": "^6.0.0",
+        "socket.io-client": "^4.5.1",
+        "styled-components": "^5.3.5",
+        "typescript": "^4.6.3",
+        "web-vitals": "^2.1.4"
+    },
+    "devDependencies": {
+        "@storybook/addon-actions": "^6.5.8",
+        "@storybook/addon-essentials": "^6.5.8",
+        "@storybook/addon-interactions": "^6.5.8",
+        "@storybook/addon-links": "^6.5.8",
+        "@storybook/builder-webpack5": "^6.5.8",
+        "@storybook/manager-webpack5": "^6.5.8",
+        "@storybook/node-logger": "^6.5.8",
+        "@storybook/preset-create-react-app": "^4.1.2",
+        "@storybook/react": "^6.5.8",
+        "@storybook/testing-library": "^0.0.12",
+        "@types/react": "^18.0.8",
+        "@types/react-modal": "^3.13.1",
+        "@typescript-eslint/eslint-plugin": "^5.20.0",
+        "@typescript-eslint/parser": "^5.20.0",
+        "babel-plugin-named-exports-order": "^0.0.2",
+        "eslint": "^8.13.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-import-resolver-typescript": "^2.7.1",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-jsx-a11y": "^6.5.1",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-react": "^7.29.4",
+        "eslint-plugin-react-hooks": "^4.5.0",
+        "husky": "^7.0.4",
+        "lint-staged": "^12.4.1",
+        "prettier": "^2.6.2",
+        "prop-types": "^15.8.1",
+        "webpack": "^5.73.0"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
         ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  }
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "eslintConfig": {
+        "overrides": [
+            {
+                "files": [
+                    "**/*.stories.*"
+                ],
+                "rules": {
+                    "import/no-anonymous-default-export": "off"
+                }
+            }
+        ]
+    }
 }

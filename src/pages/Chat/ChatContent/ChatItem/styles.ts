@@ -3,6 +3,50 @@ import { colors } from 'constants/index';
 
 export const ChatMsg = styled.div`
     user-select: none;
+
+    .Declined {
+        color: ${colors.decline};
+    }
+
+    .Pending {
+        color: ${colors.pending};
+    }
+
+    .Accepted {
+        color: ${colors.accept};
+    }
+
+    .title {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+
+        span {
+            opacity: 1.4;
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+
+    .offer {
+        font-size: 17px;
+        margin-bottom: 8px;
+        text-align: center;
+        color: ${colors.pending};
+    }
+
+    .Freelancer {
+        display: block;
+    }
+
+    .JobOwner {
+        display: block;
+    }
+
+    .Date {
+        color: ${colors.textWhiteRed};
+    }
 `;
 
 export const ChatTime = styled.span`

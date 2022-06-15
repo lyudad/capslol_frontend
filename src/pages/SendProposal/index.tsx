@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, message, notification, Row } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { useGetJobByIdQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { usePostChatContactMutation } from 'store/apis/chat';
+import { AppContext } from 'context';
 import {
     Block,
     Font,
@@ -31,8 +32,8 @@ import {
     IFormValue,
     IJobId,
     TFilterArg,
-    TFilterReturn,
     NotificationType,
+    TProposalFilter,
 } from './interfaces';
 
 const SendProposal: React.FC = () => {
@@ -50,6 +51,7 @@ const SendProposal: React.FC = () => {
         user?.id
     );
     const [postChatContact] = usePostChatContactMutation();
+    const { socket } = useContext(AppContext);
 
     const [freelancerValue, setFreelancerValue] = useState<number>();
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -62,8 +64,8 @@ const SendProposal: React.FC = () => {
 
     const openModal = (): void => setIsOpen(true);
 
-    const handleFiltered = (data: TFilterArg): TFilterReturn => {
-        const filtered = data?.filter((i) => i?.jobId?.id === state?.id)[0]?.id;
+    const handleFiltered = (data: TFilterArg): TProposalFilter => {
+        const filtered = data?.filter((i) => i?.jobId?.id === state?.id)[0];
 
         return filtered;
     };
@@ -79,11 +81,22 @@ const SendProposal: React.FC = () => {
             setIsOpen(false);
 
             const newChatContact = {
-                proposalId,
+                proposalId: proposalId?.id,
                 isActive: false,
             };
 
-            await postChatContact(newChatContact);
+            const chatContact = await postChatContact(newChatContact).unwrap();
+
+            const newMessage = {
+                content: `<div>${proposalId?.coverLetter}</div>`,
+                senderId: user?.id,
+                roomId: chatContact?.id,
+            };
+
+            socket.emit('msgToServer', newMessage, () => {
+                // eslint-disable-next-line no-console
+                console.log(newMessage);
+            });
             navigateToProjectDetails();
         } catch (error) {
             message.error(`${error?.message}`);
