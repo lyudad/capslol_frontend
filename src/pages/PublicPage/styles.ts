@@ -32,8 +32,9 @@ export const TitleEmpty = styled.h1`
     color: ${colors.navColor};
 `;
 export const Title = styled.h1`
+    display: flex;
     font-size: x-large;
-    margin-top: 8px;
+    margin-top: 22px;
     margin-left: 15px;
     color: ${colors.navColor};
 `;
@@ -74,6 +75,26 @@ export const ButtonSet = styled(Button)`
     border: 1px solid white;
     color: #fff;
     margin-right: 12px;
+    margin-bottom: 12px;
+    :hover {
+        background: ${colors.black};
+        border: 1px solid #4caf50;
+        color: ${colors.brandColor};
+    }
+
+    :focus {
+        background: ${colors.brandColor};
+        border: 1px solid ${colors.brandColor};
+        color: ${colors.black};
+    }
+`;
+export const ButtonBack = styled(Button)`
+    display: flex;
+    background: none;
+    border: 1px solid white;
+    color: #fff;
+    margin-top: 4px;
+    margin-right: 20%;
     margin-bottom: 12px;
     :hover {
         background: ${colors.black};
