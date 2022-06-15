@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-expressions */
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { setJobs } from 'store/slices/jobs/jobs.slice';
-import {
-    useGetCategoriesQuery,
-    useGetSkillsQuery,
-    useLazyGetJobsQuery,
-    useLazyGetUserProfileQuery,
-} from 'store/apis/jobs';
+import { useAppDispatch } from 'hooks/redux';
+import { useLazyGetTalentsByQueriesQuery } from 'store/apis/talents';
+import { useGetCategoriesQuery, useGetSkillsQuery } from 'store/apis/jobs';
 import { Select, Form, Button, Input } from 'antd';
+import { setTalents } from 'store/slices/talents/talents.slice';
 import { colors } from 'constants/index';
 import Spinner from 'components/Spinner';
 import { IQueryFilters } from './props';
-import { Title, FilterTitle, StyledFilter, ButtonsItem } from './styles';
+import { FilterTitle, StyledFilter, ButtonsItem } from './styles';
 import 'antd/dist/antd.min.css';
 
 const { Option } = Select;
@@ -21,9 +17,6 @@ const { Option } = Select;
 const Filters: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [categoryQuery, setCategoryQuery] = useState<string>('');
-    const [hoursQuery, setHoursQuery] = useState<string>('');
-    const [languageLevelQuery, setLanguageLevelQuery] = useState<string>('');
-    const [timeAvailableQuery, setTimeAvailableQuery] = useState<string>('');
     const [skillsQuery, setSkillsQuery] = useState<string>('');
 
     const [form] = Form.useForm();
@@ -32,63 +25,25 @@ const Filters: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const [getJobs, { isLoading }] = useLazyGetJobsQuery();
-
-    const [getUserProfile] = useLazyGetUserProfileQuery();
+    const [getTalentsByQueries, { isLoading }] =
+        useLazyGetTalentsByQueriesQuery();
 
     const { data: categoryData } = useGetCategoriesQuery();
 
     const { data: skillsData } = useGetSkillsQuery();
 
-    const userId = useAppSelector((state) => state.auth.user?.id);
-
-    const onFill = (catId: number, skills: number[] | undefined): void => {
-        form.setFieldsValue({
-            category: catId,
-            filteredSkills: skills,
-        });
-    };
-
-    useEffect(() => {
-        const handleGetProfile = async (): Promise<void> => {
-            const profile = await getUserProfile(userId).unwrap();
-
-            profile?.categories.id
-                ? setCategoryQuery(`&category=${profile?.categories.id}`)
-                : setCategoryQuery('');
-
-            profile?.skills
-                ? setSkillsQuery(
-                      `&skills=${profile?.skills
-                          .map((item) => item.id)
-                          .join('')}`
-                  )
-                : setSkillsQuery('');
-
-            onFill(
-                profile?.categories.id,
-                profile?.skills.map((item) => item.id)
-            );
-        };
-        handleGetProfile();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId, getUserProfile]);
-
     useEffect(() => {
         const handleGetJobs = async (): Promise<void> => {
-            const query = `/search?${searchQuery}${categoryQuery}${hoursQuery}${languageLevelQuery}${timeAvailableQuery}${skillsQuery}`;
-            const jobs = await getJobs(query).unwrap();
-            dispatch(setJobs(jobs));
+            const query = `/search?${searchQuery}${categoryQuery}${skillsQuery}`;
+            const talents = await getTalentsByQueries(query).unwrap();
+            dispatch(setTalents(talents));
         };
         handleGetJobs();
     }, [
         dispatch,
-        getJobs,
+        getTalentsByQueries,
         searchQuery,
         categoryQuery,
-        hoursQuery,
-        languageLevelQuery,
-        timeAvailableQuery,
         skillsQuery,
     ]);
 
@@ -108,9 +63,6 @@ const Filters: React.FC = () => {
         form.resetFields();
         setSearchQuery('');
         setCategoryQuery('');
-        setHoursQuery('');
-        setLanguageLevelQuery('');
-        setTimeAvailableQuery('');
         setSkillsQuery('');
     };
 
@@ -155,7 +107,6 @@ const Filters: React.FC = () => {
     return (
         <>
             {isLoading && <Spinner />}
-            <Title>{t('JobPage.filters')}</Title>
             <Form
                 form={form}
                 name="basic"
@@ -185,7 +136,7 @@ const Filters: React.FC = () => {
                     <FilterTitle>{t('JobPage.Category')}</FilterTitle>
                     <Form.Item name="category" noStyle>
                         <Select
-                            placeholder="Select category"
+                            placeholder="Please select"
                             style={{ width: 300 }}
                         >
                             <Option value="" label="All">

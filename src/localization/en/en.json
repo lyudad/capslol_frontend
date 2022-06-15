@@ -1,6 +1,6 @@
 {
     "TalentPage": {
-        "send_interview": "Send invite to interview",
+        "send_interview": "Send interview",
         "talents": "Talents on GetJOB!"
     },
     "AppBar": {
@@ -77,7 +77,7 @@
         "text_type": "(Text type)",
         "tag_type": "(tag type [ ])",
         "contact_info": "Contact Info",
-        "save_changes": "Save canges",
+        "save_changes": "Save changes",
         "education_name": "Name of Education"
     },
 

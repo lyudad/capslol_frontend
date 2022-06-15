@@ -1,6 +1,4 @@
-﻿import { UserType } from 'store/slices/auth/auth.type';
-
-export interface Experiences {
+﻿export interface Experiences {
     id?: number | undefined;
     companyName?: string | undefined;
     position?: string | undefined;
@@ -24,23 +22,6 @@ export interface Skills {
     name: string;
 }
 
-export interface newProfile {
-    id: number | undefined;
-    userId?: number | undefined;
-    profileImage?: string | undefined;
-    hourRate?: number | undefined;
-    availableHours?: number | undefined;
-    position?: string | undefined;
-    experiense: Experiences | number[] | undefined;
-    educations?: Educations | number[] | undefined;
-    categories?: Category | number | undefined;
-    skills?: number[] | undefined;
-    english?: string | undefined;
-    other?: string | undefined;
-    createdAt?: Date | undefined;
-    updatedAt?: Date | undefined;
-}
-
 export interface Profile {
     id: number;
     profileImage: string;
@@ -53,7 +34,6 @@ export interface Profile {
     skills: Skills[];
     english: string;
     other: string;
-    user: UserType | undefined;
     createdAt: Date;
     updatedAt: Date;
 }
