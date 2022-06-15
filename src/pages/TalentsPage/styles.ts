@@ -42,7 +42,7 @@ export const ListContainer = styled.div`
 
 export const TalentsList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 2fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     grid-auto-flow: dense;
     grid-column-gap: 12px;
     grid-row-gap: 10px;
