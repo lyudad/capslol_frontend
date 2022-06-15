@@ -21,7 +21,6 @@ import ContactsPage from 'pages/ContractsPage';
 import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
-import TestPage from './pages/testPage';
 
 const App: React.FC = () => {
     const socket = useMemo(() => ({ socket: appSocket }), []);
@@ -52,7 +51,6 @@ const App: React.FC = () => {
                             element={<RolePage />}
                         />
                         <Route path={Paths.PROFILE} element={<PublicPage />} />
-                        <Route path={Paths.TEST} element={<TestPage />} />
                         <Route
                             path={Paths.SEND_PROPOSAL}
                             element={<SendProposal />}

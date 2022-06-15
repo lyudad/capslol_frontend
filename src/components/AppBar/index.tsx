@@ -80,9 +80,6 @@ const AppBar: React.FC = () => {
                             {t('AppBar.profile')}
                         </NavLink>
                     </HideWrapper>
-                    <NavLink to={Paths.TEST} className="navLink">
-                        {t('AppBar.test')}
-                    </NavLink>
                 </HideWrapper>
             </NavigationContainer>
             <HideWrapper showWhen={isAuth}>

@@ -9,12 +9,12 @@
         "home": "HOME",
         "test": "TEST",
         "profile": "PROFILE",
-        "jobs": "JOBS",
+        "jobs": "SEARCH WORKS",
         "myOffers": "MY OFFERS",
         "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
         "logout": "logout",
-        "ownerJobs": "OWN JOBS",
+        "ownerJobs": "MY PROJECTS",
         "Talents": "TALENTS"
     },
     "SignInForm": {},
@@ -221,7 +221,8 @@
         "myRelJobs": " My Relevant Jobs",
         "myArchivalJobs": "My Archival Jobs",
         "inArchive": "In Archive",
-        "fromArchive": "From Archive"
+        "fromArchive": "From Archive",
+        "createNewJob": "Create New Job"
     },
     "ContactInfo": {
         "title": "My Account",

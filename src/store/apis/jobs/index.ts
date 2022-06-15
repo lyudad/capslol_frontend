@@ -66,4 +66,5 @@ export const {
     useCreateJobMutation,
     useGetJobsByOwnerQuery,
     useArchiveToggleMutation,
+    useLazyGetJobsByOwnerQuery,
 } = jobsApi;

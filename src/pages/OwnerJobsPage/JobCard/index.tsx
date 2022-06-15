@@ -4,7 +4,6 @@ import { Paths } from 'router/paths';
 import moment from 'moment';
 import { dateFormat } from 'constants/index';
 import { IJob } from 'store/apis/jobs/jobs.types';
-import { useArchiveToggleMutation } from 'store/apis/jobs';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import {
     DateContainer,
@@ -24,9 +23,10 @@ import { OneCard } from '../styles';
 interface IProps {
     jobObj: IJob;
     isArchive: boolean;
+    onToggleClick: (id: number) => Promise<void>;
 }
 
-const JobCard: React.FC<IProps> = ({ isArchive, jobObj }) => {
+const JobCard: React.FC<IProps> = ({ onToggleClick, isArchive, jobObj }) => {
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -48,12 +48,6 @@ const JobCard: React.FC<IProps> = ({ isArchive, jobObj }) => {
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id } });
-    };
-
-    const [archiveToggle] = useArchiveToggleMutation();
-
-    const onClick = async (): Promise<void> => {
-        const arch = await archiveToggle(id);
     };
 
     return (
@@ -97,15 +91,11 @@ const JobCard: React.FC<IProps> = ({ isArchive, jobObj }) => {
                         </FieldValue>
                     </ValueBox>
                 </OwnerContainer>
-                {isArchived ? (
-                    <StyledNav onClick={() => archiveToggle(id)}>
-                        {t('OwnerJobsPage.fromArchive')}
-                    </StyledNav>
-                ) : (
-                    <StyledNav onClick={() => archiveToggle(id)}>
+                <HideWrapper showWhen={!isArchived}>
+                    <StyledNav onClick={() => onToggleClick(id)}>
                         {t('OwnerJobsPage.inArchive')}
                     </StyledNav>
-                )}
+                </HideWrapper>
             </OneCard>
         </HideWrapper>
     );

@@ -53,7 +53,7 @@ export const StyledContent = styled.section`
     background-color: ${colors.homeBgr};
     background-image: url(./images/bg-image.png);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100vw;
     background-attachment: fixed;
 `;
 
