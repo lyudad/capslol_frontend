@@ -15,7 +15,8 @@
         "welcome": "Welcome,",
         "logout": "logout",
         "ownerJobs": "MY PROJECTS",
-        "Talents": "TALENTS"
+        "Talents": "TALENTS",
+        "selectRole": " SELECT ROLE"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -118,7 +119,7 @@
         "homeTitle": "THE BEST WAY TO FIND YOUR JOB!",
         "hello": "Hello",
         "welcomeTo": ", welcome to our service.",
-        "youCanView": "You can view yours",
+        "youCanView": "You can view our",
         "orView": "or view",
         "offers": "offers"
     },
@@ -167,7 +168,9 @@
         "skillsLabel": "Skills",
         "skillPlaceholder": "Please choose skills",
         "jobCreated": "Job created",
-        "alreadySent": "Proposal already sent"
+        "alreadySent": "Proposal already sent",
+        "ifYouAre": "** if you are a freelancer and set up your profile, you will be able to send your proposals",
+        "unfortunately": "UNFORTUNATELY THIS PROJECT IS NOT AVAILABLE"
     },
     "Proposal": {
         "title": "Submit Proposal",

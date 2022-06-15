@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React from 'react';
 import { Form, Input, message, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,7 @@ import {
 import { Paths } from 'router/paths';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import {
     Wrapper,
     DontAccount,
@@ -30,7 +32,7 @@ type FormType = {
 const SignInForm: React.FC = () => {
     const { t: translator } = useTranslation();
     const [form] = Form.useForm();
-    const [loginUser] = useLoginMutation();
+    const [loginUser, { isLoading }] = useLoginMutation();
     const [loginGoogleUser] = useLazySignInUseGoogleQuery();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -50,8 +52,9 @@ const SignInForm: React.FC = () => {
                 navigate(Paths.SELECT_ROLE);
                 return;
             }
-
-            navigate(Paths.JOBS);
+            user.role === 'Freelancer'
+                ? navigate(Paths.JOBS)
+                : navigate(Paths.TALENT);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -83,8 +86,9 @@ const SignInForm: React.FC = () => {
                     navigate(Paths.SELECT_ROLE);
                     return;
                 }
-
-                navigate(Paths.JOBS);
+                user.role === 'Freelancer'
+                    ? navigate(Paths.JOBS)
+                    : navigate(Paths.TALENT);
             }
         } catch (error) {
             if ('data' in error) {
@@ -102,72 +106,74 @@ const SignInForm: React.FC = () => {
     };
 
     return (
-        <Wrapper>
-            <StyledForm
-                form={form}
-                onFinish={(values) => onFinish(values as FormValues)}
-                name="basic"
-                initialValues={{ remember: true }}
-                autoComplete="off"
-            >
-                <Form.Item
-                    label={translator('AuthForm.email')}
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                            type: 'email',
-                            message: translator('AuthForm.checkEmail'),
-                        },
-                    ]}
+        <SpinnerWrapper isLoading={isLoading}>
+            <Wrapper>
+                <StyledForm
+                    form={form}
+                    onFinish={(values) => onFinish(values as FormValues)}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    autoComplete="off"
                 >
-                    <Input
+                    <Form.Item
+                        label={translator('AuthForm.email')}
                         name="email"
-                        placeholder={translator('AuthForm.inputEmail')}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translator('AuthForm.password')}
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: translator('AuthForm.enterPassword'),
-                        },
-                    ]}
-                >
-                    <Input.Password
+                        rules={[
+                            {
+                                required: true,
+                                type: 'email',
+                                message: translator('AuthForm.checkEmail'),
+                            },
+                        ]}
+                    >
+                        <Input
+                            name="email"
+                            placeholder={translator('AuthForm.inputEmail')}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label={translator('AuthForm.password')}
                         name="password"
-                        minLength={8}
-                        maxLength={20}
-                        placeholder={translator('AuthForm.inputPassword')}
-                        autoComplete=""
-                    />
-                </Form.Item>
+                        rules={[
+                            {
+                                required: true,
+                                message: translator('AuthForm.enterPassword'),
+                            },
+                        ]}
+                    >
+                        <Input.Password
+                            name="password"
+                            minLength={8}
+                            maxLength={20}
+                            placeholder={translator('AuthForm.inputPassword')}
+                            autoComplete=""
+                        />
+                    </Form.Item>
 
-                <ForgotPass>
-                    <StyledNavLink to={Paths.FORGOTTEN_PASSWORD}>
-                        {translator('AuthForm.forgotPassword')}
-                    </StyledNavLink>
-                </ForgotPass>
-                <Form.Item>
-                    <ButtonSignIn type="primary" htmlType="submit">
-                        {translator('AuthForm.signIn')}
-                    </ButtonSignIn>
-                </Form.Item>
-                <DontAccount>
-                    {translator('AuthForm.dontHaveAccount')}
-                    <StyledNavLink to={Paths.SIGN_UP} className="styled">
-                        {translator('AuthForm.registerNow')}
-                    </StyledNavLink>
-                </DontAccount>
-                <AuthGoogle
-                    onFailure={handleFailure}
-                    onSuccess={handleLogin}
-                    buttonText={translator('AuthGoogle.signInMessage')}
-                />
-            </StyledForm>
-        </Wrapper>
+                    <ForgotPass>
+                        <StyledNavLink to={Paths.FORGOTTEN_PASSWORD}>
+                            {translator('AuthForm.forgotPassword')}
+                        </StyledNavLink>
+                    </ForgotPass>
+                    <Form.Item>
+                        <ButtonSignIn type="primary" htmlType="submit">
+                            {translator('AuthForm.signIn')}
+                        </ButtonSignIn>
+                    </Form.Item>
+                    <DontAccount>
+                        {translator('AuthForm.dontHaveAccount')}
+                        <StyledNavLink to={Paths.SIGN_UP} className="styled">
+                            {translator('AuthForm.registerNow')}
+                        </StyledNavLink>
+                    </DontAccount>
+                    <AuthGoogle
+                        onFailure={handleFailure}
+                        onSuccess={handleLogin}
+                        buttonText={translator('AuthGoogle.signInMessage')}
+                    />
+                </StyledForm>
+            </Wrapper>
+        </SpinnerWrapper>
     );
 };
 
