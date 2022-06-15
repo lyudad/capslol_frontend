@@ -90,6 +90,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
     useEffect(() => {
         setOfferStatus(status);
         handleAccept();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status]);
 
     const onClickBtn = async (value: Status): Promise<void> => {
