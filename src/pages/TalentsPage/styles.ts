@@ -49,7 +49,6 @@ export const TalentsList = styled.ul`
     padding-left: 16px;
     list-style: none;
     margin: 0;
-    /* margin-left: 300px; */
     @media (max-width: 768px) {
         grid-template-columns: repeat(auto-fit, minmax(300px, 10fr));
         width: 330px;
