@@ -7,14 +7,18 @@ import {
     JobFormType,
 } from './jobs.types';
 
-export const jobsApi = baseApi.injectEndpoints({
+const apiJobsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Jobs'] });
+
+export const jobsApi = apiJobsTag.injectEndpoints({
     endpoints: (builder) => ({
         getJobs: builder.query<IJob[], string>({
             query: (value) => `jobs${value}`,
+            providesTags: ['Jobs'],
         }),
 
         getJobById: builder.query<IJob, number | undefined>({
             query: (id) => `jobs/getJob?jobId=${id}`,
+            providesTags: ['Jobs'],
         }),
 
         getCategories: builder.query<ICategory[], void>({
@@ -28,8 +32,17 @@ export const jobsApi = baseApi.injectEndpoints({
         getUserProfile: builder.query<IUserProfile, number | undefined>({
             query: (userId) => `profiles/getByUserId/${userId}`,
         }),
+
         createJob: builder.mutation<IJob, JobFormType>({
             query: (body) => ({ url: '/jobs', method: 'POST', body }),
+            invalidatesTags: ['Jobs'],
+        }),
+
+        getJobsByOwner: builder.query<IJob[], number | undefined>({
+            query: (value: number) => ({
+                url: `/jobs/searchByOwner?ownerId=${value}`,
+            }),
+            providesTags: ['Jobs'],
         }),
     }),
 });
@@ -43,4 +56,5 @@ export const {
     useGetUserProfileQuery,
     useLazyGetUserProfileQuery,
     useCreateJobMutation,
+    useGetJobsByOwnerQuery,
 } = jobsApi;

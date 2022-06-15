@@ -11,8 +11,10 @@
         "profile": "PROFILE",
         "jobs": "JOBS",
         "myOffers": "MY OFFERS",
+        "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
         "logout": "logout",
+        "ownerJobs": "OWN JOBS",
         "Talents": "TALENTS"
     },
     "SignInForm": {},
@@ -195,9 +197,31 @@
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
         "myProposals": "My Proposals",
-        "myHourRate": "my hour rate:",
-        "status": "status",
-        "ownerHourRate": "job owner hour rate"
+        "myHourRate": "my hour rate: ",
+        "status": "status: ",
+        "ownerHourRate": "job owner hour rate: ",
+        "youAccepted": "You accepted this offer. Contract created.",
+        "youRejected": "You rejected this offer"
+    },
+    "ContractsPage": {
+        "myContracts": "My Contracts",
+        "jobOwner": "job owner: ",
+        "freelancer": "freelancer: ",
+        "status": "status: ",
+        "startDate": "start date: ",
+        "endDate": "end date: ",
+        "endContract": "End Contract",
+        "contractIsEnded": "CONTRACT IS ENDED",
+        "areYouSure": "Are you sure?",
+        "doYouWant": "Do you really want to end the contract?"
+    },
+    "OwnerJobsPage": {
+        "relevant": "Relevant",
+        "archival": "Archival",
+        "myRelJobs": " My Relevant Jobs",
+        "myArchivalJobs": "My Archival Jobs",
+        "inArchive": "In Archive",
+        "fromArchive": "From Archive"
     },
     "ContactInfo": {
         "title": "My Account",
@@ -241,6 +265,13 @@
         "error": "Something went wrong, please try again later!",
         "sendMsgPlaceholder": "Write a message...",
         "offerSentPlaceholder": "Change hour rate...",
-        "membersError": "There are no contacts, something went wrong, please try again!"
+        "membersError": "There are no contacts, something went wrong, please try again!",
+        "offer": "Send Offer",
+        "offerTitle": "New Offer:",
+        "title": "Title: ",
+        "dsc": "Project details: ",
+        "rate": "Hour rate: ",
+        "link": "You can see all offers in <a href='/offers'>My Offer Page</a>",
+        "contractSigned": "Contract signed on"
     }
 }

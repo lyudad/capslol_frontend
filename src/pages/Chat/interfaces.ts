@@ -1,4 +1,5 @@
-﻿import { IChatMember, IProposal } from 'store/apis/chat/chat.types';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IChatMember, IProposal } from 'store/apis/chat/chat.types';
 import { IOwner } from 'store/apis/jobs/jobs.types';
 
 export interface IAvatarProps {
@@ -39,4 +40,26 @@ export interface IRoom {
 
 export interface IChatContentProps {
     currentChat: IRoom;
+}
+
+export interface IProps {
+    color?: string;
+    bg?: string;
+}
+
+export interface IChatWindow {
+    modalIsOpen: boolean;
+    closeModal: () => void;
+    price: number;
+    hourRate: number;
+    handleHourRateChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
+    handleOffer: () => void;
+}
+
+export type TEmoji = any;
+
+export type TEvent = any;
+
+export interface IEmojiProps {
+    onEmojiClick: (event: TEvent, emojiObject: TEmoji) => void;
 }

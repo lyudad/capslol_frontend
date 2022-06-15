@@ -1,6 +1,7 @@
 ﻿import styled from 'styled-components';
-import { SendOutlined, PlusOutlined } from '@ant-design/icons';
+import { SendOutlined, PlusOutlined, SmileOutlined } from '@ant-design/icons';
 import { colors } from 'constants/index';
+import { IProps } from '../interfaces';
 
 export const Wrapper = styled.div`
     width: 65%;
@@ -35,9 +36,9 @@ export const Project = styled.h5`
 `;
 
 export const SettingsBtn = styled.button`
-    color: ${colors.textWhite};
-    border: 1px solid ${colors.proposalGreen};
-    background: ${colors.proposalGreen};
+    color: ${(props: IProps) => props.color};
+    border: 1px solid ${(props: IProps) => props.bg};
+    background: ${(props: IProps) => props.bg};
     transition: all 0.3s linear;
     cursor: pointer;
     font-size: 13px;
@@ -45,9 +46,11 @@ export const SettingsBtn = styled.button`
     padding: 2px 4px;
     &:hover {
         transform: scale(1.1);
-        color: ${colors.proposalGreen};
-        border: 1px solid ${colors.textWhite};
-        background: ${colors.textWhite};
+        color: ${(props: IProps) => props.bg};
+        border: 1px solid ${(props: IProps) => props.color};
+        background: ${(props: IProps) => props.color};
+        box-shadow: ${(props: IProps) => props.color} 0px 3px 6px,
+            ${(props: IProps) => props.bg} 0px 3px 6px;
     }
 `;
 
@@ -84,6 +87,7 @@ export const SendNewMessage = styled.div`
     background-color: ${colors.chatNewMsg};
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
     border-radius: 8px;
 `;
@@ -104,6 +108,10 @@ export const SendNewMessageBtn = styled.button`
     transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
     &:hover {
         transform: scale(1.2);
+    }
+    &:disabled {
+        cursor: no-drop;
+        background-color: ${colors.textWhiteRed};
     }
 `;
 
@@ -137,5 +145,14 @@ export const HourlyRateInput = styled.input`
     &:focus,
     &:active {
         outline: 0;
+    }
+`;
+
+export const EmojiIcon = styled(SmileOutlined)`
+    font-size: 25px;
+    color: ${colors.chatNewMsgBtn};
+    transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
+    &:hover {
+        transform: scale(1.1);
     }
 `;
