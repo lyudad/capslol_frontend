@@ -19,4 +19,6 @@ export type TFilterArg = IMyProposal[] | undefined;
 
 export type TFilterReturn = number | undefined;
 
+export type TProposalFilter = IMyProposal | undefined;
+
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';

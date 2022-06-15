@@ -14,6 +14,7 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { baseApi } from './apis';
 import authReducer from './slices/auth/auth.slice';
 import jobsReducer from './slices/jobs/jobs.slice';
+import talentsReducer from './slices/talents/talents.slice';
 import { cloudinaryApi } from './apis/publicProfile';
 
 const persistConfig = {
@@ -27,6 +28,7 @@ export const store = configureStore({
     reducer: {
         auth: persistedReducer,
         jobsReducer,
+        talentsReducer,
         [baseApi.reducerPath]: baseApi.reducer,
         [cloudinaryApi.reducerPath]: cloudinaryApi.reducer,
     },

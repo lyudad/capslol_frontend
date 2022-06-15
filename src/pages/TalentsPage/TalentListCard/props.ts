@@ -1,13 +1,14 @@
-export interface IJobObj {
-    id: number;
-    date: string;
-    jobName: string;
-    salary: string;
-    description: string;
-    jobOwner: string;
-    skills: string[];
-    category: string;
-    timeAvailable: string;
-    englishLevel: string;
-    projectDuration: string;
+import { Category, Skills } from 'store/apis/publicProfile/publicProfile.types';
+import { UserType } from 'store/slices/auth/auth.type';
+
+export interface talentProfile {
+    id: number | undefined;
+    userId?: number | undefined;
+    profileImage?: string | undefined;
+    categories?: Category | undefined;
+    skills?: Skills[] | undefined;
+    other?: string | undefined;
+    user?: UserType | undefined;
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
 }

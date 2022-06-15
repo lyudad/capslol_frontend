@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Paths } from 'router/paths';
-import { IJob } from 'store/apis/jobs/jobs.types';
+
 import { notification } from 'antd';
 import avatar from 'assets/avatar.png';
 import { Slicer } from 'utilities/utilities';
@@ -14,11 +13,14 @@ import {
     Field,
     FieldValue,
     StyledNav,
+    Avatar,
+    FieldSkills,
 } from './styles';
 import 'antd/dist/antd.min.css';
+import { talentProfile } from './props';
 
 interface IProps {
-    jobObj: IJob;
+    jobObj: talentProfile;
 }
 
 const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
@@ -26,10 +28,10 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
 
     const navigate = useNavigate();
 
-    const { id, title, description, categoryId, skills } = jobObj;
+    const { id, user, other, profileImage, categories, skills } = jobObj;
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id } });
+        navigate(`/profile/${id}`, { state: id });
     };
 
     const handleSendProposal = (): void => {
@@ -42,21 +44,25 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
         <>
             <StyledButton onClick={onClickJob} type="submit">
                 <JobTitle>
-                    <img src={avatar} alt="" width={60} />
-                    {title}
+                    <Avatar>
+                        <img src={profileImage || avatar} alt="" width={60} />
+                    </Avatar>
+                    {user?.firstName} {user?.lastName}
                 </JobTitle>
             </StyledButton>
-            <Descriptions>{Slicer(description)}</Descriptions>
+            <Descriptions>{Slicer(other)}</Descriptions>
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.category')}</Field>
-                    <FieldValue>{categoryId.categoryName}</FieldValue>
+                    <FieldValue>{categories?.categoryName}</FieldValue>
                 </ValueBox>
                 <ValueBox>
                     <Field>{t('JobPage.skills')}</Field>
-                    <FieldValue>
-                        {skills.map((item) => item.name).join(', ')}
-                    </FieldValue>
+                    <FieldSkills>
+                        {skills
+                            ?.map((item: { name: string }) => item.name)
+                            .join(', ')}
+                    </FieldSkills>
                 </ValueBox>
             </OwnerContainer>
             <StyledNav onClick={handleSendProposal}>

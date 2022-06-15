@@ -1,5 +1,5 @@
 ﻿import { baseApi } from 'store/apis/index';
-import { IMyOffer, IChangeStatus } from './offers.types';
+import { IMyOffer, IChangeStatus, ICreateOffer } from './offers.types';
 
 const apiOffersTag = baseApi.enhanceEndpoints({ addTagTypes: ['Offer'] });
 
@@ -19,8 +19,19 @@ export const offersApi = apiOffersTag.injectEndpoints({
             }),
             invalidatesTags: ['Offer'],
         }),
+        createOffer: builder.mutation<IMyOffer, ICreateOffer>({
+            query: (body) => ({
+                url: `/offer`,
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['Offer'],
+        }),
     }),
 });
 
-export const { useGetOffersByFreelancerQuery, useChangeStatusMutation } =
-    offersApi;
+export const {
+    useGetOffersByFreelancerQuery,
+    useChangeStatusMutation,
+    useCreateOfferMutation,
+} = offersApi;

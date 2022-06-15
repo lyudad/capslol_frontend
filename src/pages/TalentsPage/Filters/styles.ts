@@ -9,12 +9,6 @@ export const StyledFilter = styled.div`
     border-bottom: 1px solid ${colors.appBarBrd};
 `;
 
-export const Title = styled.h2`
-    text-align: center;
-    border-bottom: 1px solid ${colors.appBarBrd};
-    color: ${colors.textWhiteGrey};
-`;
-
 export const FilterTitle = styled.h3`
     margin-top: 8px;
     color: ${colors.textWhiteGrey};

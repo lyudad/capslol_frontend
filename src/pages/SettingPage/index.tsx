@@ -350,7 +350,7 @@ const SettingPage: React.FC = () => {
         } catch (error) {
             message.error(error.status);
         }
-        navigate(`/profile`);
+        navigate(`/profile/${user?.id}`);
         return notification.success({
             message: 'Changes saved',
         });

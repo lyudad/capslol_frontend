@@ -10,6 +10,7 @@ import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
+import { HideWrapper } from 'components/HideWrapper/styles';
 import {
     Header,
     NavigationContainer,
@@ -52,88 +53,64 @@ const AppBar: React.FC = () => {
                         </>
                     </NavLink>
                 </Logo>
-                <div>
+                <span>
                     <NavLink to={Paths.HOME} className="navLink">
                         {t('AppBar.home')}
                     </NavLink>
-                    {isAuth && (
-                        <>
-                            <NavLink to={Paths.JOBS} className="navLink">
-                                {t('AppBar.jobs')}
-                            </NavLink>
-                            {role === userRole.owner && (
-                                <>
-                                    <NavLink to="/talents" className="navLink">
-                                        {t('AppBar.Talents')}
-                                    </NavLink>
-                                    <NavLink
-                                        to={Paths.OWNER_JOBS}
-                                        className="navLink"
-                                    >
-                                        {t('AppBar.ownerJobs')}
-                                    </NavLink>
-                                    <NavLink
-                                        to={Paths.MY_CONTACTS}
-                                        className="navLink"
-                                    >
-                                        {t('AppBar.MyContacts')}
-                                    </NavLink>
-                                </>
-                            )}
-                            {role === userRole.freelancer && (
-                                <>
-                                    <NavLink
-                                        to={Paths.OFFERS}
-                                        className="navLink"
-                                    >
-                                        {t('AppBar.myOffers')}
-                                    </NavLink>
-                                    <NavLink
-                                        to={Paths.MY_CONTRACTS}
-                                        className="navLink"
-                                    >
-                                        {t('AppBar.myContracts')}
-                                    </NavLink>
-                                    <NavLink to="/profile" className="navLink">
-                                        {t('AppBar.profile')}
-                                    </NavLink>
-                                </>
-                            )}
-                            <NavLink to={Paths.TEST} className="navLink">
-                                {t('AppBar.test')}
-                            </NavLink>
-                        </>
-                    )}
-                </div>
-
-                {isAuth && (
-                    <NotificationFlex>
-                        <LoggedName>
-                            {t('AppBar.welcome')}
-                            <span>
-                                {user?.firstName} {user?.lastName}
-                            </span>
-                        </LoggedName>
-                        <BarAvatarImg>
-                            {userProfile ? (
-                                <img src={userProfile.profileImage} alt="" />
-                            ) : (
-                                <img src={avatar} alt="" />
-                            )}
-                        </BarAvatarImg>
-                        <MessageBtn onClick={() => navigate(Paths.CHAT)}>
-                            <WechatOutlined />
-                        </MessageBtn>
-                        <LogoutButton
-                            type="primary"
-                            size="small"
-                            onClick={logout}
+                </span>
+                <HideWrapper showWhen={isAuth}>
+                    <NavLink to={Paths.JOBS} className="navLink">
+                        {t('AppBar.jobs')}
+                    </NavLink>
+                    <HideWrapper showWhen={role === userRole.owner}>
+                        <NavLink to="/talents" className="navLink">
+                            {t('AppBar.Talents')}
+                        </NavLink>
+                        <NavLink to={Paths.OWNER_JOBS} className="navLink">
+                            {t('AppBar.ownerJobs')}
+                        </NavLink>
+                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
+                            {t('AppBar.myContacts')}
+                        </NavLink>
+                    </HideWrapper>
+                    <HideWrapper showWhen={role === userRole.freelancer}>
+                        <NavLink to={Paths.OFFERS} className="navLink">
+                            {t('AppBar.myOffers')}
+                        </NavLink>
+                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
+                            {t('AppBar.myContracts')}
+                        </NavLink>
+                        <NavLink
+                            to={`/profile/${user?.id}`}
+                            className="navLink"
                         >
-                            {t('AppBar.logout')}
-                        </LogoutButton>
-                    </NotificationFlex>
-                )}
+                            {t('AppBar.profile')}
+                        </NavLink>
+                    </HideWrapper>
+                    <NavLink to={Paths.TEST} className="navLink">
+                        {t('AppBar.test')}
+                    </NavLink>
+                </HideWrapper>
             </NavigationContainer>
+            <HideWrapper showWhen={isAuth}>
+                <NotificationFlex>
+                    <LoggedName>
+                        {t('AppBar.welcome')}
+                        <span>
+                            {user?.firstName} {user?.lastName}
+                        </span>
+                    </LoggedName>
+                    <BarAvatarImg>
+                        <img src={userProfile?.profileImage || avatar} alt="" />
+                    </BarAvatarImg>
+                    <MessageBtn onClick={() => navigate(Paths.CHAT)}>
+                        <WechatOutlined />
+                    </MessageBtn>
+                    <LogoutButton type="primary" size="small" onClick={logout}>
+                        {t('AppBar.logout')}
+                    </LogoutButton>
+                </NotificationFlex>
+            </HideWrapper>
         </Header>
     );
 };

@@ -1,4 +1,6 @@
-﻿export interface Experiences {
+﻿import { UserType } from 'store/slices/auth/auth.type';
+
+export interface Experiences {
     id?: number | undefined;
     companyName?: string | undefined;
     position?: string | undefined;
@@ -51,6 +53,7 @@ export interface Profile {
     skills: Skills[];
     english: string;
     other: string;
+    user: UserType | undefined;
     createdAt: Date;
     updatedAt: Date;
 }

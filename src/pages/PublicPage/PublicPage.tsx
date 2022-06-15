@@ -1,6 +1,6 @@
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Row } from 'antd';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
@@ -18,6 +18,7 @@ import {
     TitleEmpty,
     SectionsUl,
     Line,
+    ButtonBack,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -25,7 +26,8 @@ const PublicPage: React.FC = () => {
     const { t } = useTranslation();
     const { user } = useAppSelector((s) => s.auth);
 
-    const { data } = useSearchUserQuery(user?.id);
+    const location = useLocation();
+    const { data } = useSearchUserQuery((location.state as number) || user?.id);
 
     if (!user) {
         return (
@@ -50,10 +52,14 @@ const PublicPage: React.FC = () => {
         <Page>
             <ProfileContainer>
                 <Title>
-                    {user?.firstName
-                        ? `${user?.firstName} ${user?.lastName}`
+                    {/* {location.state && (
+                        <ButtonBack type="default">Back</ButtonBack>
+                    )} */}
+                    {data?.user?.firstName
+                        ? `${data?.user?.firstName} ${data?.user?.lastName}`
                         : t('PublicProfile.user_name')}
                 </Title>
+
                 <Avatar>
                     <img
                         src={data?.profileImage || avatar}
@@ -180,17 +186,19 @@ const PublicPage: React.FC = () => {
                         </span>
                     </Description>
                 </Sections>
-                <Row justify="end">
-                    <ButtonSet onClick={handleSendProposal} type="default">
-                        {t('PublicProfile.contact_info')}
-                    </ButtonSet>
-                    <ButtonSet
-                        onClick={() => navigate(`/setting/${user?.id}`)}
-                        type="default"
-                    >
-                        {t('PublicProfile.settings')}
-                    </ButtonSet>
-                </Row>
+                {!location.state && (
+                    <Row justify="end">
+                        <ButtonSet onClick={handleSendProposal} type="default">
+                            {t('PublicProfile.contact_info')}
+                        </ButtonSet>
+                        <ButtonSet
+                            onClick={() => navigate(`/setting/${user?.id}`)}
+                            type="default"
+                        >
+                            {t('PublicProfile.settings')}
+                        </ButtonSet>
+                    </Row>
+                )}
             </ProfileContainer>
         </Page>
     );
