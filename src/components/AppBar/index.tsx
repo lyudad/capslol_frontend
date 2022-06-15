@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { WechatOutlined } from '@ant-design/icons';
 
 import { logOut } from 'store/slices/auth/auth.slice';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
@@ -13,7 +14,7 @@ import {
     Header,
     NavigationContainer,
     Logo,
-    MessageIcon,
+    MessageBtn,
     NotificationFlex,
     BarAvatarImg,
     LoggedName,
@@ -71,6 +72,12 @@ const AppBar: React.FC = () => {
                                     >
                                         {t('AppBar.ownerJobs')}
                                     </NavLink>
+                                    <NavLink
+                                        to={Paths.MY_CONTACTS}
+                                        className="navLink"
+                                    >
+                                        {t('AppBar.MyContacts')}
+                                    </NavLink>
                                 </>
                             )}
                             {role === userRole.freelancer && (
@@ -114,8 +121,9 @@ const AppBar: React.FC = () => {
                                 <img src={avatar} alt="" />
                             )}
                         </BarAvatarImg>
-                        <MessageIcon onClick={() => navigate(Paths.CHAT)} />
-
+                        <MessageBtn onClick={() => navigate(Paths.CHAT)}>
+                            <WechatOutlined />
+                        </MessageBtn>
                         <LogoutButton
                             type="primary"
                             size="small"

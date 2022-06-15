@@ -54,3 +54,8 @@ export interface Profile {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface IUpdateImage {
+    id: number | undefined;
+    profileImage: string | undefined;
+}

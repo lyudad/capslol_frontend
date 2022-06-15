@@ -9,11 +9,13 @@ export const Avatar = styled.div`
     height: 200px;
     overflow: hidden;
     border-radius: 50%;
+    background-color: ${colors.brandColor};
 `;
 
 export const StyledImg = styled.img`
     width: auto;
     height: 100%;
+    object-fit: cover;
 `;
 
 export const Wrapper = styled.div`

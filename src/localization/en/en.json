@@ -15,7 +15,8 @@
         "welcome": "Welcome,",
         "logout": "logout",
         "ownerJobs": "OWN JOBS",
-        "Talents": "TALENTS"
+        "Talents": "TALENTS",
+        "MyContacts": "My Contacts"
     },
     "SignInForm": {},
     "AuthForm": {
