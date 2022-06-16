@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { useAppSelector } from 'hooks/redux';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';

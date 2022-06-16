@@ -91,7 +91,6 @@ const App: React.FC = () => {
                                 </ProtectedRoute>
                             }
                         />
-                        {/* <Route path={profilePath} element={<PublicPage />} /> */}
                         <Route
                             path={Paths.SEND_PROPOSAL}
                             element={
