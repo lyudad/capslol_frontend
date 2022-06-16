@@ -5,10 +5,10 @@ import { Paths } from 'router/paths';
 import { useGetJobByIdQuery, useGetUserProfileQuery } from 'store/apis/jobs';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import avatar from 'assets/avatar.png';
-import Spinner from 'components/Spinner';
 import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
 import { useAppSelector } from 'hooks/redux';
 import { TFilterArg, TFilterReturn } from 'pages/SendProposal/interfaces';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { CustomState } from './props';
 import {
     Page,
@@ -65,26 +65,20 @@ const OneJobPage: React.FC = () => {
 
     return (
         <Page>
-            <HideWrapper
-                showWhen={role === 'Job Owner' || !jobData?.isArchived}
-            >
-                {isLoading ? (
-                    <Spinner />
-                ) : (
+            <SpinnerWrapper isLoading={isLoading}>
+                <HideWrapper
+                    showWhen={role === 'Job Owner' || !jobData?.isArchived}
+                >
                     <JobCard>
                         <Date>{jobData?.createdAt.substring(0, 10)}</Date>
 
                         <Title>{jobData?.title}</Title>
                         <Owner>
                             <AvatarImg>
-                                {ownerProfile?.profileImage ? (
-                                    <img
-                                        src={ownerProfile?.profileImage}
-                                        alt=""
-                                    />
-                                ) : (
-                                    <img src={avatar} alt="" />
-                                )}
+                                <img
+                                    src={ownerProfile?.profileImage || avatar}
+                                    alt=""
+                                />
                             </AvatarImg>
                             {`${jobData?.ownerId.firstName} ${jobData?.ownerId.lastName}`}
                         </Owner>
@@ -151,15 +145,15 @@ const OneJobPage: React.FC = () => {
                             </HideWrapper>
                         </OptionContent>
                     </JobCard>
-                )}
-            </HideWrapper>
-            <HideWrapper
-                showWhen={role !== 'Job Owner' && !!jobData?.isArchived}
-            >
-                <JobCard>
-                    <Note style={{}}>{t('JobPage.unfortunately')}</Note>
-                </JobCard>
-            </HideWrapper>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={role !== 'Job Owner' && !!jobData?.isArchived}
+                >
+                    <JobCard>
+                        <Note style={{}}>{t('JobPage.unfortunately')}</Note>
+                    </JobCard>
+                </HideWrapper>
+            </SpinnerWrapper>
         </Page>
     );
 };

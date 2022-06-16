@@ -39,7 +39,6 @@ export const JobCard = styled.li<{ archived: boolean }>`
     border-bottom: 1px solid ${colors.appBarBrd};
     color: ${colors.textWhite};
     display: ${({ archived }) => archived && 'none'};
-    /* {archived && display: none}; */
 `;
 
 export const FiltersContainer = styled.div`
