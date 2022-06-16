@@ -20,7 +20,7 @@ export interface IOwner {
 }
 
 export interface IJob {
-    id: number | undefined;
+    id: number;
     title: string;
     description: string;
     price: number;
@@ -31,6 +31,7 @@ export interface IJob {
     languageLevel: string;
     ownerId: IOwner;
     projectDuration: string;
+    isArchived: boolean;
 }
 
 export interface IUserProfile {

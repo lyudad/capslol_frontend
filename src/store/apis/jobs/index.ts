@@ -44,6 +44,14 @@ export const jobsApi = apiJobsTag.injectEndpoints({
             }),
             providesTags: ['Jobs'],
         }),
+
+        archiveToggle: builder.mutation<IJob, number>({
+            query: (value: number) => ({
+                url: `/jobs/toggle?id=${value}`,
+                method: 'PUT',
+                invalidatesTags: ['Jobs'],
+            }),
+        }),
     }),
 });
 
@@ -57,4 +65,6 @@ export const {
     useLazyGetUserProfileQuery,
     useCreateJobMutation,
     useGetJobsByOwnerQuery,
+    useArchiveToggleMutation,
+    useLazyGetJobsByOwnerQuery,
 } = jobsApi;

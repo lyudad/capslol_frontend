@@ -18,7 +18,7 @@ export const JobsContainer = styled.div`
 
 export const ListContainer = styled.div`
     width: 70vw;
-    height: 100vh;
+    /* height: 100vh; */
     border-right: 1px solid ${colors.brandColor};
 `;
 
@@ -116,6 +116,7 @@ export const FieldValue = styled.span`
 `;
 
 export const StyledNav = styled.button`
+    height: 30px;
     padding: 4px 8px;
     border: none;
     cursor: pointer;

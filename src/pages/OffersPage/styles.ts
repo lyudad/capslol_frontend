@@ -5,7 +5,7 @@ import { Status } from 'store/apis/offers/offers.types';
 export const Page = styled.div`
     padding: 12px;
     width: 100%;
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 42px);
 `;
 
 export const Title = styled.h2`

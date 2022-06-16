@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
-
 import { logOut } from 'store/slices/auth/auth.slice';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
@@ -52,15 +51,7 @@ const AppBar: React.FC = () => {
                         </>
                     </NavLink>
                 </Logo>
-                <span>
-                    <NavLink to={Paths.HOME} className="navLink">
-                        {t('AppBar.home')}
-                    </NavLink>
-                </span>
                 <HideWrapper showWhen={isAuth}>
-                    <NavLink to={Paths.JOBS} className="navLink">
-                        {t('AppBar.jobs')}
-                    </NavLink>
                     <HideWrapper showWhen={role === userRole.owner}>
                         <NavLink to="/talents" className="navLink">
                             {t('AppBar.Talents')}
@@ -70,22 +61,24 @@ const AppBar: React.FC = () => {
                         </NavLink>
                     </HideWrapper>
                     <HideWrapper showWhen={role === userRole.freelancer}>
-                        <NavLink to={Paths.OFFERS} className="navLink">
-                            {t('AppBar.myOffers')}
-                        </NavLink>
-                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
-                            {t('AppBar.myContracts')}
-                        </NavLink>
-                        <NavLink
-                            to={`/profile/${user?.id}`}
-                            className="navLink"
-                        >
+                        <HideWrapper showWhen={!!userProfile}>
+                            <NavLink to={Paths.JOBS} className="navLink">
+                                {t('AppBar.jobs')}
+                            </NavLink>
+                            <NavLink to={Paths.OFFERS} className="navLink">
+                                {t('AppBar.myOffers')}
+                            </NavLink>
+                            <NavLink
+                                to={Paths.MY_CONTRACTS}
+                                className="navLink"
+                            >
+                                {t('AppBar.myContracts')}
+                            </NavLink>
+                        </HideWrapper>
+                        <NavLink to="/profile" className="navLink">
                             {t('AppBar.profile')}
                         </NavLink>
                     </HideWrapper>
-                    <NavLink to={Paths.TEST} className="navLink">
-                        {t('AppBar.test')}
-                    </NavLink>
                 </HideWrapper>
             </NavigationContainer>
             <HideWrapper showWhen={isAuth}>
@@ -100,7 +93,6 @@ const AppBar: React.FC = () => {
                         <img src={userProfile?.profileImage || avatar} alt="" />
                     </BarAvatarImg>
                     <MessageIcon onClick={() => navigate(Paths.CHAT)} />
-
                     <LogoutButton type="primary" size="small" onClick={logout}>
                         {t('AppBar.logout')}
                     </LogoutButton>
