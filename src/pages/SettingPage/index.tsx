@@ -177,7 +177,29 @@ const SettingPage: React.FC = () => {
             endAt: dateString,
         };
 
+        const arrayEducations: number[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await data?.educations?.forEach(({ id }: any) => {
+            arrayEducations.push(id);
+        });
+
         await createEducation(UpdateEducation);
+        const UpdateProfile: newProfile = {
+            id: user?.id,
+            userId: Number(user?.id),
+            educations: arrayEducations,
+            experiense: undefined,
+            profileImage: avatarUrl,
+            hourRate,
+            availableHours,
+            categories: undefined,
+            position,
+            skills: undefined,
+            english,
+            other,
+        };
+
+        await createProfile(UpdateProfile);
         setEndEducation(dateString);
     };
 
@@ -285,27 +307,27 @@ const SettingPage: React.FC = () => {
     const onSaveChanges = async (): Promise<void> => {
         if (!hourRate) {
             return notification.warning({
-                message: 'Please input your Hour Rate!',
+                message: 'Please fill in all required fields',
             });
         }
         if (!availableHours) {
             return notification.warning({
-                message: 'Please input your available amount of hours',
+                message: 'Please fill in all required fields',
             });
         }
         if (!category) {
             return notification.warning({
-                message: 'Please choose your Category',
+                message: 'Please fill in all required fields',
             });
         }
         if (!skills) {
             return notification.warning({
-                message: 'Please choose your Skills',
+                message: 'Please fill in all required fields',
             });
         }
         if (!english) {
             return notification.warning({
-                message: 'Please choose your English level',
+                message: 'Please fill in all required fields',
             });
         }
         if (!endExperiense) {
@@ -321,21 +343,22 @@ const SettingPage: React.FC = () => {
 
         const arrayEducations: number[] = [];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        allEducations?.forEach(({ id }: any) => {
+        data?.educations?.forEach(({ id }: any) => {
             arrayEducations.push(id);
         });
 
         const arrayExperiense: number[] = [];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        allExperience?.forEach(({ id }: any) => {
+        data?.experiense?.forEach(({ id }: any) => {
             arrayExperiense.push(id);
         });
+        console.log(arrayEducations);
 
         const UpdateProfile: newProfile = {
             id: user?.id,
             userId: Number(user?.id),
-            experiense: arrayExperiense,
             educations: arrayEducations,
+            experiense: arrayExperiense,
             profileImage: avatarUrl,
             hourRate,
             availableHours,
@@ -348,7 +371,7 @@ const SettingPage: React.FC = () => {
         try {
             await createProfile(UpdateProfile);
         } catch (error) {
-            message.error(error.status);
+            return message.error(error.status);
         }
         navigate(`/profile/${user?.id}`);
         return notification.success({
