@@ -163,7 +163,7 @@ const PublicPage: React.FC = () => {
                             {data?.skills.map((e) => (
                                 <span key={e.id}>| {e.name} </span>
                             ))}{' '}
-                            {data?.skills.length === 0 ? undefined : '|'}
+                            {data?.skills ? '|' : ''}
                         </span>
                     </Description>
                 </Sections>
