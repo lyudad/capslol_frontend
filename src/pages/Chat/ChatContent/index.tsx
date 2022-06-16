@@ -8,9 +8,12 @@ import { colors } from 'constants/index';
 import axios from 'axios';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
-import { useCreateOfferMutation } from 'store/apis/offers';
+import {
+    useCreateOfferMutation,
+    useGetOfferByIdQuery,
+} from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
-import { IMyOffer } from 'store/apis/offers/offers.types';
+import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import Avatar from '../ChatList/Avatar';
 import {
     IChatContentProps,
@@ -55,6 +58,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
     const { data } = useGetUserByIdQuery(user?.id);
     const [createOffer] = useCreateOfferMutation();
+    const { data: singleOffer } = useGetOfferByIdQuery(offer?.id);
 
     const openModal = (): void => setIsOpen(true);
 
@@ -136,8 +140,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 }<span></p>
                 <p className='title'>${t(
                     'Chat.rate'
-                )}<span>${hourRate}<span></p>
-                <p>${t('Chat.link')}</p></div>`,
+                )}<span>${hourRate}<span></p></div>`,
                 senderId: user?.id,
                 roomId: currentChat.id,
             };
@@ -194,7 +197,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
                     <div>
                         {(data?.data?.role || undefined) === Role.jobOwner &&
-                            job?.id !== offer?.jobId?.id && (
+                            singleOffer?.status !== Status.DECLINED && (
                                 <SettingsBtn
                                     onClick={openModal}
                                     bg={colors.proposalGreen}
@@ -237,7 +240,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                         />
                         <SendNewMessageBtn
                             onClick={handleMessage}
-                            disabled={messages.length < 3}
+                            disabled={messages.length < 2}
                         >
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>

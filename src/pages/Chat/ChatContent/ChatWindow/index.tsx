@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { colors } from 'constants/index';
 import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { IChatWindow } from 'pages/Chat/interfaces';
+import { FontTitle } from 'pages/SendProposal/styles';
 import { HourlyRateInput, SettingsBtn } from '../styles';
 
 const ChatWindow: React.FC<IChatWindow> = ({
@@ -25,6 +26,11 @@ const ChatWindow: React.FC<IChatWindow> = ({
             modalBg={colors.bgBlack}
         >
             <>
+                <Row justify="center">
+                    <FontTitle color={colors.black} fs="18" mb="0">
+                        {t('Chat.enterTitle')}
+                    </FontTitle>
+                </Row>
                 <HourlyRateInput
                     defaultValue={price}
                     value={hourRate}

@@ -62,6 +62,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
         try {
             const newMessage = {
                 content: `<div className=${offerStatus}>
+                <h3 className='contract'>${t('Chat.contractTitle')}</h3>
                 <p className='title'>${t('Chat.title')}<span>${
                     jobId?.title
                 }<span></p>
@@ -71,7 +72,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 <p>${t('Chat.contractSigned')}<span className="Date">
                 ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
                 </div>`,
-                senderId: ownerId?.id,
+                senderId: freelancerId?.id,
                 roomId: freelancerChatContact?.id,
             };
 
@@ -89,8 +90,6 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     useEffect(() => {
         setOfferStatus(status);
-        handleAccept();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status]);
 
     const onClickBtn = async (value: Status): Promise<void> => {
@@ -102,6 +101,8 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                     jobId: jobId.id,
                     offerId: id,
                 }).unwrap();
+
+                handleAccept();
             }
             const response = await changeStatus({
                 id,

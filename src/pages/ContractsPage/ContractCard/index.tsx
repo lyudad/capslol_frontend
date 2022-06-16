@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
@@ -8,6 +8,10 @@ import { IContract } from 'store/apis/contracts/contracts.types';
 import { dateFormat, statusOfContract } from 'constants/index';
 import { useChangeContractStatusMutation } from 'store/apis/contracts';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
+import { AppContext } from 'context';
+import { message } from 'antd';
+import { useGetChatContactsByJobIdQuery } from 'store/apis/chat';
+import { IChatMember } from 'store/apis/chat/chat.types';
 import {
     StyledTitleCardButton,
     CardTitle,
@@ -36,6 +40,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
     const [confirmStatus, setConfirmStatus] = useState<boolean>(false);
 
     const { t } = useTranslation();
+    const { socket } = useContext(AppContext);
 
     const navigate = useNavigate();
 
@@ -54,6 +59,45 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
         navigate(Paths.JOB_PAGE, { state: { id: offerId.jobId.id } });
     };
 
+    const job = offerId?.jobId;
+    const freelancer = offerId?.freelancerId;
+
+    const { data: chatContacts } = useGetChatContactsByJobIdQuery(job?.id);
+
+    const filteredChatContacts = (data: IChatMember[]): IChatMember => {
+        const filtered = data?.filter(
+            (i) => i?.proposalId?.freelancerId?.id === freelancer?.id
+        )[0];
+
+        return filtered;
+    };
+
+    const freelancerChatContact = filteredChatContacts(chatContacts);
+
+    const sentTerminatedMessage = (): void => {
+        try {
+            const newMessage = {
+                content: `<div className='Declined'>
+                <h3 className='terminated'>${t('Chat.terminatedTitle')}</h3>
+                <p className='title'>${t('Chat.title')}<span>${
+                    job?.title
+                }<span></p>
+                <p className='title'>${t('Chat.dsc')}<span>${
+                    job?.description
+                }<span></p>
+                <p>${t('Chat.contractTerminated')}<span className="Date">
+                ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
+                </div>`,
+                senderId: freelancer?.id,
+                roomId: freelancerChatContact?.id,
+            };
+
+            socket.emit('msgToServer', newMessage);
+        } catch (error) {
+            message.error(error?.message);
+        }
+    };
+
     const onChangeStatus = async (): Promise<void> => {
         const endDate = Date();
         await changeContractStatus({
@@ -62,6 +106,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
             closedAt: endDate,
         });
         setConfirmStatus(!confirmStatus);
+        sentTerminatedMessage();
     };
 
     return (
