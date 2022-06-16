@@ -19,28 +19,6 @@ export const Protected: React.FC = () => {
     return <Navigate to={Paths.HOME} state={{ from: location.pathname }} />;
 };
 
-// export const ProtectedFreelancer: React.FC<IProps> = ({
-//     children,
-// }): JSX.Element => {
-//     const location = useLocation();
-//     const role = useAppSelector((state) => state.auth.user?.role);
-//     if (role === userRole.freelancer) {
-//         return <>{children}</>;
-//     }
-//     return <Navigate to={Paths.HOME} state={{ from: location.pathname }} />;
-// };
-
-// export const ProtectedJobOwner: React.FC<IProps> = ({
-//     children,
-// }): JSX.Element => {
-//     const location = useLocation();
-//     const role = useAppSelector((state) => state.auth.user?.role);
-//     if (role === userRole.owner) {
-//         return <>{children}</>;
-//     }
-//     return <Navigate to={Paths.HOME} state={{ from: location.pathname }} />;
-// };
-
 export const ProtectedRoute: React.FC<IProps> = ({
     userRole,
     redirectPath,

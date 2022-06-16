@@ -22,9 +22,14 @@ import ContactsPage from 'pages/ContractsPage';
 import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
+import { useAppSelector } from 'hooks/redux';
 
 const App: React.FC = () => {
     const socket = useMemo(() => ({ socket: appSocket }), []);
+
+    const userId = useAppSelector((state) => state.auth.user?.id);
+
+    const profilePath = `profile/${userId}`;
 
     return (
         <AppContext.Provider value={socket}>
@@ -75,8 +80,8 @@ const App: React.FC = () => {
                                 </ProtectedRoute>
                             }
                         />
-                        {/* <Route
-                            path={Paths.PROFILE}
+                        <Route
+                            path={profilePath}
                             element={
                                 <ProtectedRoute
                                     userRole={userRole.freelancer}
@@ -85,8 +90,8 @@ const App: React.FC = () => {
                                     <PublicPage />
                                 </ProtectedRoute>
                             }
-                        /> */}
-                        <Route path={Paths.PROFILE} element={<PublicPage />} />
+                        />
+                        {/* <Route path={profilePath} element={<PublicPage />} /> */}
                         <Route
                             path={Paths.SEND_PROPOSAL}
                             element={

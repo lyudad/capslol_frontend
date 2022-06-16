@@ -88,17 +88,6 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
                         {moment(new Date(createdAt)).format(dateFormat)}
                     </FieldValue>
                 </ValueBox>
-
-                {status === statusOfContract.CLOSED && (
-                    <ValueBox>
-                        <Field>{t('ContractsPage.endDate')}</Field>
-                        <FieldValue>
-                            {closedAt &&
-                                moment(new Date(closedAt)).format(dateFormat)}
-                        </FieldValue>
-                    </ValueBox>
-                )}
-
                 {status === statusOfContract.CLOSED && (
                     <StatusValue>
                         {t('ContractsPage.contractIsEnded')}{' '}
