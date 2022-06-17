@@ -33,6 +33,10 @@ const AppBar: React.FC = () => {
 
     const user = useAppSelector((state) => state.auth.user);
 
+    const userId = useAppSelector((state) => state.auth.user?.id);
+
+    const profilePath = `profile/${userId}`;
+
     const { data: userProfile } = useGetUserProfileQuery(user?.id);
 
     const logout = (): void => {
@@ -53,7 +57,7 @@ const AppBar: React.FC = () => {
                 </Logo>
                 <HideWrapper showWhen={isAuth}>
                     <HideWrapper showWhen={role === userRole.owner}>
-                        <NavLink to="/talents" className="navLink">
+                        <NavLink to={Paths.TALENT} className="navLink">
                             {t('AppBar.Talents')}
                         </NavLink>
                         <NavLink to={Paths.OWNER_JOBS} className="navLink">
@@ -75,7 +79,7 @@ const AppBar: React.FC = () => {
                                 {t('AppBar.myContracts')}
                             </NavLink>
                         </HideWrapper>
-                        <NavLink to="/profile" className="navLink">
+                        <NavLink to={profilePath} className="navLink">
                             {t('AppBar.profile')}
                         </NavLink>
                     </HideWrapper>
@@ -92,7 +96,11 @@ const AppBar: React.FC = () => {
                     <BarAvatarImg>
                         <img src={userProfile?.profileImage || avatar} alt="" />
                     </BarAvatarImg>
-                    <MessageIcon onClick={() => navigate(Paths.CHAT)} />
+                    <MessageIcon
+                        onClick={() => {
+                            navigate(Paths.CHAT);
+                        }}
+                    />
                     <LogoutButton type="primary" size="small" onClick={logout}>
                         {t('AppBar.logout')}
                     </LogoutButton>
