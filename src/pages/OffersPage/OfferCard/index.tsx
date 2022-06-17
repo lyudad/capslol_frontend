@@ -61,7 +61,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
     const sentAcceptMessage = (): void => {
         try {
             const newMessage = {
-                content: `<div className=${offerStatus}>
+                content: `<div className='Accepted'>
                 <h3 className='contract'>${t('Chat.contractTitle')}</h3>
                 <p className='title'>${t('Chat.title')}<span>${
                     jobId?.title
@@ -82,12 +82,6 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
         }
     };
 
-    const handleAccept = (): void => {
-        if (offerStatus === Status.ACCEPTED) {
-            sentAcceptMessage();
-        }
-    };
-
     useEffect(() => {
         setOfferStatus(status);
     }, [status]);
@@ -102,7 +96,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                     offerId: id,
                 }).unwrap();
 
-                handleAccept();
+                sentAcceptMessage();
             }
             const response = await changeStatus({
                 id,

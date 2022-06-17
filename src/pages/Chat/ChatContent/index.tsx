@@ -58,7 +58,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
     const { data } = useGetUserByIdQuery(user?.id);
     const [createOffer] = useCreateOfferMutation();
-    const { data: singleOffer } = useGetOfferByIdQuery(offer?.id);
 
     const openModal = (): void => setIsOpen(true);
 
@@ -170,7 +169,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     };
 
     CustomHook({ setMessageText, emoji });
-
+    console.log(offer, 'offer');
     return (
         <Wrapper>
             <MainChat>
@@ -197,7 +196,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
                     <div>
                         {(data?.data?.role || undefined) === Role.jobOwner &&
-                            singleOffer?.status !== Status.DECLINED && (
+                            offer?.status !== Status.DECLINED && (
                                 <SettingsBtn
                                     onClick={openModal}
                                     bg={colors.proposalGreen}
@@ -240,7 +239,12 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                         />
                         <SendNewMessageBtn
                             onClick={handleMessage}
-                            disabled={messages.length < 2}
+                            disabled={
+                                ((data?.data?.role || undefined) !==
+                                    Role.jobOwner &&
+                                    messages.length < 2) ||
+                                offer?.status === Status.DECLINED
+                            }
                         >
                             <SendNewMessageIcon />
                         </SendNewMessageBtn>
