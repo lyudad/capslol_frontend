@@ -8,10 +8,7 @@ import { colors } from 'constants/index';
 import axios from 'axios';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
-import {
-    useCreateOfferMutation,
-    useGetOfferByIdQuery,
-} from 'store/apis/offers';
+import { useCreateOfferMutation } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import Avatar from '../ChatList/Avatar';
@@ -169,7 +166,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     };
 
     CustomHook({ setMessageText, emoji });
-    console.log(offer, 'offer');
+
     return (
         <Wrapper>
             <MainChat>
