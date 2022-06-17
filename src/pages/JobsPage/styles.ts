@@ -33,11 +33,12 @@ export const JobsList = styled.ul`
     margin: 0;
 `;
 
-export const JobCard = styled.li`
+export const JobCard = styled.li<{ archived: boolean }>`
     padding: 24px 8px 8px 8px;
     background-color: ${colors.appBarBgr};
     border-bottom: 1px solid ${colors.appBarBrd};
     color: ${colors.textWhite};
+    display: ${({ archived }) => archived && 'none'};
 `;
 
 export const FiltersContainer = styled.div`

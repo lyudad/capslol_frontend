@@ -2,11 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
 import { useAppSelector } from 'hooks/redux';
+import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import moment from 'moment';
 import { dateFormat } from 'constants/index';
 import { IJob } from 'store/apis/jobs/jobs.types';
 import { TFilterArg, TFilterReturn } from 'pages/SendProposal/interfaces';
+import { HideWrapper } from 'components/HideWrapper/styles';
 import {
     DateContainer,
     StyledButton,
@@ -27,7 +29,13 @@ interface IProps {
 
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const { t } = useTranslation();
-    const { user } = useAppSelector((s) => s.auth);
+
+    const role = useAppSelector((state) => state.auth.user?.role);
+
+    const user = useAppSelector((state) => state.auth.user);
+
+    const { data: userProfile } = useGetUserProfileQuery(user?.id);
+
     const { data: freelancerProposals } = useGetProposalsByFreelancerQuery(
         user?.id
     );
@@ -102,14 +110,18 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     </FieldValue>
                 </ValueBox>
             </OwnerContainer>
-
-            {handleFiltered(freelancerProposals) === id ? (
-                <StyledNav disabled>{t('JobPage.alreadySent')}</StyledNav>
-            ) : (
-                <StyledNav onClick={handleSendProposal}>
-                    {t('JobPage.sendProposal')}
-                </StyledNav>
-            )}
+            <HideWrapper showWhen={role === 'Freelancer' && !!userProfile}>
+                {handleFiltered(freelancerProposals) === id ? (
+                    <StyledNav disabled>{t('JobPage.alreadySent')}</StyledNav>
+                ) : (
+                    <StyledNav onClick={handleSendProposal}>
+                        {t('JobPage.sendProposal')}
+                    </StyledNav>
+                )}
+            </HideWrapper>
+            <HideWrapper showWhen={role !== 'Freelancer' || !userProfile}>
+                <FieldValue>{t('JobPage.ifYouAre')}</FieldValue>
+            </HideWrapper>
         </>
     );
 };

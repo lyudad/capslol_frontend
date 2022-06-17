@@ -28,9 +28,9 @@ const JobsPage: React.FC = () => {
                     {jobsData && (
                         <JobsList>
                             {jobsData.map((item) => {
-                                const { id } = item;
+                                const { id, isArchived } = item;
                                 return (
-                                    <JobCard key={id}>
+                                    <JobCard archived={isArchived} key={id}>
                                         <JobsListCard jobObj={item} />
                                     </JobCard>
                                 );

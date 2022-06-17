@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
@@ -11,7 +11,6 @@ import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import {
     StyledTitleCardButton,
     CardTitle,
-    DateWrapper,
     Salary,
     ButtonContainer,
     Descriptions,
@@ -21,7 +20,6 @@ import {
     StyledCardBtn,
     OneCard,
     StatusValue,
-    FieldStatusValue,
     ConfirmContainer,
     Confirm,
     StyledConfirmBtn,
@@ -32,7 +30,6 @@ interface IProps {
 }
 
 const ContractCard: React.FC<IProps> = ({ contractObj }) => {
-    const [contractStatus, setContractStatus] = useState<string>('');
     const [confirmStatus, setConfirmStatus] = useState<boolean>(false);
 
     const { t } = useTranslation();
@@ -43,12 +40,6 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
         useChangeContractStatusMutation();
 
     const { id, createdAt, offerId, closedAt, status } = contractObj;
-
-    useEffect(() => {
-        status === statusOfContract.OPENED
-            ? setContractStatus('IS OPENED')
-            : setContractStatus('IS CLOSED');
-    }, [status]);
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: offerId.jobId.id } });
@@ -67,13 +58,9 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
     return (
         <OneCard>
             <SpinnerWrapper isLoading={isLoading}>
-                <DateWrapper>
-                    {moment(new Date(createdAt)).format(dateFormat)}
-                </DateWrapper>
-
                 <StyledTitleCardButton onClick={onClickJob} type="submit">
                     <CardTitle>{offerId.jobId.title}</CardTitle>
-                    <Salary>{offerId.jobId.price}$</Salary>
+                    <Salary>{offerId?.hourRate}$</Salary>
                 </StyledTitleCardButton>
 
                 <ValueBox>
@@ -93,18 +80,6 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
 
                 <ValueBox>
                     <Descriptions>{offerId.jobId.description}</Descriptions>
-                </ValueBox>
-
-                <ValueBox>
-                    <Field>{t('OffersPage.ownerHourRate')}</Field>
-                    <FieldValue>${offerId?.hourRate}/h</FieldValue>
-                </ValueBox>
-
-                <ValueBox>
-                    <Field>{t('ContractsPage.status')}</Field>
-                    <FieldStatusValue contrStatus={status}>
-                        {contractStatus}
-                    </FieldStatusValue>
                 </ValueBox>
 
                 <ValueBox>

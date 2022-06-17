@@ -5,15 +5,24 @@ import { Status } from 'store/apis/offers/offers.types';
 export const Page = styled.div`
     padding: 12px;
     width: 100%;
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 42px);
+`;
+
+export const TitleBox = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
 `;
 
 export const Title = styled.h2`
     margin-bottom: 4px;
     text-align: left;
+    margin: 0;
     font-weight: ${fonts.jobListFontWeight};
     font-size: 24px;
-    margin-left: calc(10vw + 15px);
     color: ${colors.brandColor};
 `;
 
@@ -62,6 +71,7 @@ export const List = styled.li`
     list-style: none;
     margin: 0;
     ul {
+        padding-inline-start: 1em;
         margin-bottom: 0;
     }
 `;
