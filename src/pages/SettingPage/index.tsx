@@ -285,27 +285,27 @@ const SettingPage: React.FC = () => {
     const onSaveChanges = async (): Promise<void> => {
         if (!hourRate) {
             return notification.warning({
-                message: 'Please input your Hour Rate!',
+                message: 'Please fill in all required fields',
             });
         }
         if (!availableHours) {
             return notification.warning({
-                message: 'Please input your available amount of hours',
+                message: 'Please fill in all required fields',
             });
         }
         if (!category) {
             return notification.warning({
-                message: 'Please choose your Category',
+                message: 'Please fill in all required fields',
             });
         }
         if (!skills) {
             return notification.warning({
-                message: 'Please choose your Skills',
+                message: 'Please fill in all required fields',
             });
         }
         if (!english) {
             return notification.warning({
-                message: 'Please choose your English level',
+                message: 'Please fill in all required fields',
             });
         }
         if (!endExperiense) {
@@ -679,7 +679,7 @@ const SettingPage: React.FC = () => {
                         <span>
                             level:{' '}
                             <Select
-                                placeholder='Please select'
+                                placeholder="Please select"
                                 defaultValue={english}
                                 style={{ width: 220 }}
                                 onChange={handleChange}
