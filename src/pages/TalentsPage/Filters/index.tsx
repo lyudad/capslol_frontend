@@ -9,7 +9,7 @@ import { setTalents } from 'store/slices/talents/talents.slice';
 import { colors } from 'constants/index';
 import Spinner from 'components/Spinner';
 import { IQueryFilters } from './props';
-import { FilterTitle, StyledFilter, ButtonsItem } from './styles';
+import { FilterTitle, StyledFilter, ButtonsItem, Title } from './styles';
 import 'antd/dist/antd.min.css';
 
 const { Option } = Select;
@@ -107,6 +107,7 @@ const Filters: React.FC = () => {
     return (
         <>
             {isLoading && <Spinner />}
+            <Title>{t('JobPage.filters')}</Title>
             <Form
                 form={form}
                 name="basic"
