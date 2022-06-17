@@ -137,6 +137,7 @@ const Filters: React.FC = () => {
                     <FilterTitle>{t('JobPage.Category')}</FilterTitle>
                     <Form.Item name="category" noStyle>
                         <Select
+                            dropdownStyle={{ position: 'fixed' }}
                             placeholder="Please select"
                             style={{ width: 300 }}
                         >
