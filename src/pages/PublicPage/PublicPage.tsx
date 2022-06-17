@@ -18,7 +18,6 @@ import {
     TitleEmpty,
     SectionsUl,
     Line,
-    ButtonBack,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -52,9 +51,6 @@ const PublicPage: React.FC = () => {
         <Page>
             <ProfileContainer>
                 <Title>
-                    {/* {location.state && (
-                        <ButtonBack type="default">Back</ButtonBack>
-                    )} */}
                     {data?.user?.firstName
                         ? `${data?.user?.firstName} ${data?.user?.lastName}`
                         : t('PublicProfile.user_name')}
@@ -163,7 +159,7 @@ const PublicPage: React.FC = () => {
                             {data?.skills.map((e) => (
                                 <span key={e.id}>| {e.name} </span>
                             ))}{' '}
-                            {data?.skills.length === 0 ? undefined : '|'}
+                            {data?.skills ? '|' : ''}
                         </span>
                     </Description>
                 </Sections>
