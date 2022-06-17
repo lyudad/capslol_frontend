@@ -194,9 +194,9 @@ const CreateJobPage: React.FC = () => {
                             ]}
                         >
                             <Slider
-                                min={10}
-                                step={10}
-                                max={100}
+                                min={0}
+                                step={1}
+                                max={50}
                                 tipFormatter={(priceFormat) =>
                                     `${priceFormat} $`
                                 }

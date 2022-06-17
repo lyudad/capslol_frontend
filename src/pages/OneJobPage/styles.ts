@@ -45,6 +45,14 @@ export const Title = styled.h1`
     border-bottom: 1px solid ${colors.appBarBrd};
 `;
 
+export const Note = styled.h1`
+    font-weight: ${fonts.jobListFontWeight};
+    font-size: ${fonts.jobListTitleSize};
+    color: ${colors.brandColor};
+    text-align: center;
+    margin: 0;
+`;
+
 export const SubTitle = styled.h2`
     padding-top: 12px;
     font-weight: ${fonts.jobListFontWeight};

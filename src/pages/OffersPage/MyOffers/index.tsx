@@ -11,7 +11,6 @@ const MyOffers: React.FC = () => {
     const myId = useAppSelector((state) => state.auth.user?.id);
 
     const { data: offersData, isLoading } = useGetOffersByFreelancerQuery(myId);
-
     return (
         <>
             <Title>{t('OffersPage.myOffers')}</Title>

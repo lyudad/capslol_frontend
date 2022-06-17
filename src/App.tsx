@@ -53,7 +53,6 @@ const App: React.FC = () => {
                             element={<RolePage />}
                         />
                         <Route path={Paths.PROFILE} element={<PublicPage />} />
-                        <Route path={Paths.TEST} element={<TestPage />} />
                         <Route
                             path={Paths.SEND_PROPOSAL}
                             element={<SendProposal />}

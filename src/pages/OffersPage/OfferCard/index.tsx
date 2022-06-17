@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from 'react-i18next';
 import { message } from 'antd';
 import { useContext, useEffect, useState } from 'react';

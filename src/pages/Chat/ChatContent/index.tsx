@@ -83,7 +83,11 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const fetchMessages = async (): Promise<void> => {
         try {
             const { data: m } = await axios.get(
-                `${process.env.REACT_APP_SERVER_URL}/messages?room=${currentChat.id}`
+                `${
+                    process.env.NODE_ENV === 'development'
+                        ? process.env.REACT_APP_DEVELOPMENT_URL
+                        : process.env.REACT_APP_SERVER_URL
+                }/messages?room=${currentChat.id}`
             );
             setMessages(m);
         } catch (error) {

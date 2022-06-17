@@ -53,15 +53,7 @@ const AppBar: React.FC = () => {
                         </>
                     </NavLink>
                 </Logo>
-                <span>
-                    <NavLink to={Paths.HOME} className="navLink">
-                        {t('AppBar.home')}
-                    </NavLink>
-                </span>
                 <HideWrapper showWhen={isAuth}>
-                    <NavLink to={Paths.JOBS} className="navLink">
-                        {t('AppBar.jobs')}
-                    </NavLink>
                     <HideWrapper showWhen={role === userRole.owner}>
                         <NavLink to="/talents" className="navLink">
                             {t('AppBar.Talents')}
@@ -74,22 +66,24 @@ const AppBar: React.FC = () => {
                         </NavLink>
                     </HideWrapper>
                     <HideWrapper showWhen={role === userRole.freelancer}>
-                        <NavLink to={Paths.OFFERS} className="navLink">
-                            {t('AppBar.myOffers')}
-                        </NavLink>
-                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
-                            {t('AppBar.myContracts')}
-                        </NavLink>
-                        <NavLink
-                            to={`/profile/${user?.id}`}
-                            className="navLink"
-                        >
+                        <HideWrapper showWhen={!!userProfile}>
+                            <NavLink to={Paths.JOBS} className="navLink">
+                                {t('AppBar.jobs')}
+                            </NavLink>
+                            <NavLink to={Paths.OFFERS} className="navLink">
+                                {t('AppBar.myOffers')}
+                            </NavLink>
+                            <NavLink
+                                to={Paths.MY_CONTRACTS}
+                                className="navLink"
+                            >
+                                {t('AppBar.myContracts')}
+                            </NavLink>
+                        </HideWrapper>
+                        <NavLink to="/profile" className="navLink">
                             {t('AppBar.profile')}
                         </NavLink>
                     </HideWrapper>
-                    <NavLink to={Paths.TEST} className="navLink">
-                        {t('AppBar.test')}
-                    </NavLink>
                 </HideWrapper>
             </NavigationContainer>
             <HideWrapper showWhen={isAuth}>

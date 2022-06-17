@@ -524,7 +524,7 @@ const SettingPage: React.FC = () => {
                             defaultValue={category}
                             style={{ width: 220 }}
                             onChange={handleChangeCategory}
-                            placeholder={t('PublicProfile.choose_category')}
+                            placeholder="Please select"
                         >
                             {allCategories?.map((e) => (
                                 <Option key={e.categoryName}>
@@ -679,7 +679,7 @@ const SettingPage: React.FC = () => {
                         <span>
                             level:{' '}
                             <Select
-                                placeholder="NO SET"
+                                placeholder='Please select'
                                 defaultValue={english}
                                 style={{ width: 220 }}
                                 onChange={handleChange}
