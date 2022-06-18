@@ -154,6 +154,7 @@ const Filters: React.FC = () => {
                     <Form.Item name="filteredSkills" noStyle>
                         <Select
                             mode="multiple"
+                            dropdownStyle={{ position: 'fixed' }}
                             allowClear
                             style={{ width: 300 }}
                             placeholder="Please select"
