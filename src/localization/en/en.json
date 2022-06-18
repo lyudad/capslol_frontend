@@ -255,7 +255,10 @@
         },
         "changedFirstName": "Your first name successfully changed!",
         "changedLastName": "Your last name successfully changed!",
-        "addPhoneNumber": "Your successfully add phone number!"
+        "addPhoneNumber": "Your successfully add phone number!",
+        "emptyRole": "You didn`t choose a role",
+        "congratsNotifice": "Congrats, you successfully upload image!",
+        "errorNotifice": "We can`t upload you profile image, please try again later!"
     },
 
     "Chat": {

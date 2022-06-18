@@ -7,7 +7,6 @@ import {
     newProfile,
     Profile,
     Skills,
-    IUpdateImage,
 } from './publicProfile.types';
 
 export const cloudinaryApi = createApi({
@@ -102,14 +101,6 @@ export const publicProfileApi = apiProfileTag.injectEndpoints({
             }),
             providesTags: ['Profile'],
         }),
-        updateOwnerProfileImage: builder.mutation<Profile, IUpdateImage>({
-            query: (value) => ({
-                url: `profiles/update?id=${value.id}`,
-                method: 'PUT',
-                body: value,
-            }),
-            invalidatesTags: ['Profile'],
-        }),
     }),
 });
 
@@ -125,5 +116,4 @@ export const {
     useDeleteExperienceMutation,
     useGetAllEducationsQuery,
     useDeleteEducationMutation,
-    useUpdateOwnerProfileImageMutation,
 } = publicProfileApi;

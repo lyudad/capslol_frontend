@@ -679,7 +679,7 @@ const SettingPage: React.FC = () => {
                         <span>
                             level:{' '}
                             <Select
-                                placeholder='Please select'
+                                placeholder="Please select"
                                 defaultValue={english}
                                 style={{ width: 220 }}
                                 onChange={handleChange}

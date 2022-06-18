@@ -1,12 +1,12 @@
 ﻿import React, { useRef, useState } from 'react';
 import { message, notification } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 import avatar from 'assets/avatar.png';
 import { TitleGroup, Circle, Title } from 'pages/ContactInfo/styles';
 import {
     useCreateProfileMutation,
     useSearchUserQuery,
-    useUpdateOwnerProfileImageMutation,
     useUploadAvatarMutation,
 } from 'store/apis/publicProfile';
 import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
@@ -15,16 +15,13 @@ import { Avatar, CustomFileUpload, StyledImg, Wrapper } from '../styles';
 import { IChangePhotoProps } from '../props';
 
 const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
-    const [createProfile] = useCreateProfileMutation();
-    const [avatarUrl, setAvatarUrl] = useState();
     const [previewSource, setPreviewSource] = useState<string>('');
     const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
+    const [createProfile, { isError }] = useCreateProfileMutation();
     const { data: userProfile } = useSearchUserQuery(user?.id);
     const [uploadAvatar] = useUploadAvatarMutation();
-
-    const [updateProfileImage, { isError }] =
-        useUpdateOwnerProfileImageMutation();
+    const { t } = useTranslation();
 
     const previewFile = (file: Blob): void => {
         const reader = new FileReader();
@@ -45,37 +42,6 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
         });
     };
 
-    const handleUpdate = async (): Promise<void> => {
-        try {
-            const UpdateProfile = {
-                id: user?.id,
-                profileImage: avatarUrl,
-            };
-
-            await updateProfileImage(UpdateProfile);
-        } catch (error) {
-            message.error(error.status);
-        }
-    };
-
-    const handleChangePhoto = async (): Promise<void> => {
-        try {
-            const UpdateProfile: newProfile = {
-                id: user?.id,
-                userId: Number(user?.id),
-                profileImage: avatarUrl,
-                hourRate: 0,
-                availableHours: 0,
-                position: '',
-                other: '',
-            };
-
-            await createProfile(UpdateProfile);
-        } catch (error) {
-            message.error(error.status);
-        }
-    };
-
     const handleClick = (): void => {
         hiddenFileInput?.current?.click();
     };
@@ -93,14 +59,18 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
             newFormData.append('file', file);
             newFormData.append('upload_preset', 'ycmt0cuu');
             const { url } = await uploadAvatar(newFormData).unwrap();
+            const UpdateProfile: newProfile = {
+                id: user?.id,
+                userId: user?.id,
+                profileImage: url,
+            };
 
-            setAvatarUrl(url);
-
-            if (userProfile?.profileImage !== undefined || null) {
-                await handleUpdate();
-            } else {
-                await handleChangePhoto();
-            }
+            await createProfile(UpdateProfile);
+            openNotificationWithIcon(
+                'success',
+                'Success',
+                `${t('ContactInfo.congratsNotifice')}`
+            );
         } catch (error) {
             message.error(error.message);
         }
@@ -137,7 +107,9 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
                     {`${user?.firstName ? user?.firstName : ''}
                         ${user?.lastName ? user?.lastName : ''}`}
                 </Title>
-                <Circle>{user?.role ? user?.role : 'Not Found'}</Circle>
+                <Circle>
+                    {user?.role ? user?.role : `${t('ContactInfo.emptyRole')}`}
+                </Circle>
             </div>
             <>
                 {' '}
@@ -145,7 +117,7 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
                     openNotificationWithIcon(
                         'error',
                         'Error',
-                        'Something went wrong, please try again later!'
+                        `${t('ContactInfo.errorNotifice')}`
                     )}
             </>
         </TitleGroup>
