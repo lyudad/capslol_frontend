@@ -6,6 +6,7 @@ import MainLayout from 'components/MainLayout';
 import ForgotPassword from 'pages/ForgotPassword';
 import { Paths } from 'router/paths';
 import ResetPassword from 'pages/ResetPassword';
+import { userRole } from 'constants/index';
 import SendProposal from 'pages/SendProposal';
 import ContactInfo from 'pages/ContactInfo';
 import HomePage from 'pages/HomePage';
@@ -13,7 +14,7 @@ import AuthForm from 'components/AuthForm';
 import RolePage from 'pages/RolePage';
 import OneJobPage from 'pages/OneJobPage';
 import SettingPage from 'pages/SettingPage';
-import Protected from 'router/Protected';
+import { Protected, ProtectedRoute } from 'router/Protected';
 import OffersPage from 'pages/OffersPage';
 import Chat from 'pages/Chat';
 import CreateJobPage from 'pages/CreateJobPage';
@@ -22,26 +23,122 @@ import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
 import MyContacts from 'pages/MyContacts(JobOwner)';
-import TestPage from './pages/testPage';
+import { useAppSelector } from 'hooks/redux';
 
 const App: React.FC = () => {
     const socket = useMemo(() => ({ socket: appSocket }), []);
+
+    const userId = useAppSelector((state) => state.auth.user?.id);
+
+    const profilePath = `profile/${userId}`;
 
     return (
         <AppContext.Provider value={socket}>
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>
-                        <Route path={Paths.JOBS} element={<JobsPage />} />
-                        <Route path={Paths.TALENT} element={<TalentsPage />} />
-                        <Route path={Paths.OFFERS} element={<OffersPage />} />
                         <Route
-                            path={Paths.OWNER_JOBS}
-                            element={<OwnerJobsPage />}
+                            path={Paths.JOBS}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.freelancer}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <JobsPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.OFFERS}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.freelancer}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <OffersPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.OFFERS}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.freelancer}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <JobsPage />
+                                </ProtectedRoute>
+                            }
                         />
                         <Route
                             path={Paths.MY_CONTRACTS}
-                            element={<ContactsPage />}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.freelancer}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <ContactsPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={profilePath}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.freelancer}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <PublicPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.SEND_PROPOSAL}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.freelancer}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <SendProposal />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.TALENT}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.owner}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <TalentsPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.OWNER_JOBS}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.owner}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <OwnerJobsPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.CREATE_JOB_PAGE}
+                            element={
+                                <ProtectedRoute
+                                    userRole={userRole.owner}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <CreateJobPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path={Paths.SETTING_ID}
+                            element={<SettingPage />}
                         />
                         <Route
                             path={Paths.CONTACT_INFO}
@@ -51,11 +148,6 @@ const App: React.FC = () => {
                         <Route
                             path={Paths.SELECT_ROLE}
                             element={<RolePage />}
-                        />
-                        <Route path={Paths.PROFILE} element={<PublicPage />} />
-                        <Route
-                            path={Paths.SEND_PROPOSAL}
-                            element={<SendProposal />}
                         />
                         <Route path={Paths.CHAT} element={<Chat />} />
                         <Route
@@ -67,10 +159,8 @@ const App: React.FC = () => {
                             element={<MyContacts />}
                         />
                     </Route>
-
                     <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.SIGN_UP} element={<AuthForm />} />
-                    <Route path={Paths.SETTING_ID} element={<SettingPage />} />
                     <Route
                         path={Paths.FORGOTTEN_PASSWORD}
                         element={<ForgotPassword />}

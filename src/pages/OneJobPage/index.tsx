@@ -128,7 +128,7 @@ const OneJobPage: React.FC = () => {
                                 }
                             >
                                 {handleFiltered(freelancerProposals) ===
-                                regUserId ? (
+                                jobId ? (
                                     <StyledNav disabled>
                                         {t('JobPage.alreadySent')}
                                     </StyledNav>

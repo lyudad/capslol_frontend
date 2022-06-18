@@ -171,7 +171,8 @@
         "jobCreated": "Job created",
         "alreadySent": "Proposal already sent",
         "ifYouAre": "** if you are a freelancer and set up your profile, you will be able to send your proposals",
-        "unfortunately": "UNFORTUNATELY THIS PROJECT IS NOT AVAILABLE"
+        "unfortunately": "UNFORTUNATELY THIS PROJECT IS NOT AVAILABLE",
+        "projectToArchive": "Project is moved to Archive"
     },
     "Proposal": {
         "title": "Submit Proposal",
