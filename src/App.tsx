@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
 import JobsPage from 'pages/JobsPage';
@@ -24,16 +24,23 @@ import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
 import MyContacts from 'pages/MyContacts(JobOwner)';
 import { useAppSelector } from 'hooks/redux';
+import { TChatArgument } from 'pages/Chat/interfaces';
 
 const App: React.FC = () => {
-    const socket = useMemo(() => ({ socket: appSocket }), []);
+    const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
+        undefined
+    );
+    const context = useMemo(
+        () => ({ socket: appSocket, currentChat, setCurrentChat }),
+        [currentChat]
+    );
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
     const profilePath = `profile/${userId}`;
 
     return (
-        <AppContext.Provider value={socket}>
+        <AppContext.Provider value={context}>
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>

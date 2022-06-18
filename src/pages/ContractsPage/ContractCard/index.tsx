@@ -37,7 +37,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
     const [confirmStatus, setConfirmStatus] = useState<boolean>(false);
 
     const { t } = useTranslation();
-    const { socket } = useContext(AppContext);
+    const { socket, setCurrentChat } = useContext(AppContext);
 
     const navigate = useNavigate();
 
@@ -81,6 +81,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
                 </div>`,
                 senderId: freelancer?.id,
                 roomId: freelancerChatContact?.id,
+                isOffer: true,
             };
 
             socket.emit('msgToServer', newMessage);
@@ -98,6 +99,11 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
         });
         setConfirmStatus(!confirmStatus);
         sentTerminatedMessage();
+    };
+
+    const handleNavigate = (): void => {
+        navigate(Paths.CHAT);
+        setCurrentChat?.(freelancerChatContact);
     };
 
     return (
@@ -142,7 +148,9 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
                 )}
 
                 <ButtonContainer>
-                    <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
+                    <StyledCardBtn onClick={handleNavigate}>
+                        {t('OffersPage.goToChat')}
+                    </StyledCardBtn>
                     {status === statusOfContract.OPENED && (
                         <StyledCardBtn
                             onClick={() => setConfirmStatus(!confirmStatus)}

@@ -28,17 +28,27 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
 
     return (
         <ChatItemCard
-            style={{ animationDelay: `0.${animationDelay}s` }}
+            style={{
+                animationDelay: `0.${animationDelay}s`,
+                display: `${msg?.isOffer ? 'flex' : ''}`,
+                justifyContent: `${msg?.isOffer ? 'center' : ''}`,
+            }}
             className={`${msg?.senderId?.id === user?.id ? '' : 'other'}`}
         >
-            <ChatItemContent className="chat__item__content">
+            <ChatItemContent
+                className="chat__item__content"
+                style={{
+                    marginRight: `${msg?.isOffer && '0'}`,
+                    borderRadius: `${msg?.isOffer && '10px'}`,
+                }}
+            >
                 <ChatMsg>{parse(msg?.content)}</ChatMsg>
                 <ChatMeta>
                     <ChatTime>{sentTime(msg?.createdAt)}</ChatTime>
                 </ChatMeta>
             </ChatItemContent>
 
-            <Avatar id={msg?.senderId?.id} />
+            {!msg.isOffer && <Avatar id={msg?.senderId?.id} />}
         </ChatItemCard>
     );
 };

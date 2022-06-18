@@ -1,7 +1,8 @@
 ﻿/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useAppSelector } from 'hooks/redux';
+import { AppContext } from 'context';
 import Avatar from './Avatar';
 import {
     ChatListItem,
@@ -15,14 +16,15 @@ import {
 } from './styles';
 import { IChatListProps, TChatArgument } from '../interfaces';
 
-const ChatList: React.FC<IChatListProps> = ({ onChangeChat, members }) => {
+const ChatList: React.FC<IChatListProps> = ({ members }) => {
     const { user } = useAppSelector((s) => s.auth);
     const [search, setSearch] = useState<string>('');
     const [currentSelected, setCurrentSelected] = useState<number>();
+    const { setCurrentChat } = useContext(AppContext);
 
     const changeChat = (id: number, chat: TChatArgument): void => {
         setCurrentSelected(id);
-        onChangeChat(chat);
+        setCurrentChat?.(chat);
     };
 
     const onChange = (event: React.FormEvent<HTMLInputElement>): void => {

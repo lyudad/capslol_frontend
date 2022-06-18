@@ -47,7 +47,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
         offerObj;
 
     const { data: chatContacts } = useGetChatContactsByJobIdQuery(jobId?.id);
-    const { socket } = useContext(AppContext);
+    const { socket, setCurrentChat } = useContext(AppContext);
 
     const filteredChatContacts = (data: IChatMember[]): IChatMember => {
         const filtered = data?.filter(
@@ -75,6 +75,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 </div>`,
                 senderId: freelancerId?.id,
                 roomId: freelancerChatContact?.id,
+                isOffer: true,
             };
 
             socket.emit('msgToServer', newMessage);
@@ -119,6 +120,11 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
     };
 
+    const handleNavigate = (): void => {
+        navigate(Paths.CHAT);
+        setCurrentChat?.(freelancerChatContact);
+    };
+
     return (
         <OneCard>
             <SpinnerWrapper isLoading={isLoading}>
@@ -155,7 +161,9 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 </ValueBox>
 
                 <ButtonContainer>
-                    <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
+                    <StyledCardBtn onClick={handleNavigate}>
+                        {t('OffersPage.goToChat')}
+                    </StyledCardBtn>
                     {offerStatus === Status.PENDING && (
                         <>
                             <StyledCardBtn

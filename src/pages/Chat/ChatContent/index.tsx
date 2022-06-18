@@ -8,9 +8,12 @@ import { colors } from 'constants/index';
 import axios from 'axios';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
-import { useCreateOfferMutation } from 'store/apis/offers';
+import {
+    useCreateOfferMutation,
+    useGetOfferByJobIdQuery,
+} from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
-import { IMyOffer, Status } from 'store/apis/offers/offers.types';
+import { Status } from 'store/apis/offers/offers.types';
 import Avatar from '../ChatList/Avatar';
 import {
     IChatContentProps,
@@ -47,7 +50,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const inputRef = createRef<HTMLInputElement>();
     const [emoji, setEmoji] = useState();
-    const [offer, setOffer] = useState({} as IMyOffer);
 
     const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
@@ -55,6 +57,9 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
     const { data } = useGetUserByIdQuery(user?.id);
     const [createOffer] = useCreateOfferMutation();
+    const { data: offer } = useGetOfferByJobIdQuery(
+        currentChat?.proposalId?.jobId?.id
+    );
 
     const openModal = (): void => setIsOpen(true);
 
@@ -128,7 +133,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 hourRate,
             };
             const dataOffer = await createOffer(newOffer).unwrap();
-            setOffer(dataOffer);
+
             const newMessage = {
                 content: `<div className=${dataOffer?.status}>
                 <h3 className='offer'>${t('Chat.offerTitle')}</h3>
@@ -143,6 +148,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 )}<span>${hourRate}<span></p></div>`,
                 senderId: user?.id,
                 roomId: currentChat.id,
+                isOffer: true,
             };
 
             socket.emit('msgToServer', newMessage);
@@ -197,15 +203,16 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
 
                     <div>
                         {(data?.data?.role || undefined) === Role.jobOwner &&
-                            offer?.status !== Status.DECLINED && (
-                                <SettingsBtn
-                                    onClick={openModal}
-                                    bg={colors.proposalGreen}
-                                    color={colors.textWhite}
-                                >
-                                    {t('Chat.jobOffer')}
-                                </SettingsBtn>
-                            )}
+                            (offer?.status === Status.PENDING ||
+                                offer?.status === Status.ACCEPTED || (
+                                    <SettingsBtn
+                                        onClick={openModal}
+                                        bg={colors.proposalGreen}
+                                        color={colors.textWhite}
+                                    >
+                                        {t('Chat.jobOffer')}
+                                    </SettingsBtn>
+                                ))}
                     </div>
                 </ChatHeader>
                 <ChatBody>
@@ -228,28 +235,26 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     {showEmojis && <Emoji onEmojiClick={handleEmojiClick} />}
                 </ChatBody>
                 <ChatFooter>
-                    <SendNewMessage>
-                        <EmojiIcon onClick={handleShowEmojis} />
+                    {((data?.data?.role || undefined) !== Role.jobOwner &&
+                        messages.length < 2) ||
+                        offer?.status === Status.DECLINED || (
+                            <SendNewMessage>
+                                <EmojiIcon onClick={handleShowEmojis} />
 
-                        <SendNewMessageInput
-                            ref={inputRef}
-                            value={messageText}
-                            type="text"
-                            placeholder={`${t('Chat.sendMsgPlaceholder')}`}
-                            onChange={handleOnChange}
-                        />
-                        <SendNewMessageBtn
-                            onClick={handleMessage}
-                            disabled={
-                                ((data?.data?.role || undefined) !==
-                                    Role.jobOwner &&
-                                    messages.length < 2) ||
-                                offer?.status === Status.DECLINED
-                            }
-                        >
-                            <SendNewMessageIcon />
-                        </SendNewMessageBtn>
-                    </SendNewMessage>
+                                <SendNewMessageInput
+                                    ref={inputRef}
+                                    value={messageText}
+                                    type="text"
+                                    placeholder={`${t(
+                                        'Chat.sendMsgPlaceholder'
+                                    )}`}
+                                    onChange={handleOnChange}
+                                />
+                                <SendNewMessageBtn onClick={handleMessage}>
+                                    <SendNewMessageIcon />
+                                </SendNewMessageBtn>
+                            </SendNewMessage>
+                        )}
                 </ChatFooter>
             </MainChat>
 

@@ -88,9 +88,9 @@ const SendProposal: React.FC = () => {
             const chatContact = await postChatContact(newChatContact).unwrap();
 
             const newMessage = {
-                content: `<div><p className="title">${t(
-                    'Chat.rate'
-                )}<span>${hourRate}</span></p>
+                content: `<div><p className="title">${t('Chat.rate')}<span>${
+                    proposalId?.hourRate
+                }</span></p>
                 <div>${proposalId?.coverLetter}</div>
                 </div>`,
                 senderId: user?.id,

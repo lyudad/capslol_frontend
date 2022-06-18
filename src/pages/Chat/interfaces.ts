@@ -14,7 +14,6 @@ export interface IChatItemProps {
 export type TChatArgument = IRoom | undefined;
 
 export interface IChatListProps {
-    onChangeChat: (value: TChatArgument) => void;
     members: IChatMember[] | undefined;
 }
 
@@ -30,6 +29,7 @@ export interface IMessages {
     createdAt: string;
     senderId: IOwner;
     roomId: IRoom;
+    isOffer?: boolean;
 }
 
 export interface IRoom {
