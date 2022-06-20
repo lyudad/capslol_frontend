@@ -26,7 +26,7 @@ export interface Skills {
 
 export interface newProfile {
     id: number | undefined;
-    userId?: number | undefined;
+    userId: number | undefined;
     profileImage?: string;
     hourRate: number;
     availableHours: number;

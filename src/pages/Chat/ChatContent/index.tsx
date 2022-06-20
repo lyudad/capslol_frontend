@@ -1,6 +1,6 @@
 ﻿/* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext, createRef } from 'react';
-import { message, notification } from 'antd';
+import { notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from 'hooks/redux';
@@ -8,10 +8,7 @@ import { colors } from 'constants/index';
 import axios from 'axios';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
-import {
-    useCreateOfferMutation,
-    useGetOfferByJobIdQuery,
-} from 'store/apis/offers';
+import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
 import Avatar from '../ChatList/Avatar';
@@ -31,16 +28,12 @@ import {
     MainChat,
     Project,
     ProjectOwner,
-    SendNewMessage,
-    SendNewMessageBtn,
-    SendNewMessageIcon,
-    SendNewMessageInput,
     SettingsBtn,
     Wrapper,
-    EmojiIcon,
 } from './styles';
 import ChatWindow from './ChatWindow';
 import Emoji from './Emoji';
+import ChatForm from './ChatForm';
 
 const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [messageText, setMessageText] = useState<string>('');
@@ -56,7 +49,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const { t } = useTranslation();
 
     const { data } = useGetUserByIdQuery(user?.id);
-    const [createOffer] = useCreateOfferMutation();
     const { data: offer } = useGetOfferByJobIdQuery(
         currentChat?.proposalId?.jobId?.id
     );
@@ -64,26 +56,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const openModal = (): void => setIsOpen(true);
 
     const closeModal = (): void => setIsOpen(false);
-
-    const handleMessage = async (): Promise<void> => {
-        try {
-            const newMessage = {
-                content: `<div>${messageText}</div>`,
-                senderId: user?.id,
-                roomId: currentChat.id,
-            };
-            socket.emit('msgToServer', newMessage, () => {
-                setMessageText('');
-            });
-        } catch (error) {
-            message.error(error?.message);
-        }
-    };
-
-    const handleOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
-        const newValue = event.currentTarget.value;
-        setMessageText(newValue);
-    };
 
     const fetchMessages = async (): Promise<void> => {
         try {
@@ -122,41 +94,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const job = currentChat?.proposalId?.jobId;
 
     const [hourRate, setHourRate] = useState<number>(job?.price);
-
-    const handleOffer = async (): Promise<void> => {
-        try {
-            const newOffer = {
-                ownerId: jobOwner?.id,
-                freelancerId: freelancer?.id,
-                jobId: job?.id,
-                status: 'Pending',
-                hourRate,
-            };
-            const dataOffer = await createOffer(newOffer).unwrap();
-
-            const newMessage = {
-                content: `<div className=${dataOffer?.status}>
-                <h3 className='offer'>${t('Chat.offerTitle')}</h3>
-                <p className='title'>${t('Chat.title')}<span>${
-                    job?.title
-                }<span></p>
-                <p className='title'>${t('Chat.dsc')}<span>${
-                    job?.description
-                }<span></p>
-                <p className='title'>${t(
-                    'Chat.rate'
-                )}<span>${hourRate}<span></p></div>`,
-                senderId: user?.id,
-                roomId: currentChat.id,
-                isOffer: true,
-            };
-
-            socket.emit('msgToServer', newMessage);
-            closeModal();
-        } catch (error) {
-            message.error(error?.message);
-        }
-    };
 
     const handleHourRateChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -238,29 +175,20 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     {((data?.data?.role || undefined) !== Role.jobOwner &&
                         messages.length < 2) ||
                         offer?.status === Status.DECLINED || (
-                            <SendNewMessage>
-                                <EmojiIcon onClick={handleShowEmojis} />
-
-                                <SendNewMessageInput
-                                    ref={inputRef}
-                                    value={messageText}
-                                    type="text"
-                                    placeholder={`${t(
-                                        'Chat.sendMsgPlaceholder'
-                                    )}`}
-                                    onChange={handleOnChange}
-                                />
-                                <SendNewMessageBtn onClick={handleMessage}>
-                                    <SendNewMessageIcon />
-                                </SendNewMessageBtn>
-                            </SendNewMessage>
+                            <ChatForm
+                                currentChat={currentChat}
+                                handleShowEmojis={handleShowEmojis}
+                                inputRef={inputRef}
+                                setMessageText={setMessageText}
+                                messageText={messageText}
+                            />
                         )}
                 </ChatFooter>
             </MainChat>
 
             <ChatWindow
                 modalIsOpen={modalIsOpen}
-                handleOffer={handleOffer}
+                currentChat={currentChat}
                 closeModal={closeModal}
                 handleHourRateChange={handleHourRateChange}
                 price={job?.price}
