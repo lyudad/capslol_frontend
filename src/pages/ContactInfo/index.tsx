@@ -11,7 +11,6 @@ import {
     useEditUserValueMutation,
     useGetUserByIdQuery,
 } from 'store/apis/profile';
-import { Paths } from 'router/paths';
 import Spinner from 'components/Spinner';
 import { IContactInfo } from './interfaces';
 import {
@@ -52,7 +51,7 @@ const ContactInfo: React.FC = () => {
     const { data: member, isLoading } = useGetUserByIdQuery(state.id);
     const user = member?.data;
 
-    const handleNavigate = (): void => navigate(Paths.PROFILE);
+    const handleNavigate = (): void => navigate(-1);
 
     const openModal = (): void => setIsOpen(true);
 

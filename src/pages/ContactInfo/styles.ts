@@ -1,5 +1,4 @@
-﻿import { Avatar } from 'antd';
-import styled from 'styled-components';
+﻿import styled from 'styled-components';
 import {
     CheckCircleOutlined,
     CloseOutlined,
@@ -52,8 +51,8 @@ export const Label = styled.h5`
     padding: ${(props: IProps) => props.pd};
 `;
 
-export const StyledAvatar = styled(Avatar)`
-    margin-right: 15px;
+export const AvatarBlock = styled.div`
+    margin-right: 25px;
 `;
 
 export const Icon = styled(CheckCircleOutlined)`

@@ -63,6 +63,11 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
                 id: user?.id,
                 userId: user?.id,
                 profileImage: url,
+                hourRate: 0,
+                availableHours: 0,
+                categories: undefined,
+                skills: undefined,
+                english: 'No English',
             };
 
             await createProfile(UpdateProfile);
