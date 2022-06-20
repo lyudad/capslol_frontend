@@ -61,7 +61,7 @@ const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
                     </ValueBox>
 
                     <ValueBox>
-                        <Field>{t('OffersPage.myHourRate')}</Field>
+                        <Field>{t('OffersPage.myHourlyRate')}</Field>
                         <FieldValue>{hourRate}$</FieldValue>
                     </ValueBox>
                 </>
