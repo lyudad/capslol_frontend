@@ -304,6 +304,9 @@ const SettingPage: React.FC = () => {
                 setStartEducation('');
                 setEndEducation('');
                 setChangeToggleEducation(false);
+                notification.success({
+                    message: 'Added successfully',
+                });
             } catch (error) {
                 return message.error(error.status);
             }
@@ -311,9 +314,7 @@ const SettingPage: React.FC = () => {
         if (changeToggleEducation === false) {
             setChangeToggleEducation(true);
         }
-        return notification.success({
-            message: 'Added successfully',
-        });
+        return undefined;
     };
 
     const onAddExperience = async (): Promise<void> => {
@@ -367,6 +368,9 @@ const SettingPage: React.FC = () => {
                 setStartExperiense('');
                 setEndExperiense('');
                 setChangeToggle(false);
+                notification.success({
+                    message: 'Added successfully',
+                });
             } catch (error) {
                 return message.error(error.status);
             }
@@ -374,9 +378,7 @@ const SettingPage: React.FC = () => {
         if (changeToggle === false) {
             setChangeToggle(true);
         }
-        return notification.success({
-            message: 'Added successfully',
-        });
+        return undefined;
     };
 
     const onSaveChanges = async (): Promise<void> => {
