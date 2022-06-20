@@ -149,7 +149,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 </ValueBox>
 
                 <ValueBox>
-                    <Field>{t('OffersPage.ownerHourRate')}</Field>
+                    <Field>{t('OffersPage.ownerHourlyRate')}</Field>
                     <FieldValue>{hourRate}$</FieldValue>
                 </ValueBox>
 
