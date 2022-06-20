@@ -237,6 +237,20 @@ const SettingPage: React.FC = () => {
             message: 'Success delete 🧺',
         });
     };
+    const onHideEducation = (): void => {
+        setEducationName('');
+        setSpecialization('');
+        setStartEducation('');
+        setEndEducation('');
+        setChangeToggleEducation(false);
+    };
+    const onHideExperience = (): void => {
+        setNameCompany('');
+        setExperiensePosition('');
+        setStartExperiense('');
+        setEndExperiense('');
+        setChangeToggle(false);
+    };
 
     const onAddEducation = async (): Promise<void> => {
         if (changeToggleEducation === true) {
@@ -520,6 +534,21 @@ const SettingPage: React.FC = () => {
                         <>
                             <Line />
                             <Description>
+                                <Row justify="end">
+                                    <ButtonDel
+                                        style={{
+                                            marginBottom: -33,
+                                            marginTop: 0,
+                                            marginRight: '7%',
+                                            width: 33,
+                                            borderRadius: 30,
+                                        }}
+                                        type="default"
+                                        onClick={onHideEducation}
+                                    >
+                                        ❌
+                                    </ButtonDel>
+                                </Row>
                                 {t('PublicProfile.name_of_courses')}:{' '}
                                 <Input
                                     style={{
@@ -666,6 +695,21 @@ const SettingPage: React.FC = () => {
                         <>
                             <Line />
                             <Description>
+                                <Row justify="end">
+                                    <ButtonDel
+                                        style={{
+                                            marginBottom: -33,
+                                            marginTop: 0,
+                                            marginRight: '7%',
+                                            width: 33,
+                                            borderRadius: 30,
+                                        }}
+                                        type="default"
+                                        onClick={onHideExperience}
+                                    >
+                                        ❌
+                                    </ButtonDel>
+                                </Row>
                                 {t('PublicProfile.company_name')}:{' '}
                                 <Input
                                     style={{
