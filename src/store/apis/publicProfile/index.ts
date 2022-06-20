@@ -44,6 +44,14 @@ export const publicProfileApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Profile'],
         }),
+        updateProfile: builder.mutation<newProfile, newProfile | undefined>({
+            query: (value) => ({
+                url: 'profiles/',
+                method: 'PATCH',
+                body: value,
+            }),
+            invalidatesTags: ['Profile'],
+        }),
         createEducation: builder.mutation<Educations, Educations | undefined>({
             query: (value) => ({
                 url: 'educations/',
@@ -87,18 +95,6 @@ export const publicProfileApi = baseApi.injectEndpoints({
                 url: `skills`,
             }),
         }),
-        getAllExperience: builder.query<Experiences[], string>({
-            query: () => ({
-                url: `experiences`,
-            }),
-            providesTags: ['Profile'],
-        }),
-        getAllEducations: builder.query<Educations[], string>({
-            query: () => ({
-                url: `educations`,
-            }),
-            providesTags: ['Profile'],
-        }),
     }),
 });
 
@@ -110,8 +106,7 @@ export const {
     useCreateExperienceMutation,
     useGetAllCategoriesQuery,
     useCreateEducationMutation,
-    useGetAllExperienceQuery,
     useDeleteExperienceMutation,
-    useGetAllEducationsQuery,
     useDeleteEducationMutation,
+    useUpdateProfileMutation,
 } = publicProfileApi;
