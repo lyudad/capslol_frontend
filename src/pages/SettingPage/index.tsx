@@ -261,7 +261,12 @@ const SettingPage: React.FC = () => {
                     startAt: startEducation,
                     endAt: endEducation,
                 };
-
+                if (endEducation <= startEducation) {
+                    return notification.warning({
+                        message:
+                            'End date can not be early or the same Start date',
+                    });
+                }
                 const newEducation = await createEducation(
                     UpdateEducation
                 ).unwrap();
@@ -326,6 +331,13 @@ const SettingPage: React.FC = () => {
                     startAt: startExperiense,
                     endAt: endExperiense,
                 };
+
+                if (endExperiense <= startExperiense) {
+                    return notification.warning({
+                        message:
+                            'End date can not be early or the same Start date',
+                    });
+                }
                 const newExperience = await createExperience(
                     UpdateExperience
                 ).unwrap();
