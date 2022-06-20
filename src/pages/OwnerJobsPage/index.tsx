@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Page, TopButtonContainer, StyledNavBtn } from './styles';

@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
-import Spinner from 'components/Spinner';
 import EmptyListNotification from 'components/EmptyListNotification';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
 import ProposalCard from '../ProposalCard';
 
@@ -18,9 +19,7 @@ const MyProposals: React.FC = () => {
         <>
             <Title>{t('OffersPage.myProposals')}</Title>
             <ListWrapper>
-                {isLoading ? (
-                    <Spinner />
-                ) : (
+                <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
                             {proposalsData?.map((item) => {
@@ -33,8 +32,12 @@ const MyProposals: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                )}
-                <EmptyListNotification />
+                    <HideWrapper showWhen={!proposalsData?.length}>
+                        <EmptyListNotification
+                            note={t('Notes.youDon-tHaveProposals')}
+                        />
+                    </HideWrapper>
+                </SpinnerWrapper>
             </ListWrapper>
         </>
     );

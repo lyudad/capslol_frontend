@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import Spinner from 'components/Spinner';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
-import { ListContainer, ListWrapper, List, Title } from '../styles';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
+import { ListContainer, List, Title } from '../styles';
 import OfferCard from '../OfferCard/index';
 
 const MyOffers: React.FC = () => {
@@ -14,24 +16,25 @@ const MyOffers: React.FC = () => {
     return (
         <>
             <Title>{t('OffersPage.myOffers')}</Title>
-            <ListWrapper>
-                {isLoading ? (
-                    <Spinner />
-                ) : (
-                    <ListContainer>
-                        <List>
-                            {offersData?.map((item) => {
-                                const { id } = item;
-                                return (
-                                    <ul key={id}>
-                                        <OfferCard offerObj={item} />
-                                    </ul>
-                                );
-                            })}
-                        </List>
-                    </ListContainer>
-                )}
-            </ListWrapper>
+            <SpinnerWrapper isLoading={isLoading}>
+                <ListContainer>
+                    <List>
+                        {offersData?.map((item) => {
+                            const { id } = item;
+                            return (
+                                <ul key={id}>
+                                    <OfferCard offerObj={item} />
+                                </ul>
+                            );
+                        })}
+                    </List>
+                </ListContainer>
+                <HideWrapper showWhen={!offersData?.length}>
+                    <EmptyListNotification
+                        note={t('Notes.youDon-tHaveOffers')}
+                    />
+                </HideWrapper>
+            </SpinnerWrapper>
         </>
     );
 };

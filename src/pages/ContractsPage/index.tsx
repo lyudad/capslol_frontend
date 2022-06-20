@@ -5,6 +5,8 @@ import { useAppSelector } from 'hooks/redux';
 import { useGetContractsByFreelancerQuery } from 'store/apis/contracts';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { sortArrByAB } from 'utilities/utilities';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { ListContainer, ListWrapper, List, Title, Page } from './styles';
 import ContractCard from './ContractCard/index';
 
@@ -38,6 +40,11 @@ const ContactsPage: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
+                    <HideWrapper showWhen={!sortedContracts?.length}>
+                        <EmptyListNotification
+                            note={t('Notes.youDon-tHaveContracts')}
+                        />
+                    </HideWrapper>
                 </SpinnerWrapper>
             </ListWrapper>
         </Page>

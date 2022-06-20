@@ -1,9 +1,13 @@
 import { Notification, NoteBox } from './styles';
 
-const EmptyListNotification: React.FC = () => {
+interface IPrps {
+    note: string;
+}
+
+const EmptyListNotification: React.FC<IPrps> = ({ note }) => {
     return (
         <NoteBox>
-            <Notification>ВАЖЛИВЕ ПОВІДОМЛЕННЯ</Notification>
+            <Notification>{note}</Notification>
         </NoteBox>
     );
 };
