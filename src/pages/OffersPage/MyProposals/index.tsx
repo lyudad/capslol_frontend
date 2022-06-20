@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
 import Spinner from 'components/Spinner';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
 import ProposalCard from '../ProposalCard';
 
@@ -33,6 +34,7 @@ const MyProposals: React.FC = () => {
                         </List>
                     </ListContainer>
                 )}
+                <EmptyListNotification />
             </ListWrapper>
         </>
     );

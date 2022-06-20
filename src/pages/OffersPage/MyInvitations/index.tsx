@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import Spinner from 'components/Spinner';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { useGetInvitationsByFreelancerQuery } from 'store/apis/invitations';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
 import InvitationCard from '../InvitationCard';
@@ -32,6 +33,7 @@ const MyInvitations: React.FC = () => {
                         </List>
                     </ListContainer>
                 )}
+                <EmptyListNotification />
             </ListWrapper>
         </>
     );
