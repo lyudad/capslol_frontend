@@ -152,6 +152,12 @@ const App: React.FC = () => {
                     </Route>
                     <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.SIGN_UP} element={<AuthForm />} />
+
+                    <Route
+                        path={Paths.TALENTS_PROFILE}
+                        element={<PublicPage />}
+                    />
+
                     <Route
                         path={Paths.FORGOTTEN_PASSWORD}
                         element={<ForgotPassword />}
