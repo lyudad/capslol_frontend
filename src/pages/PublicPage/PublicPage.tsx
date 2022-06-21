@@ -51,9 +51,6 @@ const PublicPage: React.FC = () => {
     return (
         <Page>
             <ProfileContainer>
-                <ButtonSet type="default">
-                    {t('PublicProfile.contact_info')}
-                </ButtonSet>
                 <Title>
                     {data?.user?.firstName
                         ? `${data?.user?.firstName} ${data?.user?.lastName}`
