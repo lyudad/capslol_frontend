@@ -16,7 +16,9 @@
         "logout": "logout",
         "ownerJobs": "MY PROJECTS",
         "Talents": "TALENTS",
-        "selectRole": " SELECT ROLE"
+        "selectRole": " SELECT ROLE",
+        "chat": "CHAT",
+        "myContacts": "MY CONTACTS"
     },
     "SignInForm": {},
     "AuthForm": {

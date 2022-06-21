@@ -73,14 +73,7 @@ const App: React.FC = () => {
                         />
                         <Route
                             path={Paths.MY_CONTRACTS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={role !== userRole.freelancer}
-                                    redirectPath={Paths.HOME}
-                                >
-                                    <ContactsPage />
-                                </ProtectedRoute>
-                            }
+                            element={<ContactsPage />}
                         />
                         <Route
                             path={profilePath}
