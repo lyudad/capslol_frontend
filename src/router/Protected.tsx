@@ -4,7 +4,7 @@ import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { Paths } from './paths';
 
 interface IProps {
-    userRole: string;
+    boolValue: boolean;
     redirectPath: string;
     children: React.ReactNode;
 }
@@ -19,12 +19,12 @@ export const Protected: React.FC = () => {
 };
 
 export const ProtectedRoute: React.FC<IProps> = ({
-    userRole,
+    boolValue,
     redirectPath,
     children,
 }: IProps): JSX.Element => {
-    const role = useAppSelector((state) => state.auth.user?.role);
-    if (role !== userRole) {
+    // const role = useAppSelector((state) => state.auth.user?.role);
+    if (boolValue) {
         return <Navigate to={redirectPath} replace />;
     }
     return <>{children}</>;

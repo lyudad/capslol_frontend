@@ -40,7 +40,7 @@ const CreateJobPage: React.FC = () => {
             if (!userId) {
                 throw new Error('user must has userId');
             }
-            await createJob({
+            const newJob = await createJob({
                 ...value,
                 ownerId: userId,
             }).unwrap();
@@ -49,7 +49,7 @@ const CreateJobPage: React.FC = () => {
                 message: t('JobPage.jobCreated'),
             });
 
-            navigate(Paths.JOBS);
+            navigate(Paths.JOB_PAGE, { state: { id: newJob.id } });
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
