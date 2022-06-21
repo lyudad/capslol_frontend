@@ -1,9 +1,11 @@
-import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { logOut } from 'store/slices/auth/auth.slice';
-import { useGetUserProfileQuery } from 'store/apis/jobs';
+import {
+    useGetJobsByOwnerQuery,
+    useGetUserProfileQuery,
+} from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
@@ -39,6 +41,8 @@ const AppBar: React.FC = () => {
 
     const { data: userProfile } = useGetUserProfileQuery(user?.id);
 
+    const { data: ownerJobs } = useGetJobsByOwnerQuery(userId);
+
     const logout = (): void => {
         dispatch(logOut());
         navigate(Paths.HOME);
@@ -57,9 +61,12 @@ const AppBar: React.FC = () => {
                 </Logo>
                 <HideWrapper showWhen={isAuth}>
                     <HideWrapper showWhen={role === userRole.owner}>
-                        <NavLink to={Paths.TALENT} className="navLink">
-                            {t('AppBar.Talents')}
-                        </NavLink>
+                        <HideWrapper showWhen={!!ownerJobs?.length}>
+                            <NavLink to={Paths.TALENT} className="navLink">
+                                {t('AppBar.Talents')}
+                            </NavLink>
+                        </HideWrapper>
+
                         <NavLink to={Paths.OWNER_JOBS} className="navLink">
                             {t('AppBar.ownerJobs')}
                         </NavLink>

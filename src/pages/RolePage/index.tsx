@@ -40,7 +40,7 @@ const RolePage: React.FC = () => {
             }
 
             if (user.role === Role.JOB_OWNER) {
-                navigate(Paths.TALENT);
+                navigate(Paths.CREATE_JOB_PAGE);
             }
 
             if (user.role === Role.FREELANCER) {
