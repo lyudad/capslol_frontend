@@ -173,7 +173,10 @@
         "alreadySent": "Proposal already sent",
         "ifYouAre": "** if you are a freelancer and set up your profile, you will be able to send your proposals",
         "unfortunately": "UNFORTUNATELY THIS PROJECT IS NOT AVAILABLE",
-        "projectToArchive": "Project is moved to Archive"
+        "projectToArchive": "Project is moved to Archive",
+        "chooseJobTemplate": "Choose job template",
+        "createJob": "Create Job",
+        "fillFormBelow": "Fill Form below"
     },
     "Proposal": {
         "title": "Submit Proposal",

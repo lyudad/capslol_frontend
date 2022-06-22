@@ -100,6 +100,9 @@ export const englishLevel: string[] = [
     EnglishLevel.INTERMEDIATE,
     EnglishLevel.ADVANCED,
 ];
+
+export const dateFormatForSelect = 'D MMMM YY';
+
 export const dateFormat = 'D MMMM YYYY';
 
 export const userRole = {
