@@ -87,8 +87,7 @@ const SettingPage: React.FC = () => {
     const [experiensePosition, setExperiensePosition] = useState('');
     const [startExperiense, setStartExperiense] = useState('');
     const [endExperiense, setEndExperiense] = useState('');
-
-    const [category, setCategory] = useState(data?.categories.categoryName);
+    const [category, setCategory] = useState('');
     const [position, setPosition] = useState(data?.position);
     const [other, setOther] = useState(data?.other);
     const [english, setEnglish] = useState(data?.english);
@@ -261,7 +260,6 @@ const SettingPage: React.FC = () => {
                     startAt: startEducation,
                     endAt: endEducation,
                 };
-
                 const newEducation = await createEducation(
                     UpdateEducation
                 ).unwrap();
@@ -298,12 +296,21 @@ const SettingPage: React.FC = () => {
                         message: 'All Education fields must be completed!',
                     });
                 }
+                if (endEducation <= startEducation) {
+                    return notification.warning({
+                        message:
+                            'End date can not be early or the same Start date',
+                    });
+                }
                 await updateProfile(UpdateProfile);
                 setEducationName('');
                 setSpecialization('');
                 setStartEducation('');
                 setEndEducation('');
                 setChangeToggleEducation(false);
+                notification.success({
+                    message: 'Added successfully',
+                });
             } catch (error) {
                 return message.error(error.status);
             }
@@ -311,9 +318,7 @@ const SettingPage: React.FC = () => {
         if (changeToggleEducation === false) {
             setChangeToggleEducation(true);
         }
-        return notification.success({
-            message: 'Added successfully',
-        });
+        return undefined;
     };
 
     const onAddExperience = async (): Promise<void> => {
@@ -325,6 +330,7 @@ const SettingPage: React.FC = () => {
                     startAt: startExperiense,
                     endAt: endExperiense,
                 };
+
                 const newExperience = await createExperience(
                     UpdateExperience
                 ).unwrap();
@@ -361,12 +367,21 @@ const SettingPage: React.FC = () => {
                         message: 'All Experience fields must be completed!',
                     });
                 }
+                if (endExperiense <= startExperiense) {
+                    return notification.warning({
+                        message:
+                            'End date can not be early or the same Start date',
+                    });
+                }
                 await updateProfile(UpdateProfile);
                 setNameCompany('');
                 setExperiensePosition('');
                 setStartExperiense('');
                 setEndExperiense('');
                 setChangeToggle(false);
+                notification.success({
+                    message: 'Added successfully',
+                });
             } catch (error) {
                 return message.error(error.status);
             }
@@ -374,9 +389,7 @@ const SettingPage: React.FC = () => {
         if (changeToggle === false) {
             setChangeToggle(true);
         }
-        return notification.success({
-            message: 'Added successfully',
-        });
+        return undefined;
     };
 
     const onSaveChanges = async (): Promise<void> => {
@@ -624,7 +637,7 @@ const SettingPage: React.FC = () => {
                     </span>
                     <Description>
                         <Select
-                            defaultValue={category}
+                            defaultValue={data?.categories?.categoryName}
                             style={{ width: 220 }}
                             onChange={handleChangeCategory}
                             placeholder="Please select"

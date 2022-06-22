@@ -27,6 +27,8 @@ import { useAppSelector } from 'hooks/redux';
 const App: React.FC = () => {
     const socket = useMemo(() => ({ socket: appSocket }), []);
 
+    const role = useAppSelector((state) => state.auth.user?.role);
+
     const userId = useAppSelector((state) => state.auth.user?.id);
 
     const profilePath = `profile/${userId}`;
@@ -40,7 +42,7 @@ const App: React.FC = () => {
                             path={Paths.JOBS}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.freelancer}
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.HOME}
                                 >
                                     <JobsPage />
@@ -51,7 +53,7 @@ const App: React.FC = () => {
                             path={Paths.OFFERS}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.freelancer}
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.HOME}
                                 >
                                     <OffersPage />
@@ -62,7 +64,7 @@ const App: React.FC = () => {
                             path={Paths.OFFERS}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.freelancer}
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.HOME}
                                 >
                                     <JobsPage />
@@ -71,20 +73,13 @@ const App: React.FC = () => {
                         />
                         <Route
                             path={Paths.MY_CONTRACTS}
-                            element={
-                                <ProtectedRoute
-                                    userRole={userRole.freelancer}
-                                    redirectPath={Paths.HOME}
-                                >
-                                    <ContactsPage />
-                                </ProtectedRoute>
-                            }
+                            element={<ContactsPage />}
                         />
                         <Route
                             path={profilePath}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.freelancer}
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.HOME}
                                 >
                                     <PublicPage />
@@ -95,7 +90,7 @@ const App: React.FC = () => {
                             path={Paths.SEND_PROPOSAL}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.freelancer}
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.HOME}
                                 >
                                     <SendProposal />
@@ -106,7 +101,7 @@ const App: React.FC = () => {
                             path={Paths.TALENT}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.owner}
+                                    boolValue={role !== userRole.owner}
                                     redirectPath={Paths.HOME}
                                 >
                                     <TalentsPage />
@@ -117,7 +112,7 @@ const App: React.FC = () => {
                             path={Paths.OWNER_JOBS}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.owner}
+                                    boolValue={role !== userRole.owner}
                                     redirectPath={Paths.HOME}
                                 >
                                     <OwnerJobsPage />
@@ -128,7 +123,7 @@ const App: React.FC = () => {
                             path={Paths.CREATE_JOB_PAGE}
                             element={
                                 <ProtectedRoute
-                                    userRole={userRole.owner}
+                                    boolValue={role !== userRole.owner}
                                     redirectPath={Paths.HOME}
                                 >
                                     <CreateJobPage />
@@ -152,6 +147,12 @@ const App: React.FC = () => {
                     </Route>
                     <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.SIGN_UP} element={<AuthForm />} />
+
+                    <Route
+                        path={Paths.TALENTS_PROFILE}
+                        element={<PublicPage />}
+                    />
+
                     <Route
                         path={Paths.FORGOTTEN_PASSWORD}
                         element={<ForgotPassword />}

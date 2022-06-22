@@ -16,7 +16,9 @@
         "logout": "logout",
         "ownerJobs": "MY PROJECTS",
         "Talents": "TALENTS",
-        "selectRole": " SELECT ROLE"
+        "selectRole": " SELECT ROLE",
+        "chat": "CHAT",
+        "myContacts": "MY CONTACTS"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -278,5 +280,16 @@
         "rate": "Hour rate: ",
         "link": "You can see all offers in <a href='/offers'>My Offer Page</a>",
         "contractSigned": "Contract signed on"
+    },
+
+    "Notes": {
+        "youDon-tHaveOffers": "YOU DON’T HAVE ANY OFFERS",
+        "youDon-tHaveProposals": "YOU DON’T HAVE ANY PROPOSALS",
+        "youDon-tHaveContracts": "YOU DON’T HAVE ANY CONTRACTS",
+        "youDon-tHaveInvitations": "YOU DON’T HAVE ANY INVITATIONS",
+        "youDon-tHaveProjects": "YOU DON’T HAVE ANY PROJECTS",
+        "youDon-tHaveArchivalProjects": "YOU DON’T HAVE ANY ARCHIVAL PROJECT",
+        "youDon-tHaveRelevantProjects": "YOU DON’T HAVE ANY RELEVANT PROJECT",
+        "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS"
     }
 }

@@ -1,5 +1,5 @@
 import { useAppSelector } from 'hooks/redux';
-import SignInForm from 'components/SignInForm';
+import SignInForm from 'components/SignInForm/index';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import { HomeContainer } from './styles';
 

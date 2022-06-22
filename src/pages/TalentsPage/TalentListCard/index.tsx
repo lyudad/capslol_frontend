@@ -31,7 +31,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
     const { id, user, other, profileImage, categories, skills } = jobObj;
 
     const onClickJob = (): void => {
-        navigate(`/profile/${id}`, { state: id });
+        navigate(`/talents/profile/${id}`, { state: id });
     };
 
     const handleSendProposal = (): void => {

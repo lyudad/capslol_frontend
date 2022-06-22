@@ -26,6 +26,7 @@ const PublicPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
 
     const location = useLocation();
+
     const { data } = useSearchUserQuery((location.state as number) || user?.id);
 
     if (!user) {
@@ -113,7 +114,7 @@ const PublicPage: React.FC = () => {
                     <Description>
                         <span style={{ color: colors.brandColor }}>
                             {' '}
-                            {data?.categories.categoryName || ''}{' '}
+                            {data?.categories?.categoryName || ''}{' '}
                         </span>
                     </Description>
                 </Sections>

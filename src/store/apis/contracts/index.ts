@@ -18,6 +18,12 @@ export const contractsApi = apiContractsTag.injectEndpoints({
             }),
             providesTags: ['Contract'],
         }),
+        getContractsByOwner: builder.query<IContract[], number | undefined>({
+            query: (value: number) => ({
+                url: `/contract/search?ownerId=${value}`,
+            }),
+            providesTags: ['Contract'],
+        }),
         changeContractStatus: builder.mutation<IContract, ICreateContract>({
             query: (body: ICreateContract) => ({
                 url: `/contract/changeStatus`,
@@ -34,4 +40,5 @@ export const {
     useGetContractsByFreelancerQuery,
     useChangeContractStatusMutation,
     useLazyGetContractsByFreelancerQuery,
+    useGetContractsByOwnerQuery,
 } = contractsApi;
