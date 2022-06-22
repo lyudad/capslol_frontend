@@ -13,12 +13,10 @@ const apiJobsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Jobs'] });
 
 export const jobsApi = apiJobsTag.injectEndpoints({
     endpoints: (builder) => ({
-        getFilteredJobs: builder.query<
-            JobResponseInterface,
-            JobsOptionsInterface
-        >({
+        getFilteredJobs: builder.query<JobResponseInterface>({
+        // JobsOptionsInterface
             query: (paginationOptions) => ({
-                url: 'jobs/search',
+                url: 'jobs',
                 params: paginationOptions,
             }),
             providesTags: ['Jobs'],

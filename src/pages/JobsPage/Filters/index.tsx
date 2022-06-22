@@ -106,11 +106,11 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 <StyledFilter>
                     <FilterTitle>{t('JobPage.HourlyRate')}</FilterTitle>
                     <PriceValue>
-                        <span>min: 0$</span>
-                        <span>current: {maxSalary && `${maxSalary}`}$</span>
+                        <span>min: 1$</span>
+                        <span>current: {maxSalary}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>
-                        <StyledSlider step={1} max={salaryLimit} />
+                        <StyledSlider step={1} min={1} max={salaryLimit} />
                     </Form.Item>
                 </StyledFilter>
 
@@ -123,7 +123,7 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                         </span>
                     </PriceValue>
                     <Form.Item name="timeAvailable" noStyle>
-                        <StyledSlider step={1} max={timeLimit} />
+                        <StyledSlider step={1} min={1} max={timeLimit} />
                     </Form.Item>
                 </StyledFilter>
 
