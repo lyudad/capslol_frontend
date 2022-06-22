@@ -1,6 +1,7 @@
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
+
 import { logOut } from 'store/slices/auth/auth.slice';
 import { useGetJobsByOwnerQuery } from 'store/apis/jobs';
 import { useGetFreelancerProfileQuery } from 'store/apis/publicProfile';
@@ -72,7 +73,7 @@ const AppBar: React.FC = () => {
                             {t('AppBar.myContracts')}
                         </NavLink>
 
-                        <NavLink to={Paths.HOME} className="navLink">
+                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
                             {t('AppBar.myContacts')}
                         </NavLink>
 

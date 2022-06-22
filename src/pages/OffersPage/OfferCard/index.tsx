@@ -11,7 +11,6 @@ import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import { dateFormat } from 'constants/index';
 import { AppContext } from 'context';
 import { useGetChatContactsByJobIdQuery } from 'store/apis/chat';
-import { IChatMember } from 'store/apis/chat/chat.types';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import {
     DateContainer,
@@ -46,23 +45,17 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
     const { id, createdAt, jobId, ownerId, hourRate, status, freelancerId } =
         offerObj;
 
-    const { data: chatContacts } = useGetChatContactsByJobIdQuery(jobId?.id);
-    const { socket } = useContext(AppContext);
-
-    const filteredChatContacts = (data: IChatMember[]): IChatMember => {
-        const filtered = data?.filter(
-            (i) => i?.proposalId?.freelancerId?.id === freelancerId?.id
-        )[0];
-
-        return filtered;
-    };
-
-    const freelancerChatContact = filteredChatContacts(chatContacts);
+    const { data: chatContacts } = useGetChatContactsByJobIdQuery({
+        jobId: jobId?.id,
+        freelancerId: freelancerId.id,
+    });
+    const { socket, setCurrentChat } = useContext(AppContext);
 
     const sentAcceptMessage = (): void => {
         try {
             const newMessage = {
-                content: `<div className=${offerStatus}>
+                content: `<div className='Accepted'>
+                <h3 className='contract'>${t('Chat.contractTitle')}</h3>
                 <p className='title'>${t('Chat.title')}<span>${
                     jobId?.title
                 }<span></p>
@@ -72,8 +65,9 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 <p>${t('Chat.contractSigned')}<span className="Date">
                 ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
                 </div>`,
-                senderId: ownerId?.id,
-                roomId: freelancerChatContact?.id,
+                senderId: freelancerId?.id,
+                roomId: chatContacts?.id,
+                isOffer: true,
             };
 
             socket.emit('msgToServer', newMessage);
@@ -82,15 +76,8 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
         }
     };
 
-    const handleAccept = (): void => {
-        if (offerStatus === Status.ACCEPTED) {
-            sentAcceptMessage();
-        }
-    };
-
     useEffect(() => {
         setOfferStatus(status);
-        handleAccept();
     }, [status]);
 
     const onClickBtn = async (value: Status): Promise<void> => {
@@ -102,6 +89,8 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                     jobId: jobId.id,
                     offerId: id,
                 }).unwrap();
+
+                sentAcceptMessage();
             }
             const response = await changeStatus({
                 id,
@@ -121,6 +110,11 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
+    };
+
+    const handleNavigate = (): void => {
+        navigate(Paths.CHAT);
+        setCurrentChat?.(chatContacts);
     };
 
     return (
@@ -159,7 +153,9 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 </ValueBox>
 
                 <ButtonContainer>
-                    <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
+                    <StyledCardBtn onClick={handleNavigate}>
+                        {t('OffersPage.goToChat')}
+                    </StyledCardBtn>
                     {offerStatus === Status.PENDING && (
                         <>
                             <StyledCardBtn
