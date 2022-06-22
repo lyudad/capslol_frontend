@@ -73,7 +73,7 @@ const AppBar: React.FC = () => {
                             {t('AppBar.myContracts')}
                         </NavLink>
 
-                        <NavLink to={Paths.HOME} className="navLink">
+                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
                             {t('AppBar.myContacts')}
                         </NavLink>
 

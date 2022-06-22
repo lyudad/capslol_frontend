@@ -11,6 +11,7 @@ import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
+import { useGetContractByIdOfferIdQuery } from 'store/apis/contracts';
 import Avatar from '../ChatList/Avatar';
 import {
     IChatContentProps,
@@ -52,6 +53,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const { data: offer } = useGetOfferByJobIdQuery(
         currentChat?.proposalId?.jobId?.id
     );
+    const { data: contract } = useGetContractByIdOfferIdQuery(offer?.id);
 
     const openModal = (): void => setIsOpen(true);
 
@@ -174,7 +176,8 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                 <ChatFooter>
                     {((data?.data?.role || undefined) !== Role.jobOwner &&
                         messages.length < 2) ||
-                        offer?.status === Status.DECLINED || (
+                        offer?.status === Status.DECLINED ||
+                        contract?.status === 'closed' || (
                             <ChatForm
                                 currentChat={currentChat}
                                 handleShowEmojis={handleShowEmojis}
