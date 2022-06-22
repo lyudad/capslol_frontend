@@ -183,10 +183,15 @@ const SendProposal: React.FC = () => {
                                 <StyledInput
                                     value={hourRate}
                                     prefix="$"
-                                    maxLength={4}
+                                    placeholder={t(
+                                        'Proposal.amountPlaceholder'
+                                    )}
+                                    maxLength={2}
                                     onChange={(value) =>
                                         onChange(value as number)
                                     }
+                                    min={1}
+                                    max={50}
                                 />
                             </FormItem>
                         </Row>
