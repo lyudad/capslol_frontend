@@ -1,11 +1,10 @@
-import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
-import { WechatOutlined } from '@ant-design/icons';
 
 import { logOut } from 'store/slices/auth/auth.slice';
-import { useGetUserProfileQuery } from 'store/apis/jobs';
+import { useGetJobsByOwnerQuery } from 'store/apis/jobs';
+import { useGetFreelancerProfileQuery } from 'store/apis/publicProfile';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
@@ -15,7 +14,6 @@ import {
     Header,
     NavigationContainer,
     Logo,
-    MessageBtn,
     NotificationFlex,
     BarAvatarImg,
     LoggedName,
@@ -39,7 +37,9 @@ const AppBar: React.FC = () => {
 
     const profilePath = `profile/${userId}`;
 
-    const { data: userProfile } = useGetUserProfileQuery(user?.id);
+    const { data: userProfile } = useGetFreelancerProfileQuery(user?.id);
+
+    const { data: ownerJobs } = useGetJobsByOwnerQuery(userId);
 
     const logout = (): void => {
         dispatch(logOut());
@@ -59,29 +59,48 @@ const AppBar: React.FC = () => {
                 </Logo>
                 <HideWrapper showWhen={isAuth}>
                     <HideWrapper showWhen={role === userRole.owner}>
-                        <NavLink to={Paths.TALENT} className="navLink">
-                            {t('AppBar.Talents')}
-                        </NavLink>
+                        <HideWrapper showWhen={!!ownerJobs?.length}>
+                            <NavLink to={Paths.TALENT} className="navLink">
+                                {t('AppBar.Talents')}
+                            </NavLink>
+                        </HideWrapper>
+
                         <NavLink to={Paths.OWNER_JOBS} className="navLink">
                             {t('AppBar.ownerJobs')}
                         </NavLink>
-                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
+
+                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
+                            {t('AppBar.myContracts')}
+                        </NavLink>
+
+                        <NavLink to={Paths.HOME} className="navLink">
                             {t('AppBar.myContacts')}
                         </NavLink>
+
+                        <NavLink to={Paths.CHAT} className="navLink">
+                            {t('AppBar.chat')}
+                        </NavLink>
                     </HideWrapper>
+
                     <HideWrapper showWhen={role === userRole.freelancer}>
                         <HideWrapper showWhen={!!userProfile}>
                             <NavLink to={Paths.JOBS} className="navLink">
                                 {t('AppBar.jobs')}
                             </NavLink>
+
                             <NavLink to={Paths.OFFERS} className="navLink">
                                 {t('AppBar.myOffers')}
                             </NavLink>
+
                             <NavLink
                                 to={Paths.MY_CONTRACTS}
                                 className="navLink"
                             >
                                 {t('AppBar.myContracts')}
+                            </NavLink>
+
+                            <NavLink to={Paths.CHAT} className="navLink">
+                                {t('AppBar.chat')}
                             </NavLink>
                         </HideWrapper>
                         <NavLink to={profilePath} className="navLink">
@@ -101,9 +120,6 @@ const AppBar: React.FC = () => {
                     <BarAvatarImg>
                         <img src={userProfile?.profileImage || avatar} alt="" />
                     </BarAvatarImg>
-                    <MessageBtn onClick={() => navigate(Paths.CHAT)}>
-                        <WechatOutlined />
-                    </MessageBtn>
                     <LogoutButton type="primary" size="small" onClick={logout}>
                         {t('AppBar.logout')}
                     </LogoutButton>

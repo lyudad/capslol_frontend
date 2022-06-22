@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import EmptyListNotification from 'components/EmptyListNotification';
 import {
     Page,
     ListContainer,
@@ -37,6 +39,11 @@ const JobsPage: React.FC = () => {
                             })}
                         </JobsList>
                     )}
+                    <HideWrapper showWhen={!jobsData?.length}>
+                        <EmptyListNotification
+                            note={t('Notes.noProjectsWereFound')}
+                        />
+                    </HideWrapper>
                 </ListContainer>
             </JobsContainer>
         </Page>

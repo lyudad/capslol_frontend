@@ -97,6 +97,10 @@ export const publicProfileApi = apiProfileTag.injectEndpoints({
                 url: `skills`,
             }),
         }),
+        getFreelancerProfile: builder.query<Profile, number | undefined>({
+            query: (userId) => `profiles/getByUserId/${userId}`,
+            providesTags: ['Profile'],
+        }),
     }),
 });
 
@@ -111,4 +115,5 @@ export const {
     useDeleteExperienceMutation,
     useDeleteEducationMutation,
     useUpdateProfileMutation,
+    useGetFreelancerProfileQuery,
 } = publicProfileApi;

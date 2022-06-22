@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import Spinner from 'components/Spinner';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { useGetInvitationsByFreelancerQuery } from 'store/apis/invitations';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { ListContainer, ListWrapper, List, Title } from '../styles';
 import InvitationCard from '../InvitationCard';
 
@@ -16,9 +18,7 @@ const MyInvitations: React.FC = () => {
         <>
             <Title>{t('OffersPage.myInvitations')}</Title>
             <ListWrapper>
-                {isLoading ? (
-                    <Spinner />
-                ) : (
+                <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
                             {invitationsData?.map((item) => {
@@ -31,7 +31,12 @@ const MyInvitations: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                )}
+                    <HideWrapper showWhen={!invitationsData?.length}>
+                        <EmptyListNotification
+                            note={t('Notes.youDon-tHaveInvitations')}
+                        />
+                    </HideWrapper>
+                </SpinnerWrapper>
             </ListWrapper>
         </>
     );
