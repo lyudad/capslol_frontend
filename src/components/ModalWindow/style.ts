@@ -5,7 +5,7 @@ const { textWhite, homeBgr } = colors;
 
 export const Parent = styled.section`
     position: relative;
-    min-height: 12vh;
+    min-height: 10vh;
 `;
 
 export const Button = styled.button`

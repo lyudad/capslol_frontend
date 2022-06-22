@@ -20,4 +20,5 @@ export enum Paths {
     CREATE_JOB_PAGE = '/createJob',
     MY_CONTRACTS = '/my-contracts',
     TALENT = '/talents',
+    MY_CONTACTS = '/my_contacts',
 }

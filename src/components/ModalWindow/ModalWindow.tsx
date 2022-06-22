@@ -27,6 +27,7 @@ const ModalWindow: React.FC<IProps> = ({
             transform: 'translate(-50%, -50%)',
             background: bg,
             borderRadius: '5px',
+            width: '340px',
         },
     };
 

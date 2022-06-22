@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
 import JobsPage from 'pages/JobsPage';
@@ -22,10 +22,18 @@ import ContactsPage from 'pages/ContractsPage';
 import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
+import MyContacts from 'pages/MyContacts(JobOwner)';
 import { useAppSelector } from 'hooks/redux';
+import { TChatArgument } from 'pages/Chat/interfaces';
 
 const App: React.FC = () => {
-    const socket = useMemo(() => ({ socket: appSocket }), []);
+    const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
+        undefined
+    );
+    const context = useMemo(
+        () => ({ socket: appSocket, currentChat, setCurrentChat }),
+        [currentChat]
+    );
 
     const role = useAppSelector((state) => state.auth.user?.role);
 
@@ -34,7 +42,7 @@ const App: React.FC = () => {
     const profilePath = `profile/${userId}`;
 
     return (
-        <AppContext.Provider value={socket}>
+        <AppContext.Provider value={context}>
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>
@@ -144,6 +152,14 @@ const App: React.FC = () => {
                             element={<RolePage />}
                         />
                         <Route path={Paths.CHAT} element={<Chat />} />
+                        <Route
+                            path={Paths.CREATE_JOB_PAGE}
+                            element={<CreateJobPage />}
+                        />
+                        <Route
+                            path={Paths.MY_CONTACTS}
+                            element={<MyContacts />}
+                        />
                     </Route>
                     <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.SIGN_UP} element={<AuthForm />} />

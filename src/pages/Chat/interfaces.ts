@@ -1,4 +1,5 @@
 ﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import { MouseEventHandler } from 'react';
 import { IChatMember, IProposal } from 'store/apis/chat/chat.types';
 import { IOwner } from 'store/apis/jobs/jobs.types';
 
@@ -14,7 +15,6 @@ export interface IChatItemProps {
 export type TChatArgument = IRoom | undefined;
 
 export interface IChatListProps {
-    onChangeChat: (value: TChatArgument) => void;
     members: IChatMember[] | undefined;
 }
 
@@ -30,6 +30,7 @@ export interface IMessages {
     createdAt: string;
     senderId: IOwner;
     roomId: IRoom;
+    isOffer?: boolean;
 }
 
 export interface IRoom {
@@ -53,7 +54,7 @@ export interface IChatWindow {
     price: number;
     hourRate: number;
     handleHourRateChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
-    handleOffer: () => void;
+    currentChat: IChatMember;
 }
 
 export type TEmoji = any;
@@ -62,4 +63,12 @@ export type TEvent = any;
 
 export interface IEmojiProps {
     onEmojiClick: (event: TEvent, emojiObject: TEmoji) => void;
+}
+
+export interface IChatFormProps {
+    setMessageText: React.Dispatch<React.SetStateAction<string>>;
+    messageText: string;
+    inputRef: React.RefObject<HTMLInputElement>;
+    currentChat: IChatMember;
+    handleShowEmojis: MouseEventHandler<HTMLSpanElement>;
 }

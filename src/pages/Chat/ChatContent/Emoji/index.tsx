@@ -11,7 +11,7 @@ const Emoji: React.FC<IEmojiProps> = ({ onEmojiClick }) => {
             skinTone={SKIN_TONE_MEDIUM_DARK}
             pickerStyle={{
                 position: 'absolute',
-                bottom: '110px',
+                bottom: '128px',
                 boxShadow: `0 5px 10px ${colors.black}`,
                 background: `${colors.chatNewMsg}`,
                 border: `1px solid ${colors.chatHeader}`,
