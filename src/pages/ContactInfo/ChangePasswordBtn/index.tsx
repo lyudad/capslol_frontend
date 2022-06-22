@@ -15,7 +15,7 @@ const ChangePasswordBtn: React.FC<IBtnProps> = ({ openModal }) => {
             <TitleGroup justify="space-between">
                 <Title fs="16">********</Title>
                 <Button
-                    onClick={() => openModal()}
+                    onClick={openModal}
                     color={colors.btnWhite}
                     bg={colors.btnDarkBlue}
                 >

@@ -18,3 +18,8 @@ export interface IProposal {
     freelancerId: IOwner;
     jobId: IJob;
 }
+
+export interface ISearch {
+    jobId: number | undefined;
+    freelancerId: number | undefined;
+}

@@ -11,7 +11,6 @@ import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { AppContext } from 'context';
 import { message } from 'antd';
 import { useGetChatContactsByJobIdQuery } from 'store/apis/chat';
-import { IChatMember } from 'store/apis/chat/chat.types';
 import {
     StyledTitleCardButton,
     CardTitle,
@@ -53,17 +52,10 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
     const job = offerId?.jobId;
     const freelancer = offerId?.freelancerId;
 
-    const { data: chatContacts } = useGetChatContactsByJobIdQuery(job?.id);
-
-    const filteredChatContacts = (data: IChatMember[]): IChatMember => {
-        const filtered = data?.filter(
-            (i) => i?.proposalId?.freelancerId?.id === freelancer?.id
-        )[0];
-
-        return filtered;
-    };
-
-    const freelancerChatContact = filteredChatContacts(chatContacts);
+    const { data: chatContacts } = useGetChatContactsByJobIdQuery({
+        jobId: job?.id,
+        freelancerId: freelancer?.id,
+    });
 
     const sentTerminatedMessage = (): void => {
         try {
@@ -80,7 +72,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
                 ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
                 </div>`,
                 senderId: freelancer?.id,
-                roomId: freelancerChatContact?.id,
+                roomId: chatContacts?.id,
                 isOffer: true,
             };
 
@@ -103,7 +95,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
 
     const handleNavigate = (): void => {
         navigate(Paths.CHAT);
-        setCurrentChat?.(freelancerChatContact);
+        setCurrentChat?.(chatContacts);
     };
 
     return (

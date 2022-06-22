@@ -11,7 +11,6 @@ import { IMyOffer, Status } from 'store/apis/offers/offers.types';
 import { dateFormat } from 'constants/index';
 import { AppContext } from 'context';
 import { useGetChatContactsByJobIdQuery } from 'store/apis/chat';
-import { IChatMember } from 'store/apis/chat/chat.types';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import {
     DateContainer,
@@ -46,18 +45,11 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
     const { id, createdAt, jobId, ownerId, hourRate, status, freelancerId } =
         offerObj;
 
-    const { data: chatContacts } = useGetChatContactsByJobIdQuery(jobId?.id);
+    const { data: chatContacts } = useGetChatContactsByJobIdQuery({
+        jobId: jobId?.id,
+        freelancerId: freelancerId.id,
+    });
     const { socket, setCurrentChat } = useContext(AppContext);
-
-    const filteredChatContacts = (data: IChatMember[]): IChatMember => {
-        const filtered = data?.filter(
-            (i) => i?.proposalId?.freelancerId?.id === freelancerId?.id
-        )[0];
-
-        return filtered;
-    };
-
-    const freelancerChatContact = filteredChatContacts(chatContacts);
 
     const sentAcceptMessage = (): void => {
         try {
@@ -74,7 +66,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                 ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
                 </div>`,
                 senderId: freelancerId?.id,
-                roomId: freelancerChatContact?.id,
+                roomId: chatContacts?.id,
                 isOffer: true,
             };
 
@@ -122,7 +114,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
     const handleNavigate = (): void => {
         navigate(Paths.CHAT);
-        setCurrentChat?.(freelancerChatContact);
+        setCurrentChat?.(chatContacts);
     };
 
     return (
