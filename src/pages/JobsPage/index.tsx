@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from 'hooks/redux';
-import { HideWrapper } from 'components/HideWrapper/styles';
-import EmptyListNotification from 'components/EmptyListNotification';
+import { Col, Pagination, Row } from 'antd';
+import { useGetFilteredJobsQuery } from 'store/apis/jobs';
+import { useState } from 'react';
+import { JobInterface, JobsOptionsInterface } from 'store/apis/jobs/jobs.types';
 import {
     Page,
     ListContainer,
@@ -13,23 +14,61 @@ import {
 } from './styles';
 import JobsListCard from './JobListCard';
 import Filters from './Filters';
+import { IQueryFilters } from './Filters/props';
 
 const JobsPage: React.FC = () => {
     const { t } = useTranslation();
 
-    const jobsData = useAppSelector((state) => state.jobsReducer.jobs);
+    const [filter, setFilter] = useState<JobsOptionsInterface>({
+        page: 1,
+    });
+    const { data: jobs, isLoading } = useGetFilteredJobsQuery(filter);
+
+    const onFinish = (value: IQueryFilters): void => {
+        const query: JobsOptionsInterface = {};
+
+        if (value.query) {
+            query.q = value.query;
+        }
+
+        if (value.categoryId) {
+            query.category = value.categoryId;
+        }
+        if (value.skillIds && value.skillIds.length > 0) {
+            query.skills = value.skillIds;
+        }
+
+        if (value.englishLevel) {
+            query.languageLevel = value.englishLevel;
+        }
+
+        if (value.maxSalary) {
+            query.price = value.maxSalary;
+        }
+
+        if (value.projectDuration) {
+            query.projectDuration = value.projectDuration;
+        }
+
+        if (value.timeAvailable) {
+            query.timeAvailable = value.timeAvailable;
+        }
+        setFilter(query);
+    };
 
     return (
         <Page>
             <Title>{t('JobPage.jobPageTitle')}</Title>
             <JobsContainer>
                 <FiltersContainer>
-                    <Filters />
+                    <Filters submitHandler={onFinish} />
                 </FiltersContainer>
                 <ListContainer>
-                    {jobsData && (
+                    {isLoading ? (
+                        <h1>Loading...</h1>
+                    ) : (
                         <JobsList>
-                            {jobsData.map((item) => {
+                            {jobs?.data.map((item: JobInterface) => {
                                 const { id, isArchived } = item;
                                 return (
                                     <JobCard archived={isArchived} key={id}>
@@ -39,11 +78,22 @@ const JobsPage: React.FC = () => {
                             })}
                         </JobsList>
                     )}
-                    <HideWrapper showWhen={!jobsData?.length}>
-                        <EmptyListNotification
-                            note={t('Notes.noProjectsWereFound')}
-                        />
-                    </HideWrapper>
+
+                    <Row justify="center">
+                        <Col>
+                            <Pagination
+                                defaultCurrent={1}
+                                current={jobs?.meta.page}
+                                total={jobs?.meta.itemCount}
+                                onChange={(targetPage) =>
+                                    setFilter((prev) => ({
+                                        ...prev,
+                                        page: targetPage,
+                                    }))
+                                }
+                            />
+                        </Col>
+                    </Row>
                 </ListContainer>
             </JobsContainer>
         </Page>

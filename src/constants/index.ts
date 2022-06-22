@@ -94,7 +94,6 @@ export const projectDuration: string[] = [
 ];
 
 export const englishLevel: string[] = [
-    EnglishLevel.NOENGLISH,
     EnglishLevel.BEGINNER,
     EnglishLevel.PREINTERMEDIATE,
     EnglishLevel.INTERMEDIATE,

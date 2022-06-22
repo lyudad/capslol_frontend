@@ -5,14 +5,22 @@ import {
     ISkill,
     IUserProfile,
     JobFormType,
+    JobResponseInterface,
+    JobsOptionsInterface,
 } from './jobs.types';
 
 const apiJobsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Jobs'] });
 
 export const jobsApi = apiJobsTag.injectEndpoints({
     endpoints: (builder) => ({
-        getJobs: builder.query<IJob[], string>({
-            query: (value) => `jobs${value}`,
+        getFilteredJobs: builder.query<
+            JobResponseInterface,
+            JobsOptionsInterface
+        >({
+            query: (paginationOptions) => ({
+                url: 'jobs',
+                params: paginationOptions,
+            }),
             providesTags: ['Jobs'],
         }),
 
@@ -52,19 +60,29 @@ export const jobsApi = apiJobsTag.injectEndpoints({
                 invalidatesTags: ['Jobs'],
             }),
         }),
+        getAllJobs: builder.query<JobResponseInterface, number>({
+            query: (page: number) => ({
+                url: '/jobs',
+                params: {
+                    page,
+                },
+            }),
+        }),
     }),
 });
 
 export const {
-    useGetJobsQuery,
+    useGetFilteredJobsQuery,
     useGetJobByIdQuery,
     useGetCategoriesQuery,
     useGetSkillsQuery,
-    useLazyGetJobsQuery,
+    useLazyGetFilteredJobsQuery,
     useGetUserProfileQuery,
     useLazyGetUserProfileQuery,
     useCreateJobMutation,
     useGetJobsByOwnerQuery,
     useArchiveToggleMutation,
     useLazyGetJobsByOwnerQuery,
+    useGetAllJobsQuery,
+    useLazyGetAllJobsQuery,
 } = jobsApi;

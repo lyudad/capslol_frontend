@@ -51,3 +51,88 @@ export interface IUserProfile {
 export type JobFormType = Omit<IJob, 'id' | 'createdAt' | 'ownerId'> & {
     ownerId: number;
 };
+
+export interface JobResponseInterface {
+    meta: MetaInterface;
+    data: JobInterface[];
+}
+
+export interface JobInterface {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    timeAvailable: number;
+    createdAt: string;
+    languageLevel: string;
+    projectDuration: ProjectDuration;
+    isArchived: boolean;
+    ownerId: OwnerID;
+    categoryId: CategoryID;
+    skills: Skill[];
+}
+
+export type transformResponseToList = {
+    id: number;
+    name: string;
+};
+
+export interface CategoryID {
+    id: number;
+    categoryName: string;
+}
+
+export interface OwnerID {
+    id: number;
+    firstName: string;
+    lastName: string;
+    role: Role;
+    email: string;
+    phoneNumber: string;
+    createdAt: string;
+    isGoogle: boolean;
+}
+
+export enum Role {
+    Freelancer = 'Freelancer',
+    JobOwner = 'Job Owner',
+}
+
+export enum ProjectDuration {
+    From6MonthsTo1Year = 'from 6 months to 1 year',
+    LessThen6Months = 'less then 6 months',
+    Over1Year = 'over 1 year',
+}
+
+export interface Skill {
+    id: number;
+    name: string;
+}
+
+export interface MetaInterface {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+}
+
+export interface JobsOptionsInterface {
+    q?: string | null;
+    category?: number | null;
+    timeAvailable?: number | null;
+    skills?: number[] | null;
+    languageLevel?: string | null;
+    projectDuration?: string | null;
+    page?: number | null;
+    take?: number | null;
+    price?: number | null;
+}
+
+export enum English {
+    BEGINNER = 'Beginner',
+    PREINTERMEDIATE = 'Pre-Intermediate',
+    INTERMEDIATE = 'Intermediate',
+    ADVANCED = 'Advanced',
+}
