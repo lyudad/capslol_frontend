@@ -1,0 +1,89 @@
+module.exports = {
+    env: {
+        browser: true,
+        es2021: true,
+    },
+    extends: [
+        'plugin:react/recommended',
+        'airbnb',
+        'plugin:@typescript-eslint/recommended',
+        'prettier',
+        'prettier/prettier',
+    ],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+    },
+    plugins: ['react', '@typescript-eslint', 'react-hooks'],
+    rules: {
+        'no-param-reassign': 'off',
+        'no-use-before-define': 'off',
+        '@typescript-eslint/no-use-before-define': ['error'],
+        'react/jsx-filename-extension': [
+            'warn',
+            {
+                extensions: ['.tsx'],
+            },
+        ],
+        'import/no-unresolved': 'off',
+        'import/no-extraneous-dependencies': [
+            'error',
+            {
+                devDependencies: true,
+                optionalDependencies: false,
+                peerDependencies: false,
+            },
+        ],
+        'import/extensions': [
+            'error',
+            'ignorePackages',
+            {
+                js: 'never',
+                ts: 'never',
+                tsx: 'never',
+            },
+        ],
+        'import/named': 'warn',
+        'react/react-in-jsx-scope': 'off',
+        'react/function-component-definition': [
+            2,
+            {
+                namedComponents: 'arrow-function',
+                unnamedComponents: 'arrow-function',
+            },
+        ],
+        '@typescript-eslint/no-explicit-any': 'error',
+        'no-shadow': 'off',
+        '@typescript-eslint/no-shadow': ['error'],
+        '@typescript-eslint/explicit-function-return-type': [
+            'error',
+            {
+                allowExpressions: true,
+            },
+        ],
+        'max-len': [
+            'warn',
+            {
+                code: 140,
+            },
+        ],
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
+        'import/prefer-default-export': 'off',
+        'react/prop-types': 'off',
+        'react/jsx-props-no-spreading': 'off',
+        'react/require-default-props': 'off',
+        'no-console': 'error',
+    },
+    settings: {
+        'import/resolver': {
+            node: {
+                extensions: ['.js', '.jsx', '.ts', '.tsx'],
+            },
+        },
+    },
+};
