@@ -29,17 +29,28 @@ export const ChatMsg = styled.div`
         }
     }
 
-    .offer {
+    .offer,
+    .contract,
+    .terminated {
         font-size: 17px;
         margin-bottom: 8px;
         text-align: center;
+        font-style: italic;
+    }
+
+    .offer {
         color: ${colors.pending};
     }
 
-    .Freelancer {
-        display: block;
+    .contract {
+        color: ${colors.accept};
     }
 
+    .terminated {
+        color: ${colors.decline};
+    }
+
+    .Freelancer,
     .JobOwner {
         display: block;
     }

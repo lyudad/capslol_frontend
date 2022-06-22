@@ -104,7 +104,7 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 />
 
                 <StyledFilter>
-                    <FilterTitle>{t('JobPage.price')}</FilterTitle>
+                    <FilterTitle>{t('JobPage.HourlyRate')}</FilterTitle>
                     <PriceValue>
                         <span>min: 0$</span>
                         <span>current: {maxSalary && `${maxSalary}`}$</span>

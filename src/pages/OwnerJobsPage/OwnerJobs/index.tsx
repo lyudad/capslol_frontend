@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import { IJob } from 'store/apis/jobs/jobs.types';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import EmptyListNotification from 'components/EmptyListNotification';
 import {
     useLazyGetJobsByOwnerQuery,
     useArchiveToggleMutation,
@@ -20,6 +22,7 @@ interface IProps {
 
 const OwnerJobs: React.FC<IProps> = ({ archived }) => {
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
+
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -45,6 +48,14 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
         };
         reloadJobs();
     }, []);
+
+    const isArchivedJob = useMemo(() => {
+        return ownJobs.find((item) => item.isArchived);
+    }, [ownJobs]);
+
+    const isNotArchivedJob = useMemo(() => {
+        return ownJobs.find((item) => !item.isArchived);
+    }, [ownJobs]);
 
     return (
         <>
@@ -79,6 +90,16 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
                             })}
                         </List>
                     </ListContainer>
+                    <HideWrapper showWhen={!archived && !isNotArchivedJob}>
+                        <EmptyListNotification
+                            note={t('Notes.youDon-tHaveRelevantProjects')}
+                        />
+                    </HideWrapper>
+                    <HideWrapper showWhen={!!archived && !isArchivedJob}>
+                        <EmptyListNotification
+                            note={t('Notes.youDon-tHaveArchivalProjects')}
+                        />
+                    </HideWrapper>
                 </SpinnerWrapper>
             </ListWrapper>
         </>

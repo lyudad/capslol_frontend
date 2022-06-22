@@ -25,7 +25,9 @@ export const cloudinaryApi = createApi({
     }),
 });
 
-export const publicProfileApi = baseApi.injectEndpoints({
+const apiProfileTag = baseApi.enhanceEndpoints({ addTagTypes: ['Profile'] });
+
+export const publicProfileApi = apiProfileTag.injectEndpoints({
     endpoints: (builder) => ({
         searchUser: builder.query<Profile, number | undefined>({
             query: (profileType) => ({
@@ -40,6 +42,14 @@ export const publicProfileApi = baseApi.injectEndpoints({
             query: (value) => ({
                 url: 'profiles/',
                 method: 'POST',
+                body: value,
+            }),
+            invalidatesTags: ['Profile'],
+        }),
+        updateProfile: builder.mutation<newProfile, newProfile | undefined>({
+            query: (value) => ({
+                url: 'profiles/',
+                method: 'PATCH',
                 body: value,
             }),
             invalidatesTags: ['Profile'],
@@ -87,16 +97,8 @@ export const publicProfileApi = baseApi.injectEndpoints({
                 url: `skills`,
             }),
         }),
-        getAllExperience: builder.query<Experiences[], string>({
-            query: () => ({
-                url: `experiences`,
-            }),
-            providesTags: ['Profile'],
-        }),
-        getAllEducations: builder.query<Educations[], string>({
-            query: () => ({
-                url: `educations`,
-            }),
+        getFreelancerProfile: builder.query<Profile, number | undefined>({
+            query: (userId) => `profiles/getByUserId/${userId}`,
             providesTags: ['Profile'],
         }),
     }),
@@ -110,8 +112,8 @@ export const {
     useCreateExperienceMutation,
     useGetAllCategoriesQuery,
     useCreateEducationMutation,
-    useGetAllExperienceQuery,
     useDeleteExperienceMutation,
-    useGetAllEducationsQuery,
     useDeleteEducationMutation,
+    useUpdateProfileMutation,
+    useGetFreelancerProfileQuery,
 } = publicProfileApi;

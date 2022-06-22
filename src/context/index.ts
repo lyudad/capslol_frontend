@@ -9,4 +9,6 @@ const SOCKET_URL =
 export const appSocket = io(SOCKET_URL as string);
 export const AppContext = React.createContext<IProps>({
     socket: appSocket,
+    currentChat: undefined,
+    setCurrentChat: undefined,
 });

@@ -18,7 +18,6 @@ import {
     TitleEmpty,
     SectionsUl,
     Line,
-    ButtonBack,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -27,6 +26,7 @@ const PublicPage: React.FC = () => {
     const { user } = useAppSelector((s) => s.auth);
 
     const location = useLocation();
+
     const { data } = useSearchUserQuery((location.state as number) || user?.id);
 
     if (!user) {
@@ -52,9 +52,6 @@ const PublicPage: React.FC = () => {
         <Page>
             <ProfileContainer>
                 <Title>
-                    {/* {location.state && (
-                        <ButtonBack type="default">Back</ButtonBack>
-                    )} */}
                     {data?.user?.firstName
                         ? `${data?.user?.firstName} ${data?.user?.lastName}`
                         : t('PublicProfile.user_name')}
@@ -117,7 +114,7 @@ const PublicPage: React.FC = () => {
                     <Description>
                         <span style={{ color: colors.brandColor }}>
                             {' '}
-                            {data?.categories.categoryName || ''}{' '}
+                            {data?.categories?.categoryName || ''}{' '}
                         </span>
                     </Description>
                 </Sections>

@@ -14,9 +14,11 @@
         "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
         "logout": "logout",
-        "ownerJobs": "MY PROJECTS",
+        "ownerJobs": "OWN JOBS",
         "Talents": "TALENTS",
-        "selectRole": " SELECT ROLE"
+        "selectRole": " SELECT ROLE",
+        "chat": "CHAT",
+        "myContacts": "MY CONTACTS"
     },
     "SignInForm": {},
     "AuthForm": {
@@ -128,7 +130,7 @@
         "jobOwner": "job owner: ",
         "skills": "skills: ",
         "category": "category: ",
-        "salary": "hourly: ",
+        "hourlyRate": "hourly rate: ",
         "timeAvailable": "time available: ",
         "projectDuration": "project duration: ",
         "english": "english:",
@@ -143,7 +145,7 @@
         "fluent": "Fluent",
         "Skills": "Skills",
         "Category": "Category",
-        "price": "Hourly",
+        "HourlyRate": "Hourly Rate",
         "TimeAvailable": "Time available",
         "perDay": "per day",
         "hour": "hour",
@@ -170,7 +172,8 @@
         "jobCreated": "Job created",
         "alreadySent": "Proposal already sent",
         "ifYouAre": "** if you are a freelancer and set up your profile, you will be able to send your proposals",
-        "unfortunately": "UNFORTUNATELY THIS PROJECT IS NOT AVAILABLE"
+        "unfortunately": "UNFORTUNATELY THIS PROJECT IS NOT AVAILABLE",
+        "projectToArchive": "Project is moved to Archive"
     },
     "Proposal": {
         "title": "Submit Proposal",
@@ -200,9 +203,9 @@
         "myOffers": "My Offers",
         "myInvitations": "My Invitations",
         "myProposals": "My Proposals",
-        "myHourRate": "my hour rate: ",
+        "myHourlyRate": "my hourly rate: ",
         "status": "status: ",
-        "ownerHourRate": "job owner hour rate: ",
+        "ownerHourlyRate": "job owner hourly rate: ",
         "youAccepted": "You accepted this offer. Contract created.",
         "youRejected": "You rejected this offer"
     },
@@ -244,7 +247,7 @@
         "conPasswordTitle": {
             "item": "Confirm New Password:",
             "placeholder": "Confirm your new password",
-            "error": "Password must be same"
+            "error": "The password must be same!"
         },
         "btnText": "Save Password",
         "afterChangePassword": {
@@ -253,7 +256,10 @@
         },
         "changedFirstName": "Your first name successfully changed!",
         "changedLastName": "Your last name successfully changed!",
-        "addPhoneNumber": "Your successfully add phone number!"
+        "addPhoneNumber": "Your successfully add phone number!",
+        "emptyRole": "You didn`t choose a role",
+        "congratsNotifice": "Congrats, you successfully upload image!",
+        "errorNotifice": "We can`t upload you profile image, please try again later!"
     },
 
     "Chat": {
@@ -271,11 +277,26 @@
         "offerSentPlaceholder": "Change hour rate...",
         "membersError": "There are no contacts, something went wrong, please try again!",
         "offer": "Send Offer",
-        "offerTitle": "New Offer:",
+        "offerTitle": "New offer:",
+        "contractTitle": "New contract signed:",
+        "terminatedTitle": "Contract terminated:",
         "title": "Title: ",
         "dsc": "Project details: ",
-        "rate": "Hour rate: ",
+        "rate": "Hourly rate: ",
         "link": "You can see all offers in <a href='/offers'>My Offer Page</a>",
-        "contractSigned": "Contract signed on"
+        "contractSigned": "Contract signed on",
+        "contractTerminated": "Contract terminated on",
+        "enterTitle": "Enter hourly rate:"
+    },
+
+    "Notes": {
+        "youDon-tHaveOffers": "YOU DON’T HAVE ANY OFFERS",
+        "youDon-tHaveProposals": "YOU DON’T HAVE ANY PROPOSALS",
+        "youDon-tHaveContracts": "YOU DON’T HAVE ANY CONTRACTS",
+        "youDon-tHaveInvitations": "YOU DON’T HAVE ANY INVITATIONS",
+        "youDon-tHaveProjects": "YOU DON’T HAVE ANY PROJECTS",
+        "youDon-tHaveArchivalProjects": "YOU DON’T HAVE ANY ARCHIVAL PROJECT",
+        "youDon-tHaveRelevantProjects": "YOU DON’T HAVE ANY RELEVANT PROJECT",
+        "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS"
     }
 }

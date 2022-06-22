@@ -83,7 +83,7 @@ export const FiltersContainer = styled.div`
     position: fixed;
 
     left: 0;
-    top: 14%;
+    /* top: 0; */
     padding-left: 5px;
     padding-right: 15px;
     margin-right: 16px;

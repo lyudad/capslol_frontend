@@ -3,6 +3,7 @@ export enum Paths {
     SIGN_UP = '/sign-up',
     SIGN_IN = '/sign-in',
     PROFILE = '/profile/:id',
+    TALENTS_PROFILE = '/talents/profile/:id',
     SELECT_ROLE = '/select-role',
     TEST = '/test',
     FORGOTTEN_PASSWORD = '/forgotten_password',
@@ -19,4 +20,5 @@ export enum Paths {
     CREATE_JOB_PAGE = '/createJob',
     MY_CONTRACTS = '/my-contracts',
     TALENT = '/talents',
+    MY_CONTACTS = '/my_contacts',
 }

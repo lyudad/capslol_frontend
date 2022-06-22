@@ -1,4 +1,5 @@
-﻿import React from 'react';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useRef } from 'react';
 import parse from 'html-react-parser';
 
 import { useAppSelector } from 'hooks/redux';
@@ -14,6 +15,7 @@ import {
 
 const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
     const { user } = useAppSelector((s) => s.auth);
+    const scrollRef = useRef<any>();
 
     const sentTime = (date: string): string => {
         const today = new Date(date);
@@ -26,19 +28,34 @@ const ChatItem: React.FC<IChatItemProps> = ({ animationDelay, msg }) => {
         return time;
     };
 
+    useEffect(() => {
+        scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [msg]);
+
     return (
         <ChatItemCard
-            style={{ animationDelay: `0.${animationDelay}s` }}
+            ref={scrollRef}
+            style={{
+                animationDelay: `0.${animationDelay}s`,
+                display: `${msg?.isOffer ? 'flex' : ''}`,
+                justifyContent: `${msg?.isOffer ? 'center' : ''}`,
+            }}
             className={`${msg?.senderId?.id === user?.id ? '' : 'other'}`}
         >
-            <ChatItemContent className="chat__item__content">
+            <ChatItemContent
+                className="chat__item__content"
+                style={{
+                    marginRight: `${msg?.isOffer && '0'}`,
+                    borderRadius: `${msg?.isOffer && '10px'}`,
+                }}
+            >
                 <ChatMsg>{parse(msg?.content)}</ChatMsg>
                 <ChatMeta>
                     <ChatTime>{sentTime(msg?.createdAt)}</ChatTime>
                 </ChatMeta>
             </ChatItemContent>
 
-            <Avatar id={msg?.senderId?.id} />
+            {!msg.isOffer && <Avatar id={msg?.senderId?.id} />}
         </ChatItemCard>
     );
 };

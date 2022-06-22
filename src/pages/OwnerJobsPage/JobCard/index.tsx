@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import moment from 'moment';
@@ -92,7 +93,14 @@ const JobCard: React.FC<IProps> = ({ onToggleClick, isArchive, jobObj }) => {
                     </ValueBox>
                 </OwnerContainer>
                 <HideWrapper showWhen={!isArchived}>
-                    <StyledNav onClick={() => onToggleClick(id)}>
+                    <StyledNav
+                        onClick={() => {
+                            onToggleClick(id);
+                            notification.open({
+                                message: t('JobPage.projectToArchive'),
+                            });
+                        }}
+                    >
                         {t('OwnerJobsPage.inArchive')}
                     </StyledNav>
                 </HideWrapper>

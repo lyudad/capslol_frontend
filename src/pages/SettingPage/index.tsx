@@ -8,10 +8,9 @@ import {
     useGetAllCategoriesQuery,
     useCreateEducationMutation,
     useUploadAvatarMutation,
-    useGetAllExperienceQuery,
     useDeleteExperienceMutation,
-    useGetAllEducationsQuery,
     useDeleteEducationMutation,
+    useUpdateProfileMutation,
 } from 'store/apis/publicProfile';
 import { useState } from 'react';
 import {
@@ -63,8 +62,8 @@ const SettingPage: React.FC = () => {
     const { Option } = Select;
     const { data } = useSearchUserQuery(user?.id);
 
-    const { data: allExperience } = useGetAllExperienceQuery('');
-    const { data: allEducations } = useGetAllEducationsQuery('');
+    const [updateProfile] = useUpdateProfileMutation();
+
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { data: allCategories } = useGetAllCategoriesQuery('');
     const [createProfile] = useCreateProfileMutation();
@@ -81,15 +80,14 @@ const SettingPage: React.FC = () => {
 
     const [educationName, setEducationName] = useState('');
     const [specialization, setSpecialization] = useState('');
-
     const [startEducation, setStartEducation] = useState('');
-    const [endEducation, setEndEducation] = useState('select date');
+    const [endEducation, setEndEducation] = useState('');
 
     const [nameCompany, setNameCompany] = useState('');
     const [experiensePosition, setExperiensePosition] = useState('');
     const [startExperiense, setStartExperiense] = useState('');
-    const [endExperiense, setEndExperiense] = useState('select date');
-    const [category, setCategory] = useState(data?.categories.categoryName);
+    const [endExperiense, setEndExperiense] = useState('');
+    const [category, setCategory] = useState('');
     const [position, setPosition] = useState(data?.position);
     const [other, setOther] = useState(data?.other);
     const [english, setEnglish] = useState(data?.english);
@@ -126,17 +124,7 @@ const SettingPage: React.FC = () => {
         setStartExperiense(dateString);
     };
 
-    const onEndExperiense = async (
-        date: Moment | null,
-        dateString: string
-    ): Promise<void> => {
-        const UpdateExperience: Experiences = {
-            companyName: nameCompany,
-            position: experiensePosition,
-            startAt: startExperiense,
-            endAt: dateString,
-        };
-        await createExperience(UpdateExperience);
+    const onEndExperiense = (date: Moment | null, dateString: string): void => {
         setEndExperiense(dateString);
     };
 
@@ -166,18 +154,7 @@ const SettingPage: React.FC = () => {
         setStartEducation(dateString);
     };
 
-    const onEndEducation = async (
-        date: Moment | null,
-        dateString: string
-    ): Promise<void> => {
-        const UpdateEducation: Educations = {
-            name: educationName,
-            specialization,
-            startAt: startEducation,
-            endAt: dateString,
-        };
-
-        await createEducation(UpdateEducation);
+    const onEndEducation = (date: Moment | null, dateString: string): void => {
         setEndEducation(dateString);
     };
 
@@ -259,27 +236,172 @@ const SettingPage: React.FC = () => {
             message: 'Success delete 🧺',
         });
     };
+    const onHideEducation = (): void => {
+        setEducationName('');
+        setSpecialization('');
+        setStartEducation('');
+        setEndEducation('');
+        setChangeToggleEducation(false);
+    };
+    const onHideExperience = (): void => {
+        setNameCompany('');
+        setExperiensePosition('');
+        setStartExperiense('');
+        setEndExperiense('');
+        setChangeToggle(false);
+    };
 
-    const onAddEducation = (): void => {
+    const onAddEducation = async (): Promise<void> => {
         if (changeToggleEducation === true) {
-            setChangeToggleEducation(false);
-            setEndEducation('Select date');
+            try {
+                const firstProfile: newProfile = {
+                    id: user?.id,
+                    userId: Number(user?.id),
+                };
+
+                await createProfile(firstProfile);
+                const UpdateEducation: Educations = {
+                    name: educationName,
+                    specialization,
+                    startAt: startEducation,
+                    endAt: endEducation,
+                };
+                const newEducation = await createEducation(
+                    UpdateEducation
+                ).unwrap();
+
+                const arrayEducations: number[] = [];
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                data?.educations.forEach(({ id }: any) => {
+                    arrayEducations.push(id);
+                });
+                arrayEducations.push(newEducation.id as number);
+
+                const UpdateProfile: newProfile = {
+                    id: user?.id,
+                    userId: Number(user?.id),
+                    educations: arrayEducations,
+                };
+                if (!educationName) {
+                    return notification.warning({
+                        message: 'All Education fields must be completed!',
+                    });
+                }
+                if (!specialization) {
+                    return notification.warning({
+                        message: 'All Education fields must be completed!',
+                    });
+                }
+                if (!startEducation) {
+                    return notification.warning({
+                        message: 'All Education fields must be completed!',
+                    });
+                }
+                if (!endEducation) {
+                    return notification.warning({
+                        message: 'All Education fields must be completed!',
+                    });
+                }
+                if (endEducation <= startEducation) {
+                    return notification.warning({
+                        message:
+                            'End date can not be early or the same Start date',
+                    });
+                }
+                await updateProfile(UpdateProfile);
+                setEducationName('');
+                setSpecialization('');
+                setStartEducation('');
+                setEndEducation('');
+                setChangeToggleEducation(false);
+                notification.success({
+                    message: 'Added successfully',
+                });
+            } catch (error) {
+                return message.error(error.status);
+            }
         }
         if (changeToggleEducation === false) {
             setChangeToggleEducation(true);
-            setEndEducation('');
         }
+        return undefined;
     };
 
-    const onAddExperience = (): void => {
+    const onAddExperience = async (): Promise<void> => {
         if (changeToggle === true) {
-            setChangeToggle(false);
-            setEndExperiense('Select date');
+            try {
+                const firstProfile: newProfile = {
+                    id: user?.id,
+                    userId: Number(user?.id),
+                };
+
+                await createProfile(firstProfile);
+                const UpdateExperience: Experiences = {
+                    companyName: nameCompany,
+                    position: experiensePosition,
+                    startAt: startExperiense,
+                    endAt: endExperiense,
+                };
+
+                const newExperience = await createExperience(
+                    UpdateExperience
+                ).unwrap();
+
+                const arrayExperience: number[] = [];
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                data?.experiense.forEach(({ id }: any) => {
+                    arrayExperience.push(id);
+                });
+                arrayExperience.push(newExperience.id as number);
+
+                const UpdateProfile: newProfile = {
+                    id: user?.id,
+                    userId: Number(user?.id),
+                    experiense: arrayExperience,
+                };
+                if (!nameCompany) {
+                    return notification.warning({
+                        message: 'All Experience fields must be completed!',
+                    });
+                }
+                if (!experiensePosition) {
+                    return notification.warning({
+                        message: 'All Experience fields must be completed!',
+                    });
+                }
+                if (!startExperiense) {
+                    return notification.warning({
+                        message: 'All Experience fields must be completed!',
+                    });
+                }
+                if (!endExperiense) {
+                    return notification.warning({
+                        message: 'All Experience fields must be completed!',
+                    });
+                }
+                if (endExperiense <= startExperiense) {
+                    return notification.warning({
+                        message:
+                            'End date can not be early or the same Start date',
+                    });
+                }
+                await updateProfile(UpdateProfile);
+                setNameCompany('');
+                setExperiensePosition('');
+                setStartExperiense('');
+                setEndExperiense('');
+                setChangeToggle(false);
+                notification.success({
+                    message: 'Added successfully',
+                });
+            } catch (error) {
+                return message.error(error.status);
+            }
         }
         if (changeToggle === false) {
             setChangeToggle(true);
-            setEndExperiense('');
         }
+        return undefined;
     };
 
     const onSaveChanges = async (): Promise<void> => {
@@ -308,34 +430,10 @@ const SettingPage: React.FC = () => {
                 message: 'Please choose your English level',
             });
         }
-        if (!endExperiense) {
-            return notification.warning({
-                message: 'Please fill in all fields of new Experience section',
-            });
-        }
-        if (!endEducation) {
-            return notification.warning({
-                message: 'Please fill in all fields of new Education section',
-            });
-        }
-
-        const arrayEducations: number[] = [];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        allEducations?.forEach(({ id }: any) => {
-            arrayEducations.push(id);
-        });
-
-        const arrayExperiense: number[] = [];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        allExperience?.forEach(({ id }: any) => {
-            arrayExperiense.push(id);
-        });
 
         const UpdateProfile: newProfile = {
             id: user?.id,
             userId: Number(user?.id),
-            experiense: arrayExperiense,
-            educations: arrayEducations,
             profileImage: avatarUrl,
             hourRate,
             availableHours,
@@ -348,7 +446,7 @@ const SettingPage: React.FC = () => {
         try {
             await createProfile(UpdateProfile);
         } catch (error) {
-            message.error(error.status);
+            return message.error(error.status);
         }
         navigate(`/profile/${user?.id}`);
         return notification.success({
@@ -461,6 +559,21 @@ const SettingPage: React.FC = () => {
                         <>
                             <Line />
                             <Description>
+                                <Row justify="end">
+                                    <ButtonDel
+                                        style={{
+                                            marginBottom: -33,
+                                            marginTop: 0,
+                                            marginRight: '7%',
+                                            width: 33,
+                                            borderRadius: 30,
+                                        }}
+                                        type="default"
+                                        onClick={onHideEducation}
+                                    >
+                                        ❌
+                                    </ButtonDel>
+                                </Row>
                                 {t('PublicProfile.name_of_courses')}:{' '}
                                 <Input
                                     style={{
@@ -501,18 +614,33 @@ const SettingPage: React.FC = () => {
                                     />
                                 </Space>
                             </Description>
+                            <ButtonSet
+                                onClick={onAddEducation}
+                                style={{
+                                    width: 100,
+                                    marginTop: 20,
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    marginBottom: 5,
+                                }}
+                                type="default"
+                            >
+                                Сonfirm ✔
+                            </ButtonSet>
                             <Line />
                         </>
                     )}
-                    <Row justify="center">
-                        <ButtonSet
-                            onClick={onAddEducation}
-                            style={{ marginTop: 20 }}
-                            type="default"
-                        >
-                            {changeToggleEducation ? '⛔' : '➕'}
-                        </ButtonSet>
-                    </Row>
+                    {!changeToggleEducation && (
+                        <Row justify="center">
+                            <ButtonSet
+                                onClick={onAddEducation}
+                                style={{ marginTop: 20 }}
+                                type="default"
+                            >
+                                ➕
+                            </ButtonSet>
+                        </Row>
+                    )}
                 </Sections>
                 <Sections>
                     <span>
@@ -521,10 +649,10 @@ const SettingPage: React.FC = () => {
                     </span>
                     <Description>
                         <Select
-                            defaultValue={category}
+                            defaultValue={data?.categories?.categoryName}
                             style={{ width: 220 }}
                             onChange={handleChangeCategory}
-                            placeholder={t('PublicProfile.choose_category')}
+                            placeholder="Please select"
                         >
                             {allCategories?.map((e) => (
                                 <Option key={e.categoryName}>
@@ -592,6 +720,21 @@ const SettingPage: React.FC = () => {
                         <>
                             <Line />
                             <Description>
+                                <Row justify="end">
+                                    <ButtonDel
+                                        style={{
+                                            marginBottom: -33,
+                                            marginTop: 0,
+                                            marginRight: '7%',
+                                            width: 33,
+                                            borderRadius: 30,
+                                        }}
+                                        type="default"
+                                        onClick={onHideExperience}
+                                    >
+                                        ❌
+                                    </ButtonDel>
+                                </Row>
                                 {t('PublicProfile.company_name')}:{' '}
                                 <Input
                                     style={{
@@ -630,18 +773,33 @@ const SettingPage: React.FC = () => {
                                     />
                                 </Space>
                             </Description>
+                            <ButtonSet
+                                onClick={onAddExperience}
+                                style={{
+                                    width: 100,
+                                    marginTop: 20,
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    marginBottom: 5,
+                                }}
+                                type="default"
+                            >
+                                Сonfirm ✔
+                            </ButtonSet>
                             <Line />
                         </>
                     )}
-                    <Row justify="center">
-                        <ButtonSet
-                            onClick={onAddExperience}
-                            style={{ marginTop: 20 }}
-                            type="default"
-                        >
-                            {changeToggle ? '⛔' : '➕'}
-                        </ButtonSet>
-                    </Row>
+                    {!changeToggle && (
+                        <Row justify="center">
+                            <ButtonSet
+                                onClick={onAddExperience}
+                                style={{ marginTop: 20 }}
+                                type="default"
+                            >
+                                ➕
+                            </ButtonSet>
+                        </Row>
+                    )}
                 </Sections>
                 <Sections>
                     <span>
@@ -679,7 +837,7 @@ const SettingPage: React.FC = () => {
                         <span>
                             level:{' '}
                             <Select
-                                placeholder="NO SET"
+                                placeholder="Please select"
                                 defaultValue={english}
                                 style={{ width: 220 }}
                                 onChange={handleChange}
