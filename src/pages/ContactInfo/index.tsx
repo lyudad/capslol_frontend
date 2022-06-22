@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { message, Row, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LeftOutlined, UserOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons';
 
 import { colors } from 'constants/index';
 import Button from 'components/Button/Button';
@@ -11,7 +11,6 @@ import {
     useEditUserValueMutation,
     useGetUserByIdQuery,
 } from 'store/apis/profile';
-import { Paths } from 'router/paths';
 import Spinner from 'components/Spinner';
 import { IContactInfo } from './interfaces';
 import {
@@ -21,16 +20,16 @@ import {
     Block,
     Card,
     Label,
-    StyledAvatar,
     CardInfo,
     Icon,
-    Circle,
     IconNotFound,
     EditIcon,
     StyledInput,
     SaveIcon,
 } from './styles';
 import ContactInfoModal from './ContactInfoModal';
+import RoleAndName from './TitleGroup';
+import ChangePasswordBtn from './ChangePasswordBtn';
 
 const ContactInfo: React.FC = () => {
     const location = useLocation();
@@ -52,7 +51,7 @@ const ContactInfo: React.FC = () => {
     const { data: member, isLoading } = useGetUserByIdQuery(state.id);
     const user = member?.data;
 
-    const handleNavigate = (): void => navigate(Paths.PROFILE);
+    const handleNavigate = (): void => navigate(-1);
 
     const openModal = (): void => setIsOpen(true);
 
@@ -130,29 +129,8 @@ const ContactInfo: React.FC = () => {
 
                     <Block>
                         <div>
-                            <TitleGroup mb="35">
-                                <StyledAvatar
-                                    size={64}
-                                    icon={<UserOutlined />}
-                                />
-                                <div>
-                                    <Title fs="28">
-                                        {`${
-                                            user?.firstName
-                                                ? user?.firstName
-                                                : 'Not'
-                                        }
-                                        ${
-                                            user?.lastName
-                                                ? user?.lastName
-                                                : 'Found'
-                                        }`}
-                                    </Title>
-                                    <Circle>
-                                        {user?.role ? user?.role : 'Not Found'}
-                                    </Circle>
-                                </div>
-                            </TitleGroup>
+                            <RoleAndName user={user} />
+
                             <Card>
                                 <CardInfo>
                                     <Label>
@@ -310,21 +288,7 @@ const ContactInfo: React.FC = () => {
                                     </TitleGroup>
                                 </CardInfo>
 
-                                <CardInfo>
-                                    <Label>
-                                        {t('ContactInfo.userPassword')}
-                                    </Label>
-                                    <TitleGroup justify="space-between">
-                                        <Title fs="16">********</Title>
-                                        <Button
-                                            onClick={() => openModal()}
-                                            color={colors.btnWhite}
-                                            bg={colors.btnDarkBlue}
-                                        >
-                                            {t('ContactInfo.btnChangeText')}
-                                        </Button>
-                                    </TitleGroup>
-                                </CardInfo>
+                                <ChangePasswordBtn openModal={openModal} />
                             </Card>
                         </div>
                         <>
@@ -339,7 +303,7 @@ const ContactInfo: React.FC = () => {
             )}
 
             <ContactInfoModal
-                state={state}
+                state={state?.id}
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
             />

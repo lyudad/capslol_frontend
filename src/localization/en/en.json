@@ -14,7 +14,7 @@
         "myContracts": "MY CONTRACTS",
         "welcome": "Welcome,",
         "logout": "logout",
-        "ownerJobs": "MY PROJECTS",
+        "ownerJobs": "OWN JOBS",
         "Talents": "TALENTS",
         "selectRole": " SELECT ROLE",
         "chat": "CHAT",
@@ -250,7 +250,7 @@
         "conPasswordTitle": {
             "item": "Confirm New Password:",
             "placeholder": "Confirm your new password",
-            "error": "Password must be same"
+            "error": "The password must be same!"
         },
         "btnText": "Save Password",
         "afterChangePassword": {
@@ -259,7 +259,10 @@
         },
         "changedFirstName": "Your first name successfully changed!",
         "changedLastName": "Your last name successfully changed!",
-        "addPhoneNumber": "Your successfully add phone number!"
+        "addPhoneNumber": "Your successfully add phone number!",
+        "emptyRole": "You didn`t choose a role",
+        "congratsNotifice": "Congrats, you successfully upload image!",
+        "errorNotifice": "We can`t upload you profile image, please try again later!"
     },
 
     "Chat": {
@@ -277,12 +280,16 @@
         "offerSentPlaceholder": "Change hour rate...",
         "membersError": "There are no contacts, something went wrong, please try again!",
         "offer": "Send Offer",
-        "offerTitle": "New Offer:",
+        "offerTitle": "New offer:",
+        "contractTitle": "New contract signed:",
+        "terminatedTitle": "Contract terminated:",
         "title": "Title: ",
         "dsc": "Project details: ",
-        "rate": "Hour rate: ",
+        "rate": "Hourly rate: ",
         "link": "You can see all offers in <a href='/offers'>My Offer Page</a>",
-        "contractSigned": "Contract signed on"
+        "contractSigned": "Contract signed on",
+        "contractTerminated": "Contract terminated on",
+        "enterTitle": "Enter hourly rate:"
     },
 
     "Notes": {

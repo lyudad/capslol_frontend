@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { NotificationOutlined, MessageOutlined } from '@ant-design/icons';
+import { NotificationOutlined } from '@ant-design/icons';
 import { colors, fonts } from 'constants/index';
 
 export const Header = styled.header`
@@ -82,10 +82,25 @@ export const NotificationIcon = styled(NotificationOutlined)`
     position: relative;
 `;
 
-export const MessageIcon = styled(MessageOutlined)`
+export const MessageBtn = styled.button`
+    background: transparent;
     color: ${colors.textGreen};
-    font-size: 18px;
-    margin-left: 15px;
+    font-size: 22px;
+    height: 35px;
+    align-items: center;
+    display: flex;
+    border: 1px solid ${colors.chatNewMsgBtn};
+    border-radius: 50%;
+    padding: 0 6px;
+    transition: all 0.3s linear;
+    margin: 0 0 0 5px;
+
+    &:hover {
+        transform: scale(1.1);
+        color: ${colors.bgBlack};
+        border: 1px solid ${colors.bgBlack};
+        background: ${colors.textGreen};
+    }
 `;
 
 export const NotificationFlex = styled.div`

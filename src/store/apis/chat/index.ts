@@ -1,7 +1,6 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import { IMessages } from 'pages/Chat/interfaces';
+﻿import { IMessages } from 'pages/Chat/interfaces';
 import { baseApi } from '..';
-import { IChatContact, IChatMember } from './chat.types';
+import { IChatContact, IChatMember, ISearch } from './chat.types';
 
 const apiChatTag = baseApi.enhanceEndpoints({ addTagTypes: ['Users'] });
 
@@ -28,9 +27,9 @@ export const chatApi = apiChatTag.injectEndpoints({
                 url: `/messages?room=${value}`,
             }),
         }),
-        getChatContactsByJobId: builder.query<any, any>({
+        getChatContactsByJobId: builder.query<IChatMember, ISearch>({
             query: (value) => ({
-                url: `/chat-contacts/getById?jobId=${value}`,
+                url: `/chat-contacts/getById?jobId=${value.jobId}&freelancerId=${value.freelancerId}`,
             }),
         }),
     }),

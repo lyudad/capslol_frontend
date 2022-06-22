@@ -27,6 +27,12 @@ export const offersApi = apiOffersTag.injectEndpoints({
             }),
             invalidatesTags: ['Offer'],
         }),
+        getOfferByJobId: builder.query<IMyOffer, number>({
+            query: (value) => ({
+                url: `/offer/getByJobId?jobId=${value}`,
+            }),
+            providesTags: ['Offer'],
+        }),
     }),
 });
 
@@ -34,4 +40,5 @@ export const {
     useGetOffersByFreelancerQuery,
     useChangeStatusMutation,
     useCreateOfferMutation,
+    useGetOfferByJobIdQuery,
 } = offersApi;
