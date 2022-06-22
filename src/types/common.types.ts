@@ -5,7 +5,6 @@ export enum ProjectDuration {
 }
 
 export enum EnglishLevel {
-    NOENGLISH = 'No English',
     BEGINNER = 'Beginner',
     PREINTERMEDIATE = 'Pre-Intermediate',
     INTERMEDIATE = 'Intermediate',
