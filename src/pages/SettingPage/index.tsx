@@ -87,7 +87,7 @@ const SettingPage: React.FC = () => {
     const [experiensePosition, setExperiensePosition] = useState('');
     const [startExperiense, setStartExperiense] = useState('');
     const [endExperiense, setEndExperiense] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(data?.categories?.categoryName);
     const [position, setPosition] = useState(data?.position);
     const [other, setOther] = useState(data?.other);
     const [english, setEnglish] = useState(data?.english);
