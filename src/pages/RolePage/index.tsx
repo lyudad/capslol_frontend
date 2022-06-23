@@ -4,14 +4,16 @@ import { Avatar, Col, Divider, message, Row, Typography } from 'antd';
 import { setUserRole } from 'store/slices/auth/auth.slice';
 import { useLazySetRoleQuery } from 'store/apis/auth';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
-import { Role } from 'store/slices/auth/auth.type';
+import { Role, UserType } from 'store/slices/auth/auth.type';
 import { Paths } from 'router/paths';
 import { StyledButton, StyledCard, Title } from './style';
 
-const RolePage: React.FC = () => {
+const RolePage: React.FC = (): React.ReactElement => {
     const navigate = useNavigate();
     const [setRole] = useLazySetRoleQuery();
-    const userId = useAppSelector((state) => state.auth.user?.id);
+    const currentUser: UserType | null = useAppSelector(
+        (state) => state.auth.user
+    );
     const dispatch = useAppDispatch();
 
     const clickHandler = async (
@@ -44,8 +46,7 @@ const RolePage: React.FC = () => {
             }
 
             if (user.role === Role.FREELANCER) {
-                navigate(`/setting/${user?.id}`);
-                return;
+                navigate(`${Paths.SETTING_PAGE}/${user?.id}`);
             }
         } catch (error) {
             if ('data' in error) {
@@ -56,6 +57,18 @@ const RolePage: React.FC = () => {
             }
         }
     };
+
+    React.useEffect(() => {
+        if (currentUser?.role) {
+            if (currentUser.role === Role.JOB_OWNER) {
+                navigate(Paths.CREATE_JOB_PAGE);
+            }
+
+            if (currentUser.role === Role.FREELANCER) {
+                navigate(`${Paths.SETTING_PAGE}/${currentUser?.id}`);
+            }
+        }
+    }, []);
     return (
         <Row>
             <Col span={24}>
@@ -76,7 +89,9 @@ const RolePage: React.FC = () => {
                             </Typography.Paragraph>
                         </StyledCard>
                         <StyledButton
-                            onClick={() => clickHandler(Role.JOB_OWNER, userId)}
+                            onClick={() =>
+                                clickHandler(Role.JOB_OWNER, currentUser?.id)
+                            }
                         >
                             Job owner
                         </StyledButton>
@@ -95,7 +110,7 @@ const RolePage: React.FC = () => {
                         </StyledCard>
                         <StyledButton
                             onClick={() =>
-                                clickHandler(Role.FREELANCER, userId)
+                                clickHandler(Role.FREELANCER, currentUser?.id)
                             }
                         >
                             Freelancer
