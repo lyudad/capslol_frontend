@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import { useAppSelector } from 'hooks/redux';
 import { useLazyGetFreelancerProfileQuery } from 'store/apis/publicProfile';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { JobInterface, JobsOptionsInterface } from 'store/apis/jobs/jobs.types';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import {
@@ -20,14 +21,6 @@ import {
 import JobsListCard from './JobListCard';
 import { IQueryFilters } from './Filters/props';
 import Filters from './Filters';
-
-export interface IUserFilter {
-    category?: number;
-    skills?: number[];
-    languageLevel?: string;
-    price?: number;
-    timeAvailable?: number;
-}
 
 const JobsPage: React.FC = () => {
     const { t } = useTranslation();
@@ -101,13 +94,21 @@ const JobsPage: React.FC = () => {
         setFilter(query);
     };
 
+    const onRestartIfReset = (): void => {
+        setFilter({ page: 1 });
+    };
+
     return (
         <Page>
             <Title>{t('JobPage.jobPageTitle')}</Title>
             <JobsContainer>
                 <SpinnerWrapper isLoading={isLoading}>
                     <FiltersContainer>
-                        <Filters submitHandler={onFinish} userFilter={filter} />
+                        <Filters
+                            submitHandler={onFinish}
+                            userFilter={filter}
+                            onRestart={onRestartIfReset}
+                        />
                     </FiltersContainer>
                     <ListContainer>
                         <JobsList>
@@ -120,6 +121,11 @@ const JobsPage: React.FC = () => {
                                 );
                             })}
                         </JobsList>
+                        <HideWrapper showWhen={!jobs?.data.length}>
+                            <EmptyListNotification
+                                note={t('Notes.noProjectsWereFound')}
+                            />
+                        </HideWrapper>
                         <HideWrapper
                             showWhen={
                                 !!jobs?.meta.itemCount &&

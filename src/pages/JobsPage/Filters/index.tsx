@@ -19,19 +19,13 @@ import FilterOptionItem from '../FilterOptionItem';
 interface FiltersPropsInterface {
     submitHandler: (value: IQueryFilters) => void;
     userFilter: JobsOptionsInterface;
+    onRestart: () => void;
     salaryLimit?: number;
     timeLimit?: number;
 }
 
-export interface IUserFilter {
-    category?: number;
-    skills?: [];
-    english?: string;
-    hourRate?: number;
-    availableHours?: number;
-}
-
 const Filters: React.FC<FiltersPropsInterface> = ({
+    onRestart,
     userFilter,
     submitHandler,
     salaryLimit = 50,
@@ -69,6 +63,7 @@ const Filters: React.FC<FiltersPropsInterface> = ({
 
     const resetHandler = (): void => {
         form.resetFields();
+        onRestart();
     };
 
     const changeHandler = (value: IQueryFilters): void => {
