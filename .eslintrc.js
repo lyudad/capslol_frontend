@@ -77,7 +77,7 @@ module.exports = {
         'react/prop-types': 'off',
         'react/jsx-props-no-spreading': 'off',
         'react/require-default-props': 'off',
-        'no-console': 'error',
+        'no-console': 'warn',
     },
     settings: {
         'import/resolver': {
