@@ -116,4 +116,5 @@ export const {
     useDeleteEducationMutation,
     useUpdateProfileMutation,
     useGetFreelancerProfileQuery,
+    useLazyGetFreelancerProfileQuery,
 } = publicProfileApi;

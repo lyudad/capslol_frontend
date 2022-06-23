@@ -31,10 +31,11 @@ export const JobsList = styled.ul`
     list-style: none;
     padding-left: 0;
     margin: 0;
+    padding-bottom: 24px;
 `;
 
 export const JobCard = styled.li<{ archived: boolean }>`
-    padding: 24px 8px 8px 8px;
+    padding: 24px 12px 12px 16px;
     background-color: ${colors.appBarBgr};
     border-bottom: 1px solid ${colors.appBarBrd};
     color: ${colors.textWhite};

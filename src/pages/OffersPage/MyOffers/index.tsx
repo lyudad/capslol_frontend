@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
+import { useMemo } from 'react';
+import { sortOffersByAB } from 'utilities/utilities';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
@@ -13,6 +15,14 @@ const MyOffers: React.FC = () => {
     const myId = useAppSelector((state) => state.auth.user?.id);
 
     const { data: offersData, isLoading } = useGetOffersByFreelancerQuery(myId);
+
+    const sortedOffers = useMemo(() => {
+        if (offersData?.length) {
+            return sortOffersByAB(offersData, 'Accepted', 'Pending');
+        }
+        return [];
+    }, [offersData]);
+
     return (
         <>
             <Title>{t('OffersPage.myOffers')}</Title>
@@ -20,7 +30,7 @@ const MyOffers: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {offersData?.map((item) => {
+                            {sortedOffers?.map((item) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>

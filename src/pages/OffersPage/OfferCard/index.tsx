@@ -126,7 +126,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
 
                 <StyledTitleCardButton onClick={onClickJob} type="submit">
                     <CardTitle>{jobId.title}</CardTitle>
-                    <Salary>{jobId.price}$</Salary>
+                    <Salary>{hourRate}$</Salary>
                 </StyledTitleCardButton>
 
                 <ValueBox>
@@ -140,10 +140,10 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
                     <Descriptions>{jobId.description}</Descriptions>
                 </ValueBox>
 
-                <ValueBox>
+                {/* <ValueBox>
                     <Field>{t('OffersPage.ownerHourlyRate')}</Field>
                     <FieldValue>{hourRate}$</FieldValue>
-                </ValueBox>
+                </ValueBox> */}
 
                 <ValueBox>
                     <Field>{t('OffersPage.status')}</Field>
