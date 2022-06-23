@@ -254,12 +254,6 @@ const SettingPage: React.FC = () => {
     const onAddEducation = async (): Promise<void> => {
         if (changeToggleEducation === true) {
             try {
-                const firstProfile: newProfile = {
-                    id: user?.id,
-                    userId: Number(user?.id),
-                };
-
-                await createProfile(firstProfile);
                 const UpdateEducation: Educations = {
                     name: educationName,
                     specialization,
@@ -330,12 +324,6 @@ const SettingPage: React.FC = () => {
     const onAddExperience = async (): Promise<void> => {
         if (changeToggle === true) {
             try {
-                const firstProfile: newProfile = {
-                    id: user?.id,
-                    userId: Number(user?.id),
-                };
-
-                await createProfile(firstProfile);
                 const UpdateExperience: Experiences = {
                     companyName: nameCompany,
                     position: experiensePosition,
