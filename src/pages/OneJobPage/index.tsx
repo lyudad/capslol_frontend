@@ -48,8 +48,6 @@ const OneJobPage: React.FC = () => {
 
     const role = useAppSelector((state) => state.auth.user?.role);
 
-    const regUserId = useAppSelector((state) => state.auth.user?.id);
-
     const { data: userProfile } = useGetUserProfileQuery(user?.id);
 
     const handleSendProposal = (): void => {

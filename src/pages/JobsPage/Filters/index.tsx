@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetCategoriesQuery, useGetSkillsQuery } from 'store/apis/jobs';
 import { Form, Button, Input } from 'antd';
 import { colors, langLevel } from 'constants/index';
+import { JobsOptionsInterface } from 'store/apis/jobs/jobs.types';
 import { IQueryFilters } from './props';
 import {
     Title,
@@ -17,11 +18,15 @@ import FilterOptionItem from '../FilterOptionItem';
 
 interface FiltersPropsInterface {
     submitHandler: (value: IQueryFilters) => void;
+    userFilter: JobsOptionsInterface;
+    onRestart: () => void;
     salaryLimit?: number;
     timeLimit?: number;
 }
 
 const Filters: React.FC<FiltersPropsInterface> = ({
+    onRestart,
+    userFilter,
     submitHandler,
     salaryLimit = 50,
     timeLimit = 12,
@@ -43,8 +48,22 @@ const Filters: React.FC<FiltersPropsInterface> = ({
         name: level,
     }));
 
+    useEffect(() => {
+        const onFill = (): void => {
+            form.setFieldsValue({
+                categoryId: userFilter.category,
+                skillIds: userFilter.skills,
+                englishLevel: userFilter.languageLevel,
+                maxSalary: userFilter.price,
+                timeAvailable: userFilter.timeAvailable,
+            });
+        };
+        onFill();
+    }, [userFilter, form]);
+
     const resetHandler = (): void => {
         form.resetFields();
+        onRestart();
     };
 
     const changeHandler = (value: IQueryFilters): void => {

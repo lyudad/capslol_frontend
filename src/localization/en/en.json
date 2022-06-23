@@ -18,7 +18,8 @@
         "Talents": "TALENTS",
         "selectRole": " SELECT ROLE",
         "chat": "CHAT",
-        "myContacts": "MY CONTACTS"
+        "myContacts": "MY CONTACTS",
+        "createJob": "CREATE JOB"
     },
     "SignInForm": {},
     "AuthForm": {

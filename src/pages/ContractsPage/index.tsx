@@ -6,7 +6,7 @@ import {
     useGetContractsByOwnerQuery,
 } from 'store/apis/contracts';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
-import { sortArrByAB } from 'utilities/utilities';
+import { sortContractsByAB } from 'utilities/utilities';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { IContract } from 'store/apis/contracts/contracts.types';
@@ -30,14 +30,14 @@ const ContactsPage: React.FC = () => {
             currentRole === userRole.freelancer &&
             contractsDataForFreelancer?.length
         ) {
-            return sortArrByAB(
-                [...contractsDataForFreelancer],
+            return sortContractsByAB(
+                contractsDataForFreelancer,
                 'closed',
                 'opened'
             );
         }
         if (currentRole === userRole.owner && contractsDataForOwner?.length) {
-            return sortArrByAB([...contractsDataForOwner], 'closed', 'opened');
+            return sortContractsByAB(contractsDataForOwner, 'closed', 'opened');
         }
         return [];
     }, [currentRole, contractsDataForFreelancer, contractsDataForOwner]);
