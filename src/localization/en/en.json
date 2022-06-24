@@ -2,8 +2,8 @@
     "TalentPage": {
         "talents": "Talents on GetJOB!",
         "send_interview": "Invite to interview",
-        "already_sent": "Invitation already sent",
-        "sent_to": "Invitation sent to "
+        "already_sent": "Invite already sent",
+        "sent_to": "Invite sent to "
     },
     "AppBar": {
         "get": "Get",
