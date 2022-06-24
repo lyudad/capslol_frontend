@@ -192,10 +192,11 @@
             "length": "Value should be less than 4 character"
         },
         "errorLetter": "You must write a cover letter",
-        "errorRate": "You must write your hourly rate",
+        "errorRate": "You should write hourly rate.",
         "proposalSentTitle": "You have already responded to this project. Try another one!",
         "sentSuccess": "You successfully sent Proposal!",
-        "amountPlaceholder": "max amount 50$"
+        "amountPlaceholder": "max amount 50$",
+        "amountError": "The entered valid value must be between 1 and 50."
     },
     "OffersPage": {
         "accept": "Accept",
