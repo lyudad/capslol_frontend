@@ -1,10 +1,11 @@
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Row } from 'antd';
+import { notification, Row } from 'antd';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
 import { useSearchUserQuery } from 'store/apis/publicProfile';
+import { useState } from 'react';
 import avatar from 'assets/avatar.png';
 import { Paths } from 'router/paths';
 import {
@@ -18,12 +19,14 @@ import {
     TitleEmpty,
     SectionsUl,
     Line,
+    StyledNav,
 } from './styles';
 
 const PublicPage: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { user } = useAppSelector((s) => s.auth);
+    const [toggle, setToggle] = useState(false);
 
     const location = useLocation();
 
@@ -48,9 +51,37 @@ const PublicPage: React.FC = () => {
         navigate(Paths.CONTACT_INFO, { state: { id: user?.id } });
     };
 
+    const handleSendInterview = (): void => {
+        setToggle(true);
+
+        notification.success({
+            message: `${t('TalentPage.sent_to')}${data?.user?.firstName}${
+                data?.user?.lastName
+            }`,
+        });
+    };
     return (
         <Page>
             <ProfileContainer>
+                {!!location.state && (
+                    <Row>
+                        <ButtonSet
+                            onClick={() => navigate(`/talents`)}
+                            type="default"
+                        >
+                            {t('PublicProfile.back')}
+                        </ButtonSet>
+                        {toggle ? (
+                            <StyledNav disabled>
+                                {t('TalentPage.already_sent')}
+                            </StyledNav>
+                        ) : (
+                            <StyledNav onClick={handleSendInterview}>
+                                {t('TalentPage.send_interview')}
+                            </StyledNav>
+                        )}
+                    </Row>
+                )}
                 <Title>
                     {data?.user?.firstName
                         ? `${data?.user?.firstName} ${data?.user?.lastName}`
@@ -160,7 +191,6 @@ const PublicPage: React.FC = () => {
                             {data?.skills.map((e) => (
                                 <span key={e.id}>| {e.name} </span>
                             ))}{' '}
-                            
                         </span>
                     </Description>
                 </Sections>

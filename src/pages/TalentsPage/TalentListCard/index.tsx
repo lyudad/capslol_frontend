@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { notification } from 'antd';
 import avatar from 'assets/avatar.png';
+import { useState } from 'react';
 import { Slicer } from 'utilities/utilities';
 import {
     StyledButton,
@@ -24,6 +25,7 @@ interface IProps {
 }
 
 const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
+    const [targetId, setTargetId] = useState();
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -34,9 +36,12 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
         navigate(`/talents/profile/${id}`, { state: id });
     };
 
-    const handleSendProposal = (): void => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleSendInterview = (e: any): void => {
+        setTargetId(e.currentTarget.id);
+
         notification.success({
-            message: 'Тут будет отправка ивайтов :)',
+            message: t('TalentPage.sent_to') + e.currentTarget.name,
         });
     };
 
@@ -65,9 +70,17 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
                     </FieldSkills>
                 </ValueBox>
             </OwnerContainer>
-            <StyledNav onClick={handleSendProposal}>
-                {t('TalentPage.send_interview')}
-            </StyledNav>
+            {id === Number(targetId) ? (
+                <StyledNav disabled>{t('TalentPage.already_sent')}</StyledNav>
+            ) : (
+                <StyledNav
+                    name={`${user?.firstName} ${user?.lastName}`}
+                    id={String(id)}
+                    onClick={handleSendInterview}
+                >
+                    {t('TalentPage.send_interview')}
+                </StyledNav>
+            )}
         </>
     );
 };
