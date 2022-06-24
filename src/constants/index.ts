@@ -94,12 +94,14 @@ export const projectDuration: string[] = [
 ];
 
 export const englishLevel: string[] = [
-    EnglishLevel.NOENGLISH,
     EnglishLevel.BEGINNER,
     EnglishLevel.PREINTERMEDIATE,
     EnglishLevel.INTERMEDIATE,
     EnglishLevel.ADVANCED,
 ];
+
+export const dateFormatForSelect = 'D MMMM YY';
+
 export const dateFormat = 'D MMMM YYYY';
 
 export const userRole = {

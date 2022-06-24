@@ -23,7 +23,6 @@ export const ProtectedRoute: React.FC<IProps> = ({
     redirectPath,
     children,
 }: IProps): JSX.Element => {
-    // const role = useAppSelector((state) => state.auth.user?.role);
     if (boolValue) {
         return <Navigate to={redirectPath} replace />;
     }

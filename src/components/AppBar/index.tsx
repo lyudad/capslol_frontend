@@ -59,27 +59,29 @@ const AppBar: React.FC = () => {
                 </Logo>
                 <HideWrapper showWhen={isAuth}>
                     <HideWrapper showWhen={role === userRole.owner}>
+                        <NavLink to={Paths.OWNER_JOBS} className="navLink">
+                            {t('AppBar.ownerJobs')}
+                        </NavLink>
                         <HideWrapper showWhen={!!ownerJobs?.length}>
                             <NavLink to={Paths.TALENT} className="navLink">
                                 {t('AppBar.Talents')}
                             </NavLink>
+
+                            <NavLink
+                                to={Paths.MY_CONTRACTS}
+                                className="navLink"
+                            >
+                                {t('AppBar.myContracts')}
+                            </NavLink>
+
+                            <NavLink to={Paths.MY_CONTACTS} className="navLink">
+                                {t('AppBar.myContacts')}
+                            </NavLink>
+
+                            <NavLink to={Paths.CHAT} className="navLink">
+                                {t('AppBar.chat')}
+                            </NavLink>
                         </HideWrapper>
-
-                        <NavLink to={Paths.OWNER_JOBS} className="navLink">
-                            {t('AppBar.ownerJobs')}
-                        </NavLink>
-
-                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
-                            {t('AppBar.myContracts')}
-                        </NavLink>
-
-                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
-                            {t('AppBar.myContacts')}
-                        </NavLink>
-
-                        <NavLink to={Paths.CHAT} className="navLink">
-                            {t('AppBar.chat')}
-                        </NavLink>
                     </HideWrapper>
 
                     <HideWrapper showWhen={role === userRole.freelancer}>

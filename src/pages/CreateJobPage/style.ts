@@ -1,16 +1,18 @@
 import styled from 'styled-components';
+import { colors } from 'constants/index';
 
 export const Wrapper = styled.div`
-    padding: 16px;
-    background-color: #000;
+    background-color: ${colors.appBarBgr};
     form {
+        border: 1px solid ${colors.appBarBrd};
+        padding: 16px 16px 8px 0;
         label {
             color: #fff !important;
         }
     }
 `;
 export const Title = styled.h1`
-    color: #4caf50;
+    color: ${colors.brandColor};
     font-size: 2rem;
-    text-align: center;
+    border-bottom: 1px solid ${colors.appBarBrd};
 `;
