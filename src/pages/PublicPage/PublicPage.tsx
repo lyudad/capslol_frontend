@@ -55,7 +55,7 @@ const PublicPage: React.FC = () => {
         setToggle(true);
 
         notification.success({
-            message: `${t('TalentPage.sent_to')}${data?.user?.firstName}${
+            message: `${t('TalentPage.sent_to')}${data?.user?.firstName} ${
                 data?.user?.lastName
             }`,
         });
