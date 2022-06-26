@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
@@ -29,7 +30,7 @@ interface IProps {
 
 const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     const { t } = useTranslation();
-
+    const [showMore, setShowMore] = useState<boolean>(false);
     const role = useAppSelector((state) => state.auth.user?.role);
 
     const user = useAppSelector((state) => state.auth.user);
@@ -79,14 +80,40 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 <JobTitle>{title},</JobTitle>
                 <Salary>{price}$</Salary>
             </StyledButton>
-            <HideWrapper showWhen={description.length < descriptionLength}>
-                <Descriptions>{description}</Descriptions>
-            </HideWrapper>
-            <HideWrapper showWhen={description.length >= descriptionLength}>
-                <Descriptions>
+
+            <Descriptions>
+                <HideWrapper
+                    showWhen={
+                        description.length >= descriptionLength && !showMore
+                    }
+                >
                     {description.slice(0, descriptionLength)}...
-                </Descriptions>
-            </HideWrapper>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={
+                        description.length < descriptionLength ||
+                        (description.length >= descriptionLength && showMore)
+                    }
+                >
+                    {description}
+                </HideWrapper>
+            </Descriptions>
+
+            <StyledNav
+                onClick={() => setShowMore(!showMore)}
+                style={{
+                    marginTop: 4,
+                    marginBottom: 12,
+                    fontSize: 10,
+                    fontStyle: 'italic',
+                    borderRadius: 12,
+                    padding: 6,
+                }}
+            >
+                {description.length >= descriptionLength && !showMore
+                    ? `${t('JobPage.showMore')}`
+                    : `${t('JobPage.showLess')}`}
+            </StyledNav>
 
             <OwnerContainer>
                 <ValueBox>

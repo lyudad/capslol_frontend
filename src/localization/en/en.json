@@ -177,7 +177,9 @@
         "projectToArchive": "Project is moved to Archive",
         "chooseJobTemplate": "Choose job template",
         "createJob": "Create Job",
-        "fillFormBelow": "Fill Form below"
+        "fillFormBelow": "Fill Form below",
+        "showMore": "Show more",
+        "showLess": "Show less"
     },
     "Proposal": {
         "title": "Submit Proposal",
