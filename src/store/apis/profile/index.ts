@@ -1,5 +1,5 @@
 ﻿import { baseApi } from '..';
-import { IPassword, IUserValue, IUser } from './profile.types';
+import { IPassword, IUser } from './profile.types';
 
 const apiProfileTag = baseApi.enhanceEndpoints({ addTagTypes: ['User'] });
 
@@ -15,16 +15,6 @@ export const profileApi = apiProfileTag.injectEndpoints({
                 };
             },
         }),
-        editUserValue: builder.mutation<IUserValue, IUserValue>({
-            query(value) {
-                return {
-                    url: `auth/updateUser/${value.id}`,
-                    method: 'PUT',
-                    body: { user: value },
-                };
-            },
-            invalidatesTags: ['User'],
-        }),
         getUserById: builder.query<IUser, number | undefined>({
             query: (value) => ({
                 url: `auth/getUser/${value}`,
@@ -34,8 +24,4 @@ export const profileApi = apiProfileTag.injectEndpoints({
     }),
 });
 
-export const {
-    useChangePasswordMutation,
-    useEditUserValueMutation,
-    useGetUserByIdQuery,
-} = profileApi;
+export const { useChangePasswordMutation, useGetUserByIdQuery } = profileApi;

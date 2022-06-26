@@ -67,7 +67,6 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                     <FormItem
                         label={t('ContactInfo.passwordTitle.item')}
                         name="password"
-                        hasFeedback
                         rules={[
                             {
                                 required: true,
@@ -75,6 +74,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                                     'ContactInfo.passwordTitle.error'
                                 )}`,
                             },
+
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
                                     if (!value) {
@@ -109,29 +109,44 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                             placeholder={t(
                                 'ContactInfo.passwordTitle.placeholder'
                             )}
+                            name="password"
                         />
                     </FormItem>
 
                     <FormItem
                         label={t('ContactInfo.conPasswordTitle.item')}
                         name="confirmPassword"
-                        hasFeedback
                         dependencies={['password']}
+                        hasFeedback
                         rules={[
                             {
                                 required: true,
-                                message: `${t(
-                                    'ContactInfo.conPasswordTitle.error'
-                                )}`,
+                                message: t(
+                                    'ContactInfo.conPasswordTitle.password'
+                                ),
                             },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
+                                    const matched =
+                                        getFieldValue('confirmPassword').match(
+                                            validatePassword
+                                        );
+                                    if (!matched) {
+                                        return Promise.reject(
+                                            new Error(
+                                                t(
+                                                    'ContactInfo.passwordTitle.error'
+                                                )
+                                            )
+                                        );
+                                    }
                                     if (
                                         !value ||
                                         getFieldValue('password') === value
                                     ) {
                                         return Promise.resolve();
                                     }
+
                                     return Promise.reject(
                                         new Error(
                                             t(
@@ -147,6 +162,8 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                             placeholder={t(
                                 'ContactInfo.conPasswordTitle.placeholder'
                             )}
+                            name="confirmPassword"
+                            autoComplete=""
                         />
                     </FormItem>
 

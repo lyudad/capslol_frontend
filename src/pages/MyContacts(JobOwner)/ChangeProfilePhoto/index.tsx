@@ -54,6 +54,7 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
             const file = (target.files as FileList)[0];
 
             previewFile(file);
+            console.log(previewFile(file));
 
             const newFormData = new FormData();
             newFormData.append('file', file);
