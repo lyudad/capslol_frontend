@@ -47,8 +47,13 @@ export const Section = styled.section`
 
 export const FormItem = styled(Form.Item)`
     width: 35%;
-    .ant-input-textarea-show-count:after {
-        color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 10px;
+    .ant-input-affix-wrapper {
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 10px;
     }
 `;
 
@@ -56,39 +61,7 @@ export const StyledInput = styled(InputNumber)`
     width: 100%;
     border-radius: 5px;
     font-size: 16px;
-    padding: 5px 10px;
-    .ant-input-affix-wrapper > input.ant-input {
-        color: ${textWhite};
-        padding: 0 20px;
-        text-align: end;
-    }
-    .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
-        border-color: ${proposalGreen};
-        border-right-width: 1px;
-        z-index: 1;
-    }
-    .ant-input-affix-wrapper-focused,
-    .ant-input-affix-wrapper:focus {
-        border-color: ${proposalGreen};
-        box-shadow: 0 0 0 2px ${appBarBrd};
-        border-right-width: 1px;
-        outline: 0;
-    }
-    .ant-input-affix-wrapper:hover {
-        border-color: ${proposalGreen};
-        border-right-width: 1px;
-    }
-    .ant-input:focus {
-        border-color: ${proposalGreen};
-        box-shadow: 0 0 0 2px ${appBarBrd};
-        border-right-width: 1px;
-        outline: 0;
-    }
-
-    .ant-input:hover {
-        border-color: ${proposalGreen};
-        border-right-width: 1px;
-    }
+    padding: 4px 10px;
 `;
 
 export const FontTitle = styled.h6`
