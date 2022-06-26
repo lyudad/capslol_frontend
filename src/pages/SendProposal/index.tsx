@@ -1,6 +1,6 @@
 ﻿import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, message, notification, Row } from 'antd';
+import { Form, Input, message, notification, Row } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { colors } from 'constants/index';
@@ -14,6 +14,9 @@ import { Paths } from 'router/paths';
 import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { usePostChatContactMutation } from 'store/apis/chat';
 import { AppContext } from 'context';
+import { validateEntryNumber } from 'constants/validate';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import EmptyListNotification from 'components/EmptyListNotification';
 import {
     Block,
     Font,
@@ -34,6 +37,8 @@ import {
     TFilterArg,
     NotificationType,
     TProposalFilter,
+    IRateArg,
+    TFilterReturn,
 } from './interfaces';
 
 const SendProposal: React.FC = () => {
@@ -42,6 +47,8 @@ const SendProposal: React.FC = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+    const [hourlyRate, setHourlyRate] = useState<number>();
 
     const state = location.state as IJobId;
 
@@ -52,13 +59,6 @@ const SendProposal: React.FC = () => {
     );
     const [postChatContact] = usePostChatContactMutation();
     const { socket } = useContext(AppContext);
-
-    const [freelancerValue, setFreelancerValue] = useState<number>();
-    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-    const [hourRate, setHourRate] = useState<number | undefined>(job?.price);
-    const getJobHourRate = +(((hourRate || 0) / 100) * 12.5);
-
-    const [getJob, setGetJob] = useState<number>(getJobHourRate);
 
     const onReset = (): void => form.resetFields();
 
@@ -113,12 +113,10 @@ const SendProposal: React.FC = () => {
                 jobId: state.id,
                 freelancerId: user?.id,
                 coverLetter: values.coverLetter,
-                hourRate: freelancerValue,
+                hourRate: 0,
             };
             await postProposal(newProposal);
-            setHourRate(0);
-            setGetJob(0);
-            setFreelancerValue(0);
+            setHourlyRate(0);
             onReset();
             openModal();
         } catch (error) {
@@ -127,10 +125,17 @@ const SendProposal: React.FC = () => {
         onReset();
     };
 
-    const onChange = (value: number): void => {
-        setHourRate(value);
-        setGetJob(getJobHourRate);
-        setFreelancerValue(((hourRate || 0) - getJob) * 10);
+    const handleGetJobPercent = (rate: IRateArg): number =>
+        ((rate || 0) / 100) * 12.5;
+
+    const handleGotFreelancerRate = (freelancerRate: IRateArg): number => {
+        const getJobRate = handleGetJobPercent(freelancerRate);
+        return (freelancerRate || 0) - getJobRate;
+    };
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const inputValue = event.target.value;
+        setHourlyRate(+inputValue);
     };
 
     const openNotificationWithIcon = (
@@ -144,124 +149,185 @@ const SendProposal: React.FC = () => {
         });
     };
 
+    const handleProposalFiltered = (data: TFilterArg): TFilterReturn => {
+        const filtered = data?.filter((i) => i.jobId.id === state.id)[0]?.jobId
+            ?.id;
+
+        return filtered;
+    };
+
     return (
-        <Wrapper>
-            <FontTitle color={colors.textWhite} fs="30" mb="30">
-                {t('Proposal.title')}
-            </FontTitle>
+        <>
+            {!(handleProposalFiltered(freelancerProposals) === state.id) && (
+                <Wrapper>
+                    <FontTitle color={colors.textWhite} fs="30" mb="30">
+                        {t('Proposal.title')}
+                    </FontTitle>
 
-            <Form form={form} onFinish={handleSubmit}>
-                <ProposalCard>
-                    <Font color={colors.textWhite} fs="22">
-                        {t('Proposal.subTitle')}
-                    </Font>
-                    <Section>
-                        <FontTitle color={colors.textWhite} fs="18">
-                            {t('Proposal.jobQuestion')}
-                        </FontTitle>
+                    <Form form={form} onFinish={handleSubmit}>
+                        <ProposalCard>
+                            <Font color={colors.textWhite} fs="22">
+                                {t('Proposal.subTitle')}
+                            </Font>
+                            <Section>
+                                <FontTitle color={colors.textWhite} fs="18">
+                                    {t('Proposal.jobQuestion')}
+                                </FontTitle>
 
-                        <Row justify="space-between">
-                            <FontTitle color={colors.textGrey} fs="16">
-                                {t('Proposal.youRate')} $ {hourRate || '0'}/hr
-                            </FontTitle>
-                            <FontTitle color={colors.textGrey} fs="16">
-                                {t('Proposal.jobOwnerRate')} ${' '}
-                                {job?.price || '0'} /hr
-                            </FontTitle>
-                        </Row>
+                                <Row justify="space-between">
+                                    <FontTitle color={colors.textGrey} fs="16">
+                                        {t('Proposal.youRate')} ${' '}
+                                        {hourlyRate || '0'}/hr
+                                    </FontTitle>
+                                    <FontTitle color={colors.textGrey} fs="16">
+                                        {t('Proposal.jobOwnerRate')} ${' '}
+                                        {job?.price || '0'} /hr
+                                    </FontTitle>
+                                </Row>
 
-                        <Row justify="space-between">
-                            <FontTitle color={colors.textWhite} fs="16">
-                                {t('Proposal.hourlyRate')}
-                            </FontTitle>
-                            <FormItem
-                                label=""
-                                name="jobOwnerValue"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: `${t('Proposal.errorRate')}`,
-                                    },
-                                ]}
+                                <Row justify="space-between">
+                                    <FontTitle color={colors.textWhite} fs="16">
+                                        {t('Proposal.hourlyRate')}
+                                    </FontTitle>
+                                    <FormItem
+                                        label=""
+                                        name="hourRate"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: `${t(
+                                                    'Proposal.errorRate'
+                                                )}`,
+                                            },
+                                            ({ getFieldValue }) => ({
+                                                validator(_, value) {
+                                                    if (!value) {
+                                                        return Promise.reject(
+                                                            new Error(
+                                                                t(
+                                                                    'Proposal.amountError'
+                                                                )
+                                                            )
+                                                        );
+                                                    }
+
+                                                    const matched =
+                                                        getFieldValue(
+                                                            'hourRate'
+                                                        ).match(
+                                                            validateEntryNumber
+                                                        );
+                                                    if (!matched) {
+                                                        return Promise.reject(
+                                                            new Error(
+                                                                t(
+                                                                    'Proposal.amountError'
+                                                                )
+                                                            )
+                                                        );
+                                                    }
+                                                    return Promise.resolve();
+                                                },
+                                            }),
+                                        ]}
+                                    >
+                                        <Input
+                                            value={hourlyRate}
+                                            prefix="$"
+                                            placeholder={t(
+                                                'Proposal.amountPlaceholder'
+                                            )}
+                                            maxLength={2}
+                                            onChange={onChange}
+                                            min={1}
+                                            max={50}
+                                        />
+                                    </FormItem>
+                                </Row>
+
+                                <Hr />
+
+                                <Row justify="space-between">
+                                    <FontTitle color={colors.textWhite} fs="16">
+                                        {t('Proposal.getJobRate')}
+                                    </FontTitle>
+                                    <FontTitle color={colors.textWhite} fs="16">
+                                        ${' '}
+                                        {handleGetJobPercent(
+                                            hourlyRate
+                                        ).toFixed(3)}
+                                        /hr
+                                    </FontTitle>
+                                </Row>
+
+                                <Hr />
+
+                                <Row justify="space-between">
+                                    <FontTitle color={colors.textWhite} fs="16">
+                                        {t('Proposal.gotRate')}
+                                    </FontTitle>
+                                    <FormItem label="" name="freelancerValue">
+                                        <StyledInput
+                                            readOnly
+                                            prefix="$"
+                                            placeholder={`${
+                                                handleGotFreelancerRate(
+                                                    hourlyRate
+                                                ) || '0'
+                                            }`}
+                                            maxLength={2}
+                                        />
+                                    </FormItem>
+                                </Row>
+                            </Section>
+                        </ProposalCard>
+
+                        <ProposalCard>
+                            <Font fs="22" color={colors.textWhite}>
+                                {t('Proposal.letterTitle')}
+                            </Font>
+                            <Section>
+                                <Block>
+                                    <FontTitle
+                                        color={colors.textWhite}
+                                        fs="16"
+                                        mb="15"
+                                    >
+                                        {t('Proposal.coverLetterTitle')}
+                                    </FontTitle>
+
+                                    <StyledFormItem
+                                        name="coverLetter"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: `${t(
+                                                    'Proposal.errorLetter'
+                                                )}`,
+                                            },
+                                        ]}
+                                    >
+                                        <StyledTextArea
+                                            showCount
+                                            maxLength={500}
+                                            style={{ height: 150 }}
+                                        />
+                                    </StyledFormItem>
+                                </Block>
+                            </Section>
+                        </ProposalCard>
+
+                        <Form.Item>
+                            <StyledButton
+                                htmlType="submit"
+                                className="login-form-button"
                             >
-                                <StyledInput
-                                    value={hourRate}
-                                    prefix="$"
-                                    maxLength={4}
-                                    onChange={(value) =>
-                                        onChange(value as number)
-                                    }
-                                />
-                            </FormItem>
-                        </Row>
-
-                        <Hr />
-
-                        <Row justify="space-between">
-                            <FontTitle color={colors.textWhite} fs="16">
-                                {t('Proposal.getJobRate')}
-                            </FontTitle>
-                            <FontTitle color={colors.textWhite} fs="16">
-                                $ {(getJob || 0).toFixed(2) || '0'}
-                                /hr
-                            </FontTitle>
-                        </Row>
-
-                        <Hr />
-
-                        <Row justify="space-between">
-                            <FontTitle color={colors.textWhite} fs="16">
-                                {t('Proposal.gotRate')}
-                            </FontTitle>
-                            <FormItem label="" name="freelancerValue">
-                                <StyledInput
-                                    readOnly
-                                    prefix="$"
-                                    placeholder={`${freelancerValue || '0'}`}
-                                    maxLength={4}
-                                />
-                            </FormItem>
-                        </Row>
-                    </Section>
-                </ProposalCard>
-                <ProposalCard>
-                    <Font fs="22" color={colors.textWhite}>
-                        {t('Proposal.letterTitle')}
-                    </Font>
-                    <Section>
-                        <Block>
-                            <FontTitle color={colors.textWhite} fs="16" mb="15">
-                                {t('Proposal.coverLetterTitle')}
-                            </FontTitle>
-
-                            <StyledFormItem
-                                name="coverLetter"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: `${t('Proposal.errorLetter')}`,
-                                    },
-                                ]}
-                            >
-                                <StyledTextArea
-                                    showCount
-                                    maxLength={500}
-                                    style={{ height: 150 }}
-                                />
-                            </StyledFormItem>
-                        </Block>
-                    </Section>
-                </ProposalCard>
-
-                <Form.Item>
-                    <StyledButton
-                        htmlType="submit"
-                        className="login-form-button"
-                    >
-                        {t('Proposal.submitBtnText')}
-                    </StyledButton>
-                </Form.Item>
-            </Form>
+                                {t('Proposal.submitBtnText')}
+                            </StyledButton>
+                        </Form.Item>
+                    </Form>
+                </Wrapper>
+            )}
 
             <>
                 {' '}
@@ -269,8 +335,8 @@ const SendProposal: React.FC = () => {
                     <ModalWindow
                         modalIsOpen={modalIsOpen}
                         closeModal={() => closeModal()}
-                        bg={colors.btnWhite}
-                        modalBg={colors.bgBlack}
+                        bg={colors.modalBg}
+                        modalBg={colors.modalWindowBg}
                     >
                         <FontTitle color={colors.black} fs="18">
                             {t('Proposal.sentSuccess')}
@@ -284,7 +350,15 @@ const SendProposal: React.FC = () => {
                         'You have already responded to this project. Try another one!'
                     )}
             </>
-        </Wrapper>
+
+            <HideWrapper
+                showWhen={
+                    handleProposalFiltered(freelancerProposals) === state.id
+                }
+            >
+                <EmptyListNotification note={t('Proposal.proposalSentTitle')} />
+            </HideWrapper>
+        </>
     );
 };
 

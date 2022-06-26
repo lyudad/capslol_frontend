@@ -22,3 +22,5 @@ export type TFilterReturn = number | undefined;
 export type TProposalFilter = IMyProposal | undefined;
 
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
+export type IRateArg = number | undefined;
