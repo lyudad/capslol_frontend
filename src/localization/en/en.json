@@ -1,7 +1,10 @@
 {
     "TalentPage": {
-        "send_interview": "Send interview",
-        "talents": "Talents on GetJOB!"
+        "talents": "Talents on GetJOB!",
+        "send_interview": "Invite to interview",
+        "already_sent": "Invite already sent",
+        "sent_to": "Invite sent to ",
+        "title_modal": "Select a job to send an invitation"
     },
     "AppBar": {
         "get": "Get",
@@ -82,7 +85,8 @@
         "tag_type": "(tag type [ ])",
         "contact_info": "Contact Info",
         "save_changes": "Save changes",
-        "education_name": "Name of Education"
+        "education_name": "Name of Education",
+        "back": "Back"
     },
 
     "ForgotPage": {

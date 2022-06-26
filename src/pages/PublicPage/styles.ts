@@ -62,6 +62,40 @@ export const Description = styled.p`
     margin-left: 35px;
     color: ${colors.titleOfSectionsProfile};
 `;
+export const StyledNav = styled(Button)`
+    padding: 4px 8px;
+    border: none;
+    cursor: pointer;
+    background: none;
+    border: 1px solid white;
+    color: #fff;
+    font-weight: 500;
+    margin-top: 12px;
+    :hover {
+        background: ${colors.black};
+        border: 1px solid #4caf50;
+        color: ${colors.brandColor};
+    }
+
+    :focus {
+        background: ${colors.brandColor};
+        border: 1px solid ${colors.brandColor};
+        color: ${colors.black};
+    }
+    &:disabled {
+        color: ${colors.textWhite};
+        background: ${colors.passwordBg};
+        cursor: no-drop;
+        font-style: italic;
+        :hover {
+            color: ${colors.textWhite};
+            background: ${colors.passwordBg};
+        }
+    }
+    @media (max-width: 768px) {
+        margin-left: 90px;
+    }
+`;
 export const Avatar = styled.div`
     display: block;
     position: absolute;
@@ -74,28 +108,8 @@ export const ButtonSet = styled(Button)`
     background: none;
     border: 1px solid white;
     color: #fff;
+    margin-top: 12px;
     margin-right: 12px;
-    margin-bottom: 12px;
-    :hover {
-        background: ${colors.black};
-        border: 1px solid #4caf50;
-        color: ${colors.brandColor};
-    }
-
-    :focus {
-        background: ${colors.brandColor};
-        border: 1px solid ${colors.brandColor};
-        color: ${colors.black};
-    }
-`;
-export const ButtonBack = styled(Button)`
-    display: flex;
-    background: none;
-    border: 1px solid white;
-    color: #fff;
-    margin-top: 4px;
-    margin-right: 20%;
-    margin-bottom: 12px;
     :hover {
         background: ${colors.black};
         border: 1px solid #4caf50;

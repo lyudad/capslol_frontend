@@ -142,6 +142,12 @@ export const StyledNav = styled.button`
     bottom: 0;
     font-weight: 500;
     margin-bottom: 8px;
+    &:disabled {
+        color: ${colors.textWhite};
+        background: ${colors.passwordBg};
+        cursor: no-drop;
+        font-style: italic;
+    }
     @media (max-width: 768px) {
         margin-left: 90px;
     }

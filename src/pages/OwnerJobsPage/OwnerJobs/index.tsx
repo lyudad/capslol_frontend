@@ -44,6 +44,7 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
             const results = await searchOwnJobs(userId).unwrap();
+
             setOwnJobs([...results]);
         };
         reloadJobs();
