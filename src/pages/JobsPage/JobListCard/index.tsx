@@ -5,7 +5,7 @@ import { useAppSelector } from 'hooks/redux';
 import { useGetUserProfileQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import moment from 'moment';
-import { dateFormat } from 'constants/index';
+import { dateFormat, descriptionLength } from 'constants/index';
 import { IJob } from 'store/apis/jobs/jobs.types';
 import { TFilterArg, TFilterReturn } from 'pages/SendProposal/interfaces';
 import { HideWrapper } from 'components/HideWrapper/styles';
@@ -79,7 +79,15 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                 <JobTitle>{title},</JobTitle>
                 <Salary>{price}$</Salary>
             </StyledButton>
-            <Descriptions>{description}</Descriptions>
+            <HideWrapper showWhen={description.length < descriptionLength}>
+                <Descriptions>{description}</Descriptions>
+            </HideWrapper>
+            <HideWrapper showWhen={description.length >= descriptionLength}>
+                <Descriptions>
+                    {description.slice(0, descriptionLength)}...
+                </Descriptions>
+            </HideWrapper>
+
             <OwnerContainer>
                 <ValueBox>
                     <Field>{t('JobPage.jobOwner')}</Field>
