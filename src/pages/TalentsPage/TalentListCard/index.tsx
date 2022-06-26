@@ -40,6 +40,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentName, setCurrentName] = useState();
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
+    const [confirmLoading, setConfirmLoading] = useState(false);
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
@@ -49,16 +50,16 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
         reloadJobs();
     }, [searchOwnJobs, userStore?.id]);
 
-    // const showModal = (): void => {
-    //     setIsModalVisible(true);
-    // };
-
     const handleOk = (): void => {
-        setIsModalVisible(false);
-        setIdAfterOk(targetId);
-        notification.success({
-            message: t('TalentPage.sent_to') + currentName,
-        });
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setIdAfterOk(targetId);
+            setIsModalVisible(false);
+            setConfirmLoading(false);
+            notification.success({
+                message: t('TalentPage.sent_to') + currentName,
+            });
+        }, 2000);
     };
 
     const handleCancel = (): void => {
@@ -71,6 +72,19 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSendInterview = (e: any): void => {
+        if (ownJobs.length === 0) {
+            notification.warning({
+                message: t('TalentPage.no_jobs'),
+            });
+            return;
+        }
+        if (ownJobs.length === 1) {
+            setIdAfterOk(e.currentTarget.id);
+            notification.success({
+                message: `${t('TalentPage.sent_to')}${e.currentTarget.name}!`,
+            });
+            return;
+        }
         setIsModalVisible(true);
         setTargetId(e.currentTarget.id);
         setCurrentName(e.currentTarget.name);
@@ -118,6 +132,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
                 centered
                 onOk={handleOk}
                 onCancel={handleCancel}
+                confirmLoading={confirmLoading}
             >
                 <Select
                     defaultValue={ownJobs[0]?.title}
@@ -128,9 +143,6 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
                     {ownJobs?.map((e) => (
                         <Option key={e.title}>{e.title}</Option>
                     ))}
-                    {/* <Option key="One">One</Option>
-                    <Option key="Two">Two</Option>
-                    <Option key="Three">Three</Option> */}
                 </Select>
             </Modal>
         </>
