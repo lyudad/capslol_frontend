@@ -113,3 +113,5 @@ export const statusOfContract = {
     OPENED: 'opened',
     CLOSED: 'closed',
 };
+
+export const descriptionLength = 128;
