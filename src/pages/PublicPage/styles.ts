@@ -57,6 +57,7 @@ export const SectionsUl = styled.div`
 `;
 
 export const Description = styled.p`
+    word-break: break-all;
     font-size: ${fonts.titlesOfProfile};
     margin-top: 15px;
     margin-left: 35px;
