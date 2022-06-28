@@ -33,8 +33,10 @@ const Filters: React.FC<FiltersPropsInterface> = ({
 }) => {
     const [form] = Form.useForm();
     const { t } = useTranslation();
-    const [maxSalary, setMaxSalary] = useState<number | null>(0);
-    const [timeAvailable, setTimeAvailable] = useState<number | null>(0);
+    const [maxSalary, setMaxSalary] = useState<number | null | undefined>(0);
+    const [timeAvailable, setTimeAvailable] = useState<
+        number | null | undefined
+    >(0);
 
     const { data: categories } = useGetCategoriesQuery();
     const listOfCategories = categories?.map((category) => ({
@@ -58,6 +60,8 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 timeAvailable: userFilter.timeAvailable,
             });
         };
+        setMaxSalary(userFilter.price);
+        setTimeAvailable(userFilter.timeAvailable);
         onFill();
     }, [userFilter, form]);
 
@@ -125,7 +129,7 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 <StyledFilter>
                     <FilterTitle>{t('JobPage.HourlyRate')}</FilterTitle>
                     <PriceValue>
-                        <span>min: 1$</span>
+                        <span>min: 0$</span>
                         <span>current: {maxSalary}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>

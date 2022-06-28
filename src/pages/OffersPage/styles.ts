@@ -51,12 +51,12 @@ export const ListWrapper = styled.div`
     justify-content: center;
     align-items: flex-start;
     padding-top: 16px;
-    padding-bottom: 24px;
     border-top: 1px solid ${colors.appBarBrd};
 `;
 
 export const ListContainer = styled.div`
     width: 80vw;
+    padding-bottom: 24px;
 `;
 
 export const List = styled.li`

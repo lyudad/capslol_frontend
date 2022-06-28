@@ -55,29 +55,29 @@ const MyOffers: React.FC = () => {
                         />
                     </HideWrapper>
                 </SpinnerWrapper>
-                <HideWrapper
-                    showWhen={
-                        !!offersData?.meta.itemCount &&
-                        offersData?.meta.itemCount > 10
-                    }
-                >
-                    <Row justify="center">
-                        <Col>
-                            <StyledPagination
-                                defaultCurrent={1}
-                                current={offersData?.meta.page}
-                                total={offersData?.meta.itemCount}
-                                onChange={(targetPage) =>
-                                    setFilter((prev) => ({
-                                        ...prev,
-                                        page: targetPage,
-                                    }))
-                                }
-                            />
-                        </Col>
-                    </Row>
-                </HideWrapper>
             </ListWrapper>
+            <HideWrapper
+                showWhen={
+                    !!offersData?.meta.itemCount &&
+                    offersData?.meta.itemCount > 10
+                }
+            >
+                <Row justify="center">
+                    <Col>
+                        <StyledPagination
+                            defaultCurrent={1}
+                            current={offersData?.meta.page}
+                            total={offersData?.meta.itemCount}
+                            onChange={(targetPage) =>
+                                setFilter((prev) => ({
+                                    ...prev,
+                                    page: targetPage,
+                                }))
+                            }
+                        />
+                    </Col>
+                </Row>
+            </HideWrapper>
         </>
     );
 };
