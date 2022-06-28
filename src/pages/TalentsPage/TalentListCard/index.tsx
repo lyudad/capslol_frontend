@@ -1,12 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { notification, Modal, Select } from 'antd';
+import { notification, Modal, Select, message } from 'antd';
 import avatar from 'assets/avatar.png';
 import { useEffect, useState } from 'react';
 import { Slicer } from 'utilities/utilities';
 import { useAppSelector } from 'hooks/redux';
 import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
 import { IJob } from 'store/apis/jobs/jobs.types';
+import { useCreateInvitationMutation } from 'store/apis/talents';
+import 'antd/dist/antd.min.css';
+import { newInvitation } from 'store/apis/invitations/invitations.types';
+import { IProps } from './props';
 import {
     StyledButton,
     JobTitle,
@@ -19,51 +23,58 @@ import {
     Avatar,
     FieldSkills,
 } from './styles';
-import 'antd/dist/antd.min.css';
-import { talentProfile } from './props';
 
-interface IProps {
-    jobObj: talentProfile;
-}
-
-const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
+const TalentListCard: React.FC<IProps> = ({ jobObj, idArray }) => {
     const { user: userStore } = useAppSelector((s) => s.auth);
     const [searchOwnJobs] = useLazyGetJobsByOwnerQuery();
-    // console.log(data, 'My Jobs');
-
+    const [createInvitation] = useCreateInvitationMutation();
     const { Option } = Select;
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { id, user, other, profileImage, categories, skills } = jobObj;
     const [targetId, setTargetId] = useState();
-    const [idAfterOk, setIdAfterOk] = useState();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentName, setCurrentName] = useState();
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
+    const [jobIdSelected, setJobIdSelected] = useState<number>();
     const [confirmLoading, setConfirmLoading] = useState(false);
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
-            const results = await searchOwnJobs(userStore?.id).unwrap();
+            const firsResults = await searchOwnJobs(userStore?.id).unwrap();
+            const results = firsResults.filter(
+                (item) => item.isArchived === false
+            );
             setOwnJobs([...results]);
         };
         reloadJobs();
     }, [searchOwnJobs, userStore?.id]);
 
-    const handleOk = (): void => {
-        setConfirmLoading(true);
-        setTimeout(() => {
-            setIdAfterOk(targetId);
-            setIsModalVisible(false);
-            setConfirmLoading(false);
-            notification.success({
-                message: t('TalentPage.sent_to') + currentName,
-            });
-        }, 2000);
+    const handleOk = async (): Promise<void> => {
+        try {
+            setConfirmLoading(true);
+            const createNewInvitation: newInvitation = {
+                ownerId: userStore?.id,
+                freelancerId: Number(targetId),
+                jobId: Number(jobIdSelected || ownJobs[0]?.id),
+            };
+            await createInvitation(createNewInvitation).unwrap();
+        } catch (error) {
+            return message.error(error.status);
+        }
+        setConfirmLoading(false);
+        setIsModalVisible(false);
+        return notification.success({
+            message: t('TalentPage.sent_to') + currentName,
+        });
     };
 
     const handleCancel = (): void => {
         setIsModalVisible(false);
+    };
+
+    const handleChangeCategory = (value: string): void => {
+        setJobIdSelected(Number(value));
     };
 
     const onClickJob = (): void => {
@@ -71,7 +82,8 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleSendInterview = (e: any): void => {
+    const handleSendInterview = async (event: any): Promise<void> => {
+        const target = event.currentTarget;
         if (ownJobs.length === 0) {
             notification.warning({
                 message: t('TalentPage.no_jobs'),
@@ -79,15 +91,21 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
             return;
         }
         if (ownJobs.length === 1) {
-            setIdAfterOk(e.currentTarget.id);
+            const createNewInvitation: newInvitation = {
+                ownerId: userStore?.id,
+                freelancerId: Number(target?.id),
+                jobId: Number(jobIdSelected || ownJobs[0]?.id),
+            };
+            await createInvitation(createNewInvitation).unwrap();
             notification.success({
-                message: `${t('TalentPage.sent_to')}${e.currentTarget.name}!`,
+                message: `${t('TalentPage.sent_to')}${target?.name}!`,
             });
             return;
         }
+
         setIsModalVisible(true);
-        setTargetId(e.currentTarget.id);
-        setCurrentName(e.currentTarget.name);
+        setTargetId(target?.id);
+        setCurrentName(target?.name);
     };
 
     return (
@@ -115,12 +133,13 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
                     </FieldSkills>
                 </ValueBox>
             </OwnerContainer>
-            {id === Number(idAfterOk) ? (
+
+            {idArray?.includes(user?.id as number) ? (
                 <StyledNav disabled>{t('TalentPage.already_sent')}</StyledNav>
             ) : (
                 <StyledNav
                     name={`${user?.firstName} ${user?.lastName}`}
-                    id={String(id)}
+                    id={String(user?.id)}
                     onClick={handleSendInterview}
                 >
                     {t('TalentPage.send_interview')}
@@ -137,11 +156,11 @@ const TalentListCard: React.FC<IProps> = ({ jobObj }) => {
                 <Select
                     defaultValue={ownJobs[0]?.title}
                     style={{ width: '100%' }}
-                    // onChange={handleChangeCategory}
+                    onChange={handleChangeCategory}
                     placeholder="Please select"
                 >
                     {ownJobs?.map((e) => (
-                        <Option key={e.title}>{e.title}</Option>
+                        <Option key={e.id}>{e.title}</Option>
                     ))}
                 </Select>
             </Modal>

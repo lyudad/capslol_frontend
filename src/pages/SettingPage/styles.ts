@@ -27,6 +27,7 @@ export const ProfileContainer = styled.section`
 `;
 
 export const TitleEmpty = styled.h1`
+word-break: break-all;
     display: flex;
     width: 250px;
     font-size: x-large;

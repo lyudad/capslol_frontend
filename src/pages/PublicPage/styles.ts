@@ -32,6 +32,7 @@ export const TitleEmpty = styled.h1`
     color: ${colors.navColor};
 `;
 export const Title = styled.h1`
+    word-break: break-all;
     display: flex;
     font-size: x-large;
     margin-top: 22px;
@@ -57,6 +58,7 @@ export const SectionsUl = styled.div`
 `;
 
 export const Description = styled.p`
+    word-break: break-all;
     font-size: ${fonts.titlesOfProfile};
     margin-top: 15px;
     margin-left: 35px;
