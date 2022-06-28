@@ -118,7 +118,10 @@
     },
     "VerifyEmail": {
         "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
-        "poorTitle": "E-Mail Not Found: We were not able to locate merry.mazbell@gmail.com in our system. Please try another e-mail address.",
+        "poorTitle": {
+            "start": "E-Mail Not Found: We were not able to locate",
+            "end": "in our system. Please try another e-mail address."
+        },
         "linkToLogin": "Login?",
         "linkToPasswordPage": "Forgot Password?"
     },
@@ -254,12 +257,13 @@
         "passwordTitle": {
             "item": "New Password:",
             "placeholder": "Your new password",
-            "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+            "error": "Password must contain at least one capital letter, one number and length must be minimum 8 symbols"
         },
         "conPasswordTitle": {
             "item": "Confirm New Password:",
             "placeholder": "Confirm your new password",
-            "error": "The password must be same!"
+            "error": "The passwords you entered do not match, please check again",
+            "password": "Please confirm your password!"
         },
         "btnText": "Save Password",
         "afterChangePassword": {

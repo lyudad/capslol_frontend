@@ -5,13 +5,6 @@ export interface IPassword {
     password: string;
 }
 
-export interface IUserValue {
-    id: number | undefined;
-    firstName?: string;
-    lastName?: string;
-    phoneNumber?: string;
-}
-
 export interface IUser {
     data: UserType | undefined;
 }
