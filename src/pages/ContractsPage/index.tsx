@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Col, Pagination, Row } from 'antd';
+import { useEffect, useState } from 'react';
+import { Col, Row } from 'antd';
+import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import { useGetFilteredContractsQuery } from 'store/apis/contracts';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
-import { sortContractsByAB } from 'utilities/utilities';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import {
@@ -17,9 +17,7 @@ import ContractCard from './ContractCard/index';
 
 const ContactsPage: React.FC = () => {
     const { t } = useTranslation();
-    const [filter, setFilter] = useState<ContractsOptionsInterface>({
-        page: 1,
-    });
+    const [filter, setFilter] = useState<ContractsOptionsInterface>({});
     const myId = useAppSelector((state) => state.auth.user?.id);
     const currentRole = useAppSelector((state) => state.auth.user?.role);
 
@@ -28,9 +26,11 @@ const ContactsPage: React.FC = () => {
 
         if (currentRole === userRole.freelancer) {
             query.freelancerId = myId;
+            query.page = 1;
         }
         if (currentRole === userRole.owner) {
             query.ownerId = myId;
+            query.page = 1;
         }
 
         setFilter(query);
@@ -39,13 +39,6 @@ const ContactsPage: React.FC = () => {
     const { data: contractsData, isLoading } =
         useGetFilteredContractsQuery(filter);
 
-    const sortedContracts = useMemo(() => {
-        if (contractsData?.data.length) {
-            return sortContractsByAB(contractsData.data, 'closed', 'opened');
-        }
-        return [];
-    }, [contractsData]);
-
     return (
         <Page>
             <Title>{t('ContractsPage.myContracts')}</Title>
@@ -53,7 +46,7 @@ const ContactsPage: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {sortedContracts?.map((item: IContract) => {
+                            {contractsData?.data.map((item: IContract) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
@@ -63,7 +56,7 @@ const ContactsPage: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                    <HideWrapper showWhen={!sortedContracts?.length}>
+                    <HideWrapper showWhen={!contractsData?.data.length}>
                         <EmptyListNotification
                             note={t('Notes.youDon-tHaveContracts')}
                         />
@@ -78,7 +71,7 @@ const ContactsPage: React.FC = () => {
             >
                 <Row justify="center">
                     <Col>
-                        <Pagination
+                        <StyledPagination
                             defaultCurrent={1}
                             current={contractsData?.meta.page}
                             total={contractsData?.meta.itemCount}

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { useTranslation } from 'react-i18next';
-import { Col, Pagination, Row } from 'antd';
+import { Col, Row } from 'antd';
 import { useGetFilteredJobsQuery } from 'store/apis/jobs';
 import { useMemo, useState } from 'react';
 import { useAppSelector } from 'hooks/redux';
@@ -9,6 +9,7 @@ import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { JobInterface, JobsOptionsInterface } from 'store/apis/jobs/jobs.types';
 import { HideWrapper } from 'components/HideWrapper/styles';
+import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import {
     Page,
     ListContainer,
@@ -134,7 +135,7 @@ const JobsPage: React.FC = () => {
                         >
                             <Row justify="center">
                                 <Col>
-                                    <Pagination
+                                    <StyledPagination
                                         defaultCurrent={1}
                                         current={jobs?.meta.page}
                                         total={jobs?.meta.itemCount}
