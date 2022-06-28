@@ -4,7 +4,8 @@
         "send_interview": "Invite to interview",
         "already_sent": "Invite already sent",
         "sent_to": "Invite sent to ",
-        "title_modal": "Select a job to send an invitation"
+        "title_modal": "Select a job to send an invitation",
+        "no_jobs": "You have no jobs created!"
     },
     "AppBar": {
         "get": "Get",

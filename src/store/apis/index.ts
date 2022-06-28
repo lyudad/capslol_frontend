@@ -4,7 +4,7 @@ import { RootState } from 'store';
 
 export const baseApi = createApi({
     reducerPath: 'baseApi',
-    tagTypes: ['Profile'],
+    tagTypes: ['Profile', 'Talents'],
     baseQuery: fetchBaseQuery({
         baseUrl:
             process.env.NODE_ENV === 'development'

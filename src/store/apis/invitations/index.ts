@@ -14,7 +14,16 @@ export const invitationsApi = apiInvitationsTag.injectEndpoints({
             }),
             providesTags: ['Offer'],
         }),
+        getInvitationsByJobOwner: builder.query({
+            query: (value: number | undefined) => ({
+                url: `/invitation/getInvitationsJb?ownerId=${value}`,
+            }),
+            providesTags: ['Talents'],
+        }),
     }),
 });
 
-export const { useGetInvitationsByFreelancerQuery } = invitationsApi;
+export const {
+    useGetInvitationsByFreelancerQuery,
+    useGetInvitationsByJobOwnerQuery,
+} = invitationsApi;

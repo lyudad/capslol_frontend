@@ -27,3 +27,9 @@ export interface IMyInvitation {
     freelancerId: IUser;
     jobId: IJob;
 }
+
+export interface newInvitation {
+    ownerId: number | undefined;
+    freelancerId: number | undefined;
+    jobId: number | undefined;
+}
