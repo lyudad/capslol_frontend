@@ -1,12 +1,15 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { colors } from 'constants/index';
 import { validatePassword } from 'constants/validate';
 import { IPassword } from 'store/apis/profile/profile.types';
 import { useChangePasswordMutation } from 'store/apis/profile';
+import { logOut } from 'store/slices/auth/auth.slice';
 
 import {
     FormButton,
@@ -15,6 +18,8 @@ import {
     StyledForm,
 } from 'pages/ForgotPassword/styles';
 import { FormPassword } from 'pages/ResetPassword/style';
+
+import { Paths } from 'router/paths';
 import { IChangePassword, IModalProps } from '../interfaces';
 import { Label } from '../styles';
 
@@ -26,6 +31,9 @@ const ContactInfoModal: React.FC<IModalProps> = ({
     const [loading, setLoading] = useState<boolean>(false);
     const { t } = useTranslation();
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    let timer: ReturnType<typeof setTimeout>;
 
     const onReset = (): void => form.resetFields();
 
@@ -33,6 +41,13 @@ const ContactInfoModal: React.FC<IModalProps> = ({
 
     const [changePassword, { isError, isSuccess }] =
         useChangePasswordMutation();
+
+    const handleLogOut = (): void => {
+        timer = setTimeout(() => {
+            dispatch(logOut());
+            navigate(Paths.HOME);
+        }, 1000);
+    };
 
     const onFinish = async (values: IChangePassword): Promise<void> => {
         enterLoading();
@@ -44,10 +59,16 @@ const ContactInfoModal: React.FC<IModalProps> = ({
             await changePassword(value).unwrap();
             onReset();
             setLoading(false);
+            handleLogOut();
         } catch (error) {
             message.error(error.data.message);
         }
     };
+
+    useEffect(() => {
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <ModalWindow
@@ -67,6 +88,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                     <FormItem
                         label={t('ContactInfo.passwordTitle.item')}
                         name="password"
+                        htmlFor="password"
                         rules={[
                             {
                                 required: true,
@@ -117,6 +139,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                         label={t('ContactInfo.conPasswordTitle.item')}
                         name="confirmPassword"
                         dependencies={['password']}
+                        htmlFor="confirmPassword"
                         hasFeedback
                         rules={[
                             {
@@ -163,7 +186,6 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                                 'ContactInfo.conPasswordTitle.placeholder'
                             )}
                             name="confirmPassword"
-                            autoComplete=""
                         />
                     </FormItem>
 
