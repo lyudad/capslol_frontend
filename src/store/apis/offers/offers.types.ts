@@ -47,3 +47,23 @@ export interface ICreateOffer {
     freelancerId: number;
     jobId: number | undefined;
 }
+
+export interface MetaInterface {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+}
+
+export interface OfferResponseInterface {
+    meta: MetaInterface;
+    data: IMyOffer[];
+}
+
+export interface OfferOptionsInterface {
+    page?: number | null;
+    take?: number | null;
+    freelancerId?: number | null;
+}

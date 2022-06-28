@@ -66,7 +66,7 @@ const ContactsPage: React.FC = () => {
             <HideWrapper
                 showWhen={
                     !!contractsData?.meta.itemCount &&
-                    contractsData?.meta.itemCount > 0
+                    contractsData?.meta.itemCount > 10
                 }
             >
                 <Row justify="center">

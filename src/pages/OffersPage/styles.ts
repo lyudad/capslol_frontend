@@ -51,6 +51,7 @@ export const ListWrapper = styled.div`
     justify-content: center;
     align-items: flex-start;
     padding-top: 16px;
+    padding-bottom: 24px;
     border-top: 1px solid ${colors.appBarBrd};
 `;
 
