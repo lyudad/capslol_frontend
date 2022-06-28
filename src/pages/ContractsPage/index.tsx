@@ -17,7 +17,9 @@ import ContractCard from './ContractCard/index';
 
 const ContactsPage: React.FC = () => {
     const { t } = useTranslation();
-    const [filter, setFilter] = useState<ContractsOptionsInterface>({});
+    const [filter, setFilter] = useState<ContractsOptionsInterface>({
+        page: 1,
+    });
     const myId = useAppSelector((state) => state.auth.user?.id);
     const currentRole = useAppSelector((state) => state.auth.user?.role);
 
@@ -26,11 +28,9 @@ const ContactsPage: React.FC = () => {
 
         if (currentRole === userRole.freelancer) {
             query.freelancerId = myId;
-            query.page = 1;
         }
         if (currentRole === userRole.owner) {
             query.ownerId = myId;
-            query.page = 1;
         }
 
         setFilter(query);

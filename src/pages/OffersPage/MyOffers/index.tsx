@@ -8,13 +8,16 @@ import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { useGetFilteredOffersQuery } from 'store/apis/offers';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
-import { OfferOptionsInterface } from 'store/apis/offers/offers.types';
+import {
+    IMyOffer,
+    OfferOptionsInterface,
+} from 'store/apis/offers/offers.types';
 import { ListContainer, List, Title, ListWrapper } from '../styles';
 import OfferCard from '../OfferCard/index';
 
 const MyOffers: React.FC = () => {
     const { t } = useTranslation();
-    const [filter, setFilter] = useState<OfferOptionsInterface>({});
+    const [filter, setFilter] = useState<OfferOptionsInterface>({ page: 1 });
 
     const myId = useAppSelector((state) => state.auth.user?.id);
     const currentRole = useAppSelector((state) => state.auth.user?.role);
@@ -24,7 +27,6 @@ const MyOffers: React.FC = () => {
 
         if (currentRole === userRole.freelancer) {
             query.freelancerId = myId;
-            query.page = 1;
         }
 
         setFilter(query);
@@ -39,7 +41,7 @@ const MyOffers: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {offersData?.data.map((item) => {
+                            {offersData?.data.map((item: IMyOffer) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>

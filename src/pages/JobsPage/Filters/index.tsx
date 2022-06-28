@@ -33,10 +33,8 @@ const Filters: React.FC<FiltersPropsInterface> = ({
 }) => {
     const [form] = Form.useForm();
     const { t } = useTranslation();
-    const [maxSalary, setMaxSalary] = useState<number | null | undefined>(0);
-    const [timeAvailable, setTimeAvailable] = useState<
-        number | null | undefined
-    >(0);
+    const [maxSalary, setMaxSalary] = useState<number | null>(0);
+    const [timeAvailable, setTimeAvailable] = useState<number | null>(0);
 
     const { data: categories } = useGetCategoriesQuery();
     const listOfCategories = categories?.map((category) => ({
@@ -60,8 +58,12 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 timeAvailable: userFilter.timeAvailable,
             });
         };
-        setMaxSalary(userFilter.price);
-        setTimeAvailable(userFilter.timeAvailable);
+        if (userFilter.price) {
+            setMaxSalary(userFilter.price);
+        }
+        if (userFilter.timeAvailable) {
+            setTimeAvailable(userFilter.timeAvailable);
+        }
         onFill();
     }, [userFilter, form]);
 
