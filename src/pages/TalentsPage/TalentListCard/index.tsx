@@ -24,7 +24,10 @@ import {
     FieldSkills,
 } from './styles';
 
-const TalentListCard: React.FC<IProps> = ({ jobObj, idArray }) => {
+const TalentListCard: React.FC<IProps> = ({
+    jobObj,
+    freelancerIdInInvitations,
+}) => {
     const { user: userStore } = useAppSelector((s) => s.auth);
     const [searchOwnJobs] = useLazyGetJobsByOwnerQuery();
     const [createInvitation] = useCreateInvitationMutation();
@@ -32,12 +35,12 @@ const TalentListCard: React.FC<IProps> = ({ jobObj, idArray }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { id, user, other, profileImage, categories, skills } = jobObj;
-    const [targetId, setTargetId] = useState();
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [currentName, setCurrentName] = useState();
+    const [targetId, setTargetId] = useState<number>();
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [currentName, setCurrentName] = useState<string>();
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
     const [jobIdSelected, setJobIdSelected] = useState<number>();
-    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
@@ -84,7 +87,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj, idArray }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSendInterview = async (event: any): Promise<void> => {
         const target = event.currentTarget;
-        if (ownJobs.length === 0) {
+        if (!ownJobs.length) {
             notification.warning({
                 message: t('TalentPage.no_jobs'),
             });
@@ -134,7 +137,7 @@ const TalentListCard: React.FC<IProps> = ({ jobObj, idArray }) => {
                 </ValueBox>
             </OwnerContainer>
 
-            {idArray?.includes(user?.id as number) ? (
+            {freelancerIdInInvitations?.includes(user?.id as number) ? (
                 <StyledNav disabled>{t('TalentPage.already_sent')}</StyledNav>
             ) : (
                 <StyledNav

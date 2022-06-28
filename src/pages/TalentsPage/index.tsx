@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
+import { userRole } from 'constants/index';
 import { useGetInvitationsByJobOwnerQuery } from 'store/apis/invitations';
+import { IMyInvitation } from 'store/apis/invitations/invitations.types';
 import TalentListCard from './TalentListCard';
 import Filters from './Filters';
 import {
@@ -19,13 +21,17 @@ const TalentsPage: React.FC = () => {
     const { user: userStore } = useAppSelector((s) => s.auth);
     const allUsers = useAppSelector((state) => state.talentsReducer.talents);
 
-    const data = allUsers.filter((item) => item.user?.role === 'Freelancer');
+    const data = allUsers.filter(
+        (item) => item.user?.role === userRole.freelancer
+    );
     const { data: myInvitations } = useGetInvitationsByJobOwnerQuery(
         userStore?.id
     );
     const idArray: Array<number> = [];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    myInvitations?.map((e: any) => idArray.push(e.freelancerId.id));
+
+    myInvitations?.map((e: IMyInvitation) =>
+        idArray.push(e.freelancerId.id as number)
+    );
 
     return (
         <Page>
@@ -44,7 +50,7 @@ const TalentsPage: React.FC = () => {
                                     <TalentCard key={id}>
                                         <TalentListCard
                                             jobObj={item}
-                                            idArray={idArray}
+                                            freelancerIdInInvitations={idArray}
                                         />
                                     </TalentCard>
                                 );

@@ -15,5 +15,5 @@ export interface talentProfile {
 
 export interface IProps {
     jobObj: talentProfile;
-    idArray: Array<number>;
+    freelancerIdInInvitations: Array<number>;
 }
