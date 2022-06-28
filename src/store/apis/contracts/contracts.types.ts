@@ -47,3 +47,24 @@ export interface IContract {
     closedAt: string | null;
     offerId: IOffer;
 }
+
+export interface MetaInterface {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+}
+
+export interface ContractResponseInterface {
+    meta: MetaInterface;
+    data: IContract[];
+}
+
+export interface ContractsOptionsInterface {
+    page?: number | null;
+    take?: number | null;
+    freelancerId?: number | null;
+    ownerId?: number | null;
+}
