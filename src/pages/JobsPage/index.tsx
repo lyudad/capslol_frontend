@@ -65,6 +65,8 @@ const JobsPage: React.FC = () => {
             }
             query.isArchived = 0;
 
+            query.page = 1;
+
             setFilter(query);
         }
         return query;
@@ -106,6 +108,8 @@ const JobsPage: React.FC = () => {
             query.timeAvailable = value.timeAvailable;
         }
         query.isArchived = 0;
+
+        query.page = 1;
 
         setFilter(query);
     };
@@ -149,7 +153,7 @@ const JobsPage: React.FC = () => {
                                 <Col>
                                     <StyledPagination
                                         defaultCurrent={1}
-                                        current={meta?.page}
+                                        current={filter?.page}
                                         total={meta?.itemCount}
                                         onChange={(targetPage) =>
                                             setFilter((prev) => ({

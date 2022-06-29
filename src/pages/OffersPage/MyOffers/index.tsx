@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import { Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
-import { userRole } from 'constants/index';
 import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
@@ -17,20 +17,17 @@ import OfferCard from '../OfferCard/index';
 
 const MyOffers: React.FC = () => {
     const { t } = useTranslation();
-    const [filter, setFilter] = useState<OfferOptionsInterface>({ page: 1 });
+    const [filter, setFilter] = useState<OfferOptionsInterface>({
+        page: 1,
+    });
 
     const myId = useAppSelector((state) => state.auth.user?.id);
-    const currentRole = useAppSelector((state) => state.auth.user?.role);
 
     useEffect((): void => {
-        const query: OfferOptionsInterface = {};
-
-        if (currentRole === userRole.freelancer) {
-            query.freelancerId = myId;
-        }
-
-        setFilter(query);
-    }, [currentRole, myId]);
+        const filterSet = (prev: OfferOptionsInterface) =>
+            setFilter({ ...prev, freelancerId: myId });
+        filterSet(filter);
+    }, [myId, filter]);
 
     const { data: offersData, isLoading } = useGetFilteredOffersQuery(filter);
 
@@ -68,7 +65,7 @@ const MyOffers: React.FC = () => {
                     <Col>
                         <StyledPagination
                             defaultCurrent={1}
-                            current={offersData?.meta.page}
+                            current={filter.page}
                             total={offersData?.meta.itemCount}
                             onChange={(targetPage) =>
                                 setFilter((prev) => ({

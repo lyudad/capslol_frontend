@@ -56,10 +56,12 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
         if (archived) {
             query.ownerId = userId;
             query.isArchived = 1;
+            query.page = 1;
         }
         if (!archived) {
             query.ownerId = userId;
             query.isArchived = 0;
+            query.page = 1;
         }
         setFilter(query);
     }, [archived]);
@@ -125,7 +127,7 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
                     <Col>
                         <StyledPagination
                             defaultCurrent={1}
-                            current={meta?.page}
+                            current={filter?.page}
                             total={meta?.itemCount}
                             onChange={(targetPage) =>
                                 setFilter((prev) => ({

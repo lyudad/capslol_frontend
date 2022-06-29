@@ -22,7 +22,7 @@ const MyInvitations: React.FC = () => {
     const myId = useAppSelector((state) => state.auth.user?.id);
 
     useEffect((): void => {
-        setFilter({ freelancerId: myId });
+        setFilter({ freelancerId: myId, page: 1 });
     }, [myId]);
 
     const { data: invitationsData, isLoading } =
@@ -66,7 +66,7 @@ const MyInvitations: React.FC = () => {
                     <Col>
                         <StyledPagination
                             defaultCurrent={1}
-                            current={invitationsData?.meta.page}
+                            current={filter?.page}
                             total={invitationsData?.meta.itemCount}
                             onChange={(targetPage) =>
                                 setFilter((prev) => ({

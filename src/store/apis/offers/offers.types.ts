@@ -63,7 +63,7 @@ export interface OfferResponseInterface {
 }
 
 export interface OfferOptionsInterface {
-    page?: number | null;
-    take?: number | null;
-    freelancerId?: number | null;
+    page?: number;
+    take?: number;
+    freelancerId?: number;
 }

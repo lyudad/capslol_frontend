@@ -63,8 +63,8 @@ export interface ContractResponseInterface {
 }
 
 export interface ContractsOptionsInterface {
-    page?: number | null;
-    take?: number | null;
-    freelancerId?: number | null;
-    ownerId?: number | null;
+    page?: number;
+    take?: number;
+    freelancerId?: number;
+    ownerId?: number;
 }

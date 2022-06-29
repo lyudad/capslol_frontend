@@ -43,7 +43,7 @@ export interface ProposalResponseInterface {
 }
 
 export interface ProposalOptionsInterface {
-    page?: number | null;
-    take?: number | null;
-    freelancerId?: number | null;
+    page?: number;
+    take?: number;
+    freelancerId?: number;
 }

@@ -28,9 +28,11 @@ const ContactsPage: React.FC = () => {
 
         if (currentRole === userRole.freelancer) {
             query.freelancerId = myId;
+            query.page = 1;
         }
         if (currentRole === userRole.owner) {
             query.ownerId = myId;
+            query.page = 1;
         }
 
         setFilter(query);
@@ -73,7 +75,7 @@ const ContactsPage: React.FC = () => {
                     <Col>
                         <StyledPagination
                             defaultCurrent={1}
-                            current={contractsData?.meta.page}
+                            current={filter?.page}
                             total={contractsData?.meta.itemCount}
                             onChange={(targetPage) =>
                                 setFilter((prev) => ({
