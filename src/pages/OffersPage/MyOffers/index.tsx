@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
 import { Col, Row } from 'antd';
@@ -24,10 +23,8 @@ const MyOffers: React.FC = () => {
     const myId = useAppSelector((state) => state.auth.user?.id);
 
     useEffect((): void => {
-        const filterSet = (prev: OfferOptionsInterface) =>
-            setFilter({ ...prev, freelancerId: myId });
-        filterSet(filter);
-    }, [myId, filter]);
+        setFilter({ page: 1, freelancerId: myId });
+    }, [myId]);
 
     const { data: offersData, isLoading } = useGetFilteredOffersQuery(filter);
 
