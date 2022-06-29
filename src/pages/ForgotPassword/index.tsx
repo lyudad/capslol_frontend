@@ -23,6 +23,7 @@ const ForgotPassword: React.FC = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>();
 
     const [confirmEmail, { data, isError }] = useConfirmEmailMutation();
 
@@ -39,6 +40,9 @@ const ForgotPassword: React.FC = () => {
         }
         onReset();
     };
+
+    const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void =>
+        setEmail(event?.target?.value);
 
     return (
         <Section>
@@ -70,6 +74,7 @@ const ForgotPassword: React.FC = () => {
                                     <MailOutlined className="site-form-item-icon" />
                                 }
                                 placeholder="email@example.com"
+                                onChange={handleInput}
                             />
                         </FormItem>
 
@@ -93,7 +98,9 @@ const ForgotPassword: React.FC = () => {
                 </Wrapper>
             )}
 
-            {(data || isError) && <VerifyEmail data={data} isError={isError} />}
+            {(data || isError) && (
+                <VerifyEmail data={data} isError={isError} email={email} />
+            )}
         </Section>
     );
 };

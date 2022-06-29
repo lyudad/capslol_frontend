@@ -10,6 +10,7 @@ import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
 import { HideWrapper } from 'components/HideWrapper/styles';
+import { StyledImg } from 'pages/MyContacts(JobOwner)/styles';
 import {
     Header,
     NavigationContainer,
@@ -120,7 +121,10 @@ const AppBar: React.FC = () => {
                         </span>
                     </LoggedName>
                     <BarAvatarImg>
-                        <img src={userProfile?.profileImage || avatar} alt="" />
+                        <StyledImg
+                            src={userProfile?.profileImage || avatar}
+                            alt=""
+                        />
                     </BarAvatarImg>
                     <LogoutButton type="primary" size="small" onClick={logout}>
                         {t('AppBar.logout')}

@@ -57,6 +57,7 @@ export const TalentsList = styled.ul`
 `;
 
 export const TalentCard = styled.li`
+    word-break: break-all;
     position: relative;
     padding: 0px 8px 8px 8px;
     background-color: ${colors.appBarBgr};
