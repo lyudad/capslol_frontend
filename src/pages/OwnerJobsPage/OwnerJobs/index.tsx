@@ -1,15 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Col, Row } from 'antd';
+import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import { Paths } from 'router/paths';
-import { IJob } from 'store/apis/jobs/jobs.types';
+import {
+    IJob,
+    JobsOptionsInterface,
+    MetaInterface,
+} from 'store/apis/jobs/jobs.types';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import {
-    useLazyGetJobsByOwnerQuery,
     useArchiveToggleMutation,
+    useLazyGetFilteredJobsQuery,
 } from 'store/apis/jobs';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import JobCard from 'pages/OwnerJobsPage/JobCard/index';
@@ -22,6 +28,10 @@ interface IProps {
 
 const OwnerJobs: React.FC<IProps> = ({ archived }) => {
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
+    const [filter, setFilter] = useState<JobsOptionsInterface>({
+        page: 1,
+    });
+    const [meta, setMeta] = useState<MetaInterface | null>(null);
 
     const { t } = useTranslation();
 
@@ -29,7 +39,7 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
-    const [searchOwnJobs, { isLoading }] = useLazyGetJobsByOwnerQuery();
+    const [searchOwnJobs, { isLoading }] = useLazyGetFilteredJobsQuery();
 
     const [archiveToggle] = useArchiveToggleMutation();
 
@@ -38,25 +48,32 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
         const filteredJobs = ownJobs?.filter(
             (item) => item.id !== archivedJob.id
         );
-        setOwnJobs([...filteredJobs, archivedJob]);
+        setOwnJobs([...filteredJobs]);
     };
 
     useEffect((): void => {
-        const reloadJobs = async (): Promise<void> => {
-            const results = await searchOwnJobs(userId).unwrap();
+        const query: JobsOptionsInterface = {};
+        if (archived) {
+            query.ownerId = userId;
+            query.isArchived = 1;
+        }
+        if (!archived) {
+            query.ownerId = userId;
+            query.isArchived = 0;
+        }
+        setFilter(query);
+    }, [archived]);
 
-            setOwnJobs([...results]);
+    useEffect((): void => {
+        const reloadJobs = async (): Promise<void> => {
+            const results = await searchOwnJobs(filter).unwrap();
+
+            setMeta(results.meta);
+
+            setOwnJobs([...results.data]);
         };
         reloadJobs();
-    }, []);
-
-    const isArchivedJob = useMemo(() => {
-        return ownJobs.find((item) => item.isArchived);
-    }, [ownJobs]);
-
-    const isNotArchivedJob = useMemo(() => {
-        return ownJobs.find((item) => !item.isArchived);
-    }, [ownJobs]);
+    }, [userId, filter]);
 
     return (
         <>
@@ -91,18 +108,35 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
                             })}
                         </List>
                     </ListContainer>
-                    <HideWrapper showWhen={!archived && !isNotArchivedJob}>
+                    <HideWrapper showWhen={!archived && !ownJobs.length}>
                         <EmptyListNotification
                             note={t('Notes.youDon-tHaveRelevantProjects')}
                         />
                     </HideWrapper>
-                    <HideWrapper showWhen={!!archived && !isArchivedJob}>
+                    <HideWrapper showWhen={!!archived && !ownJobs.length}>
                         <EmptyListNotification
                             note={t('Notes.youDon-tHaveArchivalProjects')}
                         />
                     </HideWrapper>
                 </SpinnerWrapper>
             </ListWrapper>
+            <HideWrapper showWhen={!!meta?.itemCount && meta?.itemCount > 10}>
+                <Row justify="center">
+                    <Col>
+                        <StyledPagination
+                            defaultCurrent={1}
+                            current={meta?.page}
+                            total={meta?.itemCount}
+                            onChange={(targetPage) =>
+                                setFilter((prev) => ({
+                                    ...prev,
+                                    page: targetPage,
+                                }))
+                            }
+                        />
+                    </Col>
+                </Row>
+            </HideWrapper>
         </>
     );
 };

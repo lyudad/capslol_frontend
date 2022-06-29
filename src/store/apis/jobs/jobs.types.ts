@@ -128,6 +128,8 @@ export interface JobsOptionsInterface {
     page?: number | null;
     take?: number | null;
     price?: number | null;
+    ownerId?: number | null;
+    isArchived?: number | null;
 }
 
 export enum English {
