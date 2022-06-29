@@ -66,6 +66,11 @@ export const authApi = baseApi.injectEndpoints({
                 },
             }),
         }),
+        confirmUserEmail: builder.query<IResponse, string | undefined>({
+            query: (token) => ({
+                url: `auth/confirmEmail?token=${token}`,
+            }),
+        }),
     }),
 });
 
@@ -77,4 +82,5 @@ export const {
     useLazySetRoleQuery,
     useResetPasswordMutation,
     useConfirmEmailMutation,
+    useConfirmUserEmailQuery,
 } = authApi;

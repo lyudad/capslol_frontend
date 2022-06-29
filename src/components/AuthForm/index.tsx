@@ -5,8 +5,6 @@ import { StyledForm, Wrapper } from 'components/UI';
 import { useNavigate } from 'react-router-dom';
 
 import { message, notification } from 'antd';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from 'store/slices/auth/auth.slice';
 import {
     useCreateUserMutation,
     useLazySignUpUseGoogleQuery,
@@ -35,19 +33,17 @@ const AuthForm: React.FC = () => {
     const [createUser] = useCreateUserMutation();
     const [createGoogleUser] = useLazySignUpUseGoogleQuery();
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const onFinish = async (values: FormType): Promise<void> => {
         try {
-            const payload = await createUser(values).unwrap();
-            dispatch(setCredentials(payload));
+            await createUser(values).unwrap();
 
             notification.open({
                 message: translator('AuthGoogle.welcomeMessage'),
             });
 
-            navigate(Paths.SELECT_ROLE);
+            navigate(Paths.CONFIRM_EMAIL);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -63,16 +59,13 @@ const AuthForm: React.FC = () => {
     ): Promise<void> => {
         try {
             if (RequestHeader.ACCESS_TOKEN in response) {
-                const authResponse = await createGoogleUser(
-                    response.tokenId
-                ).unwrap();
-                dispatch(setCredentials(authResponse));
+                await createGoogleUser(response.tokenId).unwrap();
 
                 notification.open({
                     message: translator('AuthGoogle.welcomeMessage'),
                 });
 
-                navigate(Paths.SELECT_ROLE);
+                navigate(Paths.CONFIRM_EMAIL);
             }
         } catch (error) {
             if ('data' in error) {
