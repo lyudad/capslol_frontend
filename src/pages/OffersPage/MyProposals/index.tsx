@@ -16,22 +16,15 @@ import ProposalCard from '../ProposalCard';
 
 const MyProposals: React.FC = () => {
     const [filter, setFilter] = useState<ProposalOptionsInterface>({ page: 1 });
+
     const { t } = useTranslation();
 
     const myId = useAppSelector((state) => state.auth.user?.id);
 
     useEffect((): void => {
-        const query: ProposalOptionsInterface = {};
-
-        query.freelancerId = myId;
-        //  if (currentRole === userRole.freelancer) {
-        //      query.freelancerId = myId;
-        //  }
-
-        setFilter(query);
+        setFilter({ freelancerId: myId });
     }, [myId]);
-    // const { data: proposalsData, isLoading } =
-    //     useGetProposalsByFreelancerQuery(myId);
+
     const { data: proposalsData, isLoading } =
         useGetFilteredProposalsQuery(filter);
 

@@ -1,20 +1,26 @@
 ﻿import { baseApi } from 'store/apis/index';
-import { IMyInvitation } from './invitations.types';
+import {
+    InvitationResponseInterface,
+    InvitationOptionsInterface,
+} from './invitations.types';
 
-const apiInvitationsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Offer'] });
+const apiInvitationsTag = baseApi.enhanceEndpoints({
+    addTagTypes: ['Invitation'],
+});
 
 export const invitationsApi = apiInvitationsTag.injectEndpoints({
     endpoints: (builder) => ({
-        getInvitationsByFreelancer: builder.query<
-            IMyInvitation[],
-            number | undefined
+        getFilteredInvitations: builder.query<
+            InvitationResponseInterface,
+            InvitationOptionsInterface
         >({
-            query: (value: number) => ({
-                url: `/invitation/getInvitations?freelancerId=${value}`,
+            query: (paginationOptions) => ({
+                url: '/invitation/filter',
+                params: paginationOptions,
             }),
-            providesTags: ['Offer'],
+            providesTags: ['Invitation'],
         }),
     }),
 });
 
-export const { useGetInvitationsByFreelancerQuery } = invitationsApi;
+export const { useGetFilteredInvitationsQuery } = invitationsApi;

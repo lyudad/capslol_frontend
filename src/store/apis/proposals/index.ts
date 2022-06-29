@@ -50,7 +50,7 @@ export const proposalApi = apiProposalsTag.injectEndpoints({
             ProposalOptionsInterface
         >({
             query: (paginationOptions) => ({
-                url: '/offer/filter',
+                url: '/proposals/filter',
                 params: paginationOptions,
             }),
             providesTags: ['Proposal'],
