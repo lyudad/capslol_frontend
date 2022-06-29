@@ -63,7 +63,13 @@ const TalentListCard: React.FC<IProps> = ({
             };
             await createInvitation(createNewInvitation).unwrap();
         } catch (error) {
-            return message.error(error.status);
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+            throw error;
         }
         setConfirmLoading(false);
         setIsModalVisible(false);
