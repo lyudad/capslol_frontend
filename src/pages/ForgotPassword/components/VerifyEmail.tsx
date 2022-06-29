@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FormLink, Section, Title, Wrapper } from '../styles';
 import { IProps } from './props';
 
-const NotFoundEmail: React.FC<IProps> = ({ data, isError }) => {
+const NotFoundEmail: React.FC<IProps> = ({ data, isError, email }) => {
     const { t } = useTranslation();
 
     return (
@@ -20,7 +20,12 @@ const NotFoundEmail: React.FC<IProps> = ({ data, isError }) => {
                         </FormLink>
                     </>
                 )}
-                {isError && <Title>{t('VerifyEmail.poorTitle')}</Title>}
+                {isError && (
+                    <Title>
+                        {t('VerifyEmail.poorTitle.start')} <span>{email}</span>{' '}
+                        {t('VerifyEmail.poorTitle.end')}{' '}
+                    </Title>
+                )}
             </Wrapper>
         </Section>
     );

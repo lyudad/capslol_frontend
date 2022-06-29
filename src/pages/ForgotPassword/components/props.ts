@@ -4,4 +4,5 @@
 export interface IProps {
     data: Email | undefined;
     isError: boolean;
+    email: string | undefined;
 }

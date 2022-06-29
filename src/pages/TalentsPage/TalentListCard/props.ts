@@ -12,3 +12,8 @@ export interface talentProfile {
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
 }
+
+export interface IProps {
+    jobObj: talentProfile;
+    freelancerIdInInvitations: Array<number>;
+}

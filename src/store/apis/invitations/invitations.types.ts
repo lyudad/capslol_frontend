@@ -47,3 +47,9 @@ export interface InvitationOptionsInterface {
     take?: number;
     freelancerId?: number;
 }
+
+export interface newInvitation {
+    ownerId: number | undefined;
+    freelancerId: number | undefined;
+    jobId: number | undefined;
+}
