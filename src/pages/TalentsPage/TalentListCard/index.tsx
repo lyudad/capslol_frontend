@@ -81,7 +81,14 @@ const TalentListCard: React.FC<IProps> = ({
     };
 
     const onClickJob = (): void => {
-        navigate(`/talents/profile/${id}`, { state: id });
+        navigate(`/talents/profile/${id}`, {
+            state: {
+                id,
+                isActive: !!freelancerIdInInvitations?.includes(
+                    user?.id as number
+                ),
+            },
+        });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
