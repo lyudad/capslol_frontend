@@ -1,16 +1,16 @@
 ﻿import { baseApi } from 'store/apis/index';
-import { IMyOffer, IChangeStatus, ICreateOffer } from './offers.types';
+import {
+    IMyOffer,
+    IChangeStatus,
+    ICreateOffer,
+    OfferResponseInterface,
+    OfferOptionsInterface,
+} from './offers.types';
 
 const apiOffersTag = baseApi.enhanceEndpoints({ addTagTypes: ['Offer'] });
 
 export const offersApi = apiOffersTag.injectEndpoints({
     endpoints: (builder) => ({
-        getOffersByFreelancer: builder.query<IMyOffer[], number | undefined>({
-            query: (value: number) => ({
-                url: `/offer/getOffers?freelancerId=${value}`,
-            }),
-            providesTags: ['Offer'],
-        }),
         changeStatus: builder.mutation<IMyOffer, number | IChangeStatus>({
             query: (body: IChangeStatus) => ({
                 url: `/offer/changeStatus`,
@@ -27,9 +27,21 @@ export const offersApi = apiOffersTag.injectEndpoints({
             }),
             invalidatesTags: ['Offer'],
         }),
+
         getOfferByJobId: builder.query<IMyOffer, number>({
             query: (value) => ({
                 url: `/offer/getByJobId?jobId=${value}`,
+            }),
+            providesTags: ['Offer'],
+        }),
+
+        getFilteredOffers: builder.query<
+            OfferResponseInterface,
+            OfferOptionsInterface
+        >({
+            query: (paginationOptions) => ({
+                url: '/offer/filter',
+                params: paginationOptions,
             }),
             providesTags: ['Offer'],
         }),
@@ -37,8 +49,8 @@ export const offersApi = apiOffersTag.injectEndpoints({
 });
 
 export const {
-    useGetOffersByFreelancerQuery,
     useChangeStatusMutation,
     useCreateOfferMutation,
     useGetOfferByJobIdQuery,
+    useGetFilteredOffersQuery,
 } = offersApi;

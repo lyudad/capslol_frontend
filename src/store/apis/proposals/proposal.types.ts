@@ -27,3 +27,23 @@ export interface IMyProposal {
     hourRate: number | undefined;
     createdAt: string;
 }
+
+export interface MetaInterface {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+}
+
+export interface ProposalResponseInterface {
+    meta: MetaInterface;
+    data: IMyProposal[];
+}
+
+export interface ProposalOptionsInterface {
+    page?: number;
+    take?: number;
+    freelancerId?: number;
+}

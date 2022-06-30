@@ -28,6 +28,26 @@ export interface IMyInvitation {
     jobId: IJob;
 }
 
+export interface MetaInterface {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+}
+
+export interface InvitationResponseInterface {
+    meta: MetaInterface;
+    data: IMyInvitation[];
+}
+
+export interface InvitationOptionsInterface {
+    page?: number;
+    take?: number;
+    freelancerId?: number;
+}
+
 export interface newInvitation {
     ownerId: number | undefined;
     freelancerId: number | undefined;
