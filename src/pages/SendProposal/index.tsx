@@ -107,13 +107,21 @@ const SendProposal: React.FC = () => {
         }
     };
 
+    const handleGetJobPercent = (rate: IRateArg): number =>
+        ((rate || 0) / 100) * 12.5;
+
+    const handleGotFreelancerRate = (freelancerRate: IRateArg): number => {
+        const getJobRate = handleGetJobPercent(freelancerRate);
+        return (freelancerRate || 0) - getJobRate;
+    };
+
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
             const newProposal = {
                 jobId: state.id,
                 freelancerId: user?.id,
                 coverLetter: values.coverLetter,
-                hourRate: 0,
+                hourRate: handleGotFreelancerRate(hourlyRate as number),
             };
             await postProposal(newProposal);
             setHourlyRate(0);
@@ -123,14 +131,6 @@ const SendProposal: React.FC = () => {
             message.error(`${error?.message}`);
         }
         onReset();
-    };
-
-    const handleGetJobPercent = (rate: IRateArg): number =>
-        ((rate || 0) / 100) * 12.5;
-
-    const handleGotFreelancerRate = (freelancerRate: IRateArg): number => {
-        const getJobRate = handleGetJobPercent(freelancerRate);
-        return (freelancerRate || 0) - getJobRate;
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
