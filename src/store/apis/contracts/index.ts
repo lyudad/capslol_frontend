@@ -1,5 +1,10 @@
 import { baseApi } from 'store/apis/index';
-import { IContract, ICreateContract } from './contracts.types';
+import {
+    ContractResponseInterface,
+    IContract,
+    ICreateContract,
+    ContractsOptionsInterface,
+} from './contracts.types';
 
 const apiContractsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Contract'] });
 
@@ -9,21 +14,7 @@ export const contractsApi = apiContractsTag.injectEndpoints({
             query: (body) => ({ url: '/contract', method: 'POST', body }),
             invalidatesTags: ['Contract'],
         }),
-        getContractsByFreelancer: builder.query<
-            IContract[],
-            number | undefined
-        >({
-            query: (value: number) => ({
-                url: `/contract/search?freelancerId=${value}`,
-            }),
-            providesTags: ['Contract'],
-        }),
-        getContractsByOwner: builder.query<IContract[], number | undefined>({
-            query: (value: number) => ({
-                url: `/contract/searchByOwnerId?ownerId=${value}`,
-            }),
-            providesTags: ['Contract'],
-        }),
+
         changeContractStatus: builder.mutation<IContract, ICreateContract>({
             query: (body: ICreateContract) => ({
                 url: `/contract/changeStatus`,
@@ -32,9 +23,21 @@ export const contractsApi = apiContractsTag.injectEndpoints({
             }),
             invalidatesTags: ['Contract'],
         }),
+
         getContractByIdOfferId: builder.query<IContract, number | undefined>({
             query: (value: number) => ({
                 url: `/contract/getByOfferId?offerId=${value}`,
+            }),
+            providesTags: ['Contract'],
+        }),
+
+        getFilteredContracts: builder.query<
+            ContractResponseInterface,
+            ContractsOptionsInterface
+        >({
+            query: (paginationOptions) => ({
+                url: '/contract/filter',
+                params: paginationOptions,
             }),
             providesTags: ['Contract'],
         }),
@@ -43,10 +46,7 @@ export const contractsApi = apiContractsTag.injectEndpoints({
 
 export const {
     useCreateContractMutation,
-    useGetContractsByFreelancerQuery,
     useChangeContractStatusMutation,
-    useLazyGetContractsByFreelancerQuery,
-    useGetContractsByOwnerQuery,
     useGetContractByIdOfferIdQuery,
-    useLazyGetContractsByOwnerQuery,
+    useGetFilteredContractsQuery,
 } = contractsApi;

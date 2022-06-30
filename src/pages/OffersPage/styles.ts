@@ -56,6 +56,7 @@ export const ListWrapper = styled.div`
 
 export const ListContainer = styled.div`
     width: 80vw;
+    padding-bottom: 24px;
 `;
 
 export const List = styled.li`

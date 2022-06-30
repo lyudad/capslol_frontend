@@ -58,6 +58,12 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 timeAvailable: userFilter.timeAvailable,
             });
         };
+        if (userFilter.price) {
+            setMaxSalary(userFilter.price);
+        }
+        if (userFilter.timeAvailable) {
+            setTimeAvailable(userFilter.timeAvailable);
+        }
         onFill();
     }, [userFilter, form]);
 
@@ -125,7 +131,7 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 <StyledFilter>
                     <FilterTitle>{t('JobPage.HourlyRate')}</FilterTitle>
                     <PriceValue>
-                        <span>min: 1$</span>
+                        <span>min: 0$</span>
                         <span>current: {maxSalary}$</span>
                     </PriceValue>
                     <Form.Item name="maxSalary" noStyle>

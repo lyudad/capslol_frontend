@@ -60,6 +60,7 @@ export const jobsApi = apiJobsTag.injectEndpoints({
                 invalidatesTags: ['Jobs'],
             }),
         }),
+
         getAllJobs: builder.query<JobResponseInterface, number>({
             query: (page: number) => ({
                 url: '/jobs',
