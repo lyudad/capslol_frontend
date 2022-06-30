@@ -9,7 +9,7 @@ export const baseApi = createApi({
         baseUrl:
             process.env.NODE_ENV === 'development'
                 ? process.env.REACT_APP_DEVELOPMENT_URL
-                : process.env.REACT_APP_SERVER_URL,
+                : process.env.REACT_APP_SOCKET_URL,
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.accessToken;
 
