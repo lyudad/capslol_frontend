@@ -279,7 +279,7 @@ const CreateJobPage: React.FC = () => {
                             </Form.Item>
 
                             <Form.Item
-                                label={t('JobPage.priceLabel')}
+                                label={t('JobPage.HourlyRate')}
                                 name="price"
                                 rules={[
                                     {

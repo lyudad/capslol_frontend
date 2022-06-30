@@ -37,7 +37,8 @@ const JobsPage: React.FC = () => {
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
-    const [getProfile] = useLazyGetFreelancerProfileQuery();
+    const [getProfile, { isLoading: loading }] =
+        useLazyGetFreelancerProfileQuery();
 
     const [searchJobs, { isLoading }] = useLazyGetFilteredJobsQuery();
 
@@ -122,7 +123,7 @@ const JobsPage: React.FC = () => {
         <Page>
             <Title>{t('JobPage.jobPageTitle')}</Title>
             <JobsContainer>
-                <SpinnerWrapper isLoading={isLoading}>
+                <SpinnerWrapper isLoading={isLoading || loading}>
                     <FiltersContainer>
                         <Filters
                             submitHandler={onFinish}
@@ -141,7 +142,9 @@ const JobsPage: React.FC = () => {
                                 );
                             })}
                         </JobsList>
-                        <HideWrapper showWhen={!jobs?.length}>
+                        <HideWrapper
+                            showWhen={!jobs?.length && !isLoading && !loading}
+                        >
                             <EmptyListNotification
                                 note={t('Notes.noProjectsWereFound')}
                             />

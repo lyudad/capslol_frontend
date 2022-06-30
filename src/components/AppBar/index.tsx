@@ -51,7 +51,7 @@ const AppBar: React.FC = () => {
         <Header>
             <NavigationContainer>
                 <Logo>
-                    <NavLink to={Paths.HOME} className="logoLink">
+                    <NavLink to="/logo" className="logoLink">
                         <>
                             {t('AppBar.get')}
                             <span>{t('AppBar.job')}</span>
@@ -61,7 +61,7 @@ const AppBar: React.FC = () => {
                 <HideWrapper showWhen={isAuth}>
                     <HideWrapper showWhen={role === userRole.owner}>
                         <NavLink to={Paths.OWNER_JOBS} className="navLink">
-                            {t('AppBar.ownerJobs')}
+                            {t('AppBar.myProjects')}
                         </NavLink>
                         <HideWrapper showWhen={!!ownerJobs?.length}>
                             <NavLink to={Paths.TALENT} className="navLink">
