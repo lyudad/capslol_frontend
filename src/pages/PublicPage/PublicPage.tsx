@@ -29,7 +29,8 @@ import {
 
 const PublicPage: React.FC = () => {
     const location = useLocation();
-    const { id: locationId, isActive } = location.state as CustomizedState;
+    const state = location.state as CustomizedState;
+    const { id: locationId, isActive } = state || {};
     const { Option } = Select;
     const [searchOwnJobs] = useLazyGetJobsByOwnerQuery();
     const [createInvitation] = useCreateInvitationMutation();
