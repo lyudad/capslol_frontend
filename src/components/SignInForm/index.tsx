@@ -16,6 +16,7 @@ import { Paths } from 'router/paths';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
+import { IUser } from 'store/slices/auth/auth.type';
 import {
     Wrapper,
     DontAccount,
@@ -43,7 +44,14 @@ const SignInForm: React.FC = () => {
     const onFinish = async (values: FormType): Promise<void> => {
         try {
             const response = await loginUser(values).unwrap();
-            dispatch(setCredentials(response));
+            const newData: IUser = {
+                isLoggedIn: true,
+                user: response.data.user,
+                accessToken: response.data.accessToken,
+            };
+            dispatch(
+                setCredentials({ data: newData, message: response.message })
+            );
 
             const { user } = response.data;
 

@@ -25,6 +25,7 @@ import { AppContext, appSocket } from 'context';
 import MyContacts from 'pages/MyContacts(JobOwner)';
 import { useAppSelector } from 'hooks/redux';
 import { TChatArgument } from 'pages/Chat/interfaces';
+import EmailConfirmation from 'pages/EmailConfirmation';
 
 const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
@@ -176,6 +177,10 @@ const App: React.FC = () => {
                     <Route
                         path={Paths.RESET_PASSWORD}
                         element={<ResetPassword />}
+                    />
+                    <Route
+                        path={Paths.CONFIRM_EMAIL}
+                        element={<EmailConfirmation />}
                     />
                     <Route path="*" element={<HomePage />} />
                 </Routes>
