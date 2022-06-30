@@ -1,14 +1,19 @@
 /* eslint-disable no-unused-expressions */
 import { useTranslation } from 'react-i18next';
-import { Col, Pagination, Row } from 'antd';
-import { useGetFilteredJobsQuery } from 'store/apis/jobs';
-import { useMemo, useState } from 'react';
+import { Col, Row } from 'antd';
+import { useLazyGetFilteredJobsQuery } from 'store/apis/jobs';
+import { useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from 'hooks/redux';
 import { useLazyGetFreelancerProfileQuery } from 'store/apis/publicProfile';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import EmptyListNotification from 'components/EmptyListNotification';
-import { JobInterface, JobsOptionsInterface } from 'store/apis/jobs/jobs.types';
+import {
+    IJob,
+    JobsOptionsInterface,
+    MetaInterface,
+} from 'store/apis/jobs/jobs.types';
 import { HideWrapper } from 'components/HideWrapper/styles';
+import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import {
     Page,
     ListContainer,
@@ -24,13 +29,17 @@ import Filters from './Filters';
 
 const JobsPage: React.FC = () => {
     const { t } = useTranslation();
+    const [jobs, setJobs] = useState<IJob[]>([]);
     const [filter, setFilter] = useState<JobsOptionsInterface>({
         page: 1,
     });
+    const [meta, setMeta] = useState<MetaInterface | null>(null);
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
     const [getProfile] = useLazyGetFreelancerProfileQuery();
+
+    const [searchJobs, { isLoading }] = useLazyGetFilteredJobsQuery();
 
     useMemo(async (): Promise<IQueryFilters> => {
         const profile = await getProfile(userId).unwrap();
@@ -54,13 +63,25 @@ const JobsPage: React.FC = () => {
             if (availableHours) {
                 query.timeAvailable = availableHours;
             }
+            query.isArchived = 0;
+
+            query.page = 1;
 
             setFilter(query);
         }
         return query;
     }, [getProfile, userId]);
 
-    const { data: jobs, isLoading } = useGetFilteredJobsQuery(filter);
+    useEffect((): void => {
+        const reloadJobs = async (): Promise<void> => {
+            const results = await searchJobs(filter).unwrap();
+
+            setMeta(results.meta);
+
+            setJobs([...results.data]);
+        };
+        reloadJobs();
+    }, [userId, filter, searchJobs]);
 
     const onFinish = (value: IQueryFilters): void => {
         const query: JobsOptionsInterface = {};
@@ -68,34 +89,33 @@ const JobsPage: React.FC = () => {
         if (value.query) {
             query.q = value.query;
         }
-
         if (value.categoryId) {
             query.category = value.categoryId;
         }
         if (value.skillIds && value.skillIds.length > 0) {
             query.skills = value.skillIds;
         }
-
         if (value.englishLevel) {
             query.languageLevel = value.englishLevel;
         }
-
         if (value.maxSalary) {
             query.price = value.maxSalary;
         }
-
         if (value.projectDuration) {
             query.projectDuration = value.projectDuration;
         }
-
         if (value.timeAvailable) {
             query.timeAvailable = value.timeAvailable;
         }
+        query.isArchived = 0;
+
+        query.page = 1;
+
         setFilter(query);
     };
 
     const onRestartIfReset = (): void => {
-        setFilter({ page: 1 });
+        setFilter({ page: 1, isArchived: 0 });
     };
 
     return (
@@ -112,7 +132,7 @@ const JobsPage: React.FC = () => {
                     </FiltersContainer>
                     <ListContainer>
                         <JobsList>
-                            {jobs?.data.map((item: JobInterface) => {
+                            {jobs?.map((item: IJob) => {
                                 const { id, isArchived } = item;
                                 return (
                                     <JobCard archived={isArchived} key={id}>
@@ -121,23 +141,20 @@ const JobsPage: React.FC = () => {
                                 );
                             })}
                         </JobsList>
-                        <HideWrapper showWhen={!jobs?.data.length}>
+                        <HideWrapper showWhen={!jobs?.length}>
                             <EmptyListNotification
                                 note={t('Notes.noProjectsWereFound')}
                             />
                         </HideWrapper>
                         <HideWrapper
-                            showWhen={
-                                !!jobs?.meta.itemCount &&
-                                jobs?.meta.itemCount > 10
-                            }
+                            showWhen={!!meta?.itemCount && meta?.itemCount > 10}
                         >
                             <Row justify="center">
                                 <Col>
-                                    <Pagination
+                                    <StyledPagination
                                         defaultCurrent={1}
-                                        current={jobs?.meta.page}
-                                        total={jobs?.meta.itemCount}
+                                        current={filter?.page}
+                                        total={meta?.itemCount}
                                         onChange={(targetPage) =>
                                             setFilter((prev) => ({
                                                 ...prev,

@@ -1,27 +1,32 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
-import { useMemo } from 'react';
-import { sortOffersByAB } from 'utilities/utilities';
+import { Col, Row } from 'antd';
+import { useEffect, useState } from 'react';
+import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
-import { useGetOffersByFreelancerQuery } from 'store/apis/offers';
+import { useGetFilteredOffersQuery } from 'store/apis/offers';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
+import {
+    IMyOffer,
+    OfferOptionsInterface,
+} from 'store/apis/offers/offers.types';
 import { ListContainer, List, Title, ListWrapper } from '../styles';
 import OfferCard from '../OfferCard/index';
 
 const MyOffers: React.FC = () => {
     const { t } = useTranslation();
+    const [filter, setFilter] = useState<OfferOptionsInterface>({
+        page: 1,
+    });
 
     const myId = useAppSelector((state) => state.auth.user?.id);
 
-    const { data: offersData, isLoading } = useGetOffersByFreelancerQuery(myId);
+    useEffect((): void => {
+        setFilter({ page: 1, freelancerId: myId });
+    }, [myId]);
 
-    const sortedOffers = useMemo(() => {
-        if (offersData?.length) {
-            return sortOffersByAB(offersData, 'Accepted', 'Pending');
-        }
-        return [];
-    }, [offersData]);
+    const { data: offersData, isLoading } = useGetFilteredOffersQuery(filter);
 
     return (
         <>
@@ -30,7 +35,7 @@ const MyOffers: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {sortedOffers?.map((item) => {
+                            {offersData?.data.map((item: IMyOffer) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
@@ -40,13 +45,35 @@ const MyOffers: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                    <HideWrapper showWhen={!offersData?.length}>
+                    <HideWrapper showWhen={!offersData?.data.length}>
                         <EmptyListNotification
                             note={t('Notes.youDon-tHaveOffers')}
                         />
                     </HideWrapper>
                 </SpinnerWrapper>
             </ListWrapper>
+            <HideWrapper
+                showWhen={
+                    !!offersData?.meta.itemCount &&
+                    offersData?.meta.itemCount > 10
+                }
+            >
+                <Row justify="center">
+                    <Col>
+                        <StyledPagination
+                            defaultCurrent={1}
+                            current={filter.page}
+                            total={offersData?.meta.itemCount}
+                            onChange={(targetPage) =>
+                                setFilter((prev) => ({
+                                    ...prev,
+                                    page: targetPage,
+                                }))
+                            }
+                        />
+                    </Col>
+                </Row>
+            </HideWrapper>
         </>
     );
 };

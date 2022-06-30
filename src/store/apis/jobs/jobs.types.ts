@@ -125,9 +125,11 @@ export interface JobsOptionsInterface {
     skills?: number[] | null;
     languageLevel?: string | null;
     projectDuration?: string | null;
-    page?: number | null;
+    page?: number;
     take?: number | null;
     price?: number | null;
+    ownerId?: number | null;
+    isArchived?: number | null;
 }
 
 export enum English {
