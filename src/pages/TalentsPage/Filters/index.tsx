@@ -15,9 +15,15 @@ import 'antd/dist/antd.min.css';
 const { Option } = Select;
 
 const Filters: React.FC = () => {
-    const [searchQuery, setSearchQuery] = useState<string>('');
-    const [categoryQuery, setCategoryQuery] = useState<string>('');
-    const [skillsQuery, setSkillsQuery] = useState<string>('');
+    const [searchQuery, setSearchQuery] = useState<string | null>(
+        sessionStorage.getItem('searchValue')
+    );
+    const [categoryQuery, setCategoryQuery] = useState<string | null>(
+        sessionStorage.getItem('categoryQuery')
+    );
+    const [skillsQuery, setSkillsQuery] = useState<string | null>(
+        sessionStorage.getItem('categoryQuery')
+    );
 
     const [form] = Form.useForm();
 
@@ -48,6 +54,13 @@ const Filters: React.FC = () => {
     ]);
 
     const onFinish = (values: IQueryFilters): void => {
+        sessionStorage.setItem('searchQuery', `&q=${values.searchValue}`);
+        sessionStorage.setItem('categoryQuery', `&category=${values.category}`);
+        sessionStorage.setItem(
+            'skillQuery',
+            `&skills=${values.filteredSkills?.join('')}`
+        );
+
         setSearchQuery(`&q=${values.searchValue}`);
 
         values.category
@@ -112,9 +125,9 @@ const Filters: React.FC = () => {
                 form={form}
                 name="basic"
                 initialValues={{
-                    category: undefined,
-                    filteredSkills: undefined,
-                    searchValue: '',
+                    category: categoryQuery,
+                    filteredSkills: skillsQuery,
+                    searchValue: searchQuery,
                 }}
                 onFinish={onFinish}
             >
