@@ -17,3 +17,9 @@ export interface IProps {
     jobObj: talentProfile;
     freelancerIdInInvitations: Array<number>;
 }
+
+export interface CustomizedState {
+    id: number;
+    isActive: boolean;
+    userOnClickId: number;
+}

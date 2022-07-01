@@ -6,7 +6,7 @@ interface UsersState {
     accessToken: string | null | undefined;
     loading: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string;
-    isLoggedIn: boolean;
+    isLoggedIn: boolean | undefined;
 }
 const initialState: UsersState = {
     user: null,
@@ -26,7 +26,7 @@ const authSlice = createSlice({
         ) => {
             state.user = data.user;
             state.accessToken = data.accessToken;
-            state.isLoggedIn = true;
+            state.isLoggedIn = data.isLoggedIn;
         },
         logOut: (state: UsersState) => {
             state.user = null;

@@ -128,7 +128,13 @@ const TalentListCard: React.FC<IProps> = ({
             console.log(r, 'sent interview');
             handleSubmitProposalAndContacts();
         } catch (error) {
-            return message.error(error.status);
+            if ('data' in error) {
+                message.error(error.data.message);
+            }
+            if ('error' in error) {
+                message.error(error.status);
+            }
+            throw error;
         }
         setConfirmLoading(false);
         setIsModalVisible(false);
@@ -146,7 +152,14 @@ const TalentListCard: React.FC<IProps> = ({
     };
 
     const onClickJob = (): void => {
-        navigate(`/talents/profile/${id}`, { state: id });
+        navigate(`/talents/profile/${id}`, {
+            state: {
+                id,
+                isActive: !!freelancerIdInInvitations?.includes(
+                    user?.id as number
+                ),
+            },
+        });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
