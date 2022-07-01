@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import moment from 'moment';
 import { dateFormat } from 'constants/index';
+import { AppContext } from 'context';
+import { useContext } from 'react';
+import { useGetChatContactsByJobIdQuery } from 'store/apis/chat';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -26,12 +29,24 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
     const { t } = useTranslation();
 
     const navigate = useNavigate();
+    const { setCurrentChat } = useContext(AppContext);
 
-    const { createdAt, ownerId, jobId } = invitationObj;
+    const { createdAt, ownerId, jobId, freelancerId } = invitationObj;
 
     const onClickJob = (): void => {
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
     };
+
+    const { data: chatContacts } = useGetChatContactsByJobIdQuery({
+        jobId: jobId?.id,
+        freelancerId: freelancerId.id,
+    });
+
+    const handleOnNavigate = (): void => {
+        navigate(Paths.CHAT);
+        setCurrentChat?.(chatContacts);
+    };
+
     return (
         <OneCard>
             <DateContainer>
@@ -55,7 +70,9 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
             </ValueBox>
 
             <ButtonContainer>
-                <StyledCardBtn>{t('OffersPage.goToChat')}</StyledCardBtn>
+                <StyledCardBtn onClick={handleOnNavigate}>
+                    {t('OffersPage.goToChat')}
+                </StyledCardBtn>
             </ButtonContainer>
         </OneCard>
     );
