@@ -88,19 +88,11 @@ const App: React.FC = () => {
                             }
                         />
 
-                        {/* <Route
-                            path={Paths.SETTING_ID}
-                            element={<SettingPage />}
-                        /> */}
-
                         <Route
                             path={Paths.JOBS}
                             element={
                                 <ProtectedRoute
-                                    boolValue={
-                                        !userProfile ||
-                                        role !== userRole.freelancer
-                                    }
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.SETTING_ID}
                                 >
                                     <JobsPage />
@@ -108,31 +100,11 @@ const App: React.FC = () => {
                             }
                         />
 
-                        {/* <Route
-                            path={Paths.JOBS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        (role === userRole.freelancer &&
-                                            !userProfile) ||
-                                        role !== userRole.freelancer
-                                    }
-                                    redirectPath={Paths.SETTING_ID}
-                                >
-                                    <JobsPage />
-                                </ProtectedRoute>
-                            }
-                        /> */}
-
                         <Route
                             path={Paths.OFFERS}
                             element={
                                 <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer ||
-                                        (role === userRole.freelancer &&
-                                            !userProfile)
-                                    }
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.SETTING_ID}
                                 >
                                     <OffersPage />
@@ -144,12 +116,7 @@ const App: React.FC = () => {
                             path={Paths.MY_CONTRACTS}
                             element={
                                 <ProtectedRoute
-                                    boolValue={
-                                        (role !== userRole.freelancer &&
-                                            !ownJobsLength) ||
-                                        (role === userRole.freelancer &&
-                                            !userProfile)
-                                    }
+                                    boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.SETTING_ID}
                                 >
                                     <ContactsPage />
@@ -173,21 +140,6 @@ const App: React.FC = () => {
                                 </ProtectedRoute>
                             }
                         />
-
-                        {/* <Route
-                            path={Paths.CHAT}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer &&
-                                        !ownJobsLength
-                                    }
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <Chat />
-                                </ProtectedRoute>
-                            }
-                        /> */}
 
                         <Route
                             path={Paths.TALENTS_PROFILE}
