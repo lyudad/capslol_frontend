@@ -69,6 +69,8 @@ const Filters: React.FC<FiltersPropsInterface> = ({
 
     const resetHandler = (): void => {
         form.resetFields();
+        setMaxSalary(0);
+        setTimeAvailable(0);
         onRestart();
     };
 

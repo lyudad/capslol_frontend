@@ -136,11 +136,6 @@ const OneJobPage: React.FC = () => {
                                     </StyledNav>
                                 )}
                             </HideWrapper>
-                            <HideWrapper
-                                showWhen={role !== 'Freelancer' || !userProfile}
-                            >
-                                <Value>{t('JobPage.ifYouAre')}</Value>
-                            </HideWrapper>
                         </OptionContent>
                     </JobCard>
                 </HideWrapper>

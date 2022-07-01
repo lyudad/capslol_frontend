@@ -28,9 +28,7 @@ interface IProps {
 
 const OwnerJobs: React.FC<IProps> = ({ archived }) => {
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
-    const [filter, setFilter] = useState<JobsOptionsInterface>({
-        page: 1,
-    });
+    const [filter, setFilter] = useState<JobsOptionsInterface | null>(null);
     const [meta, setMeta] = useState<MetaInterface | null>(null);
 
     const { t } = useTranslation();
@@ -68,11 +66,11 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
-            const results = await searchOwnJobs(filter).unwrap();
-
-            setMeta(results.meta);
-
-            setOwnJobs([...results.data]);
+            if (filter) {
+                const results = await searchOwnJobs(filter).unwrap();
+                setMeta(results.meta);
+                setOwnJobs([...results.data]);
+            }
         };
         reloadJobs();
     }, [userId, filter]);
