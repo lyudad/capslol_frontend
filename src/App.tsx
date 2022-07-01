@@ -46,7 +46,9 @@ const App: React.FC = () => {
 
     const { data: userProfile } = useGetFreelancerProfileQuery(userId);
 
-    const { data: ownJobs } = useGetFilteredJobsQuery({ ownerId: userId });
+    const { data: ownJobs } = useGetFilteredJobsQuery({
+        ownerId: userId,
+    });
 
     const ownJobsLength = ownJobs?.data.length;
 
@@ -73,24 +75,65 @@ const App: React.FC = () => {
                                 </ProtectedRoute>
                             }
                         />
+
                         <Route
-                            path={Paths.JOBS}
+                            path={Paths.SETTING_ID}
                             element={
                                 <ProtectedRoute
                                     boolValue={role !== userRole.freelancer}
                                     redirectPath={Paths.OWNER_JOBS}
+                                >
+                                    <SettingPage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        {/* <Route
+                            path={Paths.SETTING_ID}
+                            element={<SettingPage />}
+                        /> */}
+
+                        <Route
+                            path={Paths.JOBS}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        !userProfile ||
+                                        role !== userRole.freelancer
+                                    }
+                                    redirectPath={Paths.SETTING_ID}
                                 >
                                     <JobsPage />
                                 </ProtectedRoute>
                             }
                         />
 
+                        {/* <Route
+                            path={Paths.JOBS}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        (role === userRole.freelancer &&
+                                            !userProfile) ||
+                                        role !== userRole.freelancer
+                                    }
+                                    redirectPath={Paths.SETTING_ID}
+                                >
+                                    <JobsPage />
+                                </ProtectedRoute>
+                            }
+                        /> */}
+
                         <Route
                             path={Paths.OFFERS}
                             element={
                                 <ProtectedRoute
-                                    boolValue={role !== userRole.freelancer}
-                                    redirectPath={Paths.OWNER_JOBS}
+                                    boolValue={
+                                        role !== userRole.freelancer ||
+                                        (role === userRole.freelancer &&
+                                            !userProfile)
+                                    }
+                                    redirectPath={Paths.SETTING_ID}
                                 >
                                     <OffersPage />
                                 </ProtectedRoute>
@@ -102,15 +145,49 @@ const App: React.FC = () => {
                             element={
                                 <ProtectedRoute
                                     boolValue={
-                                        role !== userRole.freelancer &&
-                                        !ownJobsLength
+                                        (role !== userRole.freelancer &&
+                                            !ownJobsLength) ||
+                                        (role === userRole.freelancer &&
+                                            !userProfile)
                                     }
-                                    redirectPath={Paths.OWNER_JOBS}
+                                    redirectPath={Paths.SETTING_ID}
                                 >
                                     <ContactsPage />
                                 </ProtectedRoute>
                             }
                         />
+
+                        <Route
+                            path={Paths.CHAT}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        (role !== userRole.freelancer &&
+                                            !ownJobsLength) ||
+                                        (role === userRole.freelancer &&
+                                            !userProfile)
+                                    }
+                                    redirectPath={Paths.SETTING_ID}
+                                >
+                                    <Chat />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        {/* <Route
+                            path={Paths.CHAT}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        role !== userRole.freelancer &&
+                                        !ownJobsLength
+                                    }
+                                    redirectPath={Paths.OWNER_JOBS}
+                                >
+                                    <Chat />
+                                </ProtectedRoute>
+                            }
+                        /> */}
 
                         <Route
                             path={Paths.TALENTS_PROFILE}
@@ -123,21 +200,6 @@ const App: React.FC = () => {
                                     redirectPath={Paths.OWNER_JOBS}
                                 >
                                     <PublicPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.CHAT}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer &&
-                                        !ownJobsLength
-                                    }
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <Chat />
                                 </ProtectedRoute>
                             }
                         />
@@ -214,11 +276,6 @@ const App: React.FC = () => {
                                     <CreateJobPage />
                                 </ProtectedRoute>
                             }
-                        />
-
-                        <Route
-                            path={Paths.SETTING_ID}
-                            element={<SettingPage />}
                         />
 
                         <Route
