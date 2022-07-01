@@ -315,5 +315,11 @@
         "youDon-tHaveArchivalProjects": "YOU DON’T HAVE ANY ARCHIVAL PROJECT",
         "youDon-tHaveRelevantProjects": "YOU DON’T HAVE ANY RELEVANT PROJECT",
         "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS"
+    },
+
+    "EmailConfirm": {
+        "fineTitle": "Congratulation! Your email is confirmed, please",
+        "poorTitle": "Confirmation email is already sent. Please check it!",
+        "signIn": "Sign in"
     }
 }

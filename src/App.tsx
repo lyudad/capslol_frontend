@@ -27,6 +27,7 @@ import { useAppSelector } from 'hooks/redux';
 import { TChatArgument } from 'pages/Chat/interfaces';
 import { useGetFilteredJobsQuery } from 'store/apis/jobs';
 import { useGetFreelancerProfileQuery } from 'store/apis/publicProfile';
+import EmailConfirmation from 'pages/EmailConfirmation';
 
 const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
@@ -243,6 +244,10 @@ const App: React.FC = () => {
                         element={<ResetPassword />}
                     />
                     <Route path={Paths.HOME} element={<HomePage />} />
+                    <Route
+                        path={Paths.CONFIRM_EMAIL}
+                        element={<EmailConfirmation />}
+                    />
                 </Routes>
             </MainLayout>
         </AppContext.Provider>

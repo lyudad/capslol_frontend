@@ -21,4 +21,5 @@ export enum Paths {
     MY_CONTRACTS = '/my-contracts',
     TALENT = '/talents',
     MY_CONTACTS = '/my_contacts',
+    CONFIRM_EMAIL = '/confirmation/*',
 }
