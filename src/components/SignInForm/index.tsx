@@ -75,6 +75,10 @@ const SignInForm: React.FC = () => {
                 navigate(Paths.TALENT);
                 return;
             }
+            if (user.role === userRole.owner && !ownerJobs?.length) {
+                navigate(Paths.CREATE_JOB_PAGE);
+                return;
+            }
 
             if (userRole.owner && !ownerJobs?.length) {
                 navigate(Paths.CREATE_JOB_PAGE);

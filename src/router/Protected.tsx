@@ -24,7 +24,7 @@ export const ProtectedRoute: React.FC<IProps> = ({
     children,
 }: IProps): JSX.Element => {
     if (boolValue) {
-        return <Navigate to={redirectPath} replace />;
+        return <Navigate to={redirectPath} />;
     }
     return <>{children}</>;
 };

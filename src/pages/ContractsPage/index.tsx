@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Col, Row } from 'antd';
 import { StyledPagination } from 'components/StyledPagination/pagination-styles';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { useGetFilteredContractsQuery } from 'store/apis/contracts';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
+import { sortContractsByAB } from 'utilities/utilities';
 import {
     ContractsOptionsInterface,
     IContract,
@@ -38,8 +39,14 @@ const ContactsPage: React.FC = () => {
         setFilter(query);
     }, [currentRole, myId]);
 
-    const { data: contractsData, isLoading } =
-        useGetFilteredContractsQuery(filter);
+    const { data: contracts, isLoading } = useGetFilteredContractsQuery(filter);
+
+    const contractsData = useMemo(() => {
+        if (contracts) {
+            return sortContractsByAB(contracts.data, 'opened', 'closed');
+        }
+        return [];
+    }, [contracts]);
 
     return (
         <Page>
@@ -48,7 +55,7 @@ const ContactsPage: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {contractsData?.data.map((item: IContract) => {
+                            {contractsData?.map((item: IContract) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
@@ -58,7 +65,7 @@ const ContactsPage: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                    <HideWrapper showWhen={!contractsData?.data.length}>
+                    <HideWrapper showWhen={!contractsData?.length}>
                         <EmptyListNotification
                             note={t('Notes.youDon-tHaveContracts')}
                         />
@@ -67,8 +74,8 @@ const ContactsPage: React.FC = () => {
             </ListWrapper>
             <HideWrapper
                 showWhen={
-                    !!contractsData?.meta.itemCount &&
-                    contractsData?.meta.itemCount > 10
+                    !!contracts?.meta.itemCount &&
+                    contracts?.meta.itemCount > 10
                 }
             >
                 <Row justify="center">
@@ -76,7 +83,7 @@ const ContactsPage: React.FC = () => {
                         <StyledPagination
                             defaultCurrent={1}
                             current={filter?.page}
-                            total={contractsData?.meta.itemCount}
+                            total={contracts?.meta.itemCount}
                             onChange={(targetPage) =>
                                 setFilter((prev) => ({
                                     ...prev,
