@@ -174,18 +174,18 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     {showEmojis && <Emoji onEmojiClick={handleEmojiClick} />}
                 </ChatBody>
                 <ChatFooter>
-                    {((data?.data?.role || undefined) !== Role.jobOwner &&
+                    {/* {((data?.data?.role || undefined) !== Role.jobOwner &&
                         messages.length < 2) ||
                         offer?.status === Status.DECLINED ||
-                        contract?.status === 'closed' || (
-                            <ChatForm
-                                currentChat={currentChat}
-                                handleShowEmojis={handleShowEmojis}
-                                inputRef={inputRef}
-                                setMessageText={setMessageText}
-                                messageText={messageText}
-                            />
-                        )}
+                        contract?.status === 'closed' || ( */}
+                    <ChatForm
+                        currentChat={currentChat}
+                        handleShowEmojis={handleShowEmojis}
+                        inputRef={inputRef}
+                        setMessageText={setMessageText}
+                        messageText={messageText}
+                    />
+                    {/* // )} */}
                 </ChatFooter>
             </MainChat>
 
