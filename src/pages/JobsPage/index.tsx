@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import { useTranslation } from 'react-i18next';
 import { Col, Row } from 'antd';
 import { useLazyGetFilteredJobsQuery } from 'store/apis/jobs';
