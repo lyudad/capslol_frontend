@@ -57,6 +57,13 @@ const AppBar: React.FC = () => {
         }
     }, [userId, getJobs, getProfile]);
 
+    useMemo(async () => {
+        if (userId && role === userRole.owner) {
+            const jobs = await getJobs(userId).unwrap();
+            setJobsOwnLength(jobs.length);
+        }
+    }, [userId, getJobs, role]);
+
     const logout = (): void => {
         dispatch(logOut());
         navigate(Paths.HOME);
