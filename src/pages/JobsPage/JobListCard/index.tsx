@@ -154,9 +154,6 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     </StyledNav>
                 )}
             </HideWrapper>
-            <HideWrapper showWhen={role !== 'Freelancer' || !userProfile}>
-                <FieldValue>{t('JobPage.ifYouAre')}</FieldValue>
-            </HideWrapper>
         </>
     );
 };
