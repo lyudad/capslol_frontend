@@ -49,5 +49,4 @@ export const {
     useChangeContractStatusMutation,
     useGetContractByIdOfferIdQuery,
     useGetFilteredContractsQuery,
-    useLazyGetFilteredContractsQuery,
 } = contractsApi;

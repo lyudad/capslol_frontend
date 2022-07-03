@@ -10,18 +10,13 @@ import EmptyListNotification from 'components/EmptyListNotification';
 import {
     ContractsOptionsInterface,
     IContract,
-    MetaInterface,
 } from 'store/apis/contracts/contracts.types';
 import { userRole } from 'constants/index';
-import { sortContractsByAB } from 'utilities/utilities';
 import { ListContainer, ListWrapper, List, Title, Page } from './styles';
 import ContractCard from './ContractCard/index';
 
 const ContactsPage: React.FC = () => {
     const { t } = useTranslation();
-    const [contractsData, setContractsData] = useState<IContract[]>([]);
-    const [meta, setMeta] = useState<MetaInterface | null>(null);
-
     const [filter, setFilter] = useState<ContractsOptionsInterface>({
         page: 1,
     });
@@ -43,19 +38,8 @@ const ContactsPage: React.FC = () => {
         setFilter(query);
     }, [currentRole, myId]);
 
-    const { data: contracts, isLoading } = useGetFilteredContractsQuery(filter);
-
-    useEffect(() => {
-        if (contracts) {
-            const sortContracts = sortContractsByAB(
-                contracts.data,
-                'opened',
-                'closed'
-            );
-            setContractsData(sortContracts);
-            setMeta(contracts.meta);
-        }
-    }, [contracts]);
+    const { data: contractsData, isLoading } =
+        useGetFilteredContractsQuery(filter);
 
     return (
         <Page>
@@ -64,7 +48,7 @@ const ContactsPage: React.FC = () => {
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>
                         <List>
-                            {contractsData?.map((item: IContract) => {
+                            {contractsData?.data.map((item: IContract) => {
                                 const { id } = item;
                                 return (
                                     <ul key={id}>
@@ -74,20 +58,25 @@ const ContactsPage: React.FC = () => {
                             })}
                         </List>
                     </ListContainer>
-                    <HideWrapper showWhen={!contractsData?.length}>
+                    <HideWrapper showWhen={!contractsData?.data.length}>
                         <EmptyListNotification
                             note={t('Notes.youDon-tHaveContracts')}
                         />
                     </HideWrapper>
                 </SpinnerWrapper>
             </ListWrapper>
-            <HideWrapper showWhen={!!meta?.itemCount && meta?.itemCount > 10}>
+            <HideWrapper
+                showWhen={
+                    !!contractsData?.meta.itemCount &&
+                    contractsData?.meta.itemCount > 10
+                }
+            >
                 <Row justify="center">
                     <Col>
                         <StyledPagination
                             defaultCurrent={1}
                             current={filter?.page}
-                            total={meta?.itemCount}
+                            total={contractsData?.meta.itemCount}
                             onChange={(targetPage) =>
                                 setFilter((prev) => ({
                                     ...prev,
