@@ -41,6 +41,7 @@ const CreateJobPage: React.FC = () => {
 
     const { data: categories } = useGetCategoriesQuery();
     const { data: skills } = useGetSkillsQuery();
+
     const [createJob] = useCreateJobMutation();
 
     const onFill = (): void => {
