@@ -48,13 +48,11 @@ const AppBar: React.FC = () => {
     const [getProfile, { isLoading }] = useLazyGetFreelancerProfileQuery();
 
     useMemo(async () => {
-        if (userId) {
-            const jobs = await getJobs(userId).unwrap();
-            const profileUser = await getProfile(userId).unwrap();
-            setJobsOwnLength(jobs.length);
-            setUserProfile(profileUser);
-            setProfilePath(`profile/${userId}`);
-        }
+        const jobs = await getJobs(userId).unwrap();
+        const profileUser = await getProfile(userId).unwrap();
+        setJobsOwnLength(jobs.length);
+        setUserProfile(profileUser);
+        setProfilePath(`profile/${userId}`);
     }, [userId, getJobs, getProfile]);
 
     const logout = (): void => {

@@ -248,7 +248,14 @@ const App: React.FC = () => {
                                         element={
                                             <ProtectedRoute
                                                 boolValue={
-                                                    role === userRole.freelancer
+                                                    !(
+                                                        (role ===
+                                                            userRole.owner &&
+                                                            !jobsLength) ||
+                                                        (role ===
+                                                            userRole.owner &&
+                                                            !jobsLength)
+                                                    )
                                                 }
                                                 redirectPath={Paths.JOBS}
                                             >
