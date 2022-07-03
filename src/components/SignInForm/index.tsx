@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazySignInUseGoogleQuery } from 'store/apis/auth';
 import { setCredentials } from 'store/slices/auth/auth.slice';
 import AuthGoogle from 'components/AuthGoogle';
+import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
 import { userRole } from 'constants/index';
 import { RequestHeader } from 'constants/request.constants';
 import {
@@ -38,6 +39,7 @@ const SignInForm: React.FC = () => {
     const [loginGoogleUser] = useLazySignInUseGoogleQuery();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [getJobsByOwner] = useLazyGetJobsByOwnerQuery();
 
     const onFinish = async (values: FormType): Promise<void> => {
         try {
@@ -53,6 +55,8 @@ const SignInForm: React.FC = () => {
 
             const { user } = response.data;
 
+            const ownerJobs = await getJobsByOwner(user.id).unwrap();
+
             notification.open({
                 message: translator('AuthGoogle.comeBackMessage'),
             });
@@ -62,9 +66,20 @@ const SignInForm: React.FC = () => {
                 return;
             }
 
-            user.role === userRole.freelancer
-                ? navigate(Paths.JOBS)
-                : navigate(Paths.TALENT);
+            if (user.role === userRole.freelancer) {
+                navigate(Paths.JOBS);
+                return;
+            }
+
+            if (user.role === userRole.owner && !!ownerJobs?.length) {
+                navigate(Paths.TALENT);
+                return;
+            }
+
+            if (userRole.owner && !ownerJobs?.length) {
+                navigate(Paths.CREATE_JOB_PAGE);
+                return;
+            }
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
