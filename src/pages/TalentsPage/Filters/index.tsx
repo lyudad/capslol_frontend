@@ -15,14 +15,20 @@ import 'antd/dist/antd.min.css';
 const { Option } = Select;
 
 const Filters: React.FC = () => {
-    const [searchQuery, setSearchQuery] = useState<string | null>(
-        sessionStorage.getItem('searchValue')
-    );
-    const [categoryQuery, setCategoryQuery] = useState<string | null>(
-        sessionStorage.getItem('categoryQuery')
-    );
-    const [skillsQuery, setSkillsQuery] = useState<string | null>(
-        sessionStorage.getItem('categoryQuery')
+    const [searchQuery, setSearchQuery] = useState<string | null>();
+    const [categoryQuery, setCategoryQuery] = useState<string>();
+    const [skillsQuery, setSkillsQuery] = useState<string>();
+
+    const [initialSearchQuery, setInitialSearchQuery] = useState<
+        string | undefined
+    >(sessionStorage.getItem('searchQuery')?.substring(3));
+
+    const [initialCategoryQuery, setInitialCategoryQuery] = useState<
+        string | null | undefined
+    >(sessionStorage.getItem('categoryQuery')?.substring(10));
+
+    const [initialSkillsQuery, setInitialSkillsQuery] = useState<string>(
+        sessionStorage.getItem('skillsArray') as string
     );
 
     const [form] = Form.useForm();
@@ -40,7 +46,11 @@ const Filters: React.FC = () => {
 
     useEffect(() => {
         const handleGetJobs = async (): Promise<void> => {
-            const query = `/search?${searchQuery}${categoryQuery}${skillsQuery}`;
+            const query = `/search?${
+                sessionStorage.getItem('searchQuery') || ''
+            }${sessionStorage.getItem('categoryQuery') || ''}${
+                sessionStorage.getItem('skillQuery') || ''
+            }`;
             const talents = await getTalentsByQueries(query).unwrap();
             dispatch(setTalents(talents));
         };
@@ -54,12 +64,27 @@ const Filters: React.FC = () => {
     ]);
 
     const onFinish = (values: IQueryFilters): void => {
-        sessionStorage.setItem('searchQuery', `&q=${values.searchValue}`);
-        sessionStorage.setItem('categoryQuery', `&category=${values.category}`);
-        sessionStorage.setItem(
-            'skillQuery',
-            `&skills=${values.filteredSkills?.join('')}`
-        );
+        if (values.searchValue) {
+            sessionStorage.setItem('searchQuery', `&q=${values.searchValue}`);
+            setInitialSearchQuery(values.searchValue);
+        }
+        if (values.category) {
+            sessionStorage.setItem(
+                'categoryQuery',
+                `&category=${values.category}`
+            );
+            setInitialCategoryQuery(String(values.category));
+        }
+        if (values.filteredSkills) {
+            sessionStorage.setItem(
+                'skillsArray',
+                JSON.stringify(values?.filteredSkills)
+            );
+            sessionStorage.setItem(
+                'skillQuery',
+                `&skills=${values.filteredSkills?.join('')}`
+            );
+        }
 
         setSearchQuery(`&q=${values.searchValue}`);
 
@@ -71,12 +96,15 @@ const Filters: React.FC = () => {
             ? setSkillsQuery(`&skills=${values.filteredSkills?.join('')}`)
             : setSkillsQuery('');
     };
-
-    const onReset = (): void => {
-        form.resetFields();
+    const onReset = async (): Promise<void> => {
         setSearchQuery('');
         setCategoryQuery('');
         setSkillsQuery('');
+        await sessionStorage.clear();
+        await setInitialCategoryQuery('');
+        await setInitialSearchQuery('');
+        await setInitialSkillsQuery('');
+        await form.resetFields();
     };
 
     const categoryChildren = useMemo(() => {
@@ -125,9 +153,11 @@ const Filters: React.FC = () => {
                 form={form}
                 name="basic"
                 initialValues={{
-                    category: categoryQuery,
-                    filteredSkills: skillsQuery,
-                    searchValue: searchQuery,
+                    searchValue: initialSearchQuery,
+                    category: Number(initialCategoryQuery) || undefined,
+                    filteredSkills: initialSkillsQuery
+                        ? JSON.parse(initialSkillsQuery)
+                        : undefined,
                 }}
                 onFinish={onFinish}
             >
