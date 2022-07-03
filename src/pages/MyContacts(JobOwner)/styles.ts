@@ -1,5 +1,4 @@
 ﻿import styled from 'styled-components';
-import { PlusOutlined } from '@ant-design/icons';
 import { colors } from 'constants/index';
 
 export const Avatar = styled.div`
@@ -23,13 +22,15 @@ export const Wrapper = styled.div`
     position: relative;
 `;
 
-export const CustomFileUpload = styled(PlusOutlined)`
+export const CustomFileUpload = styled.label`
+    height: 24px;
+    width: 24px;
     border: 1px solid ${colors.textGreen};
     background: ${colors.textGreen};
     color: ${colors.textWhite};
     border-radius: 50%;
     font-size: 14px;
-    padding: 2px;
+    padding: 0 4px;
     cursor: pointer;
     position: absolute;
     bottom: 32px;

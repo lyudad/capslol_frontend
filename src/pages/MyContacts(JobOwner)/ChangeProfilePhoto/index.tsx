@@ -1,5 +1,6 @@
-﻿import React, { useRef, useState } from 'react';
+﻿import React, { useState } from 'react';
 import { message, notification } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 import avatar from 'assets/avatar.png';
@@ -16,7 +17,6 @@ import { IChangePhotoProps } from '../props';
 
 const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
     const [previewSource, setPreviewSource] = useState<string>('');
-    const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
     const [createProfile, { isError }] = useCreateProfileMutation();
     const { data: userProfile } = useSearchUserQuery(user?.id);
@@ -42,16 +42,22 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
         });
     };
 
-    const handleClick = (): void => {
-        hiddenFileInput?.current?.click();
-    };
-
     const handleUploadImage = async (
         event: React.ChangeEvent
     ): Promise<void> => {
         try {
             const target = event.target as HTMLInputElement;
             const file = (target.files as FileList)[0];
+            const pattern = /(jpg|jpeg|png)$/;
+
+            if (!file.type.match(pattern)) {
+                openNotificationWithIcon(
+                    'error',
+                    'Error',
+                    `${t('ContactInfo.imageError')}`
+                );
+                return;
+            }
 
             previewFile(file);
 
@@ -97,15 +103,17 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
                     </Avatar>
                 )}
 
-                <>
-                    <CustomFileUpload onClick={handleClick} />
+                <CustomFileUpload htmlFor="contained-button-file">
                     <input
-                        type="file"
-                        ref={hiddenFileInput}
-                        onChange={handleUploadImage}
                         style={{ display: 'none' }}
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleUploadImage}
+                        accept="image/*"
                     />
-                </>
+                    <PlusOutlined />
+                </CustomFileUpload>
             </Wrapper>
             <div>
                 <Title fs="28">

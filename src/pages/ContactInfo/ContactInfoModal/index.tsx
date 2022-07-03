@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, message } from 'antd';
+import { message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
 }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const { t } = useTranslation();
-    const [form] = Form.useForm();
+    const [form] = StyledForm.useForm<IChangePassword>();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     let timer: ReturnType<typeof setTimeout>;
@@ -89,6 +89,7 @@ const ContactInfoModal: React.FC<IModalProps> = ({
                         label={t('ContactInfo.passwordTitle.item')}
                         name="password"
                         htmlFor="password"
+                        hasFeedback
                         rules={[
                             {
                                 required: true,

@@ -276,7 +276,8 @@
         "addPhoneNumber": "Your successfully add phone number!",
         "emptyRole": "You didn`t choose a role",
         "congratsNotifice": "Congrats, you successfully upload image!",
-        "errorNotifice": "We can`t upload you profile image, please try again later!"
+        "errorNotifice": "We can`t upload you profile image, please try again later!",
+        "imageError": "Invalid Format! Only jpg jpeg and png files are allowed!"
     },
 
     "Chat": {
