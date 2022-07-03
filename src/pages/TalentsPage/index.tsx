@@ -44,7 +44,7 @@ const TalentsPage: React.FC = () => {
                 <ListContainer>
                     {!data.length ? (
                         <EmptyListNotification
-                            note={t('Notes.noProjectsWereFound')}
+                            note={t('Notes.empty-talents')}
                         />
                     ) : (
                         <TalentsList>
