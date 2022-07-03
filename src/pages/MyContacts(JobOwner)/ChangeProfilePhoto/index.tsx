@@ -12,6 +12,7 @@ import {
 } from 'store/apis/publicProfile';
 import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
 import { NotificationType } from 'pages/SendProposal/interfaces';
+import { validateImage } from 'constants/validate';
 import { Avatar, CustomFileUpload, StyledImg, Wrapper } from '../styles';
 import { IChangePhotoProps } from '../props';
 
@@ -48,9 +49,8 @@ const ChangePhoto: React.FC<IChangePhotoProps> = ({ user }) => {
         try {
             const target = event.target as HTMLInputElement;
             const file = (target.files as FileList)[0];
-            const pattern = /(jpg|jpeg|png)$/;
 
-            if (!file.type.match(pattern)) {
+            if (!file.type.match(validateImage)) {
                 openNotificationWithIcon(
                     'error',
                     'Error',
