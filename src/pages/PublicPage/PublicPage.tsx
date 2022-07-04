@@ -123,6 +123,7 @@ const PublicPage: React.FC = () => {
                         data?.user?.firstName
                     } ${data?.user?.lastName}`,
                 });
+                setToggle(true);
                 return;
             }
             setIsModalVisible(true);
@@ -265,11 +266,28 @@ const PublicPage: React.FC = () => {
                     <Sections>
                         {t('PublicProfile.skills')}:{' '}
                         <Description>
-                            <span style={{ color: colors.brandColor }}>
-                                {data?.skills.map((e) => (
-                                    <span key={e.id}>| {e.name} </span>
-                                ))}{' '}
-                            </span>
+                            {(data?.skills?.length as number) >= 2
+                                ? data?.skills.map((e) => (
+                                      <span
+                                          style={{
+                                              color: colors.brandColor,
+                                          }}
+                                          key={e.id}
+                                      >
+                                          | {e.name}
+                                          {'  '}
+                                      </span>
+                                  ))
+                                : data?.skills.map((e) => (
+                                      <span
+                                          style={{
+                                              color: colors.brandColor,
+                                          }}
+                                          key={e.id}
+                                      >
+                                          {e.name}{' '}
+                                      </span>
+                                  ))}
                         </Description>
                     </Sections>
                     <Sections>

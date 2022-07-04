@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from 'hooks/redux';
+import EmptyListNotification from 'components/EmptyListNotification';
 import { userRole } from 'constants/index';
 import { useGetInvitationsByJobOwnerQuery } from 'store/apis/invitations';
 import { IMyInvitation } from 'store/apis/invitations/invitations.types';
@@ -44,7 +45,11 @@ const TalentsPage: React.FC = () => {
                     <Filters />
                 </FiltersContainer>
                 <ListContainer>
-                    {data && (
+                    {!data.length ? (
+                        <EmptyListNotification
+                            note={t('Notes.empty-talents')}
+                        />
+                    ) : (
                         <TalentsList>
                             {data.map((item: talentProfile) => {
                                 const { id } = item;

@@ -18,7 +18,7 @@ import FilterOptionItem from '../FilterOptionItem';
 
 interface FiltersPropsInterface {
     submitHandler: (value: IQueryFilters) => void;
-    userFilter: JobsOptionsInterface;
+    userFilter: JobsOptionsInterface | null;
     onRestart: () => void;
     salaryLimit?: number;
     timeLimit?: number;
@@ -51,24 +51,26 @@ const Filters: React.FC<FiltersPropsInterface> = ({
     useEffect(() => {
         const onFill = (): void => {
             form.setFieldsValue({
-                categoryId: userFilter.category,
-                skillIds: userFilter.skills,
-                englishLevel: userFilter.languageLevel,
-                maxSalary: userFilter.price,
-                timeAvailable: userFilter.timeAvailable,
+                categoryId: userFilter?.category,
+                skillIds: userFilter?.skills,
+                englishLevel: userFilter?.languageLevel,
+                maxSalary: userFilter?.price,
+                timeAvailable: userFilter?.timeAvailable,
             });
         };
-        if (userFilter.price) {
-            setMaxSalary(userFilter.price);
+        if (userFilter?.price) {
+            setMaxSalary(userFilter?.price);
         }
-        if (userFilter.timeAvailable) {
-            setTimeAvailable(userFilter.timeAvailable);
+        if (userFilter?.timeAvailable) {
+            setTimeAvailable(userFilter?.timeAvailable);
         }
         onFill();
     }, [userFilter, form]);
 
     const resetHandler = (): void => {
         form.resetFields();
+        setMaxSalary(0);
+        setTimeAvailable(0);
         onRestart();
     };
 

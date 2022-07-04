@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import { useTranslation } from 'react-i18next';
 import { Col, Row } from 'antd';
 import { useLazyGetFilteredJobsQuery } from 'store/apis/jobs';
@@ -29,15 +28,14 @@ import Filters from './Filters';
 
 const JobsPage: React.FC = () => {
     const { t } = useTranslation();
-    const [jobs, setJobs] = useState<IJob[]>([]);
-    const [filter, setFilter] = useState<JobsOptionsInterface>({
-        page: 1,
-    });
+    const [jobs, setJobs] = useState<IJob[] | null>(null);
+    const [filter, setFilter] = useState<JobsOptionsInterface | null>(null);
     const [meta, setMeta] = useState<MetaInterface | null>(null);
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
-    const [getProfile] = useLazyGetFreelancerProfileQuery();
+    const [getProfile, { isLoading: loading }] =
+        useLazyGetFreelancerProfileQuery();
 
     const [searchJobs, { isLoading }] = useLazyGetFilteredJobsQuery();
 
@@ -73,14 +71,16 @@ const JobsPage: React.FC = () => {
     }, [getProfile, userId]);
 
     useEffect((): void => {
-        const reloadJobs = async (): Promise<void> => {
-            const results = await searchJobs(filter).unwrap();
+        if (filter !== null) {
+            const reloadJobs = async (): Promise<void> => {
+                const results = await searchJobs(filter).unwrap();
 
-            setMeta(results.meta);
+                setMeta(results.meta);
 
-            setJobs([...results.data]);
-        };
-        reloadJobs();
+                setJobs([...results.data]);
+            };
+            reloadJobs();
+        }
     }, [userId, filter, searchJobs]);
 
     const onFinish = (value: IQueryFilters): void => {
@@ -120,54 +120,63 @@ const JobsPage: React.FC = () => {
 
     return (
         <Page>
-            <Title>{t('JobPage.jobPageTitle')}</Title>
-            <JobsContainer>
-                <SpinnerWrapper isLoading={isLoading}>
-                    <FiltersContainer>
-                        <Filters
-                            submitHandler={onFinish}
-                            userFilter={filter}
-                            onRestart={onRestartIfReset}
-                        />
-                    </FiltersContainer>
-                    <ListContainer>
-                        <JobsList>
-                            {jobs?.map((item: IJob) => {
-                                const { id, isArchived } = item;
-                                return (
-                                    <JobCard archived={isArchived} key={id}>
-                                        <JobsListCard jobObj={item} />
-                                    </JobCard>
-                                );
-                            })}
-                        </JobsList>
-                        <HideWrapper showWhen={!jobs?.length}>
-                            <EmptyListNotification
-                                note={t('Notes.noProjectsWereFound')}
+            <HideWrapper showWhen={jobs !== null}>
+                <Title>{t('JobPage.jobPageTitle')}</Title>
+                <JobsContainer>
+                    <SpinnerWrapper isLoading={isLoading || loading}>
+                        <FiltersContainer>
+                            <Filters
+                                submitHandler={onFinish}
+                                userFilter={filter}
+                                onRestart={onRestartIfReset}
                             />
-                        </HideWrapper>
-                        <HideWrapper
-                            showWhen={!!meta?.itemCount && meta?.itemCount > 10}
-                        >
-                            <Row justify="center">
-                                <Col>
-                                    <StyledPagination
-                                        defaultCurrent={1}
-                                        current={filter?.page}
-                                        total={meta?.itemCount}
-                                        onChange={(targetPage) =>
-                                            setFilter((prev) => ({
-                                                ...prev,
-                                                page: targetPage,
-                                            }))
-                                        }
-                                    />
-                                </Col>
-                            </Row>
-                        </HideWrapper>
-                    </ListContainer>
-                </SpinnerWrapper>
-            </JobsContainer>
+                        </FiltersContainer>
+
+                        <ListContainer>
+                            <JobsList>
+                                {jobs?.map((item: IJob) => {
+                                    const { id, isArchived } = item;
+                                    return (
+                                        <JobCard archived={isArchived} key={id}>
+                                            <JobsListCard jobObj={item} />
+                                        </JobCard>
+                                    );
+                                })}
+                            </JobsList>
+                            <HideWrapper
+                                showWhen={
+                                    !jobs?.length && !isLoading && !loading
+                                }
+                            >
+                                <EmptyListNotification
+                                    note={t('Notes.noProjectsWereFound')}
+                                />
+                            </HideWrapper>
+                            <HideWrapper
+                                showWhen={
+                                    !!meta?.itemCount && meta?.itemCount > 10
+                                }
+                            >
+                                <Row justify="center">
+                                    <Col>
+                                        <StyledPagination
+                                            defaultCurrent={1}
+                                            current={filter?.page}
+                                            total={meta?.itemCount}
+                                            onChange={(targetPage) =>
+                                                setFilter((prev) => ({
+                                                    ...prev,
+                                                    page: targetPage,
+                                                }))
+                                            }
+                                        />
+                                    </Col>
+                                </Row>
+                            </HideWrapper>
+                        </ListContainer>
+                    </SpinnerWrapper>
+                </JobsContainer>
+            </HideWrapper>
         </Page>
     );
 };

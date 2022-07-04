@@ -14,21 +14,20 @@ export const sortContractsByAB = (
     a: string,
     b: string
 ): IContract[] => {
-    return [...arr].sort((item) => {
-        if (item.status === a) return 1;
-        if (item.status === b) return -1;
-        return 0;
-    });
+    const arrA = arr.filter((el) => el.status === a);
+    const arrB = arr.filter((el) => el.status === b);
+    return [...arrA, ...arrB];
 };
 
-export const sortOffersByAB = (
+export const sortOffersByABC = (
     arr: IMyOffer[],
     a: string,
-    b: string
+    b: string,
+    c: string
 ): IMyOffer[] => {
-    return [...arr].sort((item) => {
-        if (item.status === a) return 1;
-        if (item.status === b) return -1;
-        return 0;
-    });
+    const arrA = arr.filter((el) => el.status === a);
+    const arrB = arr.filter((el) => el.status === b);
+    const arrC = arr.filter((el) => el.status === c);
+
+    return [...arrA, ...arrB, ...arrC];
 };

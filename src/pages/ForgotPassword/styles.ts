@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
+import { NavLink } from 'react-router-dom';
+
 import { colors } from 'constants/index';
 import { IProps } from './interfaces';
 
@@ -74,15 +76,6 @@ export const PwrButton = styled(Button)`
 
 export const FormLink = styled.div`
     text-align: end;
-
-    a {
-        transition: all 0.4s linear;
-
-        &:hover {
-            text-decoration: underline;
-            color: ${textGreen};
-        }
-    }
 `;
 
 export const Title = styled.h3`
@@ -91,6 +84,15 @@ export const Title = styled.h3`
     font-size: 22px;
 
     span {
+        color: ${textGreen};
+    }
+`;
+
+export const StyledNavLink = styled(NavLink)`
+    transition: all 0.4s linear;
+
+    &:hover {
+        text-decoration: underline;
         color: ${textGreen};
     }
 `;

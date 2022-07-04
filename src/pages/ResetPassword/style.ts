@@ -32,7 +32,7 @@ export const StyledSpace = styled(Space)`
 
 export const TypographyTitle = styled(Typography.Title)`
     color: ${(props: Props) => props.color} !important;
-    margin: 0 auto 0.5em;
+    margin: 0 auto 1.5em !important;
 `;
 
 export const Title = styled.h4`
