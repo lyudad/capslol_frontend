@@ -123,6 +123,7 @@ const PublicPage: React.FC = () => {
                         data?.user?.firstName
                     } ${data?.user?.lastName}`,
                 });
+                setToggle(true);
                 return;
             }
             setIsModalVisible(true);
