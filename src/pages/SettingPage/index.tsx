@@ -46,6 +46,7 @@ import {
     ButtonSet,
     SectionsExperience,
     ButtonDel,
+    DescriptionError,
 } from './styles';
 
 const englishEnum = [
@@ -75,7 +76,9 @@ const SettingPage: React.FC = () => {
     const { TextArea } = Input;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [skills, setSkills] = useState<any>(data?.skills);
-    const [hourRate, setHourRate] = useState(data?.hourRate);
+    const [hourRate, setHourRate] = useState<number | undefined | null>(
+        data?.hourRate
+    );
     const [availableHours, setAvailableHours] = useState(data?.availableHours);
 
     const [educationName, setEducationName] = useState('');
@@ -97,6 +100,9 @@ const SettingPage: React.FC = () => {
     const [avatarUrl, setAvatarUrl] = useState();
     const [changeToggle, setChangeToggle] = useState<boolean>(false);
     const [changeToggleEducation, setChangeToggleEducation] =
+        useState<boolean>(false);
+    const [upperMaxToggle, setUpperMaxToggle] = useState<boolean>(false);
+    const [upperMaxToggleHours, setUpperMaxToggleHours] =
         useState<boolean>(false);
 
     const onOther = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -129,9 +135,21 @@ const SettingPage: React.FC = () => {
     };
 
     const onChangeHuorRate = (value: number): void => {
+        if (value > 50) {
+            setUpperMaxToggle(true);
+            setHourRate(value);
+            return;
+        }
+        setUpperMaxToggle(false);
         setHourRate(value);
     };
     const onChangeAvailableHours = (value: number): void => {
+        if (value > 12) {
+            setUpperMaxToggleHours(true);
+            setAvailableHours(value);
+            return;
+        }
+        setUpperMaxToggleHours(false);
         setAvailableHours(value);
     };
 
@@ -398,11 +416,22 @@ const SettingPage: React.FC = () => {
                 message: 'Please input your Hour Rate!',
             });
         }
+        if (hourRate > 50) {
+            return notification.warning({
+                message: '"Hour Rate" must be between 1 and 50!',
+            });
+        }
         if (!availableHours) {
             return notification.warning({
                 message: 'Please input your available amount of hours',
             });
         }
+        if (availableHours > 12) {
+            return notification.warning({
+                message: '"Amount of hours" must be between 1 and 12',
+            });
+        }
+
         if (!category) {
             return notification.warning({
                 message: 'Please choose your Category',
@@ -476,14 +505,20 @@ const SettingPage: React.FC = () => {
                             {' '}
                             <InputNumber
                                 min={1}
-                                max={50}
+                                max={99}
                                 placeholder="max 50"
-                                defaultValue={hourRate}
+                                defaultValue={hourRate || undefined}
+                                maxLength={2}
                                 onChange={onChangeHuorRate}
                             />
                         </span>
                         {' $'}
                     </Description>
+                    {upperMaxToggle && (
+                        <DescriptionError>
+                            <span>{t('Proposal.amountError')}</span>
+                        </DescriptionError>
+                    )}
                     <Description>
                         <span style={{ color: colors.brandColor }}>*</span>{' '}
                         {t('PublicProfile.amount_hours')}{' '}
@@ -491,14 +526,20 @@ const SettingPage: React.FC = () => {
                             {' '}
                             <InputNumber
                                 min={1}
-                                max={12}
+                                max={99}
                                 placeholder="max 12"
                                 defaultValue={availableHours}
+                                maxLength={2}
                                 onChange={onChangeAvailableHours}
                             />
                         </span>
                         {' h'}
                     </Description>
+                    {upperMaxToggleHours && (
+                        <DescriptionError>
+                            <span>{t('PublicProfile.amountError12')}</span>
+                        </DescriptionError>
+                    )}
                 </Sections>
                 <Sections>
                     {t('PublicProfile.education')}
