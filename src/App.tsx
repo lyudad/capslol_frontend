@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
 import JobsPage from 'pages/JobsPage';
@@ -28,11 +28,14 @@ import { TChatArgument } from 'pages/Chat/interfaces';
 import { useGetFilteredJobsQuery } from 'store/apis/jobs';
 import { useGetFreelancerProfileQuery } from 'store/apis/publicProfile';
 import EmailConfirmation from 'pages/EmailConfirmation';
+import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 
 const App: React.FC = () => {
+    const [jobsLength, setJobsLength] = useState<number | null>(null);
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
         undefined
     );
+
     const context = useMemo(
         () => ({ socket: appSocket, currentChat, setCurrentChat }),
         [currentChat]
@@ -42,270 +45,292 @@ const App: React.FC = () => {
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
-    const profilePath = `profile/${userId}`;
+    const profilePath = `/profile/${userId}`;
 
-    const { data: userProfile } = useGetFreelancerProfileQuery(userId);
+    const setProfilePath = `/setting/${userId}`;
 
-    const { data: ownJobs } = useGetFilteredJobsQuery({
+    const { data: userProfile, isLoading } =
+        useGetFreelancerProfileQuery(userId);
+
+    const profileBool = !!userProfile;
+
+    const { data: ownJobs, isLoading: loading } = useGetFilteredJobsQuery({
         ownerId: userId,
     });
 
-    const ownJobsLength = ownJobs?.data.length;
+    useEffect(() => {
+        if (ownJobs) {
+            setJobsLength(ownJobs.data.length);
+        }
+    }, [ownJobs, userId]);
 
     return (
         <AppContext.Provider value={context}>
             <MainLayout>
-                <Routes>
-                    <Route element={<Protected />}>
-                        <Route path="*" element={<HomePage />} />
+                <SpinnerWrapper isLoading={isLoading || loading}>
+                    <Routes>
+                        <Route element={<Protected />}>
+                            <Route path="*" element={<HomePage />} />
+
+                            <Route
+                                path="/logo"
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            !(
+                                                role === userRole.freelancer &&
+                                                !profileBool
+                                            ) && !!role
+                                        }
+                                        redirectPath={Paths.TALENT}
+                                    >
+                                        <SettingPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path={setProfilePath}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={role === userRole.owner}
+                                        redirectPath={Paths.TALENT}
+                                    >
+                                        <SettingPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path={profilePath}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            role === userRole.owner &&
+                                            !jobsLength
+                                        }
+                                        redirectPath={Paths.OWNER_JOBS}
+                                    >
+                                        <PublicPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path={Paths.JOBS}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            !(
+                                                role === userRole.freelancer &&
+                                                profileBool
+                                            )
+                                        }
+                                        redirectPath={setProfilePath}
+                                    >
+                                        <JobsPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path={Paths.OFFERS}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            !(
+                                                role === userRole.freelancer &&
+                                                profileBool
+                                            )
+                                        }
+                                        redirectPath={setProfilePath}
+                                    >
+                                        <OffersPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path={Paths.MY_CONTRACTS}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            !(
+                                                (role === userRole.freelancer &&
+                                                    profileBool) ||
+                                                (role === userRole.owner &&
+                                                    !!jobsLength)
+                                            )
+                                        }
+                                        redirectPath={setProfilePath}
+                                    >
+                                        <ContactsPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path={Paths.CHAT}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            !(
+                                                (role === userRole.freelancer &&
+                                                    profileBool) ||
+                                                (role === userRole.owner &&
+                                                    !!jobsLength)
+                                            )
+                                        }
+                                        redirectPath={setProfilePath}
+                                    >
+                                        <Chat />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            {jobsLength !== null && (
+                                <>
+                                    <Route
+                                        path={Paths.OWNER_JOBS}
+                                        element={
+                                            <ProtectedRoute
+                                                boolValue={
+                                                    !(role === userRole.owner)
+                                                }
+                                                redirectPath={
+                                                    Paths.CREATE_JOB_PAGE
+                                                }
+                                            >
+                                                <OwnerJobsPage />
+                                            </ProtectedRoute>
+                                        }
+                                    />
+
+                                    <Route
+                                        path={Paths.TALENTS_PROFILE}
+                                        element={
+                                            <ProtectedRoute
+                                                boolValue={
+                                                    !(
+                                                        role ===
+                                                            userRole.owner &&
+                                                        !!jobsLength
+                                                    )
+                                                }
+                                                redirectPath={
+                                                    Paths.CREATE_JOB_PAGE
+                                                }
+                                            >
+                                                <PublicPage />
+                                            </ProtectedRoute>
+                                        }
+                                    />
+
+                                    <Route
+                                        path={Paths.MY_CONTACTS}
+                                        element={
+                                            <ProtectedRoute
+                                                boolValue={
+                                                    role !==
+                                                        userRole.freelancer &&
+                                                    !jobsLength
+                                                }
+                                                redirectPath={
+                                                    Paths.CREATE_JOB_PAGE
+                                                }
+                                            >
+                                                <MyContacts />
+                                            </ProtectedRoute>
+                                        }
+                                    />
+
+                                    <Route
+                                        path={Paths.CREATE_JOB_PAGE}
+                                        element={
+                                            <ProtectedRoute
+                                                boolValue={
+                                                    role === userRole.freelancer
+                                                }
+                                                redirectPath={Paths.JOBS}
+                                            >
+                                                <CreateJobPage />
+                                            </ProtectedRoute>
+                                        }
+                                    />
+
+                                    <Route
+                                        path={Paths.TALENT}
+                                        element={
+                                            <ProtectedRoute
+                                                boolValue={
+                                                    !(
+                                                        role ===
+                                                            userRole.owner &&
+                                                        !!jobsLength
+                                                    )
+                                                }
+                                                redirectPath={
+                                                    Paths.CREATE_JOB_PAGE
+                                                }
+                                            >
+                                                <TalentsPage />
+                                            </ProtectedRoute>
+                                        }
+                                    />
+                                </>
+                            )}
+
+                            <Route
+                                path={Paths.SEND_PROPOSAL}
+                                element={
+                                    <ProtectedRoute
+                                        boolValue={
+                                            !(
+                                                role === userRole.freelancer &&
+                                                profileBool
+                                            )
+                                        }
+                                        redirectPath={Paths.CREATE_JOB_PAGE}
+                                    >
+                                        <SendProposal />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path={Paths.CONTACT_INFO}
+                                element={<ContactInfo />}
+                            />
+
+                            <Route
+                                path={Paths.JOB_PAGE}
+                                element={<OneJobPage />}
+                            />
+
+                            <Route
+                                path={Paths.SELECT_ROLE}
+                                element={<RolePage />}
+                            />
+                        </Route>
+
+                        <Route path={Paths.SIGN_UP} element={<AuthForm />} />
 
                         <Route
-                            path="/logo"
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        !(
-                                            role === userRole.freelancer &&
-                                            !userProfile
-                                        ) && !!role
-                                    }
-                                    redirectPath={Paths.TALENT}
-                                >
-                                    <SettingPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.SETTING_ID}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={role !== userRole.freelancer}
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <SettingPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        {/* <Route
-                            path={Paths.SETTING_ID}
-                            element={<SettingPage />}
-                        /> */}
-
-                        <Route
-                            path={Paths.JOBS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        !userProfile ||
-                                        role !== userRole.freelancer
-                                    }
-                                    redirectPath={Paths.SETTING_ID}
-                                >
-                                    <JobsPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        {/* <Route
-                            path={Paths.JOBS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        (role === userRole.freelancer &&
-                                            !userProfile) ||
-                                        role !== userRole.freelancer
-                                    }
-                                    redirectPath={Paths.SETTING_ID}
-                                >
-                                    <JobsPage />
-                                </ProtectedRoute>
-                            }
-                        /> */}
-
-                        <Route
-                            path={Paths.OFFERS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer ||
-                                        (role === userRole.freelancer &&
-                                            !userProfile)
-                                    }
-                                    redirectPath={Paths.SETTING_ID}
-                                >
-                                    <OffersPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.MY_CONTRACTS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        (role !== userRole.freelancer &&
-                                            !ownJobsLength) ||
-                                        (role === userRole.freelancer &&
-                                            !userProfile)
-                                    }
-                                    redirectPath={Paths.SETTING_ID}
-                                >
-                                    <ContactsPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.CHAT}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        (role !== userRole.freelancer &&
-                                            !ownJobsLength) ||
-                                        (role === userRole.freelancer &&
-                                            !userProfile)
-                                    }
-                                    redirectPath={Paths.SETTING_ID}
-                                >
-                                    <Chat />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        {/* <Route
-                            path={Paths.CHAT}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer &&
-                                        !ownJobsLength
-                                    }
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <Chat />
-                                </ProtectedRoute>
-                            }
-                        /> */}
-
-                        <Route
-                            path={Paths.TALENTS_PROFILE}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer &&
-                                        !ownJobsLength
-                                    }
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <PublicPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.MY_CONTACTS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={
-                                        role !== userRole.freelancer &&
-                                        !ownJobsLength
-                                    }
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <MyContacts />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={profilePath}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={role !== userRole.freelancer}
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <PublicPage />
-                                </ProtectedRoute>
-                            }
+                            path={Paths.FORGOTTEN_PASSWORD}
+                            element={<ForgotPassword />}
                         />
                         <Route
-                            path={Paths.SEND_PROPOSAL}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={role !== userRole.freelancer}
-                                    redirectPath={Paths.OWNER_JOBS}
-                                >
-                                    <SendProposal />
-                                </ProtectedRoute>
-                            }
+                            path={Paths.RESET_PASSWORD}
+                            element={<ResetPassword />}
                         />
+
+                        <Route path={Paths.HOME} element={<HomePage />} />
 
                         <Route
-                            path={Paths.TALENT}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={!ownJobsLength}
-                                    redirectPath={Paths.CREATE_JOB_PAGE}
-                                >
-                                    <TalentsPage />
-                                </ProtectedRoute>
-                            }
+                            path={Paths.CONFIRM_EMAIL}
+                            element={<EmailConfirmation />}
                         />
-
-                        <Route
-                            path={Paths.OWNER_JOBS}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={role !== userRole.owner}
-                                    redirectPath={Paths.JOBS}
-                                >
-                                    <OwnerJobsPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.CREATE_JOB_PAGE}
-                            element={
-                                <ProtectedRoute
-                                    boolValue={role !== userRole.owner}
-                                    redirectPath={Paths.JOBS}
-                                >
-                                    <CreateJobPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        <Route
-                            path={Paths.CONTACT_INFO}
-                            element={<ContactInfo />}
-                        />
-                        <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
-
-                        <Route
-                            path={Paths.SELECT_ROLE}
-                            element={<RolePage />}
-                        />
-                    </Route>
-
-                    <Route path={Paths.SIGN_UP} element={<AuthForm />} />
-
-                    <Route
-                        path={Paths.FORGOTTEN_PASSWORD}
-                        element={<ForgotPassword />}
-                    />
-                    <Route
-                        path={Paths.RESET_PASSWORD}
-                        element={<ResetPassword />}
-                    />
-                    <Route path={Paths.HOME} element={<HomePage />} />
-                    <Route
-                        path={Paths.CONFIRM_EMAIL}
-                        element={<EmailConfirmation />}
-                    />
-                </Routes>
+                    </Routes>
+                </SpinnerWrapper>
             </MainLayout>
         </AppContext.Provider>
     );
