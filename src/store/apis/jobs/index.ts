@@ -1,9 +1,9 @@
+import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
 import { baseApi } from '..';
 import {
     IJob,
     ICategory,
     ISkill,
-    IUserProfile,
     JobFormType,
     JobResponseInterface,
     JobsOptionsInterface,
@@ -37,7 +37,7 @@ export const jobsApi = apiJobsTag.injectEndpoints({
             query: () => `skills`,
         }),
 
-        getUserProfile: builder.query<IUserProfile, number | undefined>({
+        getUserProfile: builder.query<newProfile, number | undefined>({
             query: (userId) => `profiles/getByUserId/${userId}`,
         }),
 
