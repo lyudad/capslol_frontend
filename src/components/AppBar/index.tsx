@@ -25,9 +25,9 @@ import {
 } from './styles';
 
 const AppBar: React.FC = () => {
-    const [jobsOwnLength, setJobsOwnLength] = useState<number>(0);
-    const [userProfile, setUserProfile] = useState<Profile>();
-    const [profilePath, setProfilePath] = useState<string>('');
+    // const [jobsOwnLength, setJobsOwnLength] = useState<number>(0);
+    // const [userProfile, setUserProfile] = useState<Profile>();
+    // const [profilePath, setProfilePath] = useState<string>('');
 
     const { t } = useTranslation();
 
@@ -43,26 +43,32 @@ const AppBar: React.FC = () => {
 
     const userId = useAppSelector((state) => state.auth.user?.id);
 
-    const [getJobs, { isLoading: loading }] = useLazyGetJobsByOwnerQuery();
+    const userProfile = useAppSelector((state) => state.auth.profile);
 
-    const [getProfile, { isLoading }] = useLazyGetFreelancerProfileQuery();
+    const jobsOwnLength = useAppSelector((state) => state.auth.ownerJobsLength);
 
-    useMemo(async () => {
+    // const [getJobs, { isLoading: loading }] = useLazyGetJobsByOwnerQuery();
+
+    // const [getProfile, { isLoading }] = useLazyGetFreelancerProfileQuery();
+
+    const profilePath = useMemo(() => {
         if (userId) {
-            const jobs = await getJobs(userId).unwrap();
-            const profileUser = await getProfile(userId).unwrap();
-            setJobsOwnLength(jobs.length);
-            setUserProfile(profileUser);
-            setProfilePath(`profile/${userId}`);
+            // const jobs = await getJobs(userId).unwrap();
+            // const profileUser = await getProfile(userId).unwrap();
+            // setJobsOwnLength(jobs.length);
+            // setUserProfile(profileUser);
+            // setProfilePath(`profile/${userId}`);
+            return `profile/${userId}`;
         }
-    }, [userId, getJobs, getProfile]);
+        return '';
+    }, [userId]);
 
-    useMemo(async () => {
-        if (userId && role === userRole.owner) {
-            const jobs = await getJobs(userId).unwrap();
-            setJobsOwnLength(jobs.length);
-        }
-    }, [userId, getJobs, role]);
+    // useMemo(async () => {
+    //     if (userId && role === userRole.owner) {
+    //         const jobs = await getJobs(userId).unwrap();
+    //         setJobsOwnLength(jobs.length);
+    //     }
+    // }, [userId, getJobs, role]);
 
     const logout = (): void => {
         dispatch(logOut());
@@ -71,114 +77,99 @@ const AppBar: React.FC = () => {
 
     return (
         <Header>
-            <SpinnerWrapper isLoading={isLoading || loading}>
-                <NavigationContainer>
-                    <Logo>
-                        <NavLink to="/logo" className="logoLink">
-                            <>
-                                {t('AppBar.get')}
-                                <span>{t('AppBar.job')}</span>
-                            </>
-                        </NavLink>
-                    </Logo>
-                    <HideWrapper showWhen={isAuth}>
-                        <HideWrapper
-                            showWhen={
-                                role === userRole.freelancer && !!userProfile
-                            }
-                        >
-                            <NavLink to={Paths.JOBS} className="navLink">
-                                {t('AppBar.jobs')}
-                            </NavLink>
-                        </HideWrapper>
-                        <HideWrapper
-                            showWhen={
-                                role === userRole.freelancer && !!userProfile
-                            }
-                        >
-                            <NavLink to={Paths.OFFERS} className="navLink">
-                                {t('AppBar.myOffers')}
-                            </NavLink>
-                        </HideWrapper>
-
-                        <HideWrapper showWhen={role === userRole.owner}>
-                            <NavLink to={Paths.OWNER_JOBS} className="navLink">
-                                {t('AppBar.myProjects')}
-                            </NavLink>
-                        </HideWrapper>
-                        <HideWrapper
-                            showWhen={
-                                role === userRole.owner && !!jobsOwnLength
-                            }
-                        >
-                            <NavLink to={Paths.TALENT} className="navLink">
-                                {t('AppBar.Talents')}
-                            </NavLink>
-                        </HideWrapper>
-                        <HideWrapper
-                            showWhen={
-                                (role === userRole.owner && !!jobsOwnLength) ||
-                                (role === userRole.freelancer && !!userProfile)
-                            }
-                        >
-                            <NavLink
-                                to={Paths.MY_CONTRACTS}
-                                className="navLink"
-                            >
-                                {t('AppBar.myContracts')}
-                            </NavLink>
-                        </HideWrapper>
-                        <HideWrapper
-                            showWhen={
-                                role === userRole.owner && !!jobsOwnLength
-                            }
-                        >
-                            <NavLink to={Paths.MY_CONTACTS} className="navLink">
-                                {t('AppBar.myContacts')}
-                            </NavLink>
-                        </HideWrapper>
-                        <HideWrapper
-                            showWhen={
-                                (role === userRole.owner && !!jobsOwnLength) ||
-                                (role === userRole.freelancer && !!userProfile)
-                            }
-                        >
-                            <NavLink to={Paths.CHAT} className="navLink">
-                                {t('AppBar.chat')}
-                            </NavLink>
-                        </HideWrapper>
-
-                        <HideWrapper showWhen={role === userRole.freelancer}>
-                            <NavLink to={profilePath} className="navLink">
-                                {t('AppBar.profile')}
-                            </NavLink>
-                        </HideWrapper>
-                    </HideWrapper>
-                </NavigationContainer>
+            {/* <SpinnerWrapper isLoading={loading}> */}
+            <NavigationContainer>
+                <Logo>
+                    <NavLink to="/logo" className="logoLink">
+                        <>
+                            {t('AppBar.get')}
+                            <span>{t('AppBar.job')}</span>
+                        </>
+                    </NavLink>
+                </Logo>
                 <HideWrapper showWhen={isAuth}>
-                    <NotificationFlex>
-                        <LoggedName>
-                            {t('AppBar.welcome')}
-                            <span>
-                                {user?.firstName} {user?.lastName}
-                            </span>
-                        </LoggedName>
-                        <BarAvatarImg>
-                            <StyledImg
-                                src={userProfile?.profileImage || avatar}
-                                alt=""
-                            />
-                        </BarAvatarImg>
-                        <LogoutButton
-                            type="primary"
-                            size="small"
-                            onClick={logout}
-                        >
-                            {t('AppBar.logout')}
-                        </LogoutButton>
-                    </NotificationFlex>
+                    <HideWrapper
+                        showWhen={role === userRole.freelancer && !!userProfile}
+                    >
+                        <NavLink to={Paths.JOBS} className="navLink">
+                            {t('AppBar.jobs')}
+                        </NavLink>
+                    </HideWrapper>
+                    <HideWrapper
+                        showWhen={role === userRole.freelancer && !!userProfile}
+                    >
+                        <NavLink to={Paths.OFFERS} className="navLink">
+                            {t('AppBar.myOffers')}
+                        </NavLink>
+                    </HideWrapper>
+
+                    <HideWrapper showWhen={role === userRole.owner}>
+                        <NavLink to={Paths.OWNER_JOBS} className="navLink">
+                            {t('AppBar.myProjects')}
+                        </NavLink>
+                    </HideWrapper>
+                    <HideWrapper
+                        showWhen={role === userRole.owner && !!jobsOwnLength}
+                    >
+                        <NavLink to={Paths.TALENT} className="navLink">
+                            {t('AppBar.Talents')}
+                        </NavLink>
+                    </HideWrapper>
+                    <HideWrapper
+                        showWhen={
+                            (role === userRole.owner && !!jobsOwnLength) ||
+                            (role === userRole.freelancer && !!userProfile)
+                        }
+                    >
+                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
+                            {t('AppBar.myContracts')}
+                        </NavLink>
+                    </HideWrapper>
+                    <HideWrapper
+                        showWhen={role === userRole.owner && !!jobsOwnLength}
+                    >
+                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
+                            {t('AppBar.myContacts')}
+                        </NavLink>
+                    </HideWrapper>
+                    <HideWrapper
+                        showWhen={
+                            (role === userRole.owner && !!jobsOwnLength) ||
+                            (role === userRole.freelancer && !!userProfile)
+                        }
+                    >
+                        <NavLink to={Paths.CHAT} className="navLink">
+                            {t('AppBar.chat')}
+                        </NavLink>
+                    </HideWrapper>
+
+                    <HideWrapper showWhen={role === userRole.freelancer}>
+                        <NavLink to={profilePath} className="navLink">
+                            {t('AppBar.profile')}
+                        </NavLink>
+                    </HideWrapper>
                 </HideWrapper>
-            </SpinnerWrapper>
+            </NavigationContainer>
+            <HideWrapper showWhen={isAuth}>
+                <NotificationFlex>
+                    <LoggedName>
+                        {t('AppBar.welcome')}
+                        <span>
+                            {user?.firstName} {user?.lastName}
+                        </span>
+                    </LoggedName>
+                    <BarAvatarImg>
+                        <StyledImg
+                            src={userProfile?.profileImage || avatar}
+                            alt=""
+                        />
+                    </BarAvatarImg>
+                    <LogoutButton type="primary" size="small" onClick={logout}>
+                        {t('AppBar.logout')}
+                    </LogoutButton>
+                </NotificationFlex>
+            </HideWrapper>
+            {/* </SpinnerWrapper> */}
         </Header>
     );
 };

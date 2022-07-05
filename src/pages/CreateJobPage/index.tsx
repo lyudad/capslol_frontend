@@ -15,8 +15,9 @@ import {
     projectDuration,
     dateFormatForSelect,
 } from 'constants/index';
-import { useAppSelector } from 'hooks/redux';
+import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import {
@@ -30,6 +31,8 @@ import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
+import { setOwnerJobsLength } from 'store/slices/auth/auth.slice';
+
 import { Title, Wrapper } from './style';
 
 const CreateJobPage: React.FC = () => {
@@ -38,11 +41,10 @@ const CreateJobPage: React.FC = () => {
     const [form] = Form.useForm();
     const userId = useAppSelector((state) => state.auth.user?.id);
     const { data: ownJobs, isLoading } = useGetJobsByOwnerQuery(userId);
-
     const { data: categories } = useGetCategoriesQuery();
     const { data: skills } = useGetSkillsQuery();
-
     const [createJob] = useCreateJobMutation();
+    const dispatch = useAppDispatch();
 
     const onFill = (): void => {
         const templateId = form.getFieldValue('templateId');
@@ -76,6 +78,8 @@ const CreateJobPage: React.FC = () => {
             notification.open({
                 message: t('JobPage.jobCreated'),
             });
+
+            dispatch(setOwnerJobsLength(1));
 
             navigate(Paths.JOB_PAGE, { state: { id: newJob.id } });
         } catch (error) {

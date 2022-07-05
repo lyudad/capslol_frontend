@@ -36,6 +36,8 @@ import {
 import { Moment } from 'moment';
 
 import { Line } from 'pages/PublicPage/styles';
+import { setProfile } from 'store/slices/auth/auth.slice';
+import { useDispatch } from 'react-redux';
 import {
     ProfileContainer,
     Avatar,
@@ -63,7 +65,7 @@ const SettingPage: React.FC = () => {
     const { data } = useSearchUserQuery(user?.id);
 
     const [updateProfile] = useUpdateProfileMutation();
-
+    const dispatch = useDispatch();
     const { data: allSkills } = useGetAllSkillsQuery('');
     const { data: allCategories } = useGetAllCategoriesQuery('');
     const [createProfile] = useCreateProfileMutation();
@@ -436,6 +438,7 @@ const SettingPage: React.FC = () => {
         } catch (error) {
             return message.error(error.status);
         }
+        dispatch(setProfile(UpdateProfile));
         navigate(`/profile/${user?.id}`);
         return notification.success({
             message: 'Changes saved',
