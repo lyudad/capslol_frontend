@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
 import JobsPage from 'pages/JobsPage';
@@ -25,13 +25,9 @@ import { AppContext, appSocket } from 'context';
 import MyContacts from 'pages/MyContacts(JobOwner)';
 import { useAppSelector } from 'hooks/redux';
 import { TChatArgument } from 'pages/Chat/interfaces';
-import { useGetFilteredJobsQuery } from 'store/apis/jobs';
-import { useGetFreelancerProfileQuery } from 'store/apis/publicProfile';
 import EmailConfirmation from 'pages/EmailConfirmation';
-import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 
 const App: React.FC = () => {
-    // const [jobsLength, setJobsLength] = useState<number | null>(null);
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
         undefined
     );
@@ -51,27 +47,11 @@ const App: React.FC = () => {
 
     const jobsLength = useAppSelector((state) => state.auth.ownerJobsLength);
 
-    // const { data: userProfile, isLoading } =
-    //     useGetFreelancerProfileQuery(userId);
-
-    // const userProfile = useAppSelector((state) => state.profileReducer.profile);
-
     const profileBool = !!useAppSelector((state) => state.auth.profile);
-
-    // const { data: ownJobs, isLoading: loading } = useGetFilteredJobsQuery({
-    //     ownerId: userId,
-    // });
-
-    // useEffect(() => {
-    //     if (ownJobs) {
-    //         setJobsLength(ownJobs.data.length);
-    //     }
-    // }, [ownJobs, userId]);
 
     return (
         <AppContext.Provider value={context}>
             <MainLayout>
-                {/* <SpinnerWrapper isLoading={isLoading || loading}> */}
                 <Routes>
                     <Route element={<Protected />}>
                         <Route path="*" element={<HomePage />} />
@@ -319,7 +299,6 @@ const App: React.FC = () => {
                         element={<EmailConfirmation />}
                     />
                 </Routes>
-                {/* </SpinnerWrapper> */}
             </MainLayout>
         </AppContext.Provider>
     );

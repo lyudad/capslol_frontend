@@ -21,11 +21,9 @@ import { useNavigate } from 'react-router-dom';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { IUser } from 'store/slices/auth/auth.type';
 import {
-    useLazyGetFilteredJobsQuery,
     useLazyGetJobsByOwnerQuery,
     useLazyGetUserProfileQuery,
 } from 'store/apis/jobs';
-// import {  } from 'store/slices/jobs/jobs.slice';
 import {
     Wrapper,
     DontAccount,
@@ -74,8 +72,6 @@ const SignInForm: React.FC = () => {
             ).length;
 
             dispatch(setOwnerJobsLength(ownerJobsLength));
-
-            console.log('ID: ', user.id, 'JOBS_LENGTH: ', ownerJobsLength);
 
             notification.open({
                 message: translator('AuthGoogle.comeBackMessage'),

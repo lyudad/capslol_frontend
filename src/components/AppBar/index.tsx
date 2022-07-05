@@ -1,19 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 
 import { logOut } from 'store/slices/auth/auth.slice';
-import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
-import { useLazyGetFreelancerProfileQuery } from 'store/apis/publicProfile';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import { StyledImg } from 'pages/MyContacts(JobOwner)/styles';
-import { Profile } from 'store/apis/publicProfile/publicProfile.types';
-import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import {
     Header,
     NavigationContainer,
@@ -25,10 +21,6 @@ import {
 } from './styles';
 
 const AppBar: React.FC = () => {
-    // const [jobsOwnLength, setJobsOwnLength] = useState<number>(0);
-    // const [userProfile, setUserProfile] = useState<Profile>();
-    // const [profilePath, setProfilePath] = useState<string>('');
-
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -47,28 +39,12 @@ const AppBar: React.FC = () => {
 
     const jobsOwnLength = useAppSelector((state) => state.auth.ownerJobsLength);
 
-    // const [getJobs, { isLoading: loading }] = useLazyGetJobsByOwnerQuery();
-
-    // const [getProfile, { isLoading }] = useLazyGetFreelancerProfileQuery();
-
     const profilePath = useMemo(() => {
         if (userId) {
-            // const jobs = await getJobs(userId).unwrap();
-            // const profileUser = await getProfile(userId).unwrap();
-            // setJobsOwnLength(jobs.length);
-            // setUserProfile(profileUser);
-            // setProfilePath(`profile/${userId}`);
             return `profile/${userId}`;
         }
         return '';
     }, [userId]);
-
-    // useMemo(async () => {
-    //     if (userId && role === userRole.owner) {
-    //         const jobs = await getJobs(userId).unwrap();
-    //         setJobsOwnLength(jobs.length);
-    //     }
-    // }, [userId, getJobs, role]);
 
     const logout = (): void => {
         dispatch(logOut());
@@ -77,7 +53,6 @@ const AppBar: React.FC = () => {
 
     return (
         <Header>
-            {/* <SpinnerWrapper isLoading={loading}> */}
             <NavigationContainer>
                 <Logo>
                     <NavLink to="/logo" className="logoLink">
@@ -169,7 +144,6 @@ const AppBar: React.FC = () => {
                     </LogoutButton>
                 </NotificationFlex>
             </HideWrapper>
-            {/* </SpinnerWrapper> */}
         </Header>
     );
 };

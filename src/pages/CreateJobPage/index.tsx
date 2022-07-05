@@ -17,7 +17,6 @@ import {
 } from 'constants/index';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import {
