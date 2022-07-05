@@ -87,7 +87,8 @@
         "contact_info": "Contact Info",
         "save_changes": "Save changes",
         "education_name": "Name of Education",
-        "back": "Back"
+        "back": "Back",
+        "amountError12": "The entered valid value must be between 1 and 12."
     },
 
     "ForgotPage": {
@@ -102,23 +103,24 @@
     "ResetPage": {
         "title": "Reset Password",
         "passwordTitle": {
-            "item": "Password:",
-            "placeholder": "Your password",
-            "error": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
+            "item": "New Password:",
+            "placeholder": "Your new password",
+            "error": "Password must contain at least one capital letter, one number and length must be minimum 8 symbols"
         },
         "conPasswordTitle": {
-            "item": "Confirm Password:",
-            "placeholder": "Confirm your password",
-            "error": "Password must be same"
+            "item": "Confirm New Password:",
+            "placeholder": "Confirm your new password",
+            "error": "The passwords you entered do not match, please check again",
+            "password": "Please confirm your password!"
         },
         "error": "Passwords do not match, please try again",
         "btnText": "Save Password",
         "linkText": "Back to Login?",
-        "loginText": "Successfully done. Now please Login",
+        "loginText": "Successfully done. Now please",
         "passwordError": "Something went error, please try again!"
     },
     "VerifyEmail": {
-        "fineTitle": "A recovery letter is sent, please check your email or go to Login page.",
+        "fineTitle": "A recovery letter is sent, please check your email or go to",
         "poorTitle": {
             "start": "E-Mail Not Found: We were not able to locate",
             "end": "in our system. Please try another e-mail address."
@@ -255,18 +257,6 @@
         "userEmail": "Email",
         "userPassword": "Password",
         "btnChangeText": "Change",
-        "passwordTitle": {
-            "item": "New Password:",
-            "placeholder": "Your new password",
-            "error": "Password must contain at least one capital letter, one number and length must be minimum 8 symbols"
-        },
-        "conPasswordTitle": {
-            "item": "Confirm New Password:",
-            "placeholder": "Confirm your new password",
-            "error": "The passwords you entered do not match, please check again",
-            "password": "Please confirm your password!"
-        },
-        "btnText": "Save Password",
         "afterChangePassword": {
             "success": "Password successfully changed!",
             "error": "Something went wrong, please try again later!"
@@ -276,7 +266,8 @@
         "addPhoneNumber": "Your successfully add phone number!",
         "emptyRole": "You didn`t choose a role",
         "congratsNotifice": "Congrats, you successfully upload image!",
-        "errorNotifice": "We can`t upload you profile image, please try again later!"
+        "errorNotifice": "We can`t upload you profile image, please try again later!",
+        "imageError": "Invalid Format! Only jpg jpeg and png files are allowed!"
     },
 
     "Chat": {
@@ -308,6 +299,7 @@
 
     "Notes": {
         "youDon-tHaveOffers": "YOU DON’T HAVE ANY OFFERS",
+        "empty-talents": "YOU DON’T HAVE ANY TALENTS",
         "youDon-tHaveProposals": "YOU DON’T HAVE ANY PROPOSALS",
         "youDon-tHaveContracts": "YOU DON’T HAVE ANY CONTRACTS",
         "youDon-tHaveInvitations": "YOU DON’T HAVE ANY INVITATIONS",

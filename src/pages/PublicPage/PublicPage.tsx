@@ -8,7 +8,9 @@ import 'antd/dist/antd.min.css';
 import { useSearchUserQuery } from 'store/apis/publicProfile';
 import { useEffect, useState } from 'react';
 import { IJob } from 'store/apis/jobs/jobs.types';
+import Button from 'components/Button/Button';
 import avatar from 'assets/avatar.png';
+import { LeftOutlined } from '@ant-design/icons';
 import { newInvitation } from 'store/apis/invitations/invitations.types';
 import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
 import { useCreateInvitationMutation } from 'store/apis/talents';
@@ -25,6 +27,7 @@ import {
     SectionsUl,
     Line,
     StyledNav,
+    FieldSkillsProfile,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -123,6 +126,7 @@ const PublicPage: React.FC = () => {
                         data?.user?.firstName
                     } ${data?.user?.lastName}`,
                 });
+                setToggle(true);
                 return;
             }
             setIsModalVisible(true);
@@ -143,12 +147,15 @@ const PublicPage: React.FC = () => {
                 <ProfileContainer>
                     {!!location.state && (
                         <Row>
-                            <ButtonSet
+                            <Button
                                 onClick={() => navigate(`/talents`)}
-                                type="default"
+                                mr="12"
+                                mt="12"
+                                color={colors.btnWhite}
+                                bg={colors.btnDarkBlue}
                             >
-                                {t('PublicProfile.back')}
-                            </ButtonSet>
+                                <LeftOutlined />
+                            </Button>
                             {toggle ? (
                                 <StyledNav disabled>
                                     {t('TalentPage.already_sent')}
@@ -265,28 +272,15 @@ const PublicPage: React.FC = () => {
                     <Sections>
                         {t('PublicProfile.skills')}:{' '}
                         <Description>
-                            {(data?.skills?.length as number) >= 2
-                                ? data?.skills.map((e) => (
-                                      <span
-                                          style={{
-                                              color: colors.brandColor,
-                                          }}
-                                          key={e.id}
-                                      >
-                                          | {e.name}
-                                          {'  '}
-                                      </span>
-                                  ))
-                                : data?.skills.map((e) => (
-                                      <span
-                                          style={{
-                                              color: colors.brandColor,
-                                          }}
-                                          key={e.id}
-                                      >
-                                          {e.name}{' '}
-                                      </span>
-                                  ))}
+                            <FieldSkillsProfile>
+                                {(data?.skills?.length as number) >= 2
+                                    ? data?.skills
+                                          .map((e: { name: string }) => e.name)
+                                          .join(' | ')
+                                    : data?.skills.map(
+                                          (e: { name: string }) => e.name
+                                      )}
+                            </FieldSkillsProfile>
                         </Description>
                     </Sections>
                     <Sections>

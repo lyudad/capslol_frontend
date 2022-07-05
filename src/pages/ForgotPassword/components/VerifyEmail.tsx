@@ -1,7 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FormLink, Section, Title, Wrapper } from '../styles';
+import { FormLink, Section, StyledNavLink, Title, Wrapper } from '../styles';
 import { IProps } from './props';
 
 const NotFoundEmail: React.FC<IProps> = ({ data, isError, email }) => {
@@ -12,11 +11,14 @@ const NotFoundEmail: React.FC<IProps> = ({ data, isError, email }) => {
             <Wrapper width="450">
                 {data && (
                     <>
-                        <Title>{t('VerifyEmail.fineTitle')}</Title>
+                        <Title>
+                            {t('VerifyEmail.fineTitle')}{' '}
+                            <StyledNavLink to="/">Login</StyledNavLink> page.
+                        </Title>
                         <FormLink>
-                            <NavLink to="/">
+                            <StyledNavLink to="/">
                                 {t('VerifyEmail.linkToLogin')}
-                            </NavLink>
+                            </StyledNavLink>
                         </FormLink>
                     </>
                 )}

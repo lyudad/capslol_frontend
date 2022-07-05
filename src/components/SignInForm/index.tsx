@@ -104,7 +104,17 @@ const SignInForm: React.FC = () => {
                 const authResponse = await loginGoogleUser(
                     response.tokenId
                 ).unwrap();
-                dispatch(setCredentials(authResponse));
+                const loggedUser: IUser = {
+                    isLoggedIn: true,
+                    user: authResponse.data.user,
+                    accessToken: authResponse.data.accessToken,
+                };
+                dispatch(
+                    setCredentials({
+                        data: loggedUser,
+                        message: authResponse.message,
+                    })
+                );
 
                 notification.open({
                     message: translator('AuthGoogle.comeBackMessage'),

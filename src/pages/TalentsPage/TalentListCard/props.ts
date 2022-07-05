@@ -22,4 +22,5 @@ export interface CustomizedState {
     id: number;
     isActive: boolean;
     userOnClickId: number;
+    tabs?: number;
 }

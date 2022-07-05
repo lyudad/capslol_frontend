@@ -109,7 +109,7 @@ const OfferCard: React.FC<IProps> = ({ offerObj }) => {
     };
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id, tabs: 1 } });
     };
 
     const handleNavigate = (): void => {
