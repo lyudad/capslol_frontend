@@ -48,7 +48,12 @@ const JobCard: React.FC<IProps> = ({ onToggleClick, isArchive, jobObj }) => {
     } = jobObj;
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id } });
+        if (!isArchived) {
+            navigate(Paths.JOB_PAGE, { state: { id, myProjects: 1 } });
+        }
+        if (isArchived) {
+            navigate(Paths.JOB_PAGE, { state: { id, myProjects: 2 } });
+        }
     };
 
     return (

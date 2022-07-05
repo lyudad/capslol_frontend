@@ -57,6 +57,14 @@ export const SectionsUl = styled.div`
     color: ${colors.navColor};
 `;
 
+export const FieldSkillsProfile = styled.span`
+    color: ${colors.brandColor};
+    font-weight: ${fonts.jobListFontWeight};
+    font-size: 16px;
+    margin-left: 3px;
+    padding: 2px;
+`;
+
 export const Description = styled.p`
     word-break: break-all;
     font-size: ${fonts.titlesOfProfile};
@@ -64,6 +72,7 @@ export const Description = styled.p`
     margin-left: 35px;
     color: ${colors.titleOfSectionsProfile};
 `;
+
 export const StyledNav = styled(Button)`
     padding: 4px 8px;
     border: none;

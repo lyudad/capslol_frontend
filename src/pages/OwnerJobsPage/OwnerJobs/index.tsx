@@ -89,7 +89,6 @@ const OwnerJobs: React.FC<IProps> = ({ archived }) => {
                     </StyledNav>
                 </TitleBox>
             )}
-
             <ListWrapper>
                 <SpinnerWrapper isLoading={isLoading}>
                     <ListContainer>

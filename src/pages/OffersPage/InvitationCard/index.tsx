@@ -30,7 +30,7 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
     const { createdAt, ownerId, jobId } = invitationObj;
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id, tabs: 2 } });
     };
     return (
         <OneCard>
