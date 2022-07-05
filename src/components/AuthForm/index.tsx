@@ -15,6 +15,8 @@ import {
     GoogleLoginResponse,
     GoogleLoginResponseOffline,
 } from 'react-google-login';
+import { setCredentials } from 'store/slices/auth/auth.slice';
+import { useDispatch } from 'react-redux';
 import SubmitButton from './SubmitButton';
 import AuthGoogle from '../AuthGoogle';
 import AuthMessage from './AuthMessage';
@@ -32,7 +34,7 @@ const AuthForm: React.FC = () => {
     const { t: translator } = useTranslation();
     const [createUser] = useCreateUserMutation();
     const [createGoogleUser] = useLazySignUpUseGoogleQuery();
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const onFinish = async (values: FormType): Promise<void> => {
@@ -59,13 +61,16 @@ const AuthForm: React.FC = () => {
     ): Promise<void> => {
         try {
             if (RequestHeader.ACCESS_TOKEN in response) {
-                await createGoogleUser(response.tokenId).unwrap();
+                const authResponse = await createGoogleUser(
+                    response.tokenId
+                ).unwrap();
+                dispatch(setCredentials(authResponse));
 
                 notification.open({
                     message: translator('AuthGoogle.welcomeMessage'),
                 });
 
-                navigate(Paths.CONFIRM_EMAIL);
+                navigate(Paths.SELECT_ROLE);
             }
         } catch (error) {
             if ('data' in error) {
