@@ -40,7 +40,17 @@ const AuthForm: React.FC = () => {
 
     const onFinish = async (values: FormType): Promise<void> => {
         try {
-            await createUser(values).unwrap();
+            const response = await createUser(values).unwrap();
+
+            const newUser: IUser = {
+                isLoggedIn: false,
+                user: response.data.user,
+                accessToken: response.data.accessToken,
+            };
+
+            dispatch(
+                setCredentials({ data: newUser, message: response.message })
+            );
 
             notification.open({
                 message: translator('AuthGoogle.welcomeMessage'),
