@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-shadow */
+import { CustomState } from 'pages/OneJobPage/props';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Page, TopButtonContainer, StyledNavBtn } from './styles';
+import { useLocation } from 'react-router-dom';
 import OwnerJobs from './OwnerJobs';
 
+import { Page, TopButtonContainer, StyledNavBtn } from './styles';
+
 const OwnerJobsPage: React.FC = () => {
-    const [isActive, setIsActive] = useState<number>(1);
+    const location = useLocation();
+    const state = location.state as CustomState;
+    const { myProjects } = state || {};
+    const [isActive, setIsActive] = useState<number>(myProjects || 1);
 
     const { t } = useTranslation();
 

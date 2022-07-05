@@ -11,6 +11,8 @@ export const Wrapper = styled.button`
     background: ${(props: IProps) => props.bg};
     border-radius: 4px;
     margin-right: ${(props: IProps) => props.mr}px;
+    margin-top: ${(props: IProps) => props.mt}px;
+    position: ${(props: IProps) => props.position};
     padding: 3px 8px;
     border: 1px solid ${(props: IProps) => props.bg};
     box-shadow: inset 0 0 20px ${btnBoxShadow};

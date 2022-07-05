@@ -28,7 +28,7 @@ import Filters from './Filters';
 
 const JobsPage: React.FC = () => {
     const { t } = useTranslation();
-    const [jobs, setJobs] = useState<IJob[] | null>(null);
+    const [jobs, setJobs] = useState<IJob[] | null>();
     const [filter, setFilter] = useState<JobsOptionsInterface | null>(null);
     const [meta, setMeta] = useState<MetaInterface | null>(null);
 
