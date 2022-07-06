@@ -43,7 +43,7 @@ const AuthForm: React.FC = () => {
             const response = await createUser(values).unwrap();
 
             const newUser: IUser = {
-                isLoggedIn: false,
+                isLoggedIn: true,
                 user: response.data.user,
                 accessToken: response.data.accessToken,
             };
