@@ -107,7 +107,8 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
 
     const onClickJob = (): void => {
         handleSubmitProposalAndContacts();
-        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
+
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id, tabs: 2 } });
     };
 
     return (

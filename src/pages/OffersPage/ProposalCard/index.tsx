@@ -32,7 +32,7 @@ const ProposalCard: React.FC<IProps> = ({ proposalObj }) => {
     const { data: job, isLoading } = useGetJobByIdQuery(jobId.id);
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id: jobId.id } });
+        navigate(Paths.JOB_PAGE, { state: { id: jobId.id, tabs: 3 } });
     };
     return (
         <OneCard>

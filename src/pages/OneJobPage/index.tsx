@@ -6,8 +6,11 @@ import { useGetJobByIdQuery, useGetUserProfileQuery } from 'store/apis/jobs';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import avatar from 'assets/avatar.png';
 import { useGetProposalsByFreelancerQuery } from 'store/apis/proposals';
+import Button from 'components/Button/Button';
+import { LeftOutlined } from '@ant-design/icons';
 import { useAppSelector } from 'hooks/redux';
 import { TFilterArg, TFilterReturn } from 'pages/SendProposal/interfaces';
+import { colors } from 'constants/index';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { CustomState } from './props';
 import {
@@ -68,6 +71,34 @@ const OneJobPage: React.FC = () => {
                     showWhen={role === 'Job Owner' || !jobData?.isArchived}
                 >
                     <JobCard>
+                        {state.tabs && (
+                            <Button
+                                onClick={() =>
+                                    navigate(`/offers`, {
+                                        state: { tabs: state.tabs },
+                                    })
+                                }
+                                position="absolute"
+                                color={colors.btnWhite}
+                                bg={colors.btnDarkBlue}
+                            >
+                                <LeftOutlined />
+                            </Button>
+                        )}
+                        {state.myProjects && (
+                            <Button
+                                onClick={() =>
+                                    navigate(`/owner-jobs`, {
+                                        state: { myProjects: state.myProjects },
+                                    })
+                                }
+                                position="absolute"
+                                color={colors.btnWhite}
+                                bg={colors.btnDarkBlue}
+                            >
+                                <LeftOutlined />
+                            </Button>
+                        )}
                         <Date>{jobData?.createdAt.substring(0, 10)}</Date>
 
                         <Title>{jobData?.title}</Title>

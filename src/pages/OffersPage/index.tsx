@@ -1,12 +1,18 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Page, TopButtonContainer, StyledNavBtn } from './styles';
+import { CustomizedState } from 'pages/TalentsPage/TalentListCard/props';
 import MyOffers from './MyOffers';
 import MyInvitations from './MyInvitations';
 import MyProposals from './MyProposals';
+import { Page, TopButtonContainer, StyledNavBtn } from './styles';
 
 const OffersPage: React.FC = () => {
-    const [isActive, setIsActive] = useState<number>(1);
+    const location = useLocation();
+    const state = location.state as CustomizedState;
+    const { tabs } = state || {};
+
+    const [isActive, setIsActive] = useState<number>(tabs || 1);
 
     const { t } = useTranslation();
 

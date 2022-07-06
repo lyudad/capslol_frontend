@@ -3,7 +3,11 @@ import React from 'react';
 import { Form, Input, message, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazySignInUseGoogleQuery } from 'store/apis/auth';
-import { setCredentials } from 'store/slices/auth/auth.slice';
+import {
+    setCredentials,
+    setProfile,
+    setOwnerJobsLength,
+} from 'store/slices/auth/auth.slice';
 import AuthGoogle from 'components/AuthGoogle';
 import { userRole } from 'constants/index';
 import { RequestHeader } from 'constants/request.constants';
@@ -16,6 +20,10 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
 import { IUser } from 'store/slices/auth/auth.type';
+import {
+    useLazyGetJobsByOwnerQuery,
+    useLazyGetUserProfileQuery,
+} from 'store/apis/jobs';
 import {
     Wrapper,
     DontAccount,
@@ -36,6 +44,8 @@ const SignInForm: React.FC = () => {
     const [form] = Form.useForm();
     const [loginUser, { isLoading }] = useLoginMutation();
     const [loginGoogleUser] = useLazySignInUseGoogleQuery();
+    const [getUserProfile] = useLazyGetUserProfileQuery();
+    const [getOwnerJobs] = useLazyGetJobsByOwnerQuery();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -52,6 +62,16 @@ const SignInForm: React.FC = () => {
             );
 
             const { user } = response.data;
+
+            const userProfile = await getUserProfile(user.id).unwrap();
+
+            dispatch(setProfile(userProfile));
+
+            const ownerJobsLength = await await (
+                await getOwnerJobs(user.id).unwrap()
+            ).length;
+
+            dispatch(setOwnerJobsLength(ownerJobsLength));
 
             notification.open({
                 message: translator('AuthGoogle.comeBackMessage'),
@@ -84,7 +104,17 @@ const SignInForm: React.FC = () => {
                 const authResponse = await loginGoogleUser(
                     response.tokenId
                 ).unwrap();
-                dispatch(setCredentials(authResponse));
+                const loggedUser: IUser = {
+                    isLoggedIn: true,
+                    user: authResponse.data.user,
+                    accessToken: authResponse.data.accessToken,
+                };
+                dispatch(
+                    setCredentials({
+                        data: loggedUser,
+                        message: authResponse.message,
+                    })
+                );
 
                 notification.open({
                     message: translator('AuthGoogle.comeBackMessage'),
