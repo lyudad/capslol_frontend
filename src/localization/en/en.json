@@ -305,7 +305,8 @@
         "youDon-tHaveProjects": "YOU DON’T HAVE ANY PROJECTS",
         "youDon-tHaveArchivalProjects": "YOU DON’T HAVE ANY ARCHIVAL PROJECT",
         "youDon-tHaveRelevantProjects": "YOU DON’T HAVE ANY RELEVANT PROJECT",
-        "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS"
+        "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS",
+        "youDon-tHaveChats": "YOU DON’T HAVE ANY CHATS"
     },
 
     "EmailConfirm": {
