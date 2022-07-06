@@ -2,16 +2,17 @@
 import React, { useState, useEffect, useContext, createRef } from 'react';
 import { notification } from 'antd';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 import { useAppSelector } from 'hooks/redux';
 import { colors } from 'constants/index';
-import axios from 'axios';
 import { AppContext } from 'context';
 import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
 import { useGetContractByIdOfferIdQuery } from 'store/apis/contracts';
+import { useGetInvitationByFreelancerIdQuery } from 'store/apis/invitations';
 import Avatar from '../ChatList/Avatar';
 import {
     IChatContentProps,
@@ -54,6 +55,9 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         currentChat?.proposalId?.jobId?.id
     );
     const { data: contract } = useGetContractByIdOfferIdQuery(offer?.id);
+    const { data: invitation } = useGetInvitationByFreelancerIdQuery(
+        currentChat?.proposalId?.freelancerId?.id
+    );
 
     const openModal = (): void => setIsOpen(true);
 
@@ -174,18 +178,18 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     {showEmojis && <Emoji onEmojiClick={handleEmojiClick} />}
                 </ChatBody>
                 <ChatFooter>
-                    {/* {((data?.data?.role || undefined) !== Role.jobOwner &&
+                    {((data?.data?.role || undefined) !== Role.jobOwner &&
                         messages.length < 2) ||
                         offer?.status === Status.DECLINED ||
-                        contract?.status === 'closed' || ( */}
-                    <ChatForm
-                        currentChat={currentChat}
-                        handleShowEmojis={handleShowEmojis}
-                        inputRef={inputRef}
-                        setMessageText={setMessageText}
-                        messageText={messageText}
-                    />
-                    {/* // )} */}
+                        contract?.status === 'closed' || (
+                            <ChatForm
+                                currentChat={currentChat}
+                                handleShowEmojis={handleShowEmojis}
+                                inputRef={inputRef}
+                                setMessageText={setMessageText}
+                                messageText={messageText}
+                            />
+                        )}
                 </ChatFooter>
             </MainChat>
 

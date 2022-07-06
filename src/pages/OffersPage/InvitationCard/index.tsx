@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTranslation } from 'react-i18next';
 import { IMyInvitation } from 'store/apis/invitations/invitations.types';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,7 @@ import {
 } from 'store/apis/chat';
 import { message } from 'antd';
 import { useSendProposalMutation } from 'store/apis/proposals';
+import { IChatMember } from 'store/apis/chat/chat.types';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -47,21 +47,11 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
     const [postProposal] = useSendProposalMutation();
     const [postChatContact] = usePostChatContactMutation();
 
-    const handleOnNavigate = (): void => {
-        navigate(Paths.CHAT);
-        setCurrentChat?.(chatContacts);
-    };
-
-    const sentAcceptMessage = (
-        jobTitle: any,
-        jobDes: any,
-        chatContact: any
-    ): void => {
+    const sentAcceptMessage = (chatContact: IChatMember): void => {
         try {
             const newMessage = {
                 content: `<div>
               <h3 className='contract'>${t('Chat.interviewTitle')}</h3>
-
               <p>${t('Chat.interviewSigned')}<span className="Date">
               ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
               </div>`,
@@ -81,11 +71,11 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
             const newProposal = {
                 jobId: jobId?.id,
                 freelancerId: freelancerId.id,
-                coverLetter: 'Job',
-                hourRate: 0,
+                coverLetter: jobId?.description as string,
+                hourRate: jobId?.price as number,
             };
             const proposal = await postProposal(newProposal).unwrap();
-            console.log(proposal, 'sent proposal');
+
             const newChatContact = {
                 proposalId: proposal.id,
                 isActive: false,
@@ -93,22 +83,20 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
 
             const chatContact = await postChatContact(newChatContact).unwrap();
 
-            console.log(chatContact, 'chatContact');
-
-            sentAcceptMessage(
-                proposal?.jobId?.title,
-                proposal?.jobId?.description,
-                chatContact
-            );
+            sentAcceptMessage(chatContact);
         } catch (error) {
             message.error(error.message);
         }
     };
 
     const onClickJob = (): void => {
-        handleSubmitProposalAndContacts();
-
         navigate(Paths.JOB_PAGE, { state: { id: jobId.id, tabs: 2 } });
+    };
+
+    const handleOnNavigate = (): void => {
+        navigate(Paths.CHAT);
+        handleSubmitProposalAndContacts();
+        setCurrentChat?.(chatContacts);
     };
 
     return (

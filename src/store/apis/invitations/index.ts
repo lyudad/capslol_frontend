@@ -2,6 +2,7 @@
 import {
     InvitationResponseInterface,
     InvitationOptionsInterface,
+    IMyInvitation,
 } from './invitations.types';
 
 const apiInvitationsTag = baseApi.enhanceEndpoints({
@@ -26,10 +27,20 @@ export const invitationsApi = apiInvitationsTag.injectEndpoints({
             }),
             providesTags: ['Talents'],
         }),
+        getInvitationByFreelancerId: builder.query<
+            IMyInvitation,
+            number | undefined
+        >({
+            query: (value) => ({
+                url: `/invitation/getInvitation?byFreelancerId=${value}`,
+            }),
+            providesTags: ['Invitation'],
+        }),
     }),
 });
 
 export const {
     useGetFilteredInvitationsQuery,
     useGetInvitationsByJobOwnerQuery,
+    useGetInvitationByFreelancerIdQuery,
 } = invitationsApi;
