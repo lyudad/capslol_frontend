@@ -29,6 +29,7 @@ import {
     StyledNav,
     FieldSkillsProfile,
     DescriptionSkills,
+    DescriptionOther,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -297,11 +298,11 @@ const PublicPage: React.FC = () => {
                     </Sections>
                     <Sections>
                         {t('PublicProfile.add_information')}:{' '}
-                        <Description>
+                        <DescriptionOther>
                             <span>
                                 {data?.other || t('PublicProfile.text_type')}
                             </span>
-                        </Description>
+                        </DescriptionOther>
                     </Sections>
                     {!location.state && (
                         <Row justify="end">
