@@ -1,18 +1,24 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+﻿import React from 'react';
 import { Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import { validateEntryNumber } from 'constants/validate';
 import { FormItem } from '../styles';
+import { IValidateInputProps } from '../interfaces';
 
-const ValidateInput: React.FC<any> = ({ propsValue, onChange }) => {
+const ValidateInput: React.FC<IValidateInputProps> = ({
+    propsValue,
+    onChange,
+    width,
+    propsDefaultValue,
+}) => {
     const { t } = useTranslation();
 
     return (
         <FormItem
             label=""
             name="hourRate"
+            style={{ width: `${width}%` }}
             rules={[
                 {
                     required: true,
@@ -43,6 +49,7 @@ const ValidateInput: React.FC<any> = ({ propsValue, onChange }) => {
             <Input
                 value={propsValue}
                 prefix="$"
+                defaultValue={propsDefaultValue}
                 placeholder={t('Proposal.amountPlaceholder')}
                 maxLength={2}
                 onChange={onChange}

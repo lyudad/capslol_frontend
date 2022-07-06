@@ -10,7 +10,7 @@ import { IChatWindow } from 'pages/Chat/interfaces';
 import { FontTitle } from 'pages/SendProposal/styles';
 import { useCreateOfferMutation } from 'store/apis/offers';
 import ValidateInput from 'pages/SendProposal/ValidateInput';
-import { HourlyRateInput, SettingsBtn } from '../styles';
+import { SettingsBtn } from '../styles';
 
 const ChatWindow: React.FC<IChatWindow> = ({
     modalIsOpen,
@@ -70,26 +70,22 @@ const ChatWindow: React.FC<IChatWindow> = ({
         <ModalWindow
             modalIsOpen={modalIsOpen}
             closeModal={() => closeModal()}
-            bg={colors.btnWhite}
+            bg={colors.bgBlack}
             modalBg={colors.bgBlack}
+            borderCol={colors.textWhite}
         >
             <>
                 <Row justify="center">
-                    <FontTitle color={colors.black} fs="18" mb="0">
+                    <FontTitle color={colors.textWhite} fs="18" mb="0">
                         {t('Chat.enterTitle')}
                     </FontTitle>
                 </Row>
-                <Form
-                    form={form}
-                    // onFinish={handleSubmit}
-                    // defaultValue={price}
-                    // value={hourRate}
-                    // placeholder={`${t('Chat.offerSentPlaceholder')}`}
-                    // onChange={(event) => handleHourRateChange(event)}
-                >
+                <Form form={form}>
                     <ValidateInput
                         onChange={handleHourRateChange}
                         propsValue={hourRate}
+                        propsDefaultValue={price}
+                        width="100"
                     />
                 </Form>
 
