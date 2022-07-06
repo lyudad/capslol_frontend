@@ -102,6 +102,11 @@ export const OwnerContainer = styled.div`
 export const ValueBox = styled.div`
     padding: 2px;
 `;
+export const ValueBoxSkills = styled.div`
+    word-wrap: break-word;
+    width: 60%;
+    padding: 2px;
+`;
 
 export const Field = styled.span`
     color: ${colors.textWhiteGrey};
@@ -114,7 +119,6 @@ export const FieldValue = styled.span`
     font-size: 12px;
     margin-left: 3px;
 `;
-
 export const StyledNav = styled.button`
     height: 30px;
     padding: 4px 8px;
