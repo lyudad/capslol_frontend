@@ -28,6 +28,7 @@ import {
     Line,
     StyledNav,
     FieldSkillsProfile,
+    DescriptionSkills,
 } from './styles';
 
 const PublicPage: React.FC = () => {
@@ -271,7 +272,7 @@ const PublicPage: React.FC = () => {
                     </Sections>
                     <Sections>
                         {t('PublicProfile.skills')}:{' '}
-                        <Description>
+                        <DescriptionSkills>
                             <FieldSkillsProfile>
                                 {(data?.skills?.length as number) >= 2
                                     ? data?.skills
@@ -281,7 +282,7 @@ const PublicPage: React.FC = () => {
                                           (e: { name: string }) => e.name
                                       )}
                             </FieldSkillsProfile>
-                        </Description>
+                        </DescriptionSkills>
                     </Sections>
                     <Sections>
                         {t('PublicProfile.languages')}:{' '}
