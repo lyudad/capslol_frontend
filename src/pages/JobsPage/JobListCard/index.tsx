@@ -21,6 +21,7 @@ import {
     Field,
     FieldValue,
     StyledNav,
+    ValueBoxSkills,
 } from './styles';
 import 'antd/dist/antd.min.css';
 
@@ -138,12 +139,12 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
                     <Field>{t('JobPage.english')}</Field>
                     <FieldValue>{languageLevel}</FieldValue>
                 </ValueBox>
-                <ValueBox>
+                <ValueBoxSkills>
                     <Field>{t('JobPage.skills')}</Field>
                     <FieldValue>
                         {skills.map((item) => item.name).join(', ')}
                     </FieldValue>
-                </ValueBox>
+                </ValueBoxSkills>
             </OwnerContainer>
             <HideWrapper showWhen={role === 'Freelancer' && !!userProfile}>
                 {handleFiltered(freelancerProposals) === id ? (
