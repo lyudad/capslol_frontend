@@ -59,7 +59,7 @@ const JobsListCard: React.FC<IProps> = ({ jobObj }) => {
     } = jobObj;
 
     const onClickJob = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id } });
+        navigate(Paths.JOB_PAGE, { state: { id, searchjWork: 1 } });
     };
 
     const handleSendProposal = (): void => {
