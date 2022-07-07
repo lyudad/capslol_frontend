@@ -23,6 +23,7 @@ export const talentsApi = baseApi.injectEndpoints({
         }),
         getTalentsByQueries: builder.query<talentProfile[], string>({
             query: (value) => `profiles${value}`,
+            providesTags: ['Talents'],
         }),
     }),
 });
