@@ -103,6 +103,11 @@ export const ValueBox = styled.div`
     padding: 2px;
 `;
 
+export const ValueBoxSkills = styled.div`
+    word-wrap: break-word;
+    width: 60%;
+    padding: 2px;
+`;
 export const Field = styled.span`
     color: ${colors.textWhiteGrey};
     font-size: 12px;

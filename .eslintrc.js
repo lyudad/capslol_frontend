@@ -78,6 +78,7 @@ module.exports = {
         'react/jsx-props-no-spreading': 'off',
         'react/require-default-props': 'off',
         'no-console': 'warn',
+        'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
     },
     settings: {
         'import/resolver': {
