@@ -27,6 +27,7 @@ const persistConfig = {
         'proposals',
         'profile',
         'ownerJobsLength',
+        'counts',
     ],
 };
 const persistedReducer = persistReducer(persistConfig, authReducer);

@@ -5,6 +5,7 @@ import { IResponse, UserType } from './auth.type';
 
 interface ICounts {
     proposalsCount: number;
+    messagesCount: number;
 }
 interface UsersState {
     user: UserType | null;
@@ -26,6 +27,7 @@ const initialState: UsersState = {
     ownerJobsLength: null,
     counts: {
         proposalsCount: 0,
+        messagesCount: 0,
     },
 };
 
@@ -72,6 +74,12 @@ const authSlice = createSlice({
         ) => {
             state.counts.proposalsCount = payload;
         },
+        setMessagesCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.counts.messagesCount = payload;
+        },
     },
 });
 
@@ -82,6 +90,7 @@ export const {
     setProfile,
     setOwnerJobsLength,
     setProposalCount,
+    setMessagesCount,
 } = authSlice.actions;
 
 export default authSlice.reducer;

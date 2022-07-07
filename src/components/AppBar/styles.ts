@@ -2,6 +2,7 @@ import { Button } from 'antd';
 import styled from 'styled-components';
 import { NotificationOutlined } from '@ant-design/icons';
 import { colors, fonts } from 'constants/index';
+import { Note } from '../../pages/OneJobPage/styles';
 
 export const Header = styled.header`
     position: fixed;
@@ -157,4 +158,9 @@ export const LogoutButton = styled(Button)`
         background-color: ${colors.appBarBrd};
         border: 1px solid ${colors.brandColor};
     }
+`;
+
+export const NavButton = styled.button`
+    background: none;
+    border: none;
 `;

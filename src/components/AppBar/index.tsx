@@ -3,7 +3,7 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 
-import { logOut } from 'store/slices/auth/auth.slice';
+import { logOut, setMessagesCount } from 'store/slices/auth/auth.slice';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ import {
     BarAvatarImg,
     LoggedName,
     LogoutButton,
+    NavButton,
 } from './styles';
 
 const AppBar: React.FC = () => {
@@ -40,6 +41,10 @@ const AppBar: React.FC = () => {
     const userProfile = useAppSelector((state) => state.auth.profile);
 
     const jobsOwnLength = useAppSelector((state) => state.auth.ownerJobsLength);
+
+    const messagesCount = useAppSelector(
+        (state) => state.auth.counts.messagesCount
+    );
 
     const profilePath = useMemo(() => {
         if (userId) {
@@ -117,10 +122,27 @@ const AppBar: React.FC = () => {
                     >
                         <NavWrapper>
                             <NavLink to={Paths.CHAT} className="navLink">
-                                {t('AppBar.chat')}
+                                <NavButton
+                                    onClick={() =>
+                                        dispatch(setMessagesCount(0))
+                                    }
+                                    type="button"
+                                >
+                                    {t('AppBar.chat')}{' '}
+                                </NavButton>
                             </NavLink>
-                            <LiveNotification count={4} />
+
+                            <LiveNotification count={messagesCount} />
                         </NavWrapper>
+                        {/* <NavWrapper>
+                            <NavButton
+                                onClick={() => navigate(Paths.CHAT)}
+                                className="navLink"
+                            >
+                                <a href={Paths.CHAT}>{t('AppBar.chat')}</a>
+                            </NavButton>
+                            <LiveNotification count={messagesCount} />
+                        </NavWrapper> */}
                     </HideWrapper>
 
                     <HideWrapper showWhen={role === userRole.freelancer}>
