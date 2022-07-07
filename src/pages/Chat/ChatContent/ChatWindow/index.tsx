@@ -1,5 +1,5 @@
 ﻿import React, { useContext } from 'react';
-import { message, Row } from 'antd';
+import { Form, message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import { AppContext } from 'context';
@@ -9,7 +9,8 @@ import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { IChatWindow } from 'pages/Chat/interfaces';
 import { FontTitle } from 'pages/SendProposal/styles';
 import { useCreateOfferMutation } from 'store/apis/offers';
-import { HourlyRateInput, SettingsBtn } from '../styles';
+import ValidateInput from 'pages/SendProposal/ValidateInput';
+import { SettingsBtn } from '../styles';
 
 const ChatWindow: React.FC<IChatWindow> = ({
     modalIsOpen,
@@ -23,6 +24,8 @@ const ChatWindow: React.FC<IChatWindow> = ({
     const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
     const [createOffer] = useCreateOfferMutation();
+
+    const [form] = Form.useForm();
 
     const freelancer = currentChat?.proposalId?.freelancerId;
     const jobOwner = currentChat?.proposalId?.jobId?.ownerId;
@@ -67,21 +70,24 @@ const ChatWindow: React.FC<IChatWindow> = ({
         <ModalWindow
             modalIsOpen={modalIsOpen}
             closeModal={() => closeModal()}
-            bg={colors.btnWhite}
+            bg={colors.bgBlack}
             modalBg={colors.bgBlack}
+            borderCol={colors.textWhite}
         >
             <>
                 <Row justify="center">
-                    <FontTitle color={colors.black} fs="18" mb="0">
+                    <FontTitle color={colors.textWhite} fs="18" mb="0">
                         {t('Chat.enterTitle')}
                     </FontTitle>
                 </Row>
-                <HourlyRateInput
-                    defaultValue={price}
-                    value={hourRate}
-                    placeholder={`${t('Chat.offerSentPlaceholder')}`}
-                    onChange={(event) => handleHourRateChange(event)}
-                />
+                <Form form={form}>
+                    <ValidateInput
+                        onChange={handleHourRateChange}
+                        propsValue={hourRate}
+                        propsDefaultValue={price}
+                        width="100"
+                    />
+                </Form>
 
                 <Row justify="center">
                     <SettingsBtn

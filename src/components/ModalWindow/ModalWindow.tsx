@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import Modal from 'react-modal';
+
 import { Button, Parent } from './style';
 import { ICustomStyles, IProps } from './types';
 
@@ -9,6 +10,7 @@ const ModalWindow: React.FC<IProps> = ({
     closeModal,
     bg,
     modalBg,
+    borderCol,
 }) => {
     const customStyles: ICustomStyles = {
         overlay: {
@@ -28,6 +30,7 @@ const ModalWindow: React.FC<IProps> = ({
             background: bg,
             borderRadius: '5px',
             width: '340px',
+            border: `1px solid ${borderCol}`,
         },
     };
 

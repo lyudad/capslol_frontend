@@ -49,7 +49,7 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
                     return (
                         <ChatListItem
                             key={member.id}
-                            style={{ animationDelay: `0.${index + 1}s` }}
+                            style={{ animationDelay: `0.${index + 1}ms` }}
                             className={`${
                                 member.id === currentSelected ? 'active' : ''
                             } `}

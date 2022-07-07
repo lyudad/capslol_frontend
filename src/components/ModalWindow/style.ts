@@ -1,7 +1,7 @@
 ﻿import styled from 'styled-components';
 import { colors } from 'constants/index';
 
-const { textWhite, homeBgr } = colors;
+const { textWhite, proposalGreen } = colors;
 
 export const Parent = styled.section`
     position: relative;
@@ -14,7 +14,7 @@ export const Button = styled.button`
     right: 0;
     top: 0;
     border: none;
-    color: ${homeBgr};
+    color: ${proposalGreen};
     border: none;
     background: none;
     font-size: 20px;
@@ -24,6 +24,6 @@ export const Button = styled.button`
     padding: 0px 13px 5px;
     &:hover {
         color: ${textWhite} !important;
-        background: ${homeBgr};
+        background: ${proposalGreen};
     }
 `;

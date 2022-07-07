@@ -7,6 +7,8 @@ import { useGetChatContactsQuery } from 'store/apis/chat';
 import { IChatMember } from 'store/apis/chat/chat.types';
 import { useTranslation } from 'react-i18next';
 import { AppContext } from 'context';
+import { HideWrapper } from 'components/HideWrapper/styles';
+import EmptyListNotification from 'components/EmptyListNotification';
 import ChatContent from './ChatContent';
 import ChatList from './ChatList';
 import { Wrapper } from './styles';
@@ -32,27 +34,35 @@ const Chat: React.FC = () => {
     const userMembers = getRightMembers(chatMembers);
 
     return (
-        <Wrapper>
-            {chatMembers && (
-                <>
+        <>
+            {' '}
+            {userMembers?.length ? (
+                <Wrapper>
                     <ChatList members={userMembers} />
                     {currentChat === undefined ? (
                         <Welcome />
                     ) : (
                         <ChatContent currentChat={currentChat} />
                     )}
-                </>
+
+                    <>
+                        {' '}
+                        {isLoading && <Spinner />}{' '}
+                        {isError &&
+                            notification.error({
+                                message: 'Error!',
+                                description: `${t('Chat.membersError')}`,
+                            })}
+                    </>
+                </Wrapper>
+            ) : (
+                <HideWrapper showWhen={!userMembers?.length}>
+                    <EmptyListNotification
+                        note={t('Notes.youDon-tHaveChats')}
+                    />
+                </HideWrapper>
             )}
-            <>
-                {' '}
-                {isLoading && <Spinner />}{' '}
-                {isError &&
-                    notification.error({
-                        message: 'Error!',
-                        description: `${t('Chat.membersError')}`,
-                    })}
-            </>
-        </Wrapper>
+        </>
     );
 };
 

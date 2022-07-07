@@ -60,6 +60,7 @@ const SignUp: React.FC<ISignUpProps> = ({ translator }) => {
             <StyledForm.Item
                 label={translator('AuthForm.password')}
                 name="password"
+                hasFeedback
                 rules={[
                     {
                         required: true,
