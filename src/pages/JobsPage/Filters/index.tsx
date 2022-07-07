@@ -35,6 +35,9 @@ const Filters: React.FC<FiltersPropsInterface> = ({
     const { t } = useTranslation();
     const [maxSalary, setMaxSalary] = useState<number | null>(0);
     const [timeAvailable, setTimeAvailable] = useState<number | null>(0);
+    const [searchByWorld, setSearchByWorld] = useState<
+        string | null | undefined
+    >(sessionStorage.getItem('searchByWorld'));
 
     const { data: categories } = useGetCategoriesQuery();
     const listOfCategories = categories?.map((category) => ({
@@ -51,11 +54,22 @@ const Filters: React.FC<FiltersPropsInterface> = ({
     useEffect(() => {
         const onFill = (): void => {
             form.setFieldsValue({
-                categoryId: userFilter?.category,
-                skillIds: userFilter?.skills,
-                englishLevel: userFilter?.languageLevel,
-                maxSalary: userFilter?.price,
-                timeAvailable: userFilter?.timeAvailable,
+                categoryId:
+                    Number(sessionStorage.getItem('categoryId')) ||
+                    userFilter?.category,
+                skillIds:
+                    JSON.parse(sessionStorage.getItem('SkillsId') as string) ||
+                    userFilter?.skills,
+                englishLevel:
+                    sessionStorage.getItem('englishLevel') ||
+                    userFilter?.languageLevel,
+                maxSalary:
+                    Number(sessionStorage.getItem('maxSalary')) ||
+                    userFilter?.price,
+
+                timeAvailable:
+                    Number(sessionStorage.getItem('timeAvailable')) ||
+                    userFilter?.timeAvailable,
             });
         };
         if (userFilter?.price) {
@@ -67,11 +81,13 @@ const Filters: React.FC<FiltersPropsInterface> = ({
         onFill();
     }, [userFilter, form]);
 
-    const resetHandler = (): void => {
+    const resetHandler = async (): Promise<void> => {
+        await setSearchByWorld('');
+        sessionStorage.clear();
         form.resetFields();
+        onRestart();
         setMaxSalary(0);
         setTimeAvailable(0);
-        onRestart();
     };
 
     const changeHandler = (value: IQueryFilters): void => {
@@ -95,6 +111,7 @@ const Filters: React.FC<FiltersPropsInterface> = ({
                 <StyledFilter>
                     <FilterTitle>{t('JobPage.search')}</FilterTitle>
                     <Form.Item
+                        initialValue={searchByWorld}
                         name="query"
                         style={{
                             marginBottom: '0px',

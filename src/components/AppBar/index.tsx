@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import avatar from 'assets/avatar.png';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import { StyledImg } from 'pages/MyContacts(JobOwner)/styles';
+import AuthGoogle from 'components/AuthGoogle';
+import { message } from 'antd';
 import {
     Header,
     NavigationContainer,
@@ -39,6 +41,8 @@ const AppBar: React.FC = () => {
 
     const jobsOwnLength = useAppSelector((state) => state.auth.ownerJobsLength);
 
+    const isGoogle = useAppSelector((state) => state.auth.user?.isGoogle);
+
     const profilePath = useMemo(() => {
         if (userId) {
             return `profile/${userId}`;
@@ -51,6 +55,23 @@ const AppBar: React.FC = () => {
         navigate(Paths.HOME);
     };
 
+    const successHandler = (): void => {
+        try {
+            dispatch(logOut());
+            navigate(Paths.HOME);
+        } catch (error) {
+            message.error(error.status);
+        }
+    };
+
+    const failureHandler = (): void => {
+        try {
+            dispatch(logOut());
+            navigate(Paths.HOME);
+        } catch (error) {
+            message.error(error.status);
+        }
+    };
     return (
         <Header>
             <NavigationContainer>
@@ -139,9 +160,32 @@ const AppBar: React.FC = () => {
                             alt=""
                         />
                     </BarAvatarImg>
-                    <LogoutButton type="primary" size="small" onClick={logout}>
-                        {t('AppBar.logout')}
-                    </LogoutButton>
+                    {isGoogle ? (
+                        <AuthGoogle
+                            isLogOut
+                            buttonText="AuthGoogle.logOut"
+                            onLogOutSuccess={successHandler}
+                            onLogOutFailure={failureHandler}
+                            onRender={(renderProps) => (
+                                <LogoutButton
+                                    type="primary"
+                                    size="small"
+                                    onClick={renderProps.onClick}
+                                    disabled={renderProps.disabled}
+                                >
+                                    {t('AppBar.logout')}
+                                </LogoutButton>
+                            )}
+                        />
+                    ) : (
+                        <LogoutButton
+                            type="primary"
+                            size="small"
+                            onClick={logout}
+                        >
+                            {t('AppBar.logout')}
+                        </LogoutButton>
+                    )}
                 </NotificationFlex>
             </HideWrapper>
         </Header>
