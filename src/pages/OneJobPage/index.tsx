@@ -99,6 +99,16 @@ const OneJobPage: React.FC = () => {
                                 <LeftOutlined />
                             </Button>
                         )}
+                        {state.searchjWork && (
+                            <Button
+                                onClick={() => navigate(`/jobs`)}
+                                position="absolute"
+                                color={colors.btnWhite}
+                                bg={colors.btnDarkBlue}
+                            >
+                                <LeftOutlined />
+                            </Button>
+                        )}
                         <Date>{jobData?.createdAt.substring(0, 10)}</Date>
 
                         <Title>{jobData?.title}</Title>

@@ -61,12 +61,33 @@ const JobsPage: React.FC = () => {
             if (availableHours) {
                 query.timeAvailable = availableHours;
             }
-            query.isArchived = 0;
-
-            query.page = 1;
-
-            setFilter(query);
         }
+        if (sessionStorage.length) {
+            query.q = sessionStorage.getItem('searchByWorld') || '';
+
+            query.category =
+                Number(sessionStorage.getItem('categoryId')) || undefined;
+
+            query.languageLevel =
+                sessionStorage.getItem('englishLevel') || undefined;
+
+            query.skills =
+                JSON.parse(sessionStorage.getItem('SkillsId') as string) ||
+                undefined;
+
+            query.price =
+                Number(sessionStorage.getItem('maxSalary')) || undefined;
+
+            query.timeAvailable =
+                Number(sessionStorage.getItem('timeAvailable')) || undefined;
+        }
+
+        query.isArchived = 0;
+
+        query.page = 1;
+
+        setFilter(query);
+
         return query;
     }, [getProfile, userId]);
 
@@ -87,24 +108,33 @@ const JobsPage: React.FC = () => {
         const query: JobsOptionsInterface = {};
 
         if (value.query) {
+            sessionStorage.setItem('searchByWorld', value.query);
             query.q = value.query;
         }
         if (value.categoryId) {
+            sessionStorage.setItem('categoryId', String(value.categoryId));
             query.category = value.categoryId;
         }
         if (value.skillIds && value.skillIds.length > 0) {
+            sessionStorage.setItem('SkillsId', JSON.stringify(value.skillIds));
             query.skills = value.skillIds;
         }
         if (value.englishLevel) {
+            sessionStorage.setItem('englishLevel', value.englishLevel);
             query.languageLevel = value.englishLevel;
         }
         if (value.maxSalary) {
+            sessionStorage.setItem('maxSalary', String(value.maxSalary));
             query.price = value.maxSalary;
         }
         if (value.projectDuration) {
             query.projectDuration = value.projectDuration;
         }
         if (value.timeAvailable) {
+            sessionStorage.setItem(
+                'timeAvailable',
+                String(value.timeAvailable)
+            );
             query.timeAvailable = value.timeAvailable;
         }
         query.isArchived = 0;
