@@ -7,9 +7,11 @@ import { logOut } from 'store/slices/auth/auth.slice';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
+import LiveNotification from 'components/LiveNotification';
 import avatar from 'assets/avatar.png';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import { StyledImg } from 'pages/MyContacts(JobOwner)/styles';
+import { NavWrapper } from 'components/LiveNotification/styles';
 import {
     Header,
     NavigationContainer,
@@ -113,9 +115,12 @@ const AppBar: React.FC = () => {
                             (role === userRole.freelancer && !!userProfile)
                         }
                     >
-                        <NavLink to={Paths.CHAT} className="navLink">
-                            {t('AppBar.chat')}
-                        </NavLink>
+                        <NavWrapper>
+                            <NavLink to={Paths.CHAT} className="navLink">
+                                {t('AppBar.chat')}
+                            </NavLink>
+                            <LiveNotification count={4} />
+                        </NavWrapper>
                     </HideWrapper>
 
                     <HideWrapper showWhen={role === userRole.freelancer}>

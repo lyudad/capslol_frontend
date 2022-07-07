@@ -3,6 +3,9 @@ import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IResponse, UserType } from './auth.type';
 
+interface ICounts {
+    proposalsCount: number;
+}
 interface UsersState {
     user: UserType | null;
     accessToken: string | null | undefined;
@@ -11,6 +14,7 @@ interface UsersState {
     isLoggedIn: boolean | undefined;
     profile: newProfile | null;
     ownerJobsLength: number | null;
+    counts: ICounts;
 }
 const initialState: UsersState = {
     user: null,
@@ -20,6 +24,9 @@ const initialState: UsersState = {
     isLoggedIn: false,
     profile: null,
     ownerJobsLength: null,
+    counts: {
+        proposalsCount: 0,
+    },
 };
 
 const authSlice = createSlice({
@@ -59,6 +66,12 @@ const authSlice = createSlice({
         ) => {
             state.ownerJobsLength = payload;
         },
+        setProposalCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.counts.proposalsCount = payload;
+        },
     },
 });
 
@@ -68,6 +81,7 @@ export const {
     setUserRole,
     setProfile,
     setOwnerJobsLength,
+    setProposalCount,
 } = authSlice.actions;
 
 export default authSlice.reducer;

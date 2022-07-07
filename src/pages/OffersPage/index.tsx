@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { CustomizedState } from 'pages/TalentsPage/TalentListCard/props';
+import { NavWrapper } from 'components/LiveNotification/styles';
+import LiveNotification from 'components/LiveNotification';
+import { setProposalCount } from 'store/slices/auth/auth.slice';
 import MyOffers from './MyOffers';
 import MyInvitations from './MyInvitations';
 import MyProposals from './MyProposals';
 import { Page, TopButtonContainer, StyledNavBtn } from './styles';
 
 const OffersPage: React.FC = () => {
-    const location = useLocation();
-    const state = location.state as CustomizedState;
-    const { tabs } = state || {};
-
-    const [isActive, setIsActive] = useState<number>(tabs || 1);
-
     const { t } = useTranslation();
+    const location = useLocation();
+    const tabState = location.state as CustomizedState;
+    const { tabs } = tabState || {};
+    const [isActive, setIsActive] = useState<number>(tabs || 1);
+    const dispatch = useAppDispatch();
+    const newProposalsCount = useAppSelector(
+        (state) => state.auth.counts.proposalsCount
+    );
 
     return (
         <Page>
@@ -33,12 +39,18 @@ const OffersPage: React.FC = () => {
                     {t('OffersPage.myInvitations')}
                 </StyledNavBtn>
 
-                <StyledNavBtn
-                    isActive={isActive === 3}
-                    onClick={() => setIsActive(3)}
-                >
-                    {t('OffersPage.myProposals')}
-                </StyledNavBtn>
+                <NavWrapper>
+                    <StyledNavBtn
+                        isActive={isActive === 3}
+                        onClick={() => {
+                            setIsActive(3);
+                            dispatch(setProposalCount(0));
+                        }}
+                    >
+                        {t('OffersPage.myProposals')}
+                    </StyledNavBtn>
+                    <LiveNotification count={newProposalsCount} />
+                </NavWrapper>
             </TopButtonContainer>
 
             {isActive === 1 && <MyOffers />}

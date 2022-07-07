@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Col, Divider, message, Row, Typography } from 'antd';
