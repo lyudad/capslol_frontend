@@ -1,6 +1,7 @@
 import {
     Email,
     IAuthRequest,
+    IConfirmEmailRequest,
     IResponse,
     Password,
     setRole,
@@ -66,9 +67,14 @@ export const authApi = baseApi.injectEndpoints({
                 },
             }),
         }),
-        confirmUserEmail: builder.query<IResponse, string | undefined>({
+        confirmUserEmail: builder.mutation<
+            IResponse,
+            IConfirmEmailRequest | undefined
+        >({
             query: (token) => ({
-                url: `auth/confirmEmail?token=${token}`,
+                url: `auth/confirmEmail`,
+                method: 'POST',
+                body: token,
             }),
         }),
     }),
@@ -82,5 +88,5 @@ export const {
     useLazySetRoleQuery,
     useResetPasswordMutation,
     useConfirmEmailMutation,
-    useConfirmUserEmailQuery,
+    useConfirmUserEmailMutation,
 } = authApi;

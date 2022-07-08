@@ -61,3 +61,7 @@ export interface setRole {
 
 export const FREELANCER = 'Freelancer';
 export const JOB_OWNER = 'Job Owner';
+
+export interface IConfirmEmailRequest {
+    token: string | undefined;
+}
