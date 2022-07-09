@@ -1,9 +1,8 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
-
-import { logOut, setMessagesCount } from 'store/slices/auth/auth.slice';
+import { logOut, setContractsCount } from 'store/slices/auth/auth.slice';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
@@ -22,7 +21,6 @@ import {
     BarAvatarImg,
     LoggedName,
     LogoutButton,
-    NavButton,
 } from './styles';
 
 const AppBar: React.FC = () => {
@@ -44,9 +42,6 @@ const AppBar: React.FC = () => {
 
     const jobsOwnLength = useAppSelector((state) => state.auth.ownerJobsLength);
 
-    const messagesCount = useAppSelector(
-        (state) => state.auth.counts.messagesCount
-    );
     const isGoogle = useAppSelector((state) => state.auth.user?.isGoogle);
 
     const profilePath = useMemo(() => {
@@ -55,6 +50,15 @@ const AppBar: React.FC = () => {
         }
         return '';
     }, [userId]);
+
+    const messagesCount = useAppSelector((state) => state.auth.newMessageCount);
+
+    const newProposalsCount = useAppSelector(
+        (state) => state.auth.proposalsCount
+    );
+    const newOffersCount = useAppSelector((state) => state.auth.offersCount);
+
+    const contractsCount = useAppSelector((state) => state.auth.contractsCount);
 
     const logout = (): void => {
         dispatch(logOut());
@@ -100,9 +104,14 @@ const AppBar: React.FC = () => {
                     <HideWrapper
                         showWhen={role === userRole.freelancer && !!userProfile}
                     >
-                        <NavLink to={Paths.OFFERS} className="navLink">
-                            {t('AppBar.myOffers')}
-                        </NavLink>
+                        <NavWrapper>
+                            <NavLink to={Paths.OFFERS} className="navLink">
+                                {t('AppBar.myOffers')}
+                            </NavLink>
+                            <LiveNotification
+                                count={newOffersCount + newProposalsCount}
+                            />
+                        </NavWrapper>
                     </HideWrapper>
 
                     <HideWrapper showWhen={role === userRole.owner}>
@@ -123,9 +132,18 @@ const AppBar: React.FC = () => {
                             (role === userRole.freelancer && !!userProfile)
                         }
                     >
-                        <NavLink to={Paths.MY_CONTRACTS} className="navLink">
-                            {t('AppBar.myContracts')}
-                        </NavLink>
+                        <NavWrapper
+                            onClick={() => dispatch(setContractsCount(0))}
+                        >
+                            <NavLink
+                                to={Paths.MY_CONTRACTS}
+                                className="navLink"
+                            >
+                                {t('AppBar.myContracts')}
+                                {/* </NavButton> */}
+                            </NavLink>
+                            <LiveNotification count={contractsCount} />
+                        </NavWrapper>
                     </HideWrapper>
                     <HideWrapper
                         showWhen={role === userRole.owner && !!jobsOwnLength}
@@ -142,27 +160,10 @@ const AppBar: React.FC = () => {
                     >
                         <NavWrapper>
                             <NavLink to={Paths.CHAT} className="navLink">
-                                <NavButton
-                                    onClick={() =>
-                                        dispatch(setMessagesCount(0))
-                                    }
-                                    type="button"
-                                >
-                                    {t('AppBar.chat')}{' '}
-                                </NavButton>
+                                {t('AppBar.chat')}
                             </NavLink>
-
-                            <LiveNotification count={messagesCount} />
+                            <LiveNotification count={messagesCount.length} />
                         </NavWrapper>
-                        {/* <NavWrapper>
-                            <NavButton
-                                onClick={() => navigate(Paths.CHAT)}
-                                className="navLink"
-                            >
-                                <a href={Paths.CHAT}>{t('AppBar.chat')}</a>
-                            </NavButton>
-                            <LiveNotification count={messagesCount} />
-                        </NavWrapper> */}
                     </HideWrapper>
 
                     <HideWrapper showWhen={role === userRole.freelancer}>

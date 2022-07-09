@@ -1,8 +1,9 @@
 ﻿/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState } from 'react';
-
-import { useAppSelector } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { AppContext } from 'context';
+import LiveNotification from 'components/LiveNotification';
+import { setNewMessageCount } from 'store/slices/auth/auth.slice';
 import Avatar from './Avatar';
 import {
     ChatListItem,
@@ -21,15 +22,31 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
     const [search, setSearch] = useState<string>('');
     const [currentSelected, setCurrentSelected] = useState<number>();
     const { setCurrentChat } = useContext(AppContext);
-
+    const dispatch = useAppDispatch();
+    const messagesCount = useAppSelector((state) => state.auth.newMessageCount);
     const changeChat = (id: number, chat: TChatArgument): void => {
         setCurrentSelected(id);
         setCurrentChat?.(chat);
+        const newMessCount = messagesCount.filter((item) => item !== id);
+        console.log('NEW_MESS_COUNT: ', newMessCount);
+        dispatch(setNewMessageCount([...newMessCount]));
     };
 
     const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newValue = event.currentTarget.value;
         setSearch(newValue);
+    };
+
+    // console.log('MEMBERS: ', members);
+
+    const roomCount = (roomId: number): number => {
+        if (roomId) {
+            const currentRoomCount = messagesCount.filter(
+                (item) => item === roomId
+            );
+            return currentRoomCount.length;
+        }
+        return 0;
     };
 
     return (
@@ -55,6 +72,8 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
                             } `}
                             onClick={() => changeChat(member.id, member)}
                         >
+                            <LiveNotification count={roomCount(member.id)} />
+
                             <Avatar
                                 id={
                                     freelancer?.id === user?.id

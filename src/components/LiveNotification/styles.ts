@@ -8,7 +8,7 @@ export const LiveNote = styled.div`
     justify-items: center;
     right: 3px;
     top: -6px;
-    z-index: 5;
+    z-index: 100;
     min-width: 14px;
     height: 14px;
     background-color: ${colors.appBarBgr};

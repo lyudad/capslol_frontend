@@ -12,7 +12,6 @@ import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
 import { useGetContractByIdOfferIdQuery } from 'store/apis/contracts';
-import { setMessagesCount } from 'store/slices/auth/auth.slice';
 import Avatar from '../ChatList/Avatar';
 import {
     IChatContentProps,
@@ -48,10 +47,6 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const dispatch = useAppDispatch();
     const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
-    // const userId = useAppSelector((s) => s.auth.user?.id);
-
-    console.log('USER_ID: ', user?.id);
-    // const userId = user?.id;
     const { t } = useTranslation();
 
     const { data } = useGetUserByIdQuery(user?.id);
@@ -83,43 +78,19 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
         }
     };
 
-    const messagesCount = useAppSelector(
-        (state) => state.auth.counts.messagesCount
-    );
-
-    console.log('COUNT: ', messagesCount);
-
     useEffect(() => {
         fetchMessages();
 
         socket.on(`msgToClient`, (response: IMessages) => {
-            if (response.senderId.id !== user?.id) {
-                console.log('RESPONSE: ', response, user?.id);
-                dispatch(setMessagesCount(messagesCount + 1));
-            }
-
             setArrivalMessage(response);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentChat, user, messagesCount]);
+    }, [currentChat, user]);
 
     useEffect(() => {
         arrivalMessage &&
             setMessages((prev: IMessages[]) => [...prev, arrivalMessage]);
-    }, [arrivalMessage]);
-
-    // useEffect(() => {
-    //     if (arrivalMessage) {
-    //         setMessages((prev: IMessages[]) => [...prev, arrivalMessage]);
-    //     }
-    //     if (arrivalMessage) {
-    //         console.log(
-    //             'ARRIVA_MESS#1: ',
-    //             arrivalMessage,
-    //             'SENDER_ID: ',
-    //         );
-    //     }
-    // }, [arrivalMessage]);
+    }, [arrivalMessage, dispatch, setMessages]);
 
     const freelancer = currentChat?.proposalId?.freelancerId;
     const jobOwner = currentChat?.proposalId?.jobId?.ownerId;

@@ -1,12 +1,7 @@
-// import { setProfile } from 'store/slices/profile/profile.slace';
 import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IResponse, UserType } from './auth.type';
 
-interface ICounts {
-    proposalsCount: number;
-    messagesCount: number;
-}
 interface UsersState {
     user: UserType | null;
     accessToken: string | null | undefined;
@@ -15,7 +10,10 @@ interface UsersState {
     isLoggedIn: boolean | undefined;
     profile: newProfile | null;
     ownerJobsLength: number | null;
-    counts: ICounts;
+    newMessageCount: number[];
+    offersCount: number;
+    proposalsCount: number;
+    contractsCount: number;
 }
 const initialState: UsersState = {
     user: null,
@@ -25,10 +23,10 @@ const initialState: UsersState = {
     isLoggedIn: false,
     profile: null,
     ownerJobsLength: null,
-    counts: {
-        proposalsCount: 0,
-        messagesCount: 0,
-    },
+    newMessageCount: [],
+    offersCount: 0,
+    proposalsCount: 0,
+    contractsCount: 0,
 };
 
 const authSlice = createSlice({
@@ -72,13 +70,28 @@ const authSlice = createSlice({
             state: UsersState,
             { payload }: PayloadAction<number>
         ) => {
-            state.counts.proposalsCount = payload;
+            state.proposalsCount = payload;
         },
-        setMessagesCount: (
+
+        setOffersCount: (
             state: UsersState,
             { payload }: PayloadAction<number>
         ) => {
-            state.counts.messagesCount = payload;
+            state.offersCount = payload;
+        },
+
+        setContractsCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.contractsCount = payload;
+        },
+
+        setNewMessageCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number[]>
+        ) => {
+            state.newMessageCount = payload;
         },
     },
 });
@@ -90,7 +103,9 @@ export const {
     setProfile,
     setOwnerJobsLength,
     setProposalCount,
-    setMessagesCount,
+    setOffersCount,
+    setNewMessageCount,
+    setContractsCount,
 } = authSlice.actions;
 
 export default authSlice.reducer;

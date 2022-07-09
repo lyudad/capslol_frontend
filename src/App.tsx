@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { useMemo, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
@@ -23,9 +24,14 @@ import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
 import MyContacts from 'pages/MyContacts(JobOwner)';
-import { useAppSelector } from 'hooks/redux';
-import { TChatArgument } from 'pages/Chat/interfaces';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { IMessages, TChatArgument } from 'pages/Chat/interfaces';
 import EmailConfirmation from 'pages/EmailConfirmation';
+import {
+    setContractsCount,
+    setNewMessageCount,
+    setOffersCount,
+} from 'store/slices/auth/auth.slice';
 
 const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
@@ -48,6 +54,37 @@ const App: React.FC = () => {
     const jobsLength = useAppSelector((state) => state.auth.ownerJobsLength);
 
     const profileBool = !!useAppSelector((state) => state.auth.profile);
+
+    const dispatch = useAppDispatch();
+
+    const newMessCount = useAppSelector((state) => state.auth.newMessageCount);
+
+    const offersCount = useAppSelector((state) => state.auth.offersCount);
+
+    const contractsCount = useAppSelector((state) => state.auth.contractsCount);
+
+    appSocket.on(`msgToClient`, (response: IMessages) => {
+        if (response.senderId) {
+            // const messCountArr = [...newMessCount, response.roomId.id];
+            if (response.senderId.id !== userId) {
+                dispatch(
+                    setNewMessageCount([...newMessCount, response.roomId.id])
+                );
+                // if (response.isOffer) {
+                //     dispatch(setOffersCount(offersCount + 1));
+                // }
+                response.isOffer && dispatch(setOffersCount(offersCount + 1));
+            }
+            // if (response.content.includes('New contract signed:')) {
+            //     dispatch(setContractsCount(contractsCount + 1));
+            // }
+            response.content.includes('New contract signed:') &&
+                dispatch(setContractsCount(contractsCount + 1));
+
+            response.content.includes('Contract terminated:') &&
+                dispatch(setContractsCount(contractsCount + 1));
+        }
+    });
 
     return (
         <AppContext.Provider value={context}>

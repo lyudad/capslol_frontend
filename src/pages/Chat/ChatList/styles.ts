@@ -25,7 +25,8 @@ export const Input = styled.input`
 `;
 
 export const ChatLists = styled.div`
-    margin-top: 30px;
+    margin-top: 36px;
+    padding-top: 6px;
     overflow: auto;
     max-height: calc(100vh - calc(100vh / 2));
     &::-webkit-scrollbar {

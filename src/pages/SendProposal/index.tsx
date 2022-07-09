@@ -78,7 +78,7 @@ const SendProposal: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const currentProposalsCount = useAppSelector(
-        (state) => state.auth.counts.proposalsCount
+        (state) => state.auth.proposalsCount
     );
 
     const handleFiltered = (data: TFilterArg): TProposalFilter => {
