@@ -1,6 +1,6 @@
 ﻿import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, message, notification, Row } from 'antd';
+import { Form, message, notification, Row } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { colors } from 'constants/index';
@@ -14,7 +14,6 @@ import { Paths } from 'router/paths';
 import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { usePostChatContactMutation } from 'store/apis/chat';
 import { AppContext } from 'context';
-import { validateEntryNumber } from 'constants/validate';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { setProposalCount } from 'store/slices/auth/auth.slice';
@@ -41,6 +40,7 @@ import {
     IRateArg,
     TFilterReturn,
 } from './interfaces';
+import ValidateInput from './ValidateInput';
 
 const SendProposal: React.FC = () => {
     const location = useLocation();
@@ -207,60 +207,11 @@ const SendProposal: React.FC = () => {
                                     <FontTitle color={colors.textWhite} fs="16">
                                         {t('Proposal.hourlyRate')}
                                     </FontTitle>
-                                    <FormItem
-                                        label=""
-                                        name="hourRate"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: `${t(
-                                                    'Proposal.errorRate'
-                                                )}`,
-                                            },
-                                            ({ getFieldValue }) => ({
-                                                validator(_, value) {
-                                                    if (!value) {
-                                                        return Promise.reject(
-                                                            new Error(
-                                                                t(
-                                                                    'Proposal.amountError'
-                                                                )
-                                                            )
-                                                        );
-                                                    }
-
-                                                    const matched =
-                                                        getFieldValue(
-                                                            'hourRate'
-                                                        ).match(
-                                                            validateEntryNumber
-                                                        );
-                                                    if (!matched) {
-                                                        return Promise.reject(
-                                                            new Error(
-                                                                t(
-                                                                    'Proposal.amountError'
-                                                                )
-                                                            )
-                                                        );
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            }),
-                                        ]}
-                                    >
-                                        <Input
-                                            value={hourlyRate}
-                                            prefix="$"
-                                            placeholder={t(
-                                                'Proposal.amountPlaceholder'
-                                            )}
-                                            maxLength={2}
-                                            onChange={onChange}
-                                            min={1}
-                                            max={50}
-                                        />
-                                    </FormItem>
+                                    <ValidateInput
+                                        onChange={onChange}
+                                        propsValue={hourlyRate}
+                                        width="35"
+                                    />
                                 </Row>
 
                                 <Hr />
@@ -353,12 +304,15 @@ const SendProposal: React.FC = () => {
                     <ModalWindow
                         modalIsOpen={modalIsOpen}
                         closeModal={() => closeModal()}
-                        bg={colors.modalBg}
-                        modalBg={colors.modalWindowBg}
+                        bg={colors.bgBlack}
+                        modalBg={colors.bgBlack}
+                        borderCol={colors.textWhite}
                     >
-                        <FontTitle color={colors.black} fs="18">
-                            {t('Proposal.sentSuccess')}
-                        </FontTitle>
+                        <Row justify="center">
+                            <FontTitle color={colors.textWhite} fs="18">
+                                {t('Proposal.sentSuccess')}
+                            </FontTitle>
+                        </Row>
                     </ModalWindow>
                 )}
                 {isError &&

@@ -1,4 +1,4 @@
-import { talentProfile } from 'pages/TalentsPage/TalentListCard/props';
+import { Italents } from 'pages/TalentsPage/TalentListCard/props';
 import { baseApi } from '..';
 import { newInvitation } from '../invitations/invitations.types';
 
@@ -21,8 +21,9 @@ export const talentsApi = baseApi.injectEndpoints({
             }),
             providesTags: ['Talents'],
         }),
-        getTalentsByQueries: builder.query<talentProfile[], string>({
-            query: (value) => `profiles${value}`,
+        getTalentsByQueries: builder.query<Italents, string>({
+            query: (value) => `profiles/search-talens?${value}`,
+            providesTags: ['Talents'],
         }),
     }),
 });

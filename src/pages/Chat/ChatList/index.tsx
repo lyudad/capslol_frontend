@@ -28,7 +28,6 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
         setCurrentSelected(id);
         setCurrentChat?.(chat);
         const newMessCount = messagesCount.filter((item) => item !== id);
-        console.log('NEW_MESS_COUNT: ', newMessCount);
         dispatch(setNewMessageCount([...newMessCount]));
     };
 
@@ -36,8 +35,6 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
         const newValue = event.currentTarget.value;
         setSearch(newValue);
     };
-
-    // console.log('MEMBERS: ', members);
 
     const roomCount = (roomId: number): number => {
         if (roomId) {
@@ -66,7 +63,7 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
                     return (
                         <ChatListItem
                             key={member.id}
-                            style={{ animationDelay: `0.${index + 1}s` }}
+                            style={{ animationDelay: `0.${index + 1}ms` }}
                             className={`${
                                 member.id === currentSelected ? 'active' : ''
                             } `}
