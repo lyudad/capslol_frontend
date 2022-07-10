@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext, createRef } from 'react';
 import { notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { colors } from 'constants/index';
 import axios from 'axios';
 import { AppContext } from 'context';
@@ -44,7 +44,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const inputRef = createRef<HTMLInputElement>();
     const [emoji, setEmoji] = useState();
-
+    const dispatch = useAppDispatch();
     const { socket } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
@@ -68,6 +68,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                         : process.env.REACT_APP_SERVER_URL
                 }/messages?room=${currentChat.id}`
             );
+
             setMessages(m);
         } catch (error) {
             notification.error({
@@ -84,12 +85,12 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
             setArrivalMessage(response);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentChat]);
+    }, [currentChat, user]);
 
     useEffect(() => {
         arrivalMessage &&
             setMessages((prev: IMessages[]) => [...prev, arrivalMessage]);
-    }, [arrivalMessage]);
+    }, [arrivalMessage, dispatch, setMessages]);
 
     const freelancer = currentChat?.proposalId?.freelancerId;
     const jobOwner = currentChat?.proposalId?.jobId?.ownerId;

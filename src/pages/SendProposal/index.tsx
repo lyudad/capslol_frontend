@@ -8,7 +8,7 @@ import {
     useSendProposalMutation,
     useGetProposalsByFreelancerQuery,
 } from 'store/apis/proposals';
-import { useAppSelector } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import ModalWindow from 'components/ModalWindow/ModalWindow';
@@ -16,6 +16,7 @@ import { usePostChatContactMutation } from 'store/apis/chat';
 import { AppContext } from 'context';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
+import { setProposalCount } from 'store/slices/auth/auth.slice';
 import {
     Block,
     Font,
@@ -43,35 +44,51 @@ import ValidateInput from './ValidateInput';
 
 const SendProposal: React.FC = () => {
     const location = useLocation();
+
     const { user } = useAppSelector((s) => s.auth);
+
     const { t } = useTranslation();
+
     const [form] = Form.useForm();
+
     const navigate = useNavigate();
+
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+
     const [hourlyRate, setHourlyRate] = useState<number>();
 
-    const state = location.state as IJobId;
+    const stateJob = location.state as IJobId;
 
-    const { data: job } = useGetJobByIdQuery(state.id);
+    const { data: job } = useGetJobByIdQuery(stateJob.id);
+
     const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
+
     const { data: freelancerProposals } = useGetProposalsByFreelancerQuery(
         user?.id
     );
+
     const [postChatContact] = usePostChatContactMutation();
+
     const { socket } = useContext(AppContext);
 
     const onReset = (): void => form.resetFields();
 
     const openModal = (): void => setIsOpen(true);
 
+    const dispatch = useAppDispatch();
+
+    const currentProposalsCount = useAppSelector(
+        (state) => state.auth.proposalsCount
+    );
+
     const handleFiltered = (data: TFilterArg): TProposalFilter => {
-        const filtered = data?.filter((i) => i?.jobId?.id === state?.id)[0];
+        const filtered = data?.filter((i) => i?.jobId?.id === stateJob?.id)[0];
 
         return filtered;
     };
 
     const navigateToProjectDetails = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id: state.id } });
+        navigate(Paths.JOB_PAGE, { state: { id: stateJob.id } });
     };
 
     const proposalId = handleFiltered(freelancerProposals);
@@ -118,7 +135,7 @@ const SendProposal: React.FC = () => {
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
             const newProposal = {
-                jobId: state.id,
+                jobId: stateJob.id,
                 freelancerId: user?.id,
                 coverLetter: values.coverLetter,
                 hourRate: handleGotFreelancerRate(hourlyRate as number),
@@ -130,6 +147,7 @@ const SendProposal: React.FC = () => {
         } catch (error) {
             message.error(`${error?.message}`);
         }
+        dispatch(setProposalCount(currentProposalsCount + 1));
         onReset();
     };
 
@@ -150,15 +168,15 @@ const SendProposal: React.FC = () => {
     };
 
     const handleProposalFiltered = (data: TFilterArg): TFilterReturn => {
-        const filtered = data?.filter((i) => i.jobId.id === state.id)[0]?.jobId
-            ?.id;
+        const filtered = data?.filter((i) => i.jobId.id === stateJob.id)[0]
+            ?.jobId?.id;
 
         return filtered;
     };
 
     return (
         <>
-            {!(handleProposalFiltered(freelancerProposals) === state.id) && (
+            {!(handleProposalFiltered(freelancerProposals) === stateJob.id) && (
                 <Wrapper>
                     <FontTitle color={colors.textWhite} fs="30" mb="30">
                         {t('Proposal.title')}
@@ -307,7 +325,7 @@ const SendProposal: React.FC = () => {
 
             <HideWrapper
                 showWhen={
-                    handleProposalFiltered(freelancerProposals) === state.id
+                    handleProposalFiltered(freelancerProposals) === stateJob.id
                 }
             >
                 <EmptyListNotification note={t('Proposal.proposalSentTitle')} />

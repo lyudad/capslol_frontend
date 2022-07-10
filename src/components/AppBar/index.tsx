@@ -1,15 +1,16 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
-
-import { logOut } from 'store/slices/auth/auth.slice';
+import { logOut, setContractsCount } from 'store/slices/auth/auth.slice';
 import { Paths } from 'router/paths';
 import { userRole } from 'constants/index';
 import { useDispatch } from 'react-redux';
+import LiveNotification from 'components/LiveNotification';
 import avatar from 'assets/avatar.png';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import { StyledImg } from 'pages/MyContacts(JobOwner)/styles';
+import { NavWrapper } from 'components/LiveNotification/styles';
 import AuthGoogle from 'components/AuthGoogle';
 import { message } from 'antd';
 import {
@@ -50,6 +51,15 @@ const AppBar: React.FC = () => {
         return '';
     }, [userId]);
 
+    const messagesCount = useAppSelector((state) => state.auth.newMessageCount);
+
+    const newProposalsCount = useAppSelector(
+        (state) => state.auth.proposalsCount
+    );
+    const newOffersCount = useAppSelector((state) => state.auth.offersCount);
+
+    const contractsCount = useAppSelector((state) => state.auth.contractsCount);
+
     const logout = (): void => {
         dispatch(logOut());
         navigate(Paths.HOME);
@@ -83,83 +93,116 @@ const AppBar: React.FC = () => {
                         </>
                     </NavLink>
                 </Logo>
-                <HideWrapper showWhen={isAuth}>
-                    <HideWrapper
-                        showWhen={role === userRole.freelancer && !!userProfile}
-                    >
-                        <NavLink to={Paths.JOBS} className="navLink">
-                            {t('AppBar.jobs')}
-                        </NavLink>
-                    </HideWrapper>
-                    <HideWrapper
-                        showWhen={role === userRole.freelancer && !!userProfile}
-                    >
+                {/* <HideWrapper showWhen={isAuth}> */}
+                <HideWrapper
+                    showWhen={
+                        role === userRole.freelancer && !!userProfile && isAuth
+                    }
+                >
+                    <NavLink to={Paths.JOBS} className="navLink">
+                        {t('AppBar.jobs')}
+                    </NavLink>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={
+                        role === userRole.freelancer && !!userProfile && isAuth
+                    }
+                >
+                    <NavWrapper>
                         <NavLink to={Paths.OFFERS} className="navLink">
                             {t('AppBar.myOffers')}
                         </NavLink>
-                    </HideWrapper>
+                        <LiveNotification
+                            count={newOffersCount + newProposalsCount}
+                        />
+                    </NavWrapper>
+                </HideWrapper>
 
-                    <HideWrapper showWhen={role === userRole.owner}>
-                        <NavLink to={Paths.OWNER_JOBS} className="navLink">
-                            {t('AppBar.myProjects')}
-                        </NavLink>
-                    </HideWrapper>
-                    <HideWrapper
-                        showWhen={role === userRole.owner && !!jobsOwnLength}
-                    >
-                        <NavLink to={Paths.TALENT} className="navLink">
-                            {t('AppBar.Talents')}
-                        </NavLink>
-                    </HideWrapper>
-                    <HideWrapper
-                        showWhen={
-                            (role === userRole.owner && !!jobsOwnLength) ||
-                            (role === userRole.freelancer && !!userProfile)
-                        }
-                    >
+                <HideWrapper showWhen={role === userRole.owner && isAuth}>
+                    <NavLink to={Paths.OWNER_JOBS} className="navLink">
+                        {t('AppBar.myProjects')}
+                    </NavLink>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={
+                        role === userRole.owner && !!jobsOwnLength && isAuth
+                    }
+                >
+                    <NavLink to={Paths.TALENT} className="navLink">
+                        {t('AppBar.Talents')}
+                    </NavLink>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={
+                        (role === userRole.owner &&
+                            !!jobsOwnLength &&
+                            isAuth) ||
+                        (role === userRole.freelancer &&
+                            !!userProfile &&
+                            isAuth)
+                    }
+                >
+                    <NavWrapper onClick={() => dispatch(setContractsCount(0))}>
                         <NavLink to={Paths.MY_CONTRACTS} className="navLink">
                             {t('AppBar.myContracts')}
                         </NavLink>
-                    </HideWrapper>
-                    <HideWrapper
-                        showWhen={role === userRole.owner && !!jobsOwnLength}
-                    >
-                        <NavLink to={Paths.MY_CONTACTS} className="navLink">
-                            {t('AppBar.myContacts')}
-                        </NavLink>
-                    </HideWrapper>
-                    <HideWrapper
-                        showWhen={
-                            (role === userRole.owner && !!jobsOwnLength) ||
-                            (role === userRole.freelancer && !!userProfile)
-                        }
-                    >
+                        <LiveNotification count={contractsCount} />
+                    </NavWrapper>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={
+                        role === userRole.owner && !!jobsOwnLength && isAuth
+                    }
+                >
+                    <NavLink to={Paths.MY_CONTACTS} className="navLink">
+                        {t('AppBar.myContacts')}
+                    </NavLink>
+                </HideWrapper>
+                <HideWrapper
+                    showWhen={
+                        (role === userRole.owner &&
+                            !!jobsOwnLength &&
+                            isAuth) ||
+                        (role === userRole.freelancer &&
+                            !!userProfile &&
+                            isAuth)
+                    }
+                >
+                    <NavWrapper>
                         <NavLink to={Paths.CHAT} className="navLink">
                             {t('AppBar.chat')}
                         </NavLink>
-                    </HideWrapper>
+                        <LiveNotification count={messagesCount.length} />
+                    </NavWrapper>
+                </HideWrapper>
 
-                    <HideWrapper showWhen={role === userRole.freelancer}>
-                        <NavLink to={profilePath} className="navLink">
-                            {t('AppBar.profile')}
-                        </NavLink>
-                    </HideWrapper>
+                <HideWrapper showWhen={role === userRole.freelancer && isAuth}>
+                    <NavLink to={profilePath} className="navLink">
+                        {t('AppBar.profile')}
+                    </NavLink>
+                    {/* </HideWrapper> */}
                 </HideWrapper>
             </NavigationContainer>
-            <HideWrapper showWhen={isAuth}>
-                <NotificationFlex>
+
+            <NotificationFlex>
+                <HideWrapper showWhen={isAuth}>
                     <LoggedName>
                         {t('AppBar.welcome')}
                         <span>
                             {user?.firstName} {user?.lastName}
                         </span>
                     </LoggedName>
+                </HideWrapper>
+
+                <HideWrapper showWhen={isAuth}>
                     <BarAvatarImg>
                         <StyledImg
                             src={userProfile?.profileImage || avatar}
                             alt=""
                         />
                     </BarAvatarImg>
+                </HideWrapper>
+                <HideWrapper showWhen={isAuth}>
                     {isGoogle ? (
                         <AuthGoogle
                             isLogOut
@@ -186,8 +229,8 @@ const AppBar: React.FC = () => {
                             {t('AppBar.logout')}
                         </LogoutButton>
                     )}
-                </NotificationFlex>
-            </HideWrapper>
+                </HideWrapper>
+            </NotificationFlex>
         </Header>
     );
 };

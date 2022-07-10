@@ -1,44 +1,65 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { CustomizedState } from 'pages/TalentsPage/TalentListCard/props';
+import { NavWrapper } from 'components/LiveNotification/styles';
+import LiveNotification from 'components/LiveNotification';
+import { setOffersCount, setProposalCount } from 'store/slices/auth/auth.slice';
 import MyOffers from './MyOffers';
 import MyInvitations from './MyInvitations';
 import MyProposals from './MyProposals';
 import { Page, TopButtonContainer, StyledNavBtn } from './styles';
 
 const OffersPage: React.FC = () => {
-    const location = useLocation();
-    const state = location.state as CustomizedState;
-    const { tabs } = state || {};
-
-    const [isActive, setIsActive] = useState<number>(tabs || 1);
-
     const { t } = useTranslation();
+    const location = useLocation();
+    const tabState = location.state as CustomizedState;
+    const { tabs } = tabState || {};
+    const [isActive, setIsActive] = useState<number>(tabs || 1);
+    const dispatch = useAppDispatch();
+    const newProposalsCount = useAppSelector(
+        (state) => state.auth.proposalsCount
+    );
+    const newOffersCount = useAppSelector((state) => state.auth.offersCount);
 
     return (
         <Page>
             <TopButtonContainer>
-                <StyledNavBtn
-                    isActive={isActive === 1}
-                    onClick={() => setIsActive(1)}
-                >
-                    {t('OffersPage.myOffers')}
-                </StyledNavBtn>
+                <NavWrapper>
+                    <StyledNavBtn
+                        isActive={isActive === 1}
+                        onClick={() => {
+                            setIsActive(1);
+                            dispatch(setOffersCount(0));
+                        }}
+                    >
+                        {t('OffersPage.myOffers')}
+                    </StyledNavBtn>
+                    <LiveNotification count={newOffersCount} />
+                </NavWrapper>
 
-                <StyledNavBtn
-                    onClick={() => setIsActive(2)}
-                    isActive={isActive === 2}
-                >
-                    {t('OffersPage.myInvitations')}
-                </StyledNavBtn>
+                <NavWrapper>
+                    <StyledNavBtn
+                        onClick={() => setIsActive(2)}
+                        isActive={isActive === 2}
+                    >
+                        {t('OffersPage.myInvitations')}
+                    </StyledNavBtn>
+                </NavWrapper>
 
-                <StyledNavBtn
-                    isActive={isActive === 3}
-                    onClick={() => setIsActive(3)}
-                >
-                    {t('OffersPage.myProposals')}
-                </StyledNavBtn>
+                <NavWrapper>
+                    <StyledNavBtn
+                        isActive={isActive === 3}
+                        onClick={() => {
+                            setIsActive(3);
+                            dispatch(setProposalCount(0));
+                        }}
+                    >
+                        {t('OffersPage.myProposals')}
+                    </StyledNavBtn>
+                    <LiveNotification count={newProposalsCount} />
+                </NavWrapper>
             </TopButtonContainer>
 
             {isActive === 1 && <MyOffers />}

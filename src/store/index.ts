@@ -1,3 +1,4 @@
+// import { notification } from 'antd';
 import { configureStore } from '@reduxjs/toolkit';
 import {
     persistStore,
@@ -26,6 +27,10 @@ const persistConfig = {
         'proposals',
         'profile',
         'ownerJobsLength',
+        'newMessageCount',
+        'offersCount',
+        'proposalsCount',
+        'contractsCount',
     ],
 };
 const persistedReducer = persistReducer(persistConfig, authReducer);

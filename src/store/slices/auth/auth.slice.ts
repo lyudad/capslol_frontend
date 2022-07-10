@@ -1,4 +1,3 @@
-// import { setProfile } from 'store/slices/profile/profile.slace';
 import { newProfile } from 'store/apis/publicProfile/publicProfile.types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IResponse, UserType } from './auth.type';
@@ -11,6 +10,10 @@ interface UsersState {
     isLoggedIn: boolean | undefined;
     profile: newProfile | null;
     ownerJobsLength: number | null;
+    newMessageCount: number[];
+    offersCount: number;
+    proposalsCount: number;
+    contractsCount: number;
 }
 const initialState: UsersState = {
     user: null,
@@ -20,6 +23,10 @@ const initialState: UsersState = {
     isLoggedIn: false,
     profile: null,
     ownerJobsLength: null,
+    newMessageCount: [],
+    offersCount: 0,
+    proposalsCount: 0,
+    contractsCount: 0,
 };
 
 const authSlice = createSlice({
@@ -59,6 +66,33 @@ const authSlice = createSlice({
         ) => {
             state.ownerJobsLength = payload;
         },
+        setProposalCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.proposalsCount = payload;
+        },
+
+        setOffersCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.offersCount = payload;
+        },
+
+        setContractsCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.contractsCount = payload;
+        },
+
+        setNewMessageCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number[]>
+        ) => {
+            state.newMessageCount = payload;
+        },
     },
 });
 
@@ -68,6 +102,10 @@ export const {
     setUserRole,
     setProfile,
     setOwnerJobsLength,
+    setProposalCount,
+    setOffersCount,
+    setNewMessageCount,
+    setContractsCount,
 } = authSlice.actions;
 
 export default authSlice.reducer;
