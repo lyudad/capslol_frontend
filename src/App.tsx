@@ -65,19 +65,12 @@ const App: React.FC = () => {
 
     appSocket.on(`msgToClient`, (response: IMessages) => {
         if (response.senderId) {
-            // const messCountArr = [...newMessCount, response.roomId.id];
             if (response.senderId.id !== userId) {
                 dispatch(
                     setNewMessageCount([...newMessCount, response.roomId.id])
                 );
-                // if (response.isOffer) {
-                //     dispatch(setOffersCount(offersCount + 1));
-                // }
                 response.isOffer && dispatch(setOffersCount(offersCount + 1));
             }
-            // if (response.content.includes('New contract signed:')) {
-            //     dispatch(setContractsCount(contractsCount + 1));
-            // }
             response.content.includes('New contract signed:') &&
                 dispatch(setContractsCount(contractsCount + 1));
 
@@ -245,8 +238,11 @@ const App: React.FC = () => {
                                     element={
                                         <ProtectedRoute
                                             boolValue={
-                                                role !== userRole.freelancer &&
-                                                !jobsLength
+                                                !(
+                                                    role !==
+                                                        userRole.freelancer &&
+                                                    !!jobsLength
+                                                )
                                             }
                                             redirectPath={Paths.CREATE_JOB_PAGE}
                                         >
