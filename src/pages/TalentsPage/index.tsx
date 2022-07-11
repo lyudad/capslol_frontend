@@ -59,6 +59,7 @@ const TalentsPage: React.FC = () => {
     const { data: skillsData } = useGetSkillsQuery();
 
     const { user: userStore } = useAppSelector((s) => s.auth);
+    const { talents: toggle } = useAppSelector((s) => s.talentsReducer);
 
     useEffect(() => {
         const handleGetJobs = async (): Promise<void> => {
@@ -67,13 +68,14 @@ const TalentsPage: React.FC = () => {
             }${
                 sessionStorage.getItem('skillQuery') || ''
             }&page=${filter}&user=${userStore?.id}`;
-
             const talents = await getTalentsByQueries(query).unwrap();
             setMeta(talents.meta);
             setData(talents.data);
             setMyInvitations(talents.invatation);
         };
-        handleGetJobs();
+        setTimeout(() => {
+            handleGetJobs();
+        }, 200);
     }, [
         getTalentsByQueries,
         userStore?.id,
@@ -81,6 +83,7 @@ const TalentsPage: React.FC = () => {
         categoryQuery,
         skillsQuery,
         filter,
+        toggle,
     ]);
 
     const onFinish = (values: IQueryFilters): void => {
