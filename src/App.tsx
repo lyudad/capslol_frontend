@@ -67,7 +67,10 @@ const App: React.FC = () => {
 
     appSocket.on(`msgToClient`, (response: IMessages) => {
         if (response.senderId) {
-            if (response.senderId.id !== userId) {
+            if (
+                !!response.content.includes('Hourly rate:') ||
+                response.senderId.id !== userId
+            ) {
                 dispatch(
                     setNewMessageCount([...newMessCount, response.roomId.id])
                 );
@@ -333,8 +336,6 @@ const App: React.FC = () => {
                         <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
                     </Route>
 
-                    {/* <Route path={Paths.SIGN_UP} element={<AuthForm />} /> */}
-
                     <Route
                         path={Paths.SIGN_UP}
                         element={
@@ -351,6 +352,7 @@ const App: React.FC = () => {
                         path={Paths.FORGOTTEN_PASSWORD}
                         element={<ForgotPassword />}
                     />
+
                     <Route
                         path={Paths.RESET_PASSWORD}
                         element={<ResetPassword />}
