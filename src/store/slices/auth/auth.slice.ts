@@ -7,7 +7,7 @@ interface UsersState {
     accessToken: string | null | undefined;
     loading: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string;
-    isLoggedIn: boolean | undefined;
+    isLoggedIn: boolean;
     profile: newProfile | null;
     ownerJobsLength: number | null;
     newMessageCount: number[];
@@ -39,7 +39,7 @@ const authSlice = createSlice({
         ) => {
             state.user = data.user;
             state.accessToken = data.accessToken;
-            state.isLoggedIn = data.isLoggedIn;
+            state.isLoggedIn = true;
         },
         logOut: (state: UsersState) => {
             state.user = null;

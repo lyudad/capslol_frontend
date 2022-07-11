@@ -55,6 +55,8 @@ const App: React.FC = () => {
 
     const profileBool = !!useAppSelector((state) => state.auth.profile);
 
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
     const dispatch = useAppDispatch();
 
     const newMessCount = useAppSelector((state) => state.auth.newMessageCount);
@@ -65,7 +67,10 @@ const App: React.FC = () => {
 
     appSocket.on(`msgToClient`, (response: IMessages) => {
         if (response.senderId) {
-            if (response.senderId.id !== userId) {
+            if (
+                !!response.content.includes('Hourly rate:') ||
+                response.senderId.id !== userId
+            ) {
                 dispatch(
                     setNewMessageCount([...newMessCount, response.roomId.id])
                 );
@@ -84,21 +89,38 @@ const App: React.FC = () => {
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>
-                        <Route path="*" element={<HomePage />} />
-
                         <Route
-                            path="/logo"
+                            path="*"
                             element={
                                 <ProtectedRoute
-                                    boolValue={
-                                        !(
-                                            role === userRole.freelancer &&
-                                            !profileBool
-                                        ) && !!role
-                                    }
-                                    redirectPath={Paths.TALENT}
+                                    boolValue={!!isLoggedIn}
+                                    redirectPath={Paths.JOBS}
                                 >
-                                    <SettingPage />
+                                    <HomePage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path={Paths.LOGO}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={!!role}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <RolePage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path={Paths.SELECT_ROLE}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={!!role}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <RolePage />
                                 </ProtectedRoute>
                             }
                         />
@@ -303,15 +325,22 @@ const App: React.FC = () => {
 
                         <Route
                             path={Paths.CONTACT_INFO}
-                            element={<ContactInfo />}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        !(
+                                            role === userRole.freelancer &&
+                                            profileBool
+                                        )
+                                    }
+                                    redirectPath={Paths.TALENT}
+                                >
+                                    <ContactInfo />
+                                </ProtectedRoute>
+                            }
                         />
 
                         <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
-
-                        <Route
-                            path={Paths.SELECT_ROLE}
-                            element={<RolePage />}
-                        />
                     </Route>
 
                     <Route path={Paths.SIGN_UP} element={<AuthForm />} />
@@ -320,12 +349,23 @@ const App: React.FC = () => {
                         path={Paths.FORGOTTEN_PASSWORD}
                         element={<ForgotPassword />}
                     />
+
                     <Route
                         path={Paths.RESET_PASSWORD}
                         element={<ResetPassword />}
                     />
 
-                    <Route path={Paths.HOME} element={<HomePage />} />
+                    <Route
+                        path={Paths.HOME}
+                        element={
+                            <ProtectedRoute
+                                boolValue={!!isLoggedIn}
+                                redirectPath={Paths.JOBS}
+                            >
+                                <HomePage />
+                            </ProtectedRoute>
+                        }
+                    />
 
                     <Route
                         path={Paths.CONFIRM_EMAIL}

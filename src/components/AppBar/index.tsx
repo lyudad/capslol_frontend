@@ -93,7 +93,6 @@ const AppBar: React.FC = () => {
                         </>
                     </NavLink>
                 </Logo>
-                {/* <HideWrapper showWhen={isAuth}> */}
                 <HideWrapper
                     showWhen={
                         role === userRole.freelancer && !!userProfile && isAuth

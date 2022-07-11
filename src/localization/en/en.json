@@ -37,7 +37,7 @@
         "enterLastName": "Please enter your last name.",
         "enterFirstName": "Please enter your first name.",
         "confirmPassword": "Please confirm your password!",
-        "checkEmail": "Check if the email you entered is correct our input your email!",
+        "checkEmail": "Check email address",
         "notMatch": "The two passwords that you entered do not match!",
         "inputPassword": "input your password",
         "signIn": "Sign in",

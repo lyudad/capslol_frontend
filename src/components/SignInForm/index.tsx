@@ -19,7 +19,6 @@ import { Paths } from 'router/paths';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SpinnerWrapper from 'components/Spinner/SpinnerWrapper';
-import { IUser } from 'store/slices/auth/auth.type';
 import {
     useLazyGetJobsByOwnerQuery,
     useLazyGetUserProfileQuery,
@@ -52,14 +51,7 @@ const SignInForm: React.FC = () => {
     const onFinish = async (values: FormType): Promise<void> => {
         try {
             const response = await loginUser(values).unwrap();
-            const newData: IUser = {
-                isLoggedIn: true,
-                user: response.data.user,
-                accessToken: response.data.accessToken,
-            };
-            dispatch(
-                setCredentials({ data: newData, message: response.message })
-            );
+            dispatch(setCredentials(response));
 
             const { user } = response.data;
 
@@ -104,17 +96,7 @@ const SignInForm: React.FC = () => {
                 const authResponse = await loginGoogleUser(
                     response.tokenId
                 ).unwrap();
-                const loggedUser: IUser = {
-                    isLoggedIn: true,
-                    user: authResponse.data.user,
-                    accessToken: authResponse.data.accessToken,
-                };
-                dispatch(
-                    setCredentials({
-                        data: loggedUser,
-                        message: authResponse.message,
-                    })
-                );
+                dispatch(setCredentials(authResponse));
 
                 notification.open({
                     message: translator('AuthGoogle.comeBackMessage'),

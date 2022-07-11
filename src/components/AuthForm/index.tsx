@@ -17,7 +17,6 @@ import {
 } from 'react-google-login';
 import { setCredentials } from 'store/slices/auth/auth.slice';
 import { useDispatch } from 'react-redux';
-import { IUser } from 'store/slices/auth/auth.type';
 import SubmitButton from './SubmitButton';
 import AuthGoogle from '../AuthGoogle';
 import AuthMessage from './AuthMessage';
@@ -40,23 +39,14 @@ const AuthForm: React.FC = () => {
 
     const onFinish = async (values: FormType): Promise<void> => {
         try {
-            const response = await createUser(values).unwrap();
-
-            const newUser: IUser = {
-                isLoggedIn: true,
-                user: response.data.user,
-                accessToken: response.data.accessToken,
-            };
-
-            dispatch(
-                setCredentials({ data: newUser, message: response.message })
-            );
+            const payload = await createUser(values).unwrap();
+            dispatch(setCredentials(payload));
 
             notification.open({
                 message: translator('AuthGoogle.welcomeMessage'),
             });
 
-            navigate(Paths.CONFIRM_EMAIL);
+            navigate(Paths.SELECT_ROLE);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -75,17 +65,7 @@ const AuthForm: React.FC = () => {
                 const authResponse = await createGoogleUser(
                     response.tokenId
                 ).unwrap();
-                const newUser: IUser = {
-                    isLoggedIn: true,
-                    user: authResponse.data.user,
-                    accessToken: authResponse.data.accessToken,
-                };
-                dispatch(
-                    setCredentials({
-                        data: newUser,
-                        message: authResponse.message,
-                    })
-                );
+                dispatch(setCredentials(authResponse));
 
                 notification.open({
                     message: translator('AuthGoogle.welcomeMessage'),

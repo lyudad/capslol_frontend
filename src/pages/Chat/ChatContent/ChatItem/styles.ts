@@ -3,6 +3,7 @@ import { colors } from 'constants/index';
 
 export const ChatMsg = styled.div`
     user-select: none;
+    word-break: break-word;
 
     .Declined {
         color: ${colors.decline};
