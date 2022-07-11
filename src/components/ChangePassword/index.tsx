@@ -32,7 +32,6 @@ const ChangePassword: React.FC<IProps> = ({ onFinish, loading }) => {
                     rules={[
                         {
                             required: true,
-                            message: `${t('ResetPage.passwordTitle.error')}`,
                         },
 
                         ({ getFieldValue }) => ({

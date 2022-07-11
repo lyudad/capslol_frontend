@@ -75,7 +75,6 @@ const ContactInfoModal: React.FC<IModalProps> = ({
             {isSuccess || isError || (
                 <ChangePassword onFinish={onFinish} loading={loading} />
             )}
-
             <>
                 {' '}
                 {isSuccess && (
