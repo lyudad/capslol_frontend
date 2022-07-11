@@ -1,4 +1,5 @@
-﻿import React, { useEffect } from 'react';
+﻿/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { notification } from 'antd';
@@ -27,14 +28,14 @@ const EmailConfirmation: React.FC = () => {
     const handleConfirm = async (): Promise<void> => {
         try {
             const confirmUser = await confirmEmail(confirmToken).unwrap();
-            const userEmailConfirmed = confirmUser?.data?.user?.isConfirmed;
-            const message = confirmUser?.message as string;
+            // const userEmailConfirmed = confirmUser?.data?.user?.isConfirmed;
+            // const message = confirmUser?.message as string;
 
-            const response: IResponse = {
-                data: { user: { isConfirmed: userEmailConfirmed } },
-                message,
-            };
-            dispatch(setCredentials(response));
+            // const response: IResponse = {
+            //     data: { user: { isConfirmed: userEmailConfirmed } },
+            //     message,
+            // };
+            // dispatch(setCredentials(response));
         } catch (error) {
             notification.error(error?.data?.message);
         }

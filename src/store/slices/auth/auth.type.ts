@@ -13,13 +13,12 @@ export interface IGoogleRequest {
 }
 
 export interface IUser {
-    isLoggedIn?: boolean;
     user: UserType;
     accessToken?: string;
 }
 
 export type UserType = {
-    id?: number;
+    id: number;
     firstName?: string;
     lastName?: string;
     role?: string | null;
