@@ -55,6 +55,8 @@ const App: React.FC = () => {
 
     const profileBool = !!useAppSelector((state) => state.auth.profile);
 
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
     const dispatch = useAppDispatch();
 
     const newMessCount = useAppSelector((state) => state.auth.newMessageCount);
@@ -84,7 +86,17 @@ const App: React.FC = () => {
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>
-                        <Route path="*" element={<HomePage />} />
+                        <Route
+                            path="*"
+                            element={
+                                <ProtectedRoute
+                                    boolValue={!!isLoggedIn}
+                                    redirectPath={Paths.JOBS}
+                                >
+                                    <HomePage />
+                                </ProtectedRoute>
+                            }
+                        />
 
                         <Route
                             path="/logo"
@@ -99,6 +111,18 @@ const App: React.FC = () => {
                                     redirectPath={Paths.TALENT}
                                 >
                                     <SettingPage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path={Paths.SELECT_ROLE}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={!!role}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <RolePage />
                                 </ProtectedRoute>
                             }
                         />
@@ -307,14 +331,21 @@ const App: React.FC = () => {
                         />
 
                         <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
-
-                        <Route
-                            path={Paths.SELECT_ROLE}
-                            element={<RolePage />}
-                        />
                     </Route>
 
-                    <Route path={Paths.SIGN_UP} element={<AuthForm />} />
+                    {/* <Route path={Paths.SIGN_UP} element={<AuthForm />} /> */}
+
+                    <Route
+                        path={Paths.SIGN_UP}
+                        element={
+                            <ProtectedRoute
+                                boolValue={!!isLoggedIn}
+                                redirectPath={Paths.JOBS}
+                            >
+                                <AuthForm />
+                            </ProtectedRoute>
+                        }
+                    />
 
                     <Route
                         path={Paths.FORGOTTEN_PASSWORD}
@@ -325,7 +356,17 @@ const App: React.FC = () => {
                         element={<ResetPassword />}
                     />
 
-                    <Route path={Paths.HOME} element={<HomePage />} />
+                    <Route
+                        path={Paths.HOME}
+                        element={
+                            <ProtectedRoute
+                                boolValue={!!isLoggedIn}
+                                redirectPath={Paths.JOBS}
+                            >
+                                <HomePage />
+                            </ProtectedRoute>
+                        }
+                    />
 
                     <Route
                         path={Paths.CONFIRM_EMAIL}
