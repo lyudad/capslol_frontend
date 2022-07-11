@@ -142,10 +142,22 @@ const SettingPage: React.FC = () => {
             setHourRate(value);
             return;
         }
+
+        if (value === 0) {
+            setUpperMaxToggle(true);
+            setHourRate(value);
+            return;
+        }
+
         setUpperMaxToggle(false);
         setHourRate(value);
     };
     const onChangeAvailableHours = (value: number): void => {
+        if (value === 0) {
+            setUpperMaxToggleHours(true);
+            setAvailableHours(value);
+            return;
+        }
         if (value > 12) {
             setUpperMaxToggleHours(true);
             setAvailableHours(value);
@@ -507,7 +519,7 @@ const SettingPage: React.FC = () => {
                         <span style={{ color: colors.brandColor }}>
                             {' '}
                             <InputNumber
-                                min={1}
+                                min={0}
                                 max={99}
                                 placeholder="max 50"
                                 defaultValue={hourRate || undefined}
@@ -528,7 +540,7 @@ const SettingPage: React.FC = () => {
                         <span style={{ color: colors.brandColor }}>
                             {' '}
                             <InputNumber
-                                min={1}
+                                min={0}
                                 max={99}
                                 placeholder="max 12"
                                 defaultValue={availableHours}

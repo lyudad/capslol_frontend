@@ -72,6 +72,22 @@ export const Description = styled.p`
     margin-left: 35px;
     color: ${colors.titleOfSectionsProfile};
 `;
+export const DescriptionOther = styled.p`
+    word-wrap: break-word;
+    font-size: ${fonts.titlesOfProfile};
+    margin-top: 15px;
+    margin-left: 35px;
+    margin-right: 45px;
+    color: ${colors.titleOfSectionsProfile};
+`;
+
+export const DescriptionSkills = styled.p`
+    font-size: ${fonts.titlesOfProfile};
+    margin-top: 15px;
+    margin-left: 35px;
+    margin-right: 45px;
+    color: ${colors.titleOfSectionsProfile};
+`;
 
 export const StyledNav = styled(Button)`
     padding: 4px 8px;

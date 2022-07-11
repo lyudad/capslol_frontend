@@ -1,3 +1,5 @@
+import { IMyInvitation } from 'store/apis/invitations/invitations.types';
+import { MetaInterface } from 'store/apis/jobs/jobs.types';
 import { Category, Skills } from 'store/apis/publicProfile/publicProfile.types';
 import { UserType } from 'store/slices/auth/auth.type';
 
@@ -13,6 +15,12 @@ export interface talentProfile {
     updatedAt?: Date | undefined;
 }
 
+export interface Italents {
+    meta: MetaInterface;
+    data: talentProfile[];
+    invatation: IMyInvitation[];
+}
+
 export interface IProps {
     jobObj: talentProfile;
     freelancerIdInInvitations: Array<number>;
@@ -23,4 +31,10 @@ export interface CustomizedState {
     isActive: boolean;
     userOnClickId: number;
     tabs?: number;
+}
+
+export interface IQueryFilters {
+    category: number | undefined;
+    filteredSkills: number[] | undefined;
+    searchValue: string | undefined;
 }

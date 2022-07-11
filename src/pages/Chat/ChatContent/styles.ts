@@ -133,21 +133,6 @@ export const SendNewMessageIconPlus = styled(PlusOutlined)`
     display: block;
 `;
 
-export const HourlyRateInput = styled.input`
-    margin: 15px 0;
-    padding: 4px 10px;
-    width: 300px;
-    font-size: 16px;
-    border: 1px solid ${colors.black};
-    border-radius: 5px;
-    background: ${colors.homeBgr};
-    color: ${colors.textWhite};
-    &:focus,
-    &:active {
-        outline: 0;
-    }
-`;
-
 export const EmojiIcon = styled(SmileOutlined)`
     font-size: 25px;
     color: ${colors.chatNewMsgBtn};

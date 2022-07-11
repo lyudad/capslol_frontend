@@ -7,6 +7,7 @@ export interface IProps {
     closeModal: () => void;
     bg: string;
     modalBg: string;
+    borderCol?: string;
 }
 export interface ICustomStyles {
     overlay: CSSProperties | undefined;

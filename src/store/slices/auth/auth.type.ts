@@ -13,13 +13,12 @@ export interface IGoogleRequest {
 }
 
 export interface IUser {
-    isLoggedIn?: boolean;
     user: UserType;
     accessToken?: string;
 }
 
 export type UserType = {
-    id?: number;
+    id: number;
     firstName?: string;
     lastName?: string;
     role?: string | null;
@@ -61,3 +60,7 @@ export interface setRole {
 
 export const FREELANCER = 'Freelancer';
 export const JOB_OWNER = 'Job Owner';
+
+export interface IConfirmEmailRequest {
+    token: string | undefined;
+}

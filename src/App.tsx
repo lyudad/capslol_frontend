@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { useMemo, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicPage from 'pages/PublicPage/PublicPage';
@@ -23,9 +24,14 @@ import OwnerJobsPage from 'pages/OwnerJobsPage';
 import TalentsPage from 'pages/TalentsPage';
 import { AppContext, appSocket } from 'context';
 import MyContacts from 'pages/MyContacts(JobOwner)';
-import { useAppSelector } from 'hooks/redux';
-import { TChatArgument } from 'pages/Chat/interfaces';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { IMessages, TChatArgument } from 'pages/Chat/interfaces';
 import EmailConfirmation from 'pages/EmailConfirmation';
+import {
+    setContractsCount,
+    setNewMessageCount,
+    setOffersCount,
+} from 'store/slices/auth/auth.slice';
 
 const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
@@ -49,26 +55,72 @@ const App: React.FC = () => {
 
     const profileBool = !!useAppSelector((state) => state.auth.profile);
 
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
+    const dispatch = useAppDispatch();
+
+    const newMessCount = useAppSelector((state) => state.auth.newMessageCount);
+
+    const offersCount = useAppSelector((state) => state.auth.offersCount);
+
+    const contractsCount = useAppSelector((state) => state.auth.contractsCount);
+
+    appSocket.on(`msgToClient`, (response: IMessages) => {
+        if (response.senderId) {
+            if (
+                !!response.content.includes('Hourly rate:') ||
+                response.senderId.id !== userId
+            ) {
+                dispatch(
+                    setNewMessageCount([...newMessCount, response.roomId.id])
+                );
+                response.isOffer && dispatch(setOffersCount(offersCount + 1));
+            }
+            response.content.includes('New contract signed:') &&
+                dispatch(setContractsCount(contractsCount + 1));
+
+            response.content.includes('Contract terminated:') &&
+                dispatch(setContractsCount(contractsCount + 1));
+        }
+    });
+
     return (
         <AppContext.Provider value={context}>
             <MainLayout>
                 <Routes>
                     <Route element={<Protected />}>
-                        <Route path="*" element={<HomePage />} />
-
                         <Route
-                            path="/logo"
+                            path="*"
                             element={
                                 <ProtectedRoute
-                                    boolValue={
-                                        !(
-                                            role === userRole.freelancer &&
-                                            !profileBool
-                                        ) && !!role
-                                    }
-                                    redirectPath={Paths.TALENT}
+                                    boolValue={!!isLoggedIn}
+                                    redirectPath={Paths.JOBS}
                                 >
-                                    <SettingPage />
+                                    <HomePage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path={Paths.LOGO}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={!!role}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <RolePage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path={Paths.SELECT_ROLE}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={!!role}
+                                    redirectPath={Paths.HOME}
+                                >
+                                    <RolePage />
                                 </ProtectedRoute>
                             }
                         />
@@ -208,8 +260,11 @@ const App: React.FC = () => {
                                     element={
                                         <ProtectedRoute
                                             boolValue={
-                                                role !== userRole.freelancer &&
-                                                !jobsLength
+                                                !(
+                                                    role !==
+                                                        userRole.freelancer &&
+                                                    !!jobsLength
+                                                )
                                             }
                                             redirectPath={Paths.CREATE_JOB_PAGE}
                                         >
@@ -270,15 +325,22 @@ const App: React.FC = () => {
 
                         <Route
                             path={Paths.CONTACT_INFO}
-                            element={<ContactInfo />}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        !(
+                                            role === userRole.freelancer &&
+                                            profileBool
+                                        )
+                                    }
+                                    redirectPath={Paths.TALENT}
+                                >
+                                    <ContactInfo />
+                                </ProtectedRoute>
+                            }
                         />
 
                         <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
-
-                        <Route
-                            path={Paths.SELECT_ROLE}
-                            element={<RolePage />}
-                        />
                     </Route>
 
                     <Route path={Paths.SIGN_UP} element={<AuthForm />} />
@@ -287,12 +349,23 @@ const App: React.FC = () => {
                         path={Paths.FORGOTTEN_PASSWORD}
                         element={<ForgotPassword />}
                     />
+
                     <Route
                         path={Paths.RESET_PASSWORD}
                         element={<ResetPassword />}
                     />
 
-                    <Route path={Paths.HOME} element={<HomePage />} />
+                    <Route
+                        path={Paths.HOME}
+                        element={
+                            <ProtectedRoute
+                                boolValue={!!isLoggedIn}
+                                redirectPath={Paths.JOBS}
+                            >
+                                <HomePage />
+                            </ProtectedRoute>
+                        }
+                    />
 
                     <Route
                         path={Paths.CONFIRM_EMAIL}

@@ -10,6 +10,8 @@ import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
 import { IJob } from 'store/apis/jobs/jobs.types';
 import { useCreateInvitationMutation } from 'store/apis/talents';
 import 'antd/dist/antd.min.css';
+import { useDispatch } from 'react-redux';
+import { setTalents } from 'store/slices/talents/talents.slice';
 import { newInvitation } from 'store/apis/invitations/invitations.types';
 import { useSendProposalMutation } from 'store/apis/proposals';
 import { AppContext } from 'context';
@@ -40,6 +42,7 @@ const TalentListCard: React.FC<IProps> = ({
     const { Option } = Select;
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { id, user, other, profileImage, categories, skills } = jobObj;
     const [targetId, setTargetId] = useState<number>();
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -138,6 +141,7 @@ const TalentListCard: React.FC<IProps> = ({
         }
         setConfirmLoading(false);
         setIsModalVisible(false);
+        dispatch(setTalents(1));
         return notification.success({
             message: t('TalentPage.sent_to') + currentName,
         });
@@ -178,6 +182,7 @@ const TalentListCard: React.FC<IProps> = ({
                 jobId: Number(jobIdSelected || ownJobs[0]?.id),
             };
             await createInvitation(createNewInvitation).unwrap();
+            dispatch(setTalents(1));
             notification.success({
                 message: `${t('TalentPage.sent_to')}${target?.name}!`,
             });

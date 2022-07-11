@@ -37,7 +37,7 @@
         "enterLastName": "Please enter your last name.",
         "enterFirstName": "Please enter your first name.",
         "confirmPassword": "Please confirm your password!",
-        "checkEmail": "Check if the email you entered is correct our input your email!",
+        "checkEmail": "Check email address",
         "notMatch": "The two passwords that you entered do not match!",
         "inputPassword": "input your password",
         "signIn": "Sign in",
@@ -46,6 +46,7 @@
         "haveAccount": "You already have an account?",
         "registerNow": "Register now",
         "login": "Login",
+        "logOut": "Log Out",
         "signInWith": "Sign in with",
         "passwordCondition": "password must contain at least one capital letter, one number and length must be minimum 8 symbols"
     },
@@ -90,7 +91,6 @@
         "back": "Back",
         "amountError12": "The entered valid value must be between 1 and 12."
     },
-
     "ForgotPage": {
         "title": "Forgot Password",
         "email": {
@@ -269,7 +269,6 @@
         "errorNotifice": "We can`t upload you profile image, please try again later!",
         "imageError": "Invalid Format! Only jpg jpeg and png files are allowed!"
     },
-
     "Chat": {
         "offerYes": "Accept",
         "offerNo": "Refuse",
@@ -298,7 +297,6 @@
         "contractTerminated": "Contract terminated on",
         "enterTitle": "Enter hourly rate:"
     },
-
     "Notes": {
         "youDon-tHaveOffers": "YOU DON’T HAVE ANY OFFERS",
         "empty-talents": "YOU DON’T HAVE ANY TALENTS",
@@ -308,9 +306,9 @@
         "youDon-tHaveProjects": "YOU DON’T HAVE ANY PROJECTS",
         "youDon-tHaveArchivalProjects": "YOU DON’T HAVE ANY ARCHIVAL PROJECT",
         "youDon-tHaveRelevantProjects": "YOU DON’T HAVE ANY RELEVANT PROJECT",
-        "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS"
+        "noProjectsWereFound": "NO PROJECTS WERE FOUND ACCORDING TO THE QUERY PARAMETERS",
+        "youDon-tHaveChats": "YOU DON’T HAVE ANY CHATS"
     },
-
     "EmailConfirm": {
         "fineTitle": "Congratulation! Your email is confirmed, please",
         "poorTitle": "Confirmation email is already sent. Please check it!",

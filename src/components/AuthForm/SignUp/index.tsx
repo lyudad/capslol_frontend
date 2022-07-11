@@ -47,7 +47,7 @@ const SignUp: React.FC<ISignUpProps> = ({ translator }) => {
                 rules={[
                     {
                         required: true,
-                        type: 'email',
+                        pattern: /^[A-Za-z][A-Za-z0-9]+@[^\s@]+\.[^\s@]+$/,
                         message: translator('AuthForm.checkEmail'),
                     },
                 ]}
@@ -60,6 +60,7 @@ const SignUp: React.FC<ISignUpProps> = ({ translator }) => {
             <StyledForm.Item
                 label={translator('AuthForm.password')}
                 name="password"
+                hasFeedback
                 rules={[
                     {
                         required: true,

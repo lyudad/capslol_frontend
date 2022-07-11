@@ -1,6 +1,6 @@
 ﻿import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, message, notification, Row } from 'antd';
+import { Form, message, notification, Row } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { colors } from 'constants/index';
@@ -8,15 +8,15 @@ import {
     useSendProposalMutation,
     useGetProposalsByFreelancerQuery,
 } from 'store/apis/proposals';
-import { useAppSelector } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { useGetJobByIdQuery } from 'store/apis/jobs';
 import { Paths } from 'router/paths';
 import ModalWindow from 'components/ModalWindow/ModalWindow';
 import { usePostChatContactMutation } from 'store/apis/chat';
 import { AppContext } from 'context';
-import { validateEntryNumber } from 'constants/validate';
 import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
+import { setProposalCount } from 'store/slices/auth/auth.slice';
 import {
     Block,
     Font,
@@ -40,38 +40,55 @@ import {
     IRateArg,
     TFilterReturn,
 } from './interfaces';
+import ValidateInput from './ValidateInput';
 
 const SendProposal: React.FC = () => {
     const location = useLocation();
+
     const { user } = useAppSelector((s) => s.auth);
+
     const { t } = useTranslation();
+
     const [form] = Form.useForm();
+
     const navigate = useNavigate();
+
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+
     const [hourlyRate, setHourlyRate] = useState<number>();
 
-    const state = location.state as IJobId;
+    const stateJob = location.state as IJobId;
 
-    const { data: job } = useGetJobByIdQuery(state.id);
+    const { data: job } = useGetJobByIdQuery(stateJob.id);
+
     const [postProposal, { isSuccess, isError }] = useSendProposalMutation();
+
     const { data: freelancerProposals } = useGetProposalsByFreelancerQuery(
         user?.id
     );
+
     const [postChatContact] = usePostChatContactMutation();
+
     const { socket } = useContext(AppContext);
 
     const onReset = (): void => form.resetFields();
 
     const openModal = (): void => setIsOpen(true);
 
+    const dispatch = useAppDispatch();
+
+    const currentProposalsCount = useAppSelector(
+        (state) => state.auth.proposalsCount
+    );
+
     const handleFiltered = (data: TFilterArg): TProposalFilter => {
-        const filtered = data?.filter((i) => i?.jobId?.id === state?.id)[0];
+        const filtered = data?.filter((i) => i?.jobId?.id === stateJob?.id)[0];
 
         return filtered;
     };
 
     const navigateToProjectDetails = (): void => {
-        navigate(Paths.JOB_PAGE, { state: { id: state.id } });
+        navigate(Paths.JOB_PAGE, { state: { id: stateJob.id } });
     };
 
     const proposalId = handleFiltered(freelancerProposals);
@@ -118,7 +135,7 @@ const SendProposal: React.FC = () => {
     const handleSubmit = async (values: IFormValue): Promise<void> => {
         try {
             const newProposal = {
-                jobId: state.id,
+                jobId: stateJob.id,
                 freelancerId: user?.id,
                 coverLetter: values.coverLetter,
                 hourRate: handleGotFreelancerRate(hourlyRate as number),
@@ -130,6 +147,7 @@ const SendProposal: React.FC = () => {
         } catch (error) {
             message.error(`${error?.message}`);
         }
+        dispatch(setProposalCount(currentProposalsCount + 1));
         onReset();
     };
 
@@ -150,15 +168,15 @@ const SendProposal: React.FC = () => {
     };
 
     const handleProposalFiltered = (data: TFilterArg): TFilterReturn => {
-        const filtered = data?.filter((i) => i.jobId.id === state.id)[0]?.jobId
-            ?.id;
+        const filtered = data?.filter((i) => i.jobId.id === stateJob.id)[0]
+            ?.jobId?.id;
 
         return filtered;
     };
 
     return (
         <>
-            {!(handleProposalFiltered(freelancerProposals) === state.id) && (
+            {!(handleProposalFiltered(freelancerProposals) === stateJob.id) && (
                 <Wrapper>
                     <FontTitle color={colors.textWhite} fs="30" mb="30">
                         {t('Proposal.title')}
@@ -189,60 +207,11 @@ const SendProposal: React.FC = () => {
                                     <FontTitle color={colors.textWhite} fs="16">
                                         {t('Proposal.hourlyRate')}
                                     </FontTitle>
-                                    <FormItem
-                                        label=""
-                                        name="hourRate"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: `${t(
-                                                    'Proposal.errorRate'
-                                                )}`,
-                                            },
-                                            ({ getFieldValue }) => ({
-                                                validator(_, value) {
-                                                    if (!value) {
-                                                        return Promise.reject(
-                                                            new Error(
-                                                                t(
-                                                                    'Proposal.amountError'
-                                                                )
-                                                            )
-                                                        );
-                                                    }
-
-                                                    const matched =
-                                                        getFieldValue(
-                                                            'hourRate'
-                                                        ).match(
-                                                            validateEntryNumber
-                                                        );
-                                                    if (!matched) {
-                                                        return Promise.reject(
-                                                            new Error(
-                                                                t(
-                                                                    'Proposal.amountError'
-                                                                )
-                                                            )
-                                                        );
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            }),
-                                        ]}
-                                    >
-                                        <Input
-                                            value={hourlyRate}
-                                            prefix="$"
-                                            placeholder={t(
-                                                'Proposal.amountPlaceholder'
-                                            )}
-                                            maxLength={2}
-                                            onChange={onChange}
-                                            min={1}
-                                            max={50}
-                                        />
-                                    </FormItem>
+                                    <ValidateInput
+                                        onChange={onChange}
+                                        propsValue={hourlyRate}
+                                        width="35"
+                                    />
                                 </Row>
 
                                 <Hr />
@@ -335,12 +304,15 @@ const SendProposal: React.FC = () => {
                     <ModalWindow
                         modalIsOpen={modalIsOpen}
                         closeModal={() => closeModal()}
-                        bg={colors.modalBg}
-                        modalBg={colors.modalWindowBg}
+                        bg={colors.bgBlack}
+                        modalBg={colors.bgBlack}
+                        borderCol={colors.textWhite}
                     >
-                        <FontTitle color={colors.black} fs="18">
-                            {t('Proposal.sentSuccess')}
-                        </FontTitle>
+                        <Row justify="center">
+                            <FontTitle color={colors.textWhite} fs="18">
+                                {t('Proposal.sentSuccess')}
+                            </FontTitle>
+                        </Row>
                     </ModalWindow>
                 )}
                 {isError &&
@@ -353,7 +325,7 @@ const SendProposal: React.FC = () => {
 
             <HideWrapper
                 showWhen={
-                    handleProposalFiltered(freelancerProposals) === state.id
+                    handleProposalFiltered(freelancerProposals) === stateJob.id
                 }
             >
                 <EmptyListNotification note={t('Proposal.proposalSentTitle')} />
