@@ -1,23 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { talentProfile } from 'pages/TalentsPage/TalentListCard/props';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface TalentsState {
-    talents: Array<talentProfile>;
+    talents: number;
 }
 
 const initialState: TalentsState = {
-    talents: [],
+    talents: 0,
 };
 
 const talentsSlice = createSlice({
     name: 'talents',
     initialState,
     reducers: {
-        setTalents: (
-            state: TalentsState,
-            { payload }: PayloadAction<talentProfile[]>
-        ) => {
-            state.talents = payload;
+        setTalents: (state: TalentsState, { payload }) => {
+            state.talents += payload;
         },
     },
 });

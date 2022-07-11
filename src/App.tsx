@@ -328,9 +328,26 @@ const App: React.FC = () => {
                             }
                         />
 
-                        <Route
+                        {/* <Route
                             path={Paths.CONTACT_INFO}
                             element={<ContactInfo />}
+                        /> */}
+
+                        <Route
+                            path={Paths.CONTACT_INFO}
+                            element={
+                                <ProtectedRoute
+                                    boolValue={
+                                        !(
+                                            role === userRole.freelancer &&
+                                            profileBool
+                                        )
+                                    }
+                                    redirectPath={Paths.TALENT}
+                                >
+                                    <ContactInfo />
+                                </ProtectedRoute>
+                            }
                         />
 
                         <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
