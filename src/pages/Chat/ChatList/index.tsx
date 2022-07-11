@@ -2,6 +2,7 @@
 import React, { useContext, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { AppContext } from 'context';
+
 import LiveNotification from 'components/LiveNotification';
 import { setNewMessageCount } from 'store/slices/auth/auth.slice';
 import Avatar from './Avatar';
@@ -60,10 +61,10 @@ const ChatList: React.FC<IChatListProps> = ({ members }) => {
                     const freelancer = member?.proposalId?.freelancerId;
                     const jobOwner = member?.proposalId?.jobId?.ownerId;
                     const job = member?.proposalId?.jobId;
+
                     return (
                         <ChatListItem
                             key={member.id}
-                            style={{ animationDelay: `0.${index + 1}ms` }}
                             className={`${
                                 member.id === currentSelected ? 'active' : ''
                             } `}
