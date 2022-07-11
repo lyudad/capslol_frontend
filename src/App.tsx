@@ -102,18 +102,13 @@ const App: React.FC = () => {
                         />
 
                         <Route
-                            path="/logo"
+                            path={Paths.LOGO}
                             element={
                                 <ProtectedRoute
-                                    boolValue={
-                                        !(
-                                            role === userRole.freelancer &&
-                                            !profileBool
-                                        ) && !!role
-                                    }
-                                    redirectPath={Paths.TALENT}
+                                    boolValue={!!role}
+                                    redirectPath={Paths.HOME}
                                 >
-                                    <SettingPage />
+                                    <RolePage />
                                 </ProtectedRoute>
                             }
                         />
@@ -328,11 +323,6 @@ const App: React.FC = () => {
                             }
                         />
 
-                        {/* <Route
-                            path={Paths.CONTACT_INFO}
-                            element={<ContactInfo />}
-                        /> */}
-
                         <Route
                             path={Paths.CONTACT_INFO}
                             element={
@@ -353,17 +343,7 @@ const App: React.FC = () => {
                         <Route path={Paths.JOB_PAGE} element={<OneJobPage />} />
                     </Route>
 
-                    <Route
-                        path={Paths.SIGN_UP}
-                        element={
-                            <ProtectedRoute
-                                boolValue={!!isLoggedIn}
-                                redirectPath={Paths.JOBS}
-                            >
-                                <AuthForm />
-                            </ProtectedRoute>
-                        }
-                    />
+                    <Route path={Paths.SIGN_UP} element={<AuthForm />} />
 
                     <Route
                         path={Paths.FORGOTTEN_PASSWORD}
