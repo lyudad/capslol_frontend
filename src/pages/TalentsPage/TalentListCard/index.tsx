@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { notification, Modal, Select, message } from 'antd';

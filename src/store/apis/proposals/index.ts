@@ -11,7 +11,7 @@ const apiProposalsTag = baseApi.enhanceEndpoints({ addTagTypes: ['Proposal'] });
 
 export const proposalApi = apiProposalsTag.injectEndpoints({
     endpoints: (builder) => ({
-        sendProposal: builder.mutation<IProposal, IProposal>({
+        sendProposal: builder.mutation<IMyProposal, IProposal>({
             query(value) {
                 return {
                     url: '/proposals',
