@@ -161,3 +161,14 @@ export const StatusValue = styled.span`
     font-weight: 600;
     margin-left: 8px;
 `;
+
+export const ButtonWithoutBorder = styled.button`
+    border: none;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
+    color: ${colors.linkColor};
+    &:hover {
+        text-decoration: underline;
+        color: ${colors.textGreen};
+    }
+`;

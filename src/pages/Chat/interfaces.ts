@@ -68,3 +68,7 @@ export interface IChatFormProps {
     currentChat: IChatMember | undefined;
     handleShowEmojis: MouseEventHandler<HTMLSpanElement>;
 }
+
+export type TChatContactArg = IChatMember[] | undefined
+
+export type TReturnChatContact = IChatMember | undefined

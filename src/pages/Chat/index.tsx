@@ -39,11 +39,7 @@ const Chat: React.FC = () => {
             {userMembers?.length ? (
                 <Wrapper>
                     <ChatList members={userMembers} />
-                    {currentChat === undefined || currentChat === null ? (
-                        <Welcome />
-                    ) : (
-                        <ChatContent />
-                    )}
+                    {currentChat === undefined ? <Welcome /> : <ChatContent />}
 
                     <>
                         {' '}
