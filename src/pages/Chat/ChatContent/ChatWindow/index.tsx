@@ -34,9 +34,9 @@ const ChatWindow: React.FC<IChatWindow> = ({
     const handleOffer = async (): Promise<void> => {
         try {
             const newOffer = {
-                ownerId: jobOwner?.id,
-                freelancerId: freelancer?.id,
-                jobId: job?.id,
+                ownerId: jobOwner?.id as number,
+                freelancerId: freelancer?.id as number,
+                jobId: job?.id as number,
                 status: 'Pending',
                 hourRate,
             };
@@ -55,7 +55,7 @@ const ChatWindow: React.FC<IChatWindow> = ({
                   'Chat.rate'
               )}<span>${hourRate}<span></p></div>`,
                 senderId: user?.id,
-                roomId: currentChat.id,
+                roomId: currentChat?.id,
                 isOffer: true,
             };
 

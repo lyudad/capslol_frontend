@@ -1,5 +1,5 @@
 ﻿export interface IProposal {
-    jobId: number;
+    jobId: number | undefined;
     freelancerId: number | undefined;
     coverLetter: string;
     hourRate: number | undefined;

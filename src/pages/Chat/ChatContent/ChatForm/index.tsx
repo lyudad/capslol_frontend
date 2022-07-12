@@ -29,7 +29,7 @@ const ChatForm: React.FC<IChatFormProps> = ({
             const newMessage = {
                 content: `<div>${messageText}</div>`,
                 senderId: user?.id,
-                roomId: currentChat.id,
+                roomId: currentChat?.id,
             };
             socket.emit('msgToServer', newMessage, () => {
                 setMessageText('');

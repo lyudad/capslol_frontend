@@ -56,9 +56,8 @@ export const ChatListItem = styled.div`
     cursor: pointer;
     padding: 10px 10px 10px 20px;
     transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
-    transform: scale(0);
+    transform: translateX(-100%);
     animation-name: showIn;
-    animation-duration: 0.2s;
     animation-iteration-count: 1;
     animation-direction: normal;
     animation-timing-function: cubic-bezier(0.88, 0.19, 0.37, 1.11);
@@ -67,10 +66,10 @@ export const ChatListItem = styled.div`
 
     @keyframes showIn {
         0% {
-            transform: scale(0);
+            transform: translateX(-100%);
         }
         100% {
-            transform: scale(1);
+            transform: translateX(0%);
         }
     }
 
