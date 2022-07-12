@@ -69,7 +69,7 @@ const ChatWindow: React.FC<IChatWindow> = ({
     return (
         <ModalWindow
             modalIsOpen={modalIsOpen}
-            closeModal={() => closeModal()}
+            closeModal={closeModal}
             bg={colors.bgBlack}
             modalBg={colors.bgBlack}
             borderCol={colors.textWhite}

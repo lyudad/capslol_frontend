@@ -44,7 +44,7 @@ export const ChatMsg = styled.div`
     }
 
     .contract {
-        color: ${colors.accept};
+        color: ${colors.textWhite};
     }
 
     .terminated {

@@ -31,6 +31,16 @@ export const chatApi = apiChatTag.injectEndpoints({
             query: (value) => ({
                 url: `/chat-contacts/getById?jobId=${value.jobId}&freelancerId=${value.freelancerId}`,
             }),
+            providesTags: ['Users'],
+        }),
+        getChatContactsByFreelancerId: builder.query<
+            IChatMember[],
+            number | undefined
+        >({
+            query: (id) => ({
+                url: `/chat-contacts/getChatContacts?byFreelancerId=${id}`,
+            }),
+            providesTags: ['Users'],
         }),
     }),
 });
@@ -40,4 +50,5 @@ export const {
     useGetChatContactsQuery,
     useGetMessagesQuery,
     useGetChatContactsByJobIdQuery,
+    useGetChatContactsByFreelancerIdQuery,
 } = chatApi;

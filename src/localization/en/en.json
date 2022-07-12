@@ -225,7 +225,13 @@
         "status": "status: ",
         "ownerHourlyRate": "job owner hourly rate: ",
         "youAccepted": "You accepted this offer. Contract created.",
-        "youRejected": "You rejected this offer"
+        "youRejected": "You rejected this offer",
+        "acceptInviteTitle": "Do you really want to accept this invite?",
+        "acceptYes": "YES",
+        "acceptNo": "NO",
+        "acceptInvite": "Accept Invite",
+        "inviteAccept": "You accept invite, Please",
+        "acceptInviteLink": "go to chat."
     },
     "ContractsPage": {
         "myContracts": "My Contracts",
