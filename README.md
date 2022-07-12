@@ -22,9 +22,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 If you want to specity port use variable PORT in .env
 
 [about husky and lint-staged](https://dev.to/truemark/run-eslint-on-git-commit-with-husky-and-lint-staged-in-reactjs-4oeb)
-
-## Technical Debt 
-
-Pagination on the Talents page is currently working with frontend filtering, this is a bad practice and should be filtered on backend in the near future!
-..capslol_frontend\src\pages\TalentsPage\index.tsx
-..line 39 to 47  
