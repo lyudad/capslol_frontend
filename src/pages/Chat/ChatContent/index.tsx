@@ -166,7 +166,7 @@ const ChatContent: React.FC = () => {
                                     return (
                                         <ChatItem
                                             animationDelay={index + 2}
-                                            key={memberMessage?.id}
+                                            key={memberMessage.id}
                                             msg={memberMessage}
                                         />
                                     );
