@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { notification, Modal, Select, message } from 'antd';
 import avatar from 'assets/avatar.png';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Slicer } from 'utilities/utilities';
 import { useAppSelector } from 'hooks/redux';
 import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
@@ -13,11 +13,6 @@ import 'antd/dist/antd.min.css';
 import { useDispatch } from 'react-redux';
 import { setTalents } from 'store/slices/talents/talents.slice';
 import { newInvitation } from 'store/apis/invitations/invitations.types';
-import { useSendProposalMutation } from 'store/apis/proposals';
-import { AppContext } from 'context';
-import { usePostChatContactMutation } from 'store/apis/chat';
-import moment from 'moment';
-import { dateFormat } from 'constants/index';
 import { IProps } from './props';
 import {
     StyledButton,
@@ -51,10 +46,6 @@ const TalentListCard: React.FC<IProps> = ({
     const [jobIdSelected, setJobIdSelected] = useState<number>();
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
-    const [postProposal] = useSendProposalMutation();
-    const [postChatContact] = usePostChatContactMutation();
-    const { socket } = useContext(AppContext);
-
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
             const firsResults = await searchOwnJobs(userStore?.id).unwrap();
@@ -66,59 +57,6 @@ const TalentListCard: React.FC<IProps> = ({
         reloadJobs();
     }, [searchOwnJobs, userStore?.id]);
 
-    const sentAcceptMessage = (
-        jobTitle: any,
-        jobDes: any,
-        chatContact: any
-    ): void => {
-        try {
-            const newMessage = {
-                content: `<div>
-                <h3 className='contract'>${t('Chat.interviewTitle')}</h3>
-
-                <p>${t('Chat.interviewSigned')}<span className="Date">
-                ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
-                </div>`,
-                senderId: userStore?.id,
-                roomId: chatContact?.id,
-                isOffer: true,
-            };
-
-            socket.emit('msgToServer', newMessage);
-        } catch (error) {
-            message.error(error?.message);
-        }
-    };
-
-    const handleSubmitProposalAndContacts = async (): Promise<void> => {
-        try {
-            const newProposal = {
-                jobId: Number(jobIdSelected || ownJobs[0]?.id),
-                freelancerId: Number(targetId),
-                coverLetter: 'Job',
-                hourRate: 0,
-            };
-            const proposal = await postProposal(newProposal).unwrap();
-            console.log(proposal, 'sent proposal');
-            const newChatContact = {
-                proposalId: proposal.id,
-                isActive: false,
-            };
-
-            const chatContact = await postChatContact(newChatContact).unwrap();
-
-            console.log(chatContact, 'chatContact');
-
-            sentAcceptMessage(
-                proposal?.jobId?.title,
-                proposal?.jobId?.description,
-                chatContact
-            );
-        } catch (error) {
-            message.error(error.message);
-        }
-    };
-
     const handleOk = async (): Promise<void> => {
         try {
             setConfirmLoading(true);
@@ -127,9 +65,7 @@ const TalentListCard: React.FC<IProps> = ({
                 freelancerId: Number(targetId),
                 jobId: Number(jobIdSelected || ownJobs[0]?.id),
             };
-            const r = await createInvitation(createNewInvitation).unwrap();
-            console.log(r, 'sent interview');
-            handleSubmitProposalAndContacts();
+            await createInvitation(createNewInvitation).unwrap();
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);

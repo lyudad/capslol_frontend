@@ -1,4 +1,5 @@
-﻿/* eslint-disable no-unused-expressions */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext, createRef } from 'react';
 import { notification } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -70,7 +71,7 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     process.env.NODE_ENV === 'development'
                         ? process.env.REACT_APP_DEVELOPMENT_URL
                         : process.env.REACT_APP_SERVER_URL
-                }/messages?room=${currentChat.id}`
+                }/messages?room=${currentChat?.id}`
             );
 
             setMessages(m);
@@ -160,26 +161,29 @@ const ChatContent: React.FC<IChatContentProps> = ({ currentChat }) => {
                     </div>
                 </ChatHeader>
                 <ChatBody>
-                    <div>
-                        {messages
-                            .filter(
-                                (member) =>
-                                    member?.roomId?.id === currentChat.id
-                            )
-                            .map((memberMessage, index: number) => {
-                                return (
-                                    <ChatItem
-                                        animationDelay={index + 2}
-                                        key={memberMessage?.id}
-                                        msg={memberMessage}
-                                    />
-                                );
-                            })}
-                    </div>
+                    {messages && (
+                        <div>
+                            {messages
+                                ?.filter(
+                                    (member) =>
+                                        member?.roomId?.id === currentChat.id
+                                )
+                                .map((memberMessage, index: number) => {
+                                    return (
+                                        <ChatItem
+                                            animationDelay={index + 2}
+                                            key={memberMessage?.id}
+                                            msg={memberMessage}
+                                        />
+                                    );
+                                })}
+                        </div>
+                    )}
                     {showEmojis && <Emoji onEmojiClick={handleEmojiClick} />}
                 </ChatBody>
                 <ChatFooter>
                     {((data?.data?.role || undefined) !== Role.jobOwner &&
+                        !invitation &&
                         messages.length < 2) ||
                         offer?.status === Status.DECLINED ||
                         contract?.status === 'closed' || (

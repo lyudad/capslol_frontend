@@ -36,6 +36,12 @@ export const invitationsApi = apiInvitationsTag.injectEndpoints({
             }),
             providesTags: ['Invitation'],
         }),
+        getInvitationById: builder.query<IMyInvitation, number | undefined>({
+            query: (value) => ({
+                url: `/invitation/getBy?byInvitationId=${value}`,
+            }),
+            providesTags: ['Invitation'],
+        }),
     }),
 });
 
@@ -43,4 +49,5 @@ export const {
     useGetFilteredInvitationsQuery,
     useGetInvitationsByJobOwnerQuery,
     useGetInvitationByFreelancerIdQuery,
+    useGetInvitationByIdQuery,
 } = invitationsApi;

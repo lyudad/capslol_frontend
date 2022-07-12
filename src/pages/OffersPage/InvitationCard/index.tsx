@@ -13,6 +13,7 @@ import {
 import { message } from 'antd';
 import { useSendProposalMutation } from 'store/apis/proposals';
 import { IChatMember } from 'store/apis/chat/chat.types';
+import { useGetInvitationByIdQuery } from 'store/apis/invitations';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -33,7 +34,6 @@ interface IProps {
 
 const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
     const { t } = useTranslation();
-
     const navigate = useNavigate();
     const { setCurrentChat, socket } = useContext(AppContext);
 
@@ -43,11 +43,11 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
         jobId: jobId?.id,
         freelancerId: freelancerId.id,
     });
-
     const [postProposal] = useSendProposalMutation();
     const [postChatContact] = usePostChatContactMutation();
+    const { data: invitation } = useGetInvitationByIdQuery(invitationObj?.id);
 
-    const sentAcceptMessage = (chatContact: IChatMember): void => {
+    const sentContractMessage = (chatContact: IChatMember): void => {
         try {
             const newMessage = {
                 content: `<div>
@@ -55,7 +55,7 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
               <p>${t('Chat.interviewSigned')}<span className="Date">
               ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
               </div>`,
-                senderId: ownerId?.id,
+                senderId: freelancerId?.id,
                 roomId: chatContact?.id,
                 isOffer: true,
             };
@@ -83,7 +83,9 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
 
             const chatContact = await postChatContact(newChatContact).unwrap();
 
-            sentAcceptMessage(chatContact);
+            sentContractMessage(chatContact);
+            navigate(Paths.CHAT);
+            setCurrentChat?.(chatContacts);
         } catch (error) {
             message.error(error.message);
         }
@@ -95,7 +97,6 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
 
     const handleOnNavigate = (): void => {
         navigate(Paths.CHAT);
-        handleSubmitProposalAndContacts();
         setCurrentChat?.(chatContacts);
     };
 
@@ -122,9 +123,18 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
             </ValueBox>
 
             <ButtonContainer>
-                <StyledCardBtn onClick={handleOnNavigate}>
-                    {t('OffersPage.goToChat')}
-                </StyledCardBtn>
+                {chatContacts?.proposalId?.jobId.id !==
+                    invitation?.jobId?.id && (
+                    <StyledCardBtn onClick={handleSubmitProposalAndContacts}>
+                        {t('OffersPage.accept')}
+                    </StyledCardBtn>
+                )}
+                {chatContacts?.proposalId?.jobId.id ===
+                    invitation?.jobId?.id && (
+                    <StyledCardBtn onClick={handleOnNavigate}>
+                        {t('OffersPage.goToChat')}
+                    </StyledCardBtn>
+                )}
             </ButtonContainer>
         </OneCard>
     );
