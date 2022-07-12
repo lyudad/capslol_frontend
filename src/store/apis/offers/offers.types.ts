@@ -43,7 +43,7 @@ export interface IChangeStatus {
 export interface ICreateOffer {
     hourRate: number | undefined | string;
     status: string;
-    ownerId: number;
+    ownerId: number | undefined;
     freelancerId: number;
     jobId: number | undefined;
 }
