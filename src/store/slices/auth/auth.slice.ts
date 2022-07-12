@@ -43,6 +43,7 @@ const authSlice = createSlice({
         },
         logOut: (state: UsersState) => {
             state.user = null;
+            state.profile = null;
             state.accessToken = '';
             state.isLoggedIn = false;
         },

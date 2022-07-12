@@ -93,6 +93,10 @@ const SendProposal: React.FC = () => {
 
     const proposalId = handleFiltered(freelancerProposals);
 
+    console.log('FREELANCER_PROPOSALS: ', freelancerProposals);
+
+    console.log('ID??????: ', proposalId);
+
     const closeModal = async (): Promise<void> => {
         try {
             setIsOpen(false);
@@ -214,9 +218,9 @@ const SendProposal: React.FC = () => {
                                     />
                                 </Row>
 
-                                <Hr />
+                                {/* <Hr /> */}
 
-                                <Row justify="space-between">
+                                {/* <Row justify="space-between">
                                     <FontTitle color={colors.textWhite} fs="16">
                                         {t('Proposal.getJobRate')}
                                     </FontTitle>
@@ -227,11 +231,11 @@ const SendProposal: React.FC = () => {
                                         ).toFixed(3)}
                                         /hr
                                     </FontTitle>
-                                </Row>
+                                </Row> */}
 
-                                <Hr />
+                                {/* <Hr /> */}
 
-                                <Row justify="space-between">
+                                {/* <Row justify="space-between">
                                     <FontTitle color={colors.textWhite} fs="16">
                                         {t('Proposal.gotRate')}
                                     </FontTitle>
@@ -247,15 +251,7 @@ const SendProposal: React.FC = () => {
                                             maxLength={2}
                                         />
                                     </FormItem>
-                                </Row>
-                            </Section>
-                        </ProposalCard>
-
-                        <ProposalCard>
-                            <Font fs="22" color={colors.textWhite}>
-                                {t('Proposal.letterTitle')}
-                            </Font>
-                            <Section>
+                                </Row> */}
                                 <Block>
                                     <FontTitle
                                         color={colors.textWhite}
@@ -285,6 +281,41 @@ const SendProposal: React.FC = () => {
                                 </Block>
                             </Section>
                         </ProposalCard>
+
+                        {/* <ProposalCard>
+                            <Font fs="22" color={colors.textWhite}>
+                                {t('Proposal.letterTitle')}
+                            </Font>
+                            <Section> */}
+                        {/* <Block>
+                                    <FontTitle
+                                        color={colors.textWhite}
+                                        fs="16"
+                                        mb="15"
+                                    >
+                                        {t('Proposal.coverLetterTitle')}
+                                    </FontTitle>
+
+                                    <StyledFormItem
+                                        name="coverLetter"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: `${t(
+                                                    'Proposal.errorLetter'
+                                                )}`,
+                                            },
+                                        ]}
+                                    >
+                                        <StyledTextArea
+                                            showCount
+                                            maxLength={500}
+                                            style={{ height: 150 }}
+                                        />
+                                    </StyledFormItem>
+                                </Block> */}
+                        {/* </Section>
+                        </ProposalCard> */}
 
                         <Form.Item>
                             <StyledButton
