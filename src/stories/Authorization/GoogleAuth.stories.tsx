@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import AuthGoogle from 'components/AuthGoogle';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 

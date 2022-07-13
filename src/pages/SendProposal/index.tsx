@@ -109,13 +109,10 @@ const SendProposal: React.FC = () => {
                 </div>`,
                 senderId: user?.id,
                 roomId: chatContact?.id,
-                isOffer: true,
+                isOffer: false,
             };
 
-            socket.emit('msgToServer', newMessage, () => {
-                // eslint-disable-next-line no-console
-                console.log(newMessage);
-            });
+            socket.emit('msgToServer', newMessage);
             navigateToProjectDetails();
         } catch (error) {
             message.error(`${error?.message}`);
