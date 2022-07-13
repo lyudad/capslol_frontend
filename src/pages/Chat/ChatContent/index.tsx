@@ -173,17 +173,17 @@ const ChatContent: React.FC = () => {
                     </div>
 
                     <div>
-                        {(data?.data?.role === Role.jobOwner &&
-                            offer?.status === Status.PENDING) ||
-                            offer?.status === Status.ACCEPTED || (
-                                <SettingsBtn
-                                    onClick={openModal}
-                                    bg={colors.proposalGreen}
-                                    color={colors.textWhite}
-                                >
-                                    {t('Chat.jobOffer')}
-                                </SettingsBtn>
-                            )}
+                        {data?.data?.role === Role.jobOwner &&
+                            (offer?.status === Status.PENDING ||
+                                offer?.status === Status.ACCEPTED || (
+                                    <SettingsBtn
+                                        onClick={openModal}
+                                        bg={colors.proposalGreen}
+                                        color={colors.textWhite}
+                                    >
+                                        {t('Chat.jobOffer')}
+                                    </SettingsBtn>
+                                ))}
                     </div>
                 </ChatHeader>
                 <ChatBody>
