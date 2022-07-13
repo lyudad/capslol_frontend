@@ -29,6 +29,7 @@ import { IMessages, TChatArgument } from 'pages/Chat/interfaces';
 import EmailConfirmation from 'pages/EmailConfirmation';
 import {
     setContractsCount,
+    setInvitationsCount,
     setNewMessageCount,
     setOffersCount,
 } from 'store/slices/auth/auth.slice';
@@ -65,6 +66,10 @@ const App: React.FC = () => {
 
     const contractsCount = useAppSelector((state) => state.auth.contractsCount);
 
+    const invitationsCount = useAppSelector(
+        (state) => state.auth.invitationsCount
+    );
+
     appSocket.on(`msgToClient`, (response: IMessages) => {
         if (response.senderId) {
             if (
@@ -81,6 +86,9 @@ const App: React.FC = () => {
 
             response.content.includes('Contract terminated:') &&
                 dispatch(setContractsCount(contractsCount + 1));
+
+            response.content.includes('New interview:') &&
+                dispatch(setInvitationsCount(invitationsCount + 1));
         }
     });
 

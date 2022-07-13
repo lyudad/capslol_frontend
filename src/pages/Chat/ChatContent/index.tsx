@@ -1,5 +1,4 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unused-expressions */
+﻿/* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext, createRef } from 'react';
 import { notification } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +39,7 @@ const ChatContent: React.FC = () => {
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const inputRef = createRef<HTMLInputElement>();
     const [emoji, setEmoji] = useState();
+
     const dispatch = useAppDispatch();
     const { socket, currentChat } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
@@ -65,7 +65,7 @@ const ChatContent: React.FC = () => {
                     process.env.NODE_ENV === 'development'
                         ? process.env.REACT_APP_DEVELOPMENT_URL
                         : process.env.REACT_APP_SERVER_URL
-                }/messages?room=${currentChat?.id}`
+                }/messages?room=${currentChat?.id as number}`
             );
 
             setMessages(m);
@@ -81,6 +81,7 @@ const ChatContent: React.FC = () => {
         fetchMessages();
 
         socket.on(`msgToClient`, (response: IMessages) => {
+            console.log('RESPONCE: ', response);
             setArrivalMessage(response);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

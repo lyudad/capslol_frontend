@@ -116,6 +116,7 @@ const SendProposal: React.FC = () => {
                 </div>`,
                 senderId: user?.id,
                 roomId: chatContact?.id,
+                isOffer: true,
             };
 
             socket.emit('msgToServer', newMessage, () => {

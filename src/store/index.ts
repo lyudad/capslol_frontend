@@ -31,6 +31,7 @@ const persistConfig = {
         'offersCount',
         'proposalsCount',
         'contractsCount',
+        'invitationsCount',
     ],
 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
