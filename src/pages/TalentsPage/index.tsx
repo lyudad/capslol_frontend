@@ -127,12 +127,9 @@ const TalentsPage: React.FC = () => {
 
     const idArray: Array<number> = [];
 
-    console.log(myInvitations, 'myInvitations');
-
     myInvitations?.map((e: IMyInvitation) =>
         idArray.push(e.freelancerId.id as number)
     );
-    console.log(idArray, 'idArray');
 
     const categoryChildren = useMemo(() => {
         if (categoryData) {
