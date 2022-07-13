@@ -81,7 +81,6 @@ const ChatContent: React.FC = () => {
         fetchMessages();
 
         socket.on(`msgToClient`, (response: IMessages) => {
-            console.log('RESPONCE: ', response);
             setArrivalMessage(response);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

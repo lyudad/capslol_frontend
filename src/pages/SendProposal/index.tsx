@@ -18,17 +18,14 @@ import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { setProposalCount } from 'store/slices/auth/auth.slice';
 import {
-    Block,
     Font,
     FontTitle,
     Hr,
     ProposalCard,
     Section,
     StyledButton,
-    StyledInput,
     StyledTextArea,
     Wrapper,
-    FormItem,
     StyledFormItem,
 } from './styles';
 import {
@@ -92,10 +89,6 @@ const SendProposal: React.FC = () => {
     };
 
     const proposalId = handleFiltered(freelancerProposals);
-
-    console.log('FREELANCER_PROPOSALS: ', freelancerProposals);
-
-    console.log('ID??????: ', proposalId);
 
     const closeModal = async (): Promise<void> => {
         try {
@@ -218,114 +211,43 @@ const SendProposal: React.FC = () => {
                                         width="35"
                                     />
                                 </Row>
+                                <Hr />
+                                <FontTitle
+                                    color={colors.textWhite}
+                                    fs="16"
+                                    mb="15"
+                                >
+                                    {t('Proposal.coverLetterTitle')}
+                                </FontTitle>
 
-                                {/* <Hr /> */}
-
-                                {/* <Row justify="space-between">
-                                    <FontTitle color={colors.textWhite} fs="16">
-                                        {t('Proposal.getJobRate')}
-                                    </FontTitle>
-                                    <FontTitle color={colors.textWhite} fs="16">
-                                        ${' '}
-                                        {handleGetJobPercent(
-                                            hourlyRate
-                                        ).toFixed(3)}
-                                        /hr
-                                    </FontTitle>
-                                </Row> */}
-
-                                {/* <Hr /> */}
-
-                                {/* <Row justify="space-between">
-                                    <FontTitle color={colors.textWhite} fs="16">
-                                        {t('Proposal.gotRate')}
-                                    </FontTitle>
-                                    <FormItem label="" name="freelancerValue">
-                                        <StyledInput
-                                            readOnly
-                                            prefix="$"
-                                            placeholder={`${
-                                                handleGotFreelancerRate(
-                                                    hourlyRate
-                                                ) || '0'
-                                            }`}
-                                            maxLength={2}
-                                        />
-                                    </FormItem>
-                                </Row> */}
-                                <Block>
-                                    <FontTitle
-                                        color={colors.textWhite}
-                                        fs="16"
-                                        mb="15"
+                                <StyledFormItem
+                                    name="coverLetter"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: `${t(
+                                                'Proposal.errorLetter'
+                                            )}`,
+                                        },
+                                    ]}
+                                >
+                                    <StyledTextArea
+                                        showCount
+                                        maxLength={500}
+                                        style={{ height: 150 }}
+                                    />
+                                </StyledFormItem>
+                                <Hr />
+                                <Form.Item>
+                                    <StyledButton
+                                        htmlType="submit"
+                                        className="login-form-button"
                                     >
-                                        {t('Proposal.coverLetterTitle')}
-                                    </FontTitle>
-
-                                    <StyledFormItem
-                                        name="coverLetter"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: `${t(
-                                                    'Proposal.errorLetter'
-                                                )}`,
-                                            },
-                                        ]}
-                                    >
-                                        <StyledTextArea
-                                            showCount
-                                            maxLength={500}
-                                            style={{ height: 150 }}
-                                        />
-                                    </StyledFormItem>
-                                </Block>
+                                        {t('Proposal.submitBtnText')}
+                                    </StyledButton>
+                                </Form.Item>
                             </Section>
                         </ProposalCard>
-
-                        {/* <ProposalCard>
-                            <Font fs="22" color={colors.textWhite}>
-                                {t('Proposal.letterTitle')}
-                            </Font>
-                            <Section> */}
-                        {/* <Block>
-                                    <FontTitle
-                                        color={colors.textWhite}
-                                        fs="16"
-                                        mb="15"
-                                    >
-                                        {t('Proposal.coverLetterTitle')}
-                                    </FontTitle>
-
-                                    <StyledFormItem
-                                        name="coverLetter"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: `${t(
-                                                    'Proposal.errorLetter'
-                                                )}`,
-                                            },
-                                        ]}
-                                    >
-                                        <StyledTextArea
-                                            showCount
-                                            maxLength={500}
-                                            style={{ height: 150 }}
-                                        />
-                                    </StyledFormItem>
-                                </Block> */}
-                        {/* </Section>
-                        </ProposalCard> */}
-
-                        <Form.Item>
-                            <StyledButton
-                                htmlType="submit"
-                                className="login-form-button"
-                            >
-                                {t('Proposal.submitBtnText')}
-                            </StyledButton>
-                        </Form.Item>
                     </Form>
                 </Wrapper>
             )}

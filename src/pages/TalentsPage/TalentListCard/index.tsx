@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { notification, Modal, Select, message } from 'antd';
 import avatar from 'assets/avatar.png';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Slicer } from 'utilities/utilities';
 import { useAppSelector } from 'hooks/redux';
 import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
@@ -13,8 +13,6 @@ import 'antd/dist/antd.min.css';
 import { useDispatch } from 'react-redux';
 import { setTalents } from 'store/slices/talents/talents.slice';
 import { newInvitation } from 'store/apis/invitations/invitations.types';
-import { setInvitationsCount } from 'store/slices/auth/auth.slice';
-import { AppContext } from 'context';
 import { IProps } from './props';
 import {
     StyledButton,
@@ -47,11 +45,6 @@ const TalentListCard: React.FC<IProps> = ({
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
     const [jobIdSelected, setJobIdSelected] = useState<number>();
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
-    const [invitationCount, setInvitationCount] = useState<number>(0);
-    const { socket, currentChat } = useContext(AppContext);
-    // const currentInvitationsCount = useAppSelector(
-    //     (state) => state.auth.invitationsCount
-    // );
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
@@ -64,18 +57,8 @@ const TalentListCard: React.FC<IProps> = ({
         reloadJobs();
     }, [searchOwnJobs, userStore?.id]);
 
-    // useEffect(() => {
-    //     socket.emit(`changeInvitationCount`,invitationCount
-    //     );
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [invitationCount]);
-
-    // dispatch(setInvitationsCount(currentInvitationsCount + 1));
-
     const handleOk = async (): Promise<void> => {
-        console.log('PRE');
         try {
-            console.log('PRE');
             setConfirmLoading(true);
             const createNewInvitation: newInvitation = {
                 ownerId: userStore?.id,
@@ -83,9 +66,6 @@ const TalentListCard: React.FC<IProps> = ({
                 jobId: Number(jobIdSelected || ownJobs[0]?.id),
             };
             await createInvitation(createNewInvitation).unwrap();
-
-            socket.emit(`invitationToServer`, createNewInvitation);
-            console.log('POSTTTT');
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -95,8 +75,6 @@ const TalentListCard: React.FC<IProps> = ({
             }
             throw error;
         }
-
-        // setInvitationCount(1);
         setConfirmLoading(false);
         setIsModalVisible(false);
         dispatch(setTalents(1));
