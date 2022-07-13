@@ -39,15 +39,10 @@ const Chat: React.FC = () => {
             {userMembers?.length ? (
                 <Wrapper>
                     <ChatList members={userMembers} />
-                    {currentChat === undefined ? (
-                        <Welcome />
-                    ) : (
-                        <ChatContent currentChat={currentChat} />
-                    )}
+                    {currentChat === undefined ? <Welcome /> : <ChatContent />}
 
                     <>
                         {' '}
-                        {isLoading && <Spinner />}{' '}
                         {isError &&
                             notification.error({
                                 message: 'Error!',
@@ -62,6 +57,7 @@ const Chat: React.FC = () => {
                     />
                 </HideWrapper>
             )}
+            {isLoading && <Spinner />}
         </>
     );
 };

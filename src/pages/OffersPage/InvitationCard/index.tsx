@@ -3,17 +3,19 @@ import { IMyInvitation } from 'store/apis/invitations/invitations.types';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from 'router/paths';
 import moment from 'moment';
-import { dateFormat } from 'constants/index';
+import { colors, dateFormat } from 'constants/index';
 import { AppContext } from 'context';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import {
-    useGetChatContactsByJobIdQuery,
+    useGetChatContactsByFreelancerIdQuery,
     usePostChatContactMutation,
 } from 'store/apis/chat';
-import { message } from 'antd';
+import { message, Row } from 'antd';
 import { useSendProposalMutation } from 'store/apis/proposals';
 import { IChatMember } from 'store/apis/chat/chat.types';
-import { useGetInvitationByIdQuery } from 'store/apis/invitations';
+import ModalWindow from 'components/ModalWindow/ModalWindow';
+import { FontTitle } from 'pages/SendProposal/styles';
+import { TChatContactArg, TReturnChatContact } from 'pages/Chat/interfaces';
 import {
     DateContainer,
     StyledTitleCardButton,
@@ -26,6 +28,7 @@ import {
     FieldValue,
     StyledCardBtn,
     OneCard,
+    ButtonWithoutBorder,
 } from '../styles';
 
 interface IProps {
@@ -33,19 +36,28 @@ interface IProps {
 }
 
 const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
+    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+    const [isHasChat, setIsHasChat] = useState<boolean>(false);
+
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { setCurrentChat, socket } = useContext(AppContext);
 
     const { createdAt, ownerId, jobId, freelancerId } = invitationObj;
 
-    const { data: chatContacts } = useGetChatContactsByJobIdQuery({
-        jobId: jobId?.id,
-        freelancerId: freelancerId.id,
-    });
     const [postProposal] = useSendProposalMutation();
     const [postChatContact] = usePostChatContactMutation();
-    const { data: invitation } = useGetInvitationByIdQuery(invitationObj?.id);
+    const { data: contacts } = useGetChatContactsByFreelancerIdQuery(
+        freelancerId?.id
+    );
+
+    const rightContacts = (data: TChatContactArg): TReturnChatContact => {
+        const contact = data?.filter(
+            (i: IChatMember) => i?.proposalId?.jobId?.id === jobId?.id
+        )[0];
+
+        return contact;
+    };
 
     const sentContractMessage = (chatContact: IChatMember): void => {
         try {
@@ -80,12 +92,10 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
                 proposalId: proposal.id,
                 isActive: false,
             };
-
             const chatContact = await postChatContact(newChatContact).unwrap();
 
             sentContractMessage(chatContact);
-            navigate(Paths.CHAT);
-            setCurrentChat?.(chatContacts);
+            setIsHasChat(true);
         } catch (error) {
             message.error(error.message);
         }
@@ -97,46 +107,93 @@ const InvitationCard: React.FC<IProps> = ({ invitationObj }) => {
 
     const handleOnNavigate = (): void => {
         navigate(Paths.CHAT);
-        setCurrentChat?.(chatContacts);
+        setCurrentChat?.(rightContacts(contacts));
+        setIsHasChat(false);
+    };
+
+    const openModal = (): void => setIsOpen(true);
+
+    const closeModal = (): void => {
+        if (isHasChat) {
+            handleOnNavigate();
+        }
+        setIsOpen(false);
     };
 
     return (
-        <OneCard>
-            <DateContainer>
-                {moment(new Date(createdAt)).format(dateFormat)}
-            </DateContainer>
+        <>
+            <OneCard>
+                <DateContainer>
+                    {moment(new Date(createdAt)).format(dateFormat)}
+                </DateContainer>
 
-            <StyledTitleCardButton onClick={onClickJob} type="submit">
-                <CardTitle>{jobId.title}</CardTitle>
-                <Salary>{jobId.price}$</Salary>
-            </StyledTitleCardButton>
+                <StyledTitleCardButton onClick={onClickJob} type="submit">
+                    <CardTitle>{jobId.title}</CardTitle>
+                    <Salary>{jobId.price}$</Salary>
+                </StyledTitleCardButton>
 
-            <ValueBox>
-                <Field>{t('JobPage.jobOwner')}</Field>
-                <FieldValue>
-                    {ownerId.firstName} {ownerId.lastName}
-                </FieldValue>
-            </ValueBox>
+                <ValueBox>
+                    <Field>{t('JobPage.jobOwner')}</Field>
+                    <FieldValue>
+                        {ownerId.firstName} {ownerId.lastName}
+                    </FieldValue>
+                </ValueBox>
 
-            <ValueBox>
-                <Descriptions>{jobId.description}</Descriptions>
-            </ValueBox>
+                <ValueBox>
+                    <Descriptions>{jobId.description}</Descriptions>
+                </ValueBox>
 
-            <ButtonContainer>
-                {chatContacts?.proposalId?.jobId.id !==
-                    invitation?.jobId?.id && (
-                    <StyledCardBtn onClick={handleSubmitProposalAndContacts}>
-                        {t('OffersPage.accept')}
-                    </StyledCardBtn>
-                )}
-                {chatContacts?.proposalId?.jobId.id ===
-                    invitation?.jobId?.id && (
-                    <StyledCardBtn onClick={handleOnNavigate}>
-                        {t('OffersPage.goToChat')}
-                    </StyledCardBtn>
-                )}
-            </ButtonContainer>
-        </OneCard>
+                <ButtonContainer>
+                    {rightContacts(contacts)?.proposalId.jobId.id !==
+                        jobId?.id && (
+                        <StyledCardBtn onClick={openModal}>
+                            {t('OffersPage.acceptInvite')}
+                        </StyledCardBtn>
+                    )}
+                    {rightContacts(contacts)?.proposalId.jobId.id ===
+                        jobId?.id && (
+                        <StyledCardBtn onClick={handleOnNavigate}>
+                            {t('OffersPage.goToChat')}
+                        </StyledCardBtn>
+                    )}
+                </ButtonContainer>
+            </OneCard>
+
+            <ModalWindow
+                modalIsOpen={modalIsOpen}
+                closeModal={closeModal}
+                bg={colors.bgBlack}
+                modalBg={colors.bgBlack}
+                borderCol={colors.textWhite}
+            >
+                <Row justify="center">
+                    {!isHasChat ? (
+                        <>
+                            <FontTitle color={colors.modalBg} fs="16" mb="25">
+                                {t('OffersPage.acceptInviteTitle')}
+                            </FontTitle>
+                            <Row justify="space-between">
+                                <StyledCardBtn
+                                    onClick={handleSubmitProposalAndContacts}
+                                >
+                                    {t('OffersPage.acceptYes')}
+                                </StyledCardBtn>
+                                <StyledCardBtn onClick={closeModal}>
+                                    {t('OffersPage.acceptNo')}
+                                </StyledCardBtn>
+                            </Row>
+                        </>
+                    ) : (
+                        <FontTitle color={colors.modalBg} fs="16" mb="25">
+                            {t('OffersPage.inviteAccept')}
+                            <ButtonWithoutBorder onClick={handleOnNavigate}>
+                                {t('OffersPage.acceptInviteLink')}
+                            </ButtonWithoutBorder>
+                        </FontTitle>
+                    )}
+                </Row>
+            </ModalWindow>
+        </>
     );
 };
 

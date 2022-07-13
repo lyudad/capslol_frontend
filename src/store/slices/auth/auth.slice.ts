@@ -45,6 +45,7 @@ const authSlice = createSlice({
             state.user = null;
             state.accessToken = '';
             state.isLoggedIn = false;
+            state.profile = null;
         },
         setUserRole: (
             state: UsersState,

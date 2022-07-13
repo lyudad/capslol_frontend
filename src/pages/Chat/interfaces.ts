@@ -39,10 +39,6 @@ export interface IRoom {
     proposalId: IProposal;
 }
 
-export interface IChatContentProps {
-    currentChat: IRoom;
-}
-
 export interface IProps {
     color?: string;
     bg?: string;
@@ -54,7 +50,7 @@ export interface IChatWindow {
     price: number;
     hourRate: number;
     handleHourRateChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
-    currentChat: IChatMember;
+    currentChat: IChatMember | undefined;
 }
 
 export type TEmoji = any;
@@ -69,6 +65,10 @@ export interface IChatFormProps {
     setMessageText: React.Dispatch<React.SetStateAction<string>>;
     messageText: string;
     inputRef: React.RefObject<HTMLInputElement>;
-    currentChat: IChatMember;
+    currentChat: IChatMember | undefined;
     handleShowEmojis: MouseEventHandler<HTMLSpanElement>;
 }
+
+export type TChatContactArg = IChatMember[] | undefined
+
+export type TReturnChatContact = IChatMember | undefined
