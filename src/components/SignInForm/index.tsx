@@ -59,9 +59,8 @@ const SignInForm: React.FC = () => {
 
             dispatch(setProfile(userProfile));
 
-            const ownerJobsLength = await await (
-                await getOwnerJobs(user.id).unwrap()
-            ).length;
+            const ownerJobsLength = (await getOwnerJobs(user.id).unwrap())
+                .length;
 
             dispatch(setOwnerJobsLength(ownerJobsLength));
 
@@ -103,6 +102,15 @@ const SignInForm: React.FC = () => {
                 });
 
                 const { user } = authResponse.data;
+
+                const userProfile = await getUserProfile(user.id).unwrap();
+
+                dispatch(setProfile(userProfile));
+
+                const ownerJobsLength = (await getOwnerJobs(user.id).unwrap())
+                    .length;
+
+                dispatch(setOwnerJobsLength(ownerJobsLength));
 
                 if (!user.role) {
                     navigate(Paths.SELECT_ROLE);
