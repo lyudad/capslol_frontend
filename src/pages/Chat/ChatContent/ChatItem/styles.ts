@@ -32,7 +32,8 @@ export const ChatMsg = styled.div`
 
     .offer,
     .contract,
-    .terminated {
+    .terminated,
+    .invite {
         font-size: 17px;
         margin-bottom: 8px;
         text-align: center;
@@ -44,16 +45,15 @@ export const ChatMsg = styled.div`
     }
 
     .contract {
-        color: ${colors.textWhite};
+        color: ${colors.accept};
     }
 
     .terminated {
         color: ${colors.decline};
     }
 
-    .Freelancer,
-    .JobOwner {
-        display: block;
+    .invite {
+        color: ${colors.textWhite};
     }
 
     .Date {

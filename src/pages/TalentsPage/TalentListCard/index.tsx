@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { notification, Modal, Select, message } from 'antd';
 import avatar from 'assets/avatar.png';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Slicer } from 'utilities/utilities';
 import { useAppSelector } from 'hooks/redux';
 import { useLazyGetJobsByOwnerQuery } from 'store/apis/jobs';
@@ -12,7 +12,16 @@ import { useCreateInvitationMutation } from 'store/apis/talents';
 import 'antd/dist/antd.min.css';
 import { useDispatch } from 'react-redux';
 import { setTalents } from 'store/slices/talents/talents.slice';
-import { newInvitation } from 'store/apis/invitations/invitations.types';
+import {
+    IMyInvitation,
+    newInvitation,
+} from 'store/apis/invitations/invitations.types';
+import { dateFormat } from 'constants/index';
+import moment from 'moment';
+import { usePostChatContactMutation } from 'store/apis/chat';
+import { IChatMember } from 'store/apis/chat/chat.types';
+import { useSendProposalMutation } from 'store/apis/proposals';
+import { AppContext } from 'context';
 import { IProps } from './props';
 import {
     StyledButton,
@@ -34,6 +43,8 @@ const TalentListCard: React.FC<IProps> = ({
     const { user: userStore } = useAppSelector((s) => s.auth);
     const [searchOwnJobs] = useLazyGetJobsByOwnerQuery();
     const [createInvitation] = useCreateInvitationMutation();
+    const [postProposal] = useSendProposalMutation();
+    const [postChatContact] = usePostChatContactMutation();
     const { Option } = Select;
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -45,6 +56,7 @@ const TalentListCard: React.FC<IProps> = ({
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
     const [jobIdSelected, setJobIdSelected] = useState<number>();
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+    const { socket } = useContext(AppContext);
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
@@ -57,6 +69,49 @@ const TalentListCard: React.FC<IProps> = ({
         reloadJobs();
     }, [searchOwnJobs, userStore?.id]);
 
+    const sentContractMessage = (chatContact: IChatMember): void => {
+        try {
+            const newMessage = {
+                content: `<div>
+            <h3 className='invite'>${t('Chat.interviewTitle')}</h3>
+            <p>${t('Chat.interviewSigned')}<span className="Date">
+            ${moment(new Date(Date.now())).format(dateFormat)}<span></p>
+            </div>`,
+                senderId: userStore?.id,
+                roomId: chatContact?.id,
+                isOffer: true,
+            };
+
+            socket.emit('msgToServer', newMessage);
+        } catch (error) {
+            message.error(error?.message);
+        }
+    };
+
+    const handleSubmitProposalAndContacts = async (
+        invitation: IMyInvitation
+    ): Promise<void> => {
+        try {
+            const newProposal = {
+                jobId: invitation?.jobId?.id as number,
+                freelancerId: invitation?.freelancerId?.id as number,
+                coverLetter: invitation?.jobId?.description as string,
+                hourRate: invitation?.jobId?.price as number,
+            };
+            const proposal = await postProposal(newProposal).unwrap();
+
+            const newChatContact = {
+                proposalId: proposal.id,
+                isActive: false,
+            };
+            const chatContact = await postChatContact(newChatContact).unwrap();
+
+            sentContractMessage(chatContact);
+        } catch (error) {
+            message.error(error.message);
+        }
+    };
+
     const handleOk = async (): Promise<void> => {
         try {
             setConfirmLoading(true);
@@ -65,7 +120,10 @@ const TalentListCard: React.FC<IProps> = ({
                 freelancerId: Number(targetId),
                 jobId: Number(jobIdSelected || ownJobs[0]?.id),
             };
-            await createInvitation(createNewInvitation).unwrap();
+            const response = await createInvitation(
+                createNewInvitation
+            ).unwrap();
+            handleSubmitProposalAndContacts(response);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -117,7 +175,10 @@ const TalentListCard: React.FC<IProps> = ({
                 freelancerId: Number(target?.id),
                 jobId: Number(jobIdSelected || ownJobs[0]?.id),
             };
-            await createInvitation(createNewInvitation).unwrap();
+            const createdInvitation = await createInvitation(
+                createNewInvitation
+            ).unwrap();
+            handleSubmitProposalAndContacts(createdInvitation);
             dispatch(setTalents(1));
             notification.success({
                 message: `${t('TalentPage.sent_to')}${target?.name}!`,

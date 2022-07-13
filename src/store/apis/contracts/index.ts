@@ -23,14 +23,6 @@ export const contractsApi = apiContractsTag.injectEndpoints({
             }),
             invalidatesTags: ['Contract'],
         }),
-
-        getContractByIdOfferId: builder.query<IContract, number | undefined>({
-            query: (value: number) => ({
-                url: `/contract/getByOfferId?offerId=${value}`,
-            }),
-            providesTags: ['Contract'],
-        }),
-
         getFilteredContracts: builder.query<
             ContractResponseInterface,
             ContractsOptionsInterface
@@ -47,7 +39,6 @@ export const contractsApi = apiContractsTag.injectEndpoints({
 export const {
     useCreateContractMutation,
     useChangeContractStatusMutation,
-    useGetContractByIdOfferIdQuery,
     useGetFilteredContractsQuery,
     useLazyGetFilteredContractsQuery,
 } = contractsApi;

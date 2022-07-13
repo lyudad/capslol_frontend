@@ -68,3 +68,7 @@ export interface ContractsOptionsInterface {
     freelancerId?: number;
     ownerId?: number;
 }
+
+export enum EContractStatus {
+    closed = 'closed',
+}

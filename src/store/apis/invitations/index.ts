@@ -28,7 +28,7 @@ export const invitationsApi = apiInvitationsTag.injectEndpoints({
             providesTags: ['Talents'],
         }),
         getInvitationByFreelancerId: builder.query<
-            IMyInvitation,
+            IMyInvitation[],
             number | undefined
         >({
             query: (value) => ({
