@@ -11,8 +11,11 @@ import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
-import { useGetContractByIdOfferIdQuery } from 'store/apis/contracts';
 import { useGetInvitationByFreelancerIdQuery } from 'store/apis/invitations';
+import {
+    EContractStatus,
+    IContract,
+} from 'store/apis/contracts/contracts.types';
 import Avatar from '../ChatList/Avatar';
 import { IMessages, Role, TEmoji, TEvent } from '../interfaces';
 import ChatItem from './ChatItem';
@@ -39,19 +42,21 @@ const ChatContent: React.FC = () => {
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const inputRef = createRef<HTMLInputElement>();
     const [emoji, setEmoji] = useState();
+    const [contracts, setContracts] = useState<IContract[]>();
 
     const dispatch = useAppDispatch();
     const { socket, currentChat } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
 
+    const freelancer = currentChat?.proposalId?.freelancerId;
+    const jobOwner = currentChat?.proposalId?.jobId?.ownerId;
+    const job = currentChat?.proposalId?.jobId;
+
     const { data } = useGetUserByIdQuery(user?.id);
-    const { data: offer } = useGetOfferByJobIdQuery(
-        currentChat?.proposalId?.jobId?.id as number
-    );
-    const { data: contract } = useGetContractByIdOfferIdQuery(offer?.id);
+    const { data: offer } = useGetOfferByJobIdQuery(job?.id as number);
     const { data: invitation } = useGetInvitationByFreelancerIdQuery(
-        currentChat?.proposalId?.freelancerId?.id
+        freelancer?.id
     );
 
     const openModal = (): void => setIsOpen(true);
@@ -77,6 +82,25 @@ const ChatContent: React.FC = () => {
         }
     };
 
+    const fetchContracts = async (): Promise<void> => {
+        try {
+            const { data: fetchedContracts } = await axios.get(
+                `${
+                    process.env.NODE_ENV === 'development'
+                        ? process.env.REACT_APP_DEVELOPMENT_URL
+                        : process.env.REACT_APP_SERVER_URL
+                }/contract/getBy?freelancerId=${freelancer?.id as number}`
+            );
+
+            setContracts(fetchedContracts);
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: `${error?.message}`,
+            });
+        }
+    };
+
     useEffect(() => {
         fetchMessages();
 
@@ -89,11 +113,9 @@ const ChatContent: React.FC = () => {
     useEffect(() => {
         arrivalMessage &&
             setMessages((prev: IMessages[]) => [...prev, arrivalMessage]);
+        fetchContracts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [arrivalMessage, dispatch, setMessages]);
-
-    const freelancer = currentChat?.proposalId?.freelancerId;
-    const jobOwner = currentChat?.proposalId?.jobId?.ownerId;
-    const job = currentChat?.proposalId?.jobId;
 
     const [hourRate, setHourRate] = useState<number>(job?.price as number);
 
@@ -115,6 +137,16 @@ const ChatContent: React.FC = () => {
     };
 
     CustomHook({ setMessageText, emoji });
+
+    const handleClosedContract = (
+        dataContract: IContract[] | undefined
+    ): IContract | undefined => {
+        const contract = dataContract?.filter(
+            (i) => i?.offerId?.jobId?.id === job?.id
+        )[0];
+
+        return contract;
+    };
 
     return (
         <Wrapper>
@@ -141,7 +173,7 @@ const ChatContent: React.FC = () => {
                     </div>
 
                     <div>
-                        {(data?.data?.role || undefined) === Role.jobOwner &&
+                        {data?.data?.role === Role.jobOwner &&
                             (offer?.status === Status.PENDING ||
                                 offer?.status === Status.ACCEPTED || (
                                     <SettingsBtn
@@ -177,10 +209,10 @@ const ChatContent: React.FC = () => {
                 </ChatBody>
                 <ChatFooter>
                     {((data?.data?.role || undefined) !== Role.jobOwner &&
-                        !invitation &&
-                        messages.length < 2) ||
+                        messages.length < 1) ||
                         offer?.status === Status.DECLINED ||
-                        contract?.status === 'closed' || (
+                        handleClosedContract(contracts)?.status ===
+                            EContractStatus.closed || (
                             <ChatForm
                                 currentChat={currentChat}
                                 handleShowEmojis={handleShowEmojis}

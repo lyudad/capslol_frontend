@@ -1,11 +1,11 @@
 import { Italents } from 'pages/TalentsPage/TalentListCard/props';
 import { baseApi } from '..';
-import { newInvitation } from '../invitations/invitations.types';
+import { IMyInvitation, newInvitation } from '../invitations/invitations.types';
 
 export const talentsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         createInvitation: builder.mutation<
-            newInvitation,
+            IMyInvitation,
             newInvitation | undefined
         >({
             query: (value) => ({
