@@ -59,17 +59,6 @@ const RolePage: React.FC = (): React.ReactElement => {
         }
     };
 
-    React.useEffect(() => {
-        if (currentUser?.role) {
-            if (currentUser.role === Role.JOB_OWNER) {
-                navigate(Paths.CREATE_JOB_PAGE);
-            }
-
-            if (currentUser.role === Role.FREELANCER) {
-                navigate(`${Paths.SETTING_PAGE}/${currentUser?.id}`);
-            }
-        }
-    }, []);
     return (
         <Row>
             <Col span={24}>
