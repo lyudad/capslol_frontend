@@ -58,6 +58,10 @@ const AppBar: React.FC = () => {
     );
     const newOffersCount = useAppSelector((state) => state.auth.offersCount);
 
+    const newInvitationsCount = useAppSelector(
+        (state) => state.auth.invitationsCount
+    );
+
     const contractsCount = useAppSelector((state) => state.auth.contractsCount);
 
     const logout = (): void => {
@@ -112,7 +116,11 @@ const AppBar: React.FC = () => {
                             {t('AppBar.myOffers')}
                         </NavLink>
                         <LiveNotification
-                            count={newOffersCount + newProposalsCount}
+                            count={
+                                newOffersCount +
+                                newProposalsCount +
+                                newInvitationsCount
+                            }
                         />
                     </NavWrapper>
                 </HideWrapper>

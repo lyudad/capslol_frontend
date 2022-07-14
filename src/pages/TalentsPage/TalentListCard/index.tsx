@@ -79,7 +79,7 @@ const TalentListCard: React.FC<IProps> = ({
             </div>`,
                 senderId: userStore?.id,
                 roomId: chatContact?.id,
-                isOffer: true,
+                isOffer: false,
             };
 
             socket.emit('msgToServer', newMessage);

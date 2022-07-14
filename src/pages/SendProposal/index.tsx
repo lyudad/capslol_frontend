@@ -18,17 +18,14 @@ import { HideWrapper } from 'components/HideWrapper/styles';
 import EmptyListNotification from 'components/EmptyListNotification';
 import { setProposalCount } from 'store/slices/auth/auth.slice';
 import {
-    Block,
     Font,
     FontTitle,
     Hr,
     ProposalCard,
     Section,
     StyledButton,
-    StyledInput,
     StyledTextArea,
     Wrapper,
-    FormItem,
     StyledFormItem,
 } from './styles';
 import {
@@ -112,25 +109,18 @@ const SendProposal: React.FC = () => {
                 </div>`,
                 senderId: user?.id,
                 roomId: chatContact?.id,
-                isOffer: true,
+                isOffer: false,
             };
 
-            socket.emit('msgToServer', newMessage, () => {
-                // eslint-disable-next-line no-console
-                console.log(newMessage);
-            });
+            socket.emit('msgToServer', newMessage);
             navigateToProjectDetails();
         } catch (error) {
             message.error(`${error?.message}`);
         }
     };
 
-    const handleGetJobPercent = (rate: IRateArg): number =>
-        ((rate || 0) / 100) * 12.5;
-
     const handleGotFreelancerRate = (freelancerRate: IRateArg): number => {
-        const getJobRate = handleGetJobPercent(freelancerRate);
-        return (freelancerRate || 0) - getJobRate;
+        return freelancerRate || 0;
     };
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
@@ -175,6 +165,30 @@ const SendProposal: React.FC = () => {
         return filtered;
     };
 
+    // useEffect(() => {
+    //     const onFill = (): void => {
+    //         form.setFieldsValue({
+    //             categoryId:
+    //                 Number(sessionStorage.getItem('categoryId')) ||
+    //                 userFilter?.category,
+    //             skillIds:
+    //                 JSON.parse(sessionStorage.getItem('SkillsId') as string) ||
+    //                 userFilter?.skills,
+    //             englishLevel:
+    //                 sessionStorage.getItem('englishLevel') ||
+    //                 userFilter?.languageLevel,
+    //             maxSalary:
+    //                 Number(sessionStorage.getItem('maxSalary')) ||
+    //                 userFilter?.price,
+
+    //             timeAvailable:
+    //                 Number(sessionStorage.getItem('timeAvailable')) ||
+    //                 userFilter?.timeAvailable,
+    //         });
+    //     };
+    //     onFill();
+    // }, [userFilter, form]);
+
     return (
         <>
             {!(handleProposalFiltered(freelancerProposals) === stateJob.id) && (
@@ -214,87 +228,43 @@ const SendProposal: React.FC = () => {
                                         width="35"
                                     />
                                 </Row>
-
                                 <Hr />
+                                <FontTitle
+                                    color={colors.textWhite}
+                                    fs="16"
+                                    mb="15"
+                                >
+                                    {t('Proposal.coverLetterTitle')}
+                                </FontTitle>
 
-                                <Row justify="space-between">
-                                    <FontTitle color={colors.textWhite} fs="16">
-                                        {t('Proposal.getJobRate')}
-                                    </FontTitle>
-                                    <FontTitle color={colors.textWhite} fs="16">
-                                        ${' '}
-                                        {handleGetJobPercent(
-                                            hourlyRate
-                                        ).toFixed(3)}
-                                        /hr
-                                    </FontTitle>
-                                </Row>
-
+                                <StyledFormItem
+                                    name="coverLetter"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: `${t(
+                                                'Proposal.errorLetter'
+                                            )}`,
+                                        },
+                                    ]}
+                                >
+                                    <StyledTextArea
+                                        showCount
+                                        maxLength={500}
+                                        style={{ height: 150 }}
+                                    />
+                                </StyledFormItem>
                                 <Hr />
-
-                                <Row justify="space-between">
-                                    <FontTitle color={colors.textWhite} fs="16">
-                                        {t('Proposal.gotRate')}
-                                    </FontTitle>
-                                    <FormItem label="" name="freelancerValue">
-                                        <StyledInput
-                                            readOnly
-                                            prefix="$"
-                                            placeholder={`${
-                                                handleGotFreelancerRate(
-                                                    hourlyRate
-                                                ) || '0'
-                                            }`}
-                                            maxLength={2}
-                                        />
-                                    </FormItem>
-                                </Row>
+                                <Form.Item>
+                                    <StyledButton
+                                        htmlType="submit"
+                                        className="login-form-button"
+                                    >
+                                        {t('Proposal.submitBtnText')}
+                                    </StyledButton>
+                                </Form.Item>
                             </Section>
                         </ProposalCard>
-
-                        <ProposalCard>
-                            <Font fs="22" color={colors.textWhite}>
-                                {t('Proposal.letterTitle')}
-                            </Font>
-                            <Section>
-                                <Block>
-                                    <FontTitle
-                                        color={colors.textWhite}
-                                        fs="16"
-                                        mb="15"
-                                    >
-                                        {t('Proposal.coverLetterTitle')}
-                                    </FontTitle>
-
-                                    <StyledFormItem
-                                        name="coverLetter"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: `${t(
-                                                    'Proposal.errorLetter'
-                                                )}`,
-                                            },
-                                        ]}
-                                    >
-                                        <StyledTextArea
-                                            showCount
-                                            maxLength={500}
-                                            style={{ height: 150 }}
-                                        />
-                                    </StyledFormItem>
-                                </Block>
-                            </Section>
-                        </ProposalCard>
-
-                        <Form.Item>
-                            <StyledButton
-                                htmlType="submit"
-                                className="login-form-button"
-                            >
-                                {t('Proposal.submitBtnText')}
-                            </StyledButton>
-                        </Form.Item>
                     </Form>
                 </Wrapper>
             )}

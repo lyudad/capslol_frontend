@@ -1,7 +1,9 @@
 import { useAppSelector } from 'hooks/redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { CustomizedState } from 'pages/TalentsPage/TalentListCard/props';
+import { setInvitationsCount } from 'store/slices/auth/auth.slice';
 import { message, Modal, notification, Row, Select } from 'antd';
 import { colors } from 'constants/index';
 import 'antd/dist/antd.min.css';
@@ -39,6 +41,7 @@ const PublicPage: React.FC = () => {
     const { Option } = Select;
     const [searchOwnJobs] = useLazyGetJobsByOwnerQuery();
     const [createInvitation] = useCreateInvitationMutation();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { user } = useAppSelector((s) => s.auth);
@@ -48,6 +51,9 @@ const PublicPage: React.FC = () => {
     const [jobIdSelected, setJobIdSelected] = useState<number>();
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [ownJobs, setOwnJobs] = useState<IJob[]>([]);
+    const currentInvitationsCount = useAppSelector(
+        (s) => s.auth.invitationsCount
+    );
 
     useEffect((): void => {
         const reloadJobs = async (): Promise<void> => {
@@ -131,6 +137,7 @@ const PublicPage: React.FC = () => {
                 setToggle(true);
                 return;
             }
+            dispatch(setInvitationsCount(currentInvitationsCount + 1));
             setIsModalVisible(true);
         } catch (error) {
             if ('data' in error) {

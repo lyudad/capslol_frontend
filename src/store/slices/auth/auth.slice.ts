@@ -14,6 +14,7 @@ interface UsersState {
     offersCount: number;
     proposalsCount: number;
     contractsCount: number;
+    invitationsCount: number;
 }
 const initialState: UsersState = {
     user: null,
@@ -27,6 +28,7 @@ const initialState: UsersState = {
     offersCount: 0,
     proposalsCount: 0,
     contractsCount: 0,
+    invitationsCount: 0,
 };
 
 const authSlice = createSlice({
@@ -43,9 +45,16 @@ const authSlice = createSlice({
         },
         logOut: (state: UsersState) => {
             state.user = null;
+            state.profile = null;
             state.accessToken = '';
             state.isLoggedIn = false;
             state.profile = null;
+            state.ownerJobsLength = null;
+            state.newMessageCount = [];
+            state.offersCount = 0;
+            state.proposalsCount = 0;
+            state.contractsCount = 0;
+            state.invitationsCount = 0;
         },
         setUserRole: (
             state: UsersState,
@@ -88,6 +97,13 @@ const authSlice = createSlice({
             state.contractsCount = payload;
         },
 
+        setInvitationsCount: (
+            state: UsersState,
+            { payload }: PayloadAction<number>
+        ) => {
+            state.invitationsCount = payload;
+        },
+
         setNewMessageCount: (
             state: UsersState,
             { payload }: PayloadAction<number[]>
@@ -107,6 +123,7 @@ export const {
     setOffersCount,
     setNewMessageCount,
     setContractsCount,
+    setInvitationsCount,
 } = authSlice.actions;
 
 export default authSlice.reducer;

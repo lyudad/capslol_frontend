@@ -29,6 +29,7 @@ import { IMessages, TChatArgument } from 'pages/Chat/interfaces';
 import EmailConfirmation from 'pages/EmailConfirmation';
 import {
     setContractsCount,
+    setInvitationsCount,
     setNewMessageCount,
     setOffersCount,
 } from 'store/slices/auth/auth.slice';
@@ -65,23 +66,30 @@ const App: React.FC = () => {
 
     const contractsCount = useAppSelector((state) => state.auth.contractsCount);
 
-    appSocket.on(`msgToClient`, (response: IMessages) => {
-        if (response.senderId) {
-            if (
-                !!response.content.includes('Hourly rate:') ||
-                response.senderId.id !== userId
-            ) {
-                dispatch(
-                    setNewMessageCount([...newMessCount, response.roomId.id])
-                );
-                response.isOffer && dispatch(setOffersCount(offersCount + 1));
-            }
-            response.content.includes('New contract signed:') &&
-                dispatch(setContractsCount(contractsCount + 1));
+    const invitationsCount = useAppSelector(
+        (state) => state.auth.invitationsCount
+    );
 
-            response.content.includes('Contract terminated:') &&
-                dispatch(setContractsCount(contractsCount + 1));
-        }
+    appSocket.on(`msgToClient`, (response: IMessages) => {
+        (!!response.content.includes('New interview:') ||
+            !!response.content.includes('Contract terminated:') ||
+            !!response.content.includes('Hourly rate:') ||
+            response.senderId.id !== userId) &&
+            dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));
+
+        response.senderId.id !== userId &&
+            dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));
+
+        response.isOffer && dispatch(setOffersCount(offersCount + 1));
+
+        response.content.includes('New contract signed:') &&
+            dispatch(setContractsCount(contractsCount + 1));
+
+        response.content.includes('Contract terminated:') &&
+            dispatch(setContractsCount(contractsCount + 1));
+
+        response.content.includes('New interview:') &&
+            dispatch(setInvitationsCount(invitationsCount + 1));
     });
 
     return (

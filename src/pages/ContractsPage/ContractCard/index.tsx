@@ -73,7 +73,7 @@ const ContractCard: React.FC<IProps> = ({ contractObj }) => {
                 </div>`,
                 senderId: freelancer?.id,
                 roomId: chatContacts?.id,
-                isOffer: true,
+                isOffer: false,
             };
 
             socket.emit('msgToServer', newMessage);

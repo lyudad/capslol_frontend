@@ -47,7 +47,7 @@ const RolePage: React.FC = (): React.ReactElement => {
             }
 
             if (user.role === Role.FREELANCER) {
-                navigate(`${Paths.SETTING_PAGE}/${user?.id}`);
+                navigate(`/setting/${user.id}`);
             }
         } catch (error) {
             if ('data' in error) {

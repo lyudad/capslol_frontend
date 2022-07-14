@@ -19,8 +19,9 @@ export const Wrapper = styled.div`
     background-size: cover;
     background-position: center;
     background-blend-mode: darken;
-    min-height: 100vh;
-    padding: 70px;
+    min-height: calc(100vh - 42px);
+    width: 80vw;
+    padding-top: 24px;
 `;
 
 export const ProposalCard = styled.div`
@@ -36,7 +37,7 @@ export const Font = styled.p`
     font-family: ${fonts.logoFontFamily}, sans-serif;
     font-size: ${(props: IProps) => props.fs}px;
     color: ${(props: IProps) => props.color};
-    padding: 20px;
+    padding: 10px 20px;
     margin-bottom: 0;
 `;
 
@@ -69,7 +70,7 @@ export const FontTitle = styled.h6`
     font-size: ${(props: IProps) => props.fs}px;
     color: ${(props: IProps) => props.color};
     margin: 0;
-    margin-bottom: ${(props: IProps) => props.mb}px;
+    margin-bottom: 0px;
     padding: 10px 0;
 `;
 

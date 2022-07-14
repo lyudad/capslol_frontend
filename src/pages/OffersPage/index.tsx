@@ -5,7 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { CustomizedState } from 'pages/TalentsPage/TalentListCard/props';
 import { NavWrapper } from 'components/LiveNotification/styles';
 import LiveNotification from 'components/LiveNotification';
-import { setOffersCount, setProposalCount } from 'store/slices/auth/auth.slice';
+import {
+    setInvitationsCount,
+    setOffersCount,
+    setProposalCount,
+} from 'store/slices/auth/auth.slice';
 import MyOffers from './MyOffers';
 import MyInvitations from './MyInvitations';
 import MyProposals from './MyProposals';
@@ -22,6 +26,9 @@ const OffersPage: React.FC = () => {
         (state) => state.auth.proposalsCount
     );
     const newOffersCount = useAppSelector((state) => state.auth.offersCount);
+    const newInvitationsCount = useAppSelector(
+        (state) => state.auth.invitationsCount
+    );
 
     return (
         <Page>
@@ -41,11 +48,15 @@ const OffersPage: React.FC = () => {
 
                 <NavWrapper>
                     <StyledNavBtn
-                        onClick={() => setIsActive(2)}
                         isActive={isActive === 2}
+                        onClick={() => {
+                            setIsActive(2);
+                            dispatch(setInvitationsCount(0));
+                        }}
                     >
                         {t('OffersPage.myInvitations')}
                     </StyledNavBtn>
+                    <LiveNotification count={newInvitationsCount} />
                 </NavWrapper>
 
                 <NavWrapper>
