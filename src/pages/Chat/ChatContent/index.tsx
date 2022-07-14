@@ -11,7 +11,6 @@ import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
-// import { useGetInvitationByFreelancerIdQuery } from 'store/apis/invitations';
 import {
     EContractStatus,
     IContract,
@@ -55,9 +54,6 @@ const ChatContent: React.FC = () => {
 
     const { data } = useGetUserByIdQuery(user?.id);
     const { data: offer } = useGetOfferByJobIdQuery(job?.id as number);
-    // const { data: invitation } = useGetInvitationByFreelancerIdQuery(
-    //     freelancer?.id
-    // );
 
     const openModal = (): void => setIsOpen(true);
 
