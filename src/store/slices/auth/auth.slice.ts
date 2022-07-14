@@ -23,7 +23,7 @@ const initialState: UsersState = {
     error: '',
     isLoggedIn: false,
     profile: null,
-    ownerJobsLength: null,
+    ownerJobsLength: 0,
     newMessageCount: [],
     offersCount: 0,
     proposalsCount: 0,
@@ -49,7 +49,7 @@ const authSlice = createSlice({
             state.accessToken = '';
             state.isLoggedIn = false;
             state.profile = null;
-            state.ownerJobsLength = null;
+            state.ownerJobsLength = 0;
             state.newMessageCount = [];
             state.offersCount = 0;
             state.proposalsCount = 0;

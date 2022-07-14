@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,10 +12,13 @@ import { StyledButton, StyledCard, Title } from './style';
 
 const RolePage: React.FC = (): React.ReactElement => {
     const navigate = useNavigate();
+
     const [setRole] = useLazySetRoleQuery();
+
     const currentUser: UserType | null = useAppSelector(
         (state) => state.auth.user
     );
+
     const dispatch = useAppDispatch();
 
     const clickHandler = async (
@@ -42,13 +46,9 @@ const RolePage: React.FC = (): React.ReactElement => {
                 throw new Error('role is empty');
             }
 
-            if (user.role === Role.JOB_OWNER) {
-                navigate(Paths.CREATE_JOB_PAGE);
-            }
-
-            if (user.role === Role.FREELANCER) {
-                navigate(`/setting/${user.id}`);
-            }
+            user.role === Role.JOB_OWNER
+                ? navigate(Paths.CREATE_JOB_PAGE)
+                : navigate(`/setting/${user.id}`);
         } catch (error) {
             if ('data' in error) {
                 message.error(error.data.message);
@@ -59,17 +59,6 @@ const RolePage: React.FC = (): React.ReactElement => {
         }
     };
 
-    React.useEffect(() => {
-        if (currentUser?.role) {
-            if (currentUser.role === Role.JOB_OWNER) {
-                navigate(Paths.CREATE_JOB_PAGE);
-            }
-
-            if (currentUser.role === Role.FREELANCER) {
-                navigate(`${Paths.SETTING_PAGE}/${currentUser?.id}`);
-            }
-        }
-    }, []);
     return (
         <Row>
             <Col span={24}>
