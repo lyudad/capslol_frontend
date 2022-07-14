@@ -22,3 +22,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 If you want to specity port use variable PORT in .env
 
 [about husky and lint-staged](https://dev.to/truemark/run-eslint-on-git-commit-with-husky-and-lint-staged-in-reactjs-4oeb)
+
+If you want to specity port use variable PORT in .env
+
+[about husky and lint-staged](https://dev.to/truemark/run-eslint-on-git-commit-with-husky-and-lint-staged-in-reactjs-4oeb)
