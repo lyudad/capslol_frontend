@@ -71,25 +71,24 @@ const App: React.FC = () => {
     );
 
     appSocket.on(`msgToClient`, (response: IMessages) => {
-        if (response.senderId) {
-            if (
-                !!response.content.includes('Hourly rate:') ||
-                response.senderId.id !== userId
-            ) {
-                dispatch(
-                    setNewMessageCount([...newMessCount, response.roomId.id])
-                );
-                response.isOffer && dispatch(setOffersCount(offersCount + 1));
-            }
-            response.content.includes('New contract signed:') &&
-                dispatch(setContractsCount(contractsCount + 1));
+        (!!response.content.includes('Contract terminated:') ||
+            !!response.content.includes('Hourly rate:') ||
+            response.senderId.id !== userId) &&
+            dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));
 
-            response.content.includes('Contract terminated:') &&
-                dispatch(setContractsCount(contractsCount + 1));
+        response.senderId.id !== userId &&
+            dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));
 
-            response.content.includes('New interview:') &&
-                dispatch(setInvitationsCount(invitationsCount + 1));
-        }
+        response.isOffer && dispatch(setOffersCount(offersCount + 1));
+
+        response.content.includes('New contract signed:') &&
+            dispatch(setContractsCount(contractsCount + 1));
+
+        response.content.includes('Contract terminated:') &&
+            dispatch(setContractsCount(contractsCount + 1));
+
+        response.content.includes('New interview:') &&
+            dispatch(setInvitationsCount(invitationsCount + 1));
     });
 
     return (

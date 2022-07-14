@@ -119,12 +119,8 @@ const SendProposal: React.FC = () => {
         }
     };
 
-    const handleGetJobPercent = (rate: IRateArg): number =>
-        ((rate || 0) / 100) * 12.5;
-
     const handleGotFreelancerRate = (freelancerRate: IRateArg): number => {
-        const getJobRate = handleGetJobPercent(freelancerRate);
-        return (freelancerRate || 0) - getJobRate;
+        return freelancerRate || 0;
     };
 
     const handleSubmit = async (values: IFormValue): Promise<void> => {
@@ -168,6 +164,30 @@ const SendProposal: React.FC = () => {
 
         return filtered;
     };
+
+    // useEffect(() => {
+    //     const onFill = (): void => {
+    //         form.setFieldsValue({
+    //             categoryId:
+    //                 Number(sessionStorage.getItem('categoryId')) ||
+    //                 userFilter?.category,
+    //             skillIds:
+    //                 JSON.parse(sessionStorage.getItem('SkillsId') as string) ||
+    //                 userFilter?.skills,
+    //             englishLevel:
+    //                 sessionStorage.getItem('englishLevel') ||
+    //                 userFilter?.languageLevel,
+    //             maxSalary:
+    //                 Number(sessionStorage.getItem('maxSalary')) ||
+    //                 userFilter?.price,
+
+    //             timeAvailable:
+    //                 Number(sessionStorage.getItem('timeAvailable')) ||
+    //                 userFilter?.timeAvailable,
+    //         });
+    //     };
+    //     onFill();
+    // }, [userFilter, form]);
 
     return (
         <>
