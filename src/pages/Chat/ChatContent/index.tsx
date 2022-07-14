@@ -11,11 +11,11 @@ import { useGetUserByIdQuery } from 'store/apis/profile';
 import { useGetOfferByJobIdQuery } from 'store/apis/offers';
 import { CustomHook } from 'hooks/custom.hooks';
 import { Status } from 'store/apis/offers/offers.types';
-import { useGetInvitationByFreelancerIdQuery } from 'store/apis/invitations';
 import {
     EContractStatus,
     IContract,
 } from 'store/apis/contracts/contracts.types';
+import { IMyInvitation } from 'store/apis/invitations/invitations.types';
 import Avatar from '../ChatList/Avatar';
 import { IMessages, Role, TEmoji, TEvent } from '../interfaces';
 import ChatItem from './ChatItem';
@@ -43,6 +43,7 @@ const ChatContent: React.FC = () => {
     const inputRef = createRef<HTMLInputElement>();
     const [emoji, setEmoji] = useState();
     const [contracts, setContracts] = useState<IContract[]>();
+    const [invitations, setInvitations] = useState<IMyInvitation[]>();
 
     const dispatch = useAppDispatch();
     const { socket, currentChat } = useContext(AppContext);
@@ -55,9 +56,6 @@ const ChatContent: React.FC = () => {
 
     const { data } = useGetUserByIdQuery(user?.id);
     const { data: offer } = useGetOfferByJobIdQuery(job?.id as number);
-    const { data: invitation } = useGetInvitationByFreelancerIdQuery(
-        freelancer?.id
-    );
 
     const openModal = (): void => setIsOpen(true);
 
@@ -101,6 +99,27 @@ const ChatContent: React.FC = () => {
         }
     };
 
+    const fetchInvitations = async (): Promise<void> => {
+        try {
+            const { data: fetchedContracts } = await axios.get(
+                `${
+                    process.env.NODE_ENV === 'development'
+                        ? process.env.REACT_APP_DEVELOPMENT_URL
+                        : process.env.REACT_APP_SERVER_URL
+                }/invitation/getInvitation?byFreelancerId=${
+                    freelancer?.id as number
+                }`
+            );
+
+            setInvitations(fetchedContracts);
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: `${error?.message}`,
+            });
+        }
+    };
+
     useEffect(() => {
         fetchMessages();
 
@@ -114,6 +133,7 @@ const ChatContent: React.FC = () => {
         arrivalMessage &&
             setMessages((prev: IMessages[]) => [...prev, arrivalMessage]);
         fetchContracts();
+        fetchInvitations();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [arrivalMessage, dispatch, setMessages]);
 
@@ -148,6 +168,16 @@ const ChatContent: React.FC = () => {
         return contract;
     };
 
+    const handleIsInvitation = (
+        datInvitation: IMyInvitation[] | undefined
+    ): IMyInvitation | undefined => {
+        const invite = datInvitation?.filter(
+            (i) => i?.jobId?.id === job?.id
+        )[0];
+
+        return invite;
+    };
+
     return (
         <Wrapper>
             <MainChat>
@@ -173,7 +203,7 @@ const ChatContent: React.FC = () => {
                     </div>
 
                     <div>
-                        {data?.data?.role === Role.jobOwner &&
+                        {(data?.data?.role || undefined) === Role.jobOwner &&
                             (offer?.status === Status.PENDING ||
                                 offer?.status === Status.ACCEPTED || (
                                     <SettingsBtn
@@ -208,8 +238,9 @@ const ChatContent: React.FC = () => {
                     {showEmojis && <Emoji onEmojiClick={handleEmojiClick} />}
                 </ChatBody>
                 <ChatFooter>
-                    {((data?.data?.role || undefined) !== Role.jobOwner &&
-                        messages.length < 1) ||
+                    {(handleIsInvitation(invitations)?.jobId?.id !== job?.id &&
+                        (data?.data?.role || undefined) !== Role.jobOwner &&
+                        messages.length < 2) ||
                         offer?.status === Status.DECLINED ||
                         handleClosedContract(contracts)?.status ===
                             EContractStatus.closed || (

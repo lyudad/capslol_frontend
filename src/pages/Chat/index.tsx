@@ -1,9 +1,8 @@
-﻿import React, { useContext } from 'react';
+﻿import React, { useContext, useState, useEffect } from 'react';
 import { notification } from 'antd';
+import axios from 'axios';
 
-import Spinner from 'components/Spinner';
 import { useAppSelector } from 'hooks/redux';
-import { useGetChatContactsQuery } from 'store/apis/chat';
 import { IChatMember } from 'store/apis/chat/chat.types';
 import { useTranslation } from 'react-i18next';
 import { AppContext } from 'context';
@@ -19,8 +18,7 @@ const Chat: React.FC = () => {
     const { currentChat } = useContext(AppContext);
     const { user } = useAppSelector((s) => s.auth);
     const { t } = useTranslation();
-
-    const { data: chatMembers, isLoading, isError } = useGetChatContactsQuery();
+    const [members, setMembers] = useState<IChatMember[]>();
 
     const getRightMembers = (data: IChatMemberArg): IChatMemberArg => {
         const filtered = data?.filter(
@@ -31,7 +29,30 @@ const Chat: React.FC = () => {
         return filtered;
     };
 
-    const userMembers = getRightMembers(chatMembers);
+    const fetchChatMembers = async (): Promise<void> => {
+        try {
+            const { data: fetchedMembers } = await axios.get(
+                `${
+                    process.env.NODE_ENV === 'development'
+                        ? process.env.REACT_APP_DEVELOPMENT_URL
+                        : process.env.REACT_APP_SERVER_URL
+                }/chat-contacts`
+            );
+
+            setMembers(fetchedMembers);
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: `${error?.message}`,
+            });
+        }
+    };
+
+    useEffect(() => {
+        fetchChatMembers();
+    }, [currentChat]);
+
+    const userMembers = getRightMembers(members);
 
     return (
         <>
@@ -40,15 +61,6 @@ const Chat: React.FC = () => {
                 <Wrapper>
                     <ChatList members={userMembers} />
                     {currentChat === undefined ? <Welcome /> : <ChatContent />}
-
-                    <>
-                        {' '}
-                        {isError &&
-                            notification.error({
-                                message: 'Error!',
-                                description: `${t('Chat.membersError')}`,
-                            })}
-                    </>
                 </Wrapper>
             ) : (
                 <HideWrapper showWhen={!userMembers?.length}>
@@ -57,7 +69,6 @@ const Chat: React.FC = () => {
                     />
                 </HideWrapper>
             )}
-            {isLoading && <Spinner />}
         </>
     );
 };
