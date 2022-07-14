@@ -71,7 +71,8 @@ const App: React.FC = () => {
     );
 
     appSocket.on(`msgToClient`, (response: IMessages) => {
-        (!!response.content.includes('Contract terminated:') ||
+        (!!response.content.includes('New interview:') ||
+            !!response.content.includes('Contract terminated:') ||
             !!response.content.includes('Hourly rate:') ||
             response.senderId.id !== userId) &&
             dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));

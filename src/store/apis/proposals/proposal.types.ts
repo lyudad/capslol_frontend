@@ -11,12 +11,14 @@ export interface IJob {
 }
 
 export interface IMyJob {
-    id: number | undefined;
-    title: string;
-    description: string;
-    price: number;
-    timeAvailable: number;
-    createdAt: string;
+    id?: number;
+    title?: string;
+    description?: string;
+    price?: number;
+    timeAvailable?: number;
+    createdAt?: string;
+    languageLevel?: string;
+    projectDuration?: string;
 }
 
 export interface IMyProposal {
