@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof EmptyListNotification> = (args) => (
     </NoteBox>
 );
 
-export const Emptylistssssss = Template.bind({});
-Emptylistssssss.args = {
+export const Emptylist = Template.bind({});
+Emptylist.args = {
     note: 'YOU DON’T HAVE ANY COMPONENTS ...',
 };
