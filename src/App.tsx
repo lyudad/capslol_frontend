@@ -33,6 +33,7 @@ import {
     setNewMessageCount,
     setOffersCount,
 } from 'store/slices/auth/auth.slice';
+import { useGetChatContactsQuery } from 'store/apis/chat';
 
 const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<undefined | TChatArgument>(
@@ -60,6 +61,20 @@ const App: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
+    const { data: allChats } = useGetChatContactsQuery();
+
+    const myChatsIds = useMemo(() => {
+        const filtered = allChats
+            ?.filter(
+                (el) =>
+                    el.proposalId?.freelancerId?.id === userId ||
+                    el.proposalId?.jobId?.ownerId?.id === userId
+            )
+            .map((el) => el.id);
+
+        return filtered;
+    }, [allChats, userId]);
+
     const newMessCount = useAppSelector((state) => state.auth.newMessageCount);
 
     const offersCount = useAppSelector((state) => state.auth.offersCount);
@@ -71,25 +86,31 @@ const App: React.FC = () => {
     );
 
     appSocket.on(`msgToClient`, (response: IMessages) => {
-        (!!response.content.includes('New interview:') ||
-            !!response.content.includes('Contract terminated:') ||
-            !!response.content.includes('Hourly rate:') ||
-            response.senderId.id !== userId) &&
-            dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));
+        if (myChatsIds?.find((item) => item === response.roomId.id)) {
+            (!!response.content.includes('New interview:') ||
+                !!response.content.includes('Contract terminated:') ||
+                !!response.content.includes('Hourly rate:') ||
+                response.senderId.id !== userId) &&
+                dispatch(
+                    setNewMessageCount([...newMessCount, response.roomId.id])
+                );
 
-        response.senderId.id !== userId &&
-            dispatch(setNewMessageCount([...newMessCount, response.roomId.id]));
+            response.senderId.id !== userId &&
+                dispatch(
+                    setNewMessageCount([...newMessCount, response.roomId.id])
+                );
 
-        response.isOffer && dispatch(setOffersCount(offersCount + 1));
+            response.isOffer && dispatch(setOffersCount(offersCount + 1));
 
-        response.content.includes('New contract signed:') &&
-            dispatch(setContractsCount(contractsCount + 1));
+            response.content.includes('New contract signed:') &&
+                dispatch(setContractsCount(contractsCount + 1));
 
-        response.content.includes('Contract terminated:') &&
-            dispatch(setContractsCount(contractsCount + 1));
+            response.content.includes('Contract terminated:') &&
+                dispatch(setContractsCount(contractsCount + 1));
 
-        response.content.includes('New interview:') &&
-            dispatch(setInvitationsCount(invitationsCount + 1));
+            response.content.includes('New interview:') &&
+                dispatch(setInvitationsCount(invitationsCount + 1));
+        }
     });
 
     return (
