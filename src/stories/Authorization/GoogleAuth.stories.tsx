@@ -11,8 +11,8 @@ export default {
 const Template: ComponentStory<typeof AuthGoogle> = (args) => (
     <AuthGoogle {...args} />
 );
-export const Default = Template.bind({});
-Default.args = {
+export const SignInGoogleAccount = Template.bind({});
+SignInGoogleAccount.args = {
     buttonText: 'Sign with Google account',
     onFailure: (error) => console.log(error),
     onSuccess: (response) => console.log(response),
